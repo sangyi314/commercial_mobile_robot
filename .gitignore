@@ -1,0 +1,8 @@
+build/
+install/
+log/
+data/bags/
+experiments/results/raw/
+__pycache__/
+*.pyc
+.cache/
