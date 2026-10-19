@@ -1,0 +1,3 @@
+7c96ffaeaab924fd514d52e5ee6947e5175735c57ffecf8ad2acb7813518cab4  src/cmr_bringup/config/nav2_dwb.yaml
+299f9002d6dcfbf661e532c99f32dda1766eab3afa3ab71a52378d80e7ef956f  src/cmr_bringup/config/nav2_installed.yaml
+27f34e95dca6c8ac5ed0140d6f600dfd9cab61e5d7e1efc7bd632004bbab54f2  src/cmr_bringup/config/nav2_mppi.yaml
