@@ -1,0 +1,8 @@
+ M AI_USAGE.md
+ M docs/core_test_design.md
+ M docs/ownership.md
+ M docs/section4_completion_report.md
+ M src/cmr_core/test/core_test.cpp
+?? docs/core_contract.md
+?? docs/verification/
+?? evidence/env/p0-01-gfGjKp8O/

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Linux-c++"
+	tests="5"
+	failures="0"
+	disabled="0"
+	skipped="0"
+	hostname="cmr-ubuntu"
+	time="0"
+	timestamp="2026-10-20T05:05:26"
+	>
+	<testcase name="straight" classname="straight" time="0.000658417" status="run">
+		<properties/>
+		<system-out></system-out>
+	</testcase>
+	<testcase name="arc" classname="arc" time="0.000622667" status="run">
+		<properties/>
+		<system-out></system-out>
+	</testcase>
+	<testcase name="near_zero" classname="near_zero" time="0.000540125" status="run">
+		<properties/>
+		<system-out></system-out>
+	</testcase>
+	<testcase name="wheels" classname="wheels" time="0.000658416" status="run">
+		<properties/>
+		<system-out></system-out>
+	</testcase>
+	<testcase name="gate" classname="gate" time="0.000558458" status="run">
+		<properties/>
+		<system-out></system-out>
+	</testcase>
+</testsuite>

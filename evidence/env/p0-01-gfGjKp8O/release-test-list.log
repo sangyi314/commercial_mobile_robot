@@ -1,0 +1,9 @@
+Internal ctest changing into directory: /home/robot/commercial_mobile_robot/build/p0-01-gfGjKp8O-release
+Test project /home/robot/commercial_mobile_robot/build/p0-01-gfGjKp8O-release
+  Test #1: straight
+  Test #2: arc
+  Test #3: near_zero
+  Test #4: wheels
+  Test #5: gate
+
+Total Tests: 5

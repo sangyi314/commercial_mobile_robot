@@ -1,0 +1,44 @@
+{
+  "date": "2026-10-20T05:40:53.321392+08:00",
+  "head": "062eed30e1d59adf586d0743f1c825110180f0a7",
+  "status_before_draft": "?? evidence/env/p0-01-gfGjKp8O/\n",
+  "selected_matching": {
+    "src/cmr_core/include/cmr_core/core.hpp": "637194346f676c125c14d1359770496373cc5c4653cc91324d10d7cb049f30f3",
+    "src/cmr_core/test/core_test.cpp": "22b11329bf630bf83d0ae0b69aa5daa222e324253ad21506820a09e37a9b7e05",
+    "src/cmr_core/CMakeLists.txt": "83a587a5abc4d79b3f22d76979f1991e0f57d31bd8862d2a0480314d4c8f8f1e",
+    "src/cmr_core/package.xml": "acbc0337212fd28765ab92bf51aa4a65ff8fe31bb083e4acd8f6fabf2fce7185",
+    "src/cmr_bringup/config/nav2_installed.yaml": "299f9002d6dcfbf661e532c99f32dda1766eab3afa3ab71a52378d80e7ef956f",
+    "src/cmr_bringup/config/nav2_mppi.yaml": "27f34e95dca6c8ac5ed0140d6f600dfd9cab61e5d7e1efc7bd632004bbab54f2",
+    "src/cmr_bringup/config/nav2_dwb.yaml": "7c96ffaeaab924fd514d52e5ee6947e5175735c57ffecf8ad2acb7813518cab4",
+    "tools/make_baselines.py": "4bedbe2cd5ee8a04e0f9814edd1be810860effe2423eabc1136d73c9ad51031e"
+  },
+  "tracked_matching_count": 69,
+  "backup_matches": {
+    "src/cmr_core/CMakeLists.txt": true,
+    "src/cmr_core/include/cmr_core/core.hpp": true,
+    "src/cmr_core/package.xml": true,
+    "src/cmr_core/test/core_test.cpp": true,
+    "docs/core_test_design.md": true,
+    "docs/section4_completion_report.md": true,
+    "docs/ownership.md": true
+  },
+  "baseline_tests": {
+    "name": "Linux-c++",
+    "tests": "5",
+    "failures": "0",
+    "disabled": "0",
+    "skipped": "0",
+    "hostname": "cmr-ubuntu",
+    "time": "0",
+    "timestamp": "2026-10-20T05:05:26"
+  },
+  "test_names": [
+    "straight",
+    "arc",
+    "near_zero",
+    "wheels",
+    "gate"
+  ],
+  "baseline_build": "build/p0-01-gfGjKp8O-before",
+  "method": "Read existing backup, hashes, cache, registration, logs and XML; did not rerun baseline. Results bind only pre-draft source."
+}

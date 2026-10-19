@@ -1,0 +1,556 @@
+diff --git a/AI_USAGE.md b/AI_USAGE.md
+--- a/AI_USAGE.md
++++ b/AI_USAGE.md
+@@ -3,3 +3,12 @@
+ 模型、假设、接口、oracle、验收、结果解释由项目作者负责。
+ 核心模块合并前必须能解释关键分支并独立修改。
+ 每次变更记录：问题、AI 辅助范围、人工审查、测试、局限。
++
++
++## 2026-10-20 — P0-01 增量测试与证据合同（审查草稿）
++
++- 问题：当前五组简版源码与历史扩展覆盖描述不一致，须以现有源码补实际缺口。
++- AI 辅助范围：远程只读核查与基准证据复核，五组内增加 P01–P07/A01–A06/N01–N02/W01–W07/G01–G10 覆盖草稿，编写接口合同、案例定位与复核附记，保存差异和草稿指纹；生产 API 未改。
++- 人工审查：尚未收到负责人审阅意见，不将个人理解或掌握自动标通过。
++- 测试：核验既有 `p0-01-gfGjKp8O` 修改前 Release 5/5 的文件指纹与日志，本次未重跑基准；新增草稿未编译/执行，步骤 7–10 待审查后依次运行。
++- 局限：wheel_rates 极端有限输入溢出、时间差合理范围、无主动停车/会话恢复/线程保护；未运行 ROS/Nav2/Gazebo/实车。证据与审查差异见 [本步报告](docs/verification/p0-01-gfGjKp8O-draft.md)。
+diff --git a/docs/core_contract.md b/docs/core_contract.md
+new file mode 100644
+--- /dev/null
++++ b/docs/core_contract.md
+@@ -0,0 +1,43 @@
++# cmr_core 接口合同（P0-01 审查草稿）
++
++日期：2026-10-20（Asia/Shanghai）。依据：当前 `src/cmr_core/include/cmr_core/core.hpp`（90 行）。本文描述现有 API；新增测试尚未验收，人工推导与审查待完成。库为 ROS-independent、header-only、C++17；本步不修改生产头文件、构建声明或导航功能。
++
++## 类型、单位与错误语义
++
++| 接口 | 输入与单位 | 输出与现有行为 |
++|---|---|---|
++| `Pose2{x,y,yaw}` | x/y：m；yaw：rad；右手平面，正 yaw 逆时针 | 普通数据结构，自身不校验；无 frame、时间戳、协方差或硬件反馈 |
++| `Twist2{v,w}` | 车体前向 v：m/s；偏航 w：rad/s | 不包含横移；有限 v/w 不保证轮速可行 |
++| `propagate(p,u,dt)` | 一个时间步内 v/w 恒定；dt：s，有限且 ≥0；位姿和控制各字段有限 | 返回解析常速圆弧终点；yaw 使用 remainder 归一到闭区间 [-π,π]，±π 均可能出现。非法输入抛 `std::invalid_argument`；计算输出非有限抛 `std::overflow_error` |
++| `wheel_rates(u,radius,track)` | 轮径半径 r、左右轮距 b：m，均正且有限；u 有限 | `std::array<double,2>` 顺序为 `{left,right}`，单位 rad/s。非法模型或控制抛 `std::invalid_argument`。极端有限输入可能发生算术溢出，直接 API 当前没有单独的输出异常保证 |
++| `wheel_speed_ok(u,radius,track,max_abs_rate)` | 同上；轮速绝对值上限为正有限 rad/s | 两轮均有限且各自绝对值 ≤上限时 true；非法输入、非有限结果或任一超限时 false。只检查，不限幅，不检查轮加速度 |
++| `Command{value,seq,created,ttl}` | value 为 Twist2；seq 为 uint64；created 为 steady_clock 时间点；ttl 为 milliseconds | 本进程命令数据；无会话 ID、来源授权、ROS frame 或底盘状态 |
++| `CommandGate(max_ttl)` | 正 milliseconds | ≤0 抛 `std::invalid_argument`；有状态、单写者；没有线程保护 |
++| `accept(c,now)` | 同一进程 steady 时间域，合理且可表示的时间差 | 仅在所有条件满足时返回 true 并更新 last_seq；否则 false，不消耗序号 |
++
++## 位姿传播与独立预期
++
++连续模型为 `dx/dt=v*cos(yaw)`、`dy/dt=v*sin(yaw)`、`dyaw/dt=w`。对 w≠0，用半径 R=v/w 和圆心几何求端点：Δx=R(sin(yaw+w*dt)-sin(yaw))，Δy=R(cos(yaw)-cos(yaw+w*dt))。w=0 时为直线。当前实现用等价的中点角/sinc 写法避免近零相减损失；测试使用手算端点及独立几何界，不复制该实现作为唯一 oracle。
++
++- 原点、v=1、w=1、dt=π/2：端点 (1,1,π/2)；单步 Euler 会给出 (π/2,0,π/2)，不能表达这个常速圆弧端点。
++- w=-1：端点 (1,-1,-π/2)；v=-1、w=1：(-1,-1,π/2)。纯旋转不改变位置。
++- dt=0：x/y 不变；yaw 仍归一。未归一 yaw 不要求逐位不变，应比较角度等价。跨 ±π 用角差比较，不能比较原始 yaw 差值。
++- 模型没有电机加速、一阶响应、轮滑、制动距离、碰撞或执行延迟；积分正确不等于实车模型准确。
++
++## 差速轮速
++
++`left=(v-b*w/2)/r`，`right=(v+b*w/2)/r`。v=.5、w=2、r=.1、b=.4 得 `{1,9}` rad/s，因此上限 8 时拒绝；分别限制 v 和 w 不能替代两轮约束。精确可表示边界 v=1、w=0、r=.5、b=1 得 `{2,2}`，上限 2 接受，上限为 2 的前一可表示数时拒绝；负轮速同样按绝对值检查。
++
++`wheel_rates` 在极端有限输入下可能返回 Inf：例如最大有限 v 除以 .5，或 track*w 的中间乘积溢出。这是当前局限，不把 Inf 固定为未来必须保留的成功结果。直接调用者应限定物理模型范围并检查输出。`wheel_speed_ok` 必须对此返回 false；本步不改变 API 为抛溢出异常。如需强化直接 API，应另行审查最小补丁与调用方。
++
++## TTL、序号与职责边界
++
++接受区间为 `[created,created+ttl)`，含创建时刻，不含到期时刻；ttl 必须 >0 且 ≤max_ttl，now 不早于 created。首条 seq=0 合法；已有接受记录后必须严格大于 last_seq。拒绝（含非法高序号）不更新 last_seq；最大 uint64 被接受后不能回绕至 0，当前无会话重置协议。
++
++100ms TTL 的 99ms 接受，100ms、101ms 拒绝。分别使用新 gate，避免重复序号掩盖过期判断；拒绝后只修复时间或数值，同 seq 应可接受。测试时钟均为合成 steady_clock 时间点，不 sleep，不读取 ROS clock。
++
++合同限于可表示的合理持续时间，不承诺任意 time_point::min/max 相减安全，也不将外部/ROS 时间戳直接转为 steady 时间。不同机器单调时钟原点不能互比；重启、跨主机和会话边界留给适配层。
++
++`accept` 只在调用时检查，不存储有效命令、不定时回调、不输出零速度；没有新消息时不会在 TTL 到期自动停车。P1 的周期监督/输出撤销和 P2 的独立底盘 watchdog 尚未实现或验证。此合同不构成生产级安全性或实车放行结论。
++
++对应案例与源码定位见 [测试设计](core_test_design.md)；本阶段证据见 [审查报告](verification/p0-01-gfGjKp8O-draft.md)。
+diff --git a/docs/core_test_design.md b/docs/core_test_design.md
+--- a/docs/core_test_design.md
++++ b/docs/core_test_design.md
+@@ -1,19 +1,64 @@
+-# 核心测试设计
++# 核心测试设计（P0-01 审查草稿）
+ 
+-测试通过运行时 check 抛出异常并返回非零退出码；不依赖 assert，Release/NDEBUG 下也有效。每个 CTest 名称对应一组相关合同。预期值来自独立几何结果、接口契约或运动可逆性，不复制实现中的中点角/sinc 公式。
++2026-10-20（Asia/Shanghai）：逐项核对当前源码后的增量版本。旧版本 56 行简版仅有五组基础检查，不能按旧文档声称已有全部边界。现保留原有检查，在原 `straight / arc / near_zero / wheels / gate` 内补缺；CMake 五组注册保持原样。以下是**草稿覆盖索引，新增案例尚未编译或运行，不是通过记录**。
+ 
+-| 组 | 反例与预期依据 |
+-|---|---|
+-| straight | 朝北从 (1,2) 以 0.5 m/s 走 2 s 到 (1,3)；倒车到 (0,2)；dt=0 恒等；负/NaN/Inf dt、逐坐标 NaN 状态、Inf 状态、非有限控制抛 invalid_argument；有限输入导致输出溢出抛 overflow_error |
+-| arc | 单位圆正/负转向四分之一弧到 (1,±1)、倒车到 (-1,-1)；纯旋转位置不动；整圆回到原点且航向归一；相反 v/w 以正 dt 返回任意初始位姿，负 dt 仍非法 |
+-| near_zero | w=0、±1e-12 收敛到直线；在半角分支两侧采用小角几何界 abs(x-1)<=w²/6、abs(y)<=abs(w)/2 和转向符号检查，不复用被测公式 |
+-| wheels | 示例左右轮为 (1,9) rad/s；纯旋转 (-4,4)、倒车 (-5,-5)；极限 9 接受、8 拒绝；零/负/非有限轮径、轮距与上限；NaN 指令和溢出轮速拒绝 |
+-| gate | 初次 seq=0 和 created 时刻可接受；99 ms 接受、100 ms 到期拒绝、101 ms 拒绝；重复/乱序拒绝；未来时间戳拒绝；零/负/超过 max TTL 拒绝；恰等于 max TTL 的配置有效；NaN/Inf 拒绝；修复时间/TTL/数值后相同序号可重用 |
++接口依据见 [core_contract.md](core_contract.md)。本轮沿用真实步骤 2–3 编号 `p0-01-gfGjKp8O`；基准指纹、日志与审查停点见 [本步报告](verification/p0-01-gfGjKp8O-draft.md)。
+ 
+-Gate 所有时间均为 steady_clock 合成时间，不 sleep，不依赖 ROS 或仿真时钟。TTL 比较对象是毫秒 duration，不使用跨主机时间；测试没有证明主动定时停车或多线程安全。
++## 案例对照
+ 
+-最终工作树只保留新版核心：按作者要求，旧 command_policy 头文件和测试已移除，不再运行旧策略或依赖 ament_cmake_gtest。旧测试曾通过的历史记录保留在此前证据目录，不计入最终新版验收。新版有效时间区间为 [created, created+ttl)，到期即拒绝；拒绝不消耗序号。
++源码路径统一为 `src/cmr_core/test/core_test.cpp`；位置列是含 ID 的首个断言/标签行，可按 ID 搜索整段（共享 helper 与循环会展开多个检查）。所有行号对应本次草稿，运行日志将输出 `[check] ID ...`，CTest 通过案例的详细日志应查看 verbose 输出或 LastTest.log，不能仅看 5/5 汇总。
+ 
+-独立构建只要求 CMake/C++17 和 CTest，完全隔离 ROS；ROS 构建运行同样五组新测试。最终验收使用新的独立/colcon 构建目录，不能引用删除旧源码前的报告。colcon test-result 最终应为 5 tests，无旧 GTest XML。
++| ID | 分组 | 修改前覆盖 / 本次动作 | 独立预期与隔离方法 | 当前源码位置 |
++|---|---|---|---|---|
++| P01 | straight | 已有端点，补航向/范围 | (1,2,π/2)，v=.5、dt=2 → (1,3,π/2) | `core_test.cpp:55` |
++| P02 | straight | 新增 | 倒车 v=-.5、dt=2：(1,2,0) → (0,2,0) | `core_test.cpp:57` |
++| P03 | straight | 新增 | dt=0，x/y 精确不变；4π+.25 与 .25 角度等价且归一 | `core_test.cpp:59` |
++| P04 | straight | 新增 | dt=-.1 精确按 invalid_argument 类型检查 | `core_test.cpp:63` |
++| P05 | straight | 新增 3 输入 | dt=NaN/+Inf/-Inf，各抛 invalid_argument | `core_test.cpp:67` |
++| P06 | straight | 新增 5×3 输入 | x/y/yaw/v/w 每字段分别为 NaN/+Inf/-Inf，其余合法，各抛 invalid_argument | `core_test.cpp:81` |
++| P07 | straight | 新增 3 输入 | max*v 时间乘积、位置求和及角度乘积有限输入溢出，各抛 overflow_error | `core_test.cpp:87` |
++| A01 | arc | 保留，补角差/范围 | 单位正四分之一圆：(1,1,π/2) | `core_test.cpp:96` |
++| A02 | arc | 新增 | 负转向：(1,-1,-π/2) | `core_test.cpp:100` |
++| A03 | arc | 新增 | 倒车圆弧：(-1,-1,π/2) | `core_test.cpp:102` |
++| A04 | arc | 新增 | (2,-3,.25) 纯转两秒 → (2,-3,1.25) | `core_test.cpp:104` |
++| A05 | arc | 新增 | 整圆回原点；正反方向跨 ±π 用角差，yaw 属 [-π,π] | `core_test.cpp:106` |
++| A06 | arc | 新增 | 非零位姿 (.8,.6) 前进后以 (-.8,-.6) 和相同正 dt 返回；P04 仍拒绝负 dt | `core_test.cpp:114` |
++| N01 | near_zero | 已有 +1e-12 宽松极限；补 0/负向与性质 | w=0、±1e-12，有限、近直线；非零转向符号正确，航向积分正确 | `core_test.cpp:118` |
++| N02 | near_zero | 新增正负两侧 | dt=1，w=±2e-6*(1±1e-3)，小角几何界及连续性，不复制 sinc | `core_test.cpp:144` |
++| W01 | wheels | 保留 | {1,9} 左右顺序；limit=8 拒绝；已有直行可行例保留 | `core_test.cpp:153` |
++| W02 | wheels | 新增 | 原地旋转 v=0,w=2,r=.1,b=.4 → {-4,4} | `core_test.cpp:158` |
++| W03 | wheels | 新增 | 倒车 v=-.5,w=0 → {-5,-5} | `core_test.cpp:160` |
++| W04 | wheels | 新增正负边界 | v=±1,r=.5,b=1 得绝对值 2；limit=2 接受，nextafter(2,0) 拒绝 | `core_test.cpp:162` |
++| W05 | wheels | 已有 radius=0 bool 检查；补齐 | r/b 分别 0、负、NaN/+Inf/-Inf；直接 API 抛 invalid_argument，checker=false | `core_test.cpp:156` |
++| W06 | wheels | 新增 | limit 分别 0、负、NaN/+Inf/-Inf，其他输入合法，false | `core_test.cpp:180` |
++| W07 | wheels | 新增 | v/w 分别 NaN/+Inf/-Inf：直接 API 抛 invalid_argument，checker=false；有限除法/中间乘积溢出 checker=false | `core_test.cpp:185` |
++| G01 | gate | 新增 | max_ttl=0ms/-1ms 构造抛 invalid_argument | `core_test.cpp:212` |
++| G02 | gate | 新增 | 新 gate 首条 seq=0 且 now=created 接受 | `core_test.cpp:215` |
++| G03 | gate | 保留已有场景；补隔离与序号复用 | 99/100/101ms 各新 gate；100ms TTL 接受/拒绝/拒绝，到期拒绝后更新时间，同序号接受 | `core_test.cpp:200` |
++| G04 | gate | 已有重复拒绝；补大小顺序 | 合法 seq=10 接受，10/9 拒绝，11 接受；所有时间和数值合法 | `core_test.cpp:201` |
++| G05 | gate | 已有未来拒绝；补独立修复 | now<created 拒绝；只修复 created，同 seq 接受 | `core_test.cpp:204` |
++| G06 | gate | 新增独立 3 场景 | ttl=0/-1/251ms，max=250ms；各拒绝后只修复 ttl，同 seq 接受 | `core_test.cpp:240` |
++| G07 | gate | 新增独立边界 | ttl=max=250ms；创建时刻接受，到期新 gate 拒绝 | `core_test.cpp:248` |
++| G08 | gate | 已有 v=NaN；补 2×3 独立输入 | v/w 分别 NaN/+Inf/-Inf；分别新 gate，恢复合法数值后同序号接受 | `core_test.cpp:207` |
++| G09 | gate | 新增 | 先接受 seq=1，再拒绝非法 ttl 的 seq=100，合法 seq=2 仍接受 | `core_test.cpp:262` |
++| G10 | gate | 新增 | 首条 uint64 最大值接受；同值和回绕到 0 拒绝，其他字段合法 | `core_test.cpp:267` |
+ 
+-另用安装后的 cmr_core::cmr_core 目标构建默认请求 C++11 的小消费者，使用编译期 static_assert 检查实际为 C++17，并运行验证目标导出与新版头文件可用性。消费者为构建验收产物，保存在专用 build 目录，不添加产品空包。
++## Oracle、误差与失败行为
++
++- 大角端点来自单位圆、圆心/半径和手算端点；A06 是附加的可逆性质，不作为唯一参考实现。P03 明确验证零时间的位置不变、角度等价，而不是要求未归一 yaw 逐位不变。
++- 位置默认绝对容差 `1e-10 m`（沿用已有端点容差），轮速用同一数值绝对容差 `1e-10 rad/s`；航向角差容差 `1e-12 rad`。精确轮速边界和零时间位置用零容差。`near` 显式要求比较量及容差 finite，且容差非负；位姿还检查 yaw 归一范围。
++- 原点、yaw=0、v=dt=1 时，独立积分几何给出 `0≤1-x≤w²/6`、`0≤sign(w)*y≤abs(w)/2`；非零 w 的 y 符号必须正确。取绝对舍入余量 `16*double epsilon`（约 `3.55e-15`）。连续性界来自 `|dx/dw|≤|w|/3`、`|dy/dw|≤1/2`：比较分支两侧结果的变化不超过导数界乘输入差再加余量。这里单位路径使数值可直接比较，不复制被测 sinc 分支。
++- `check` 不依赖 assert/NDEBUG，失败抛出并由 main 返回 1；成功逐条打印 ID。`expect_throws<Expected>` 只将指定异常类型算成功，其余标准异常、非标准异常或未抛异常均失败。运行时错误也会返回非零。
++- 非有限集合逐项为 quiet_NaN、+Inf、-Inf；逐字段替换，其余参数合法。W07 不断言 wheel_rates 必须返回 Inf，只要求 wheel_speed_ok 不放行溢出。
++- TTL/数值/序号用例分别隔离；G03/G05/G06/G08 还验证拒绝后只修复非法字段、同 seq 可接受。所有时间是 steady_clock 合成的可表示小时间差，不 sleep，不使用 ROS clock。
++
++## 验收证据合同（待人工审查后执行）
++
++1. 本阶段仅静态审阅与差异；新增源码的 hash 是草稿身份，不能标为已测试 hash。既有 before-ctest 日志只绑定修改前源码。
++2. 审查确认后，按步骤 7→8→9→10 依次执行独立 Release、Debug ASan/UBSan、Jazzy/ament、纯 CMake 与 ament 两种安装消费者。沿用本轮编号创建唯一后缀目录，不删除旧结果，不加载根旧 install/setup.bash。
++3. 保持五组时，`ctest -N` 必须发现五组，实际执行用 `--no-tests=error`，完整保存配置/编译/测试退出码、日志与 JUnit。启用 pipefail，不能让 tee 掩盖失败。不得开启 fast-math。
++4. 新验收记录必须保存被测试核心头文件、测试、CMake 的 SHA256、Git HEAD/dirty、环境和真实构建参数；测试前后源码一致，之后变更必须重新验收。不用历史日志补齐新版本。
++5. 消费者只链接安装导出目标 `cmr_core::cmr_core`，默认请求 C++11、编译期确认实际 C++17 并执行；不得通过源码 include 路径绕过导出错误。Jazzy/ament 仅包级构建测试，不启动 ROS 图。
++6. 发现合同违例时保留最小失败用例、原始日志、影响范围和建议最小补丁，不改 oracle 或擅自扩大生产源码修改范围。目前未运行新增测试，不能下运行时违例结论。
++
++保留历史边界：旧 command_policy 不恢复、不测试；不新建产品空包；ROS 消息集成、Nav2、Gazebo、录包、硬件运动、主动过期停车、多线程与跨主机时间均未执行或未覆盖。P0-01 总验收与人工理解仍待完成。
+diff --git a/docs/ownership.md b/docs/ownership.md
+--- a/docs/ownership.md
++++ b/docs/ownership.md
+@@ -20,3 +20,10 @@
+ 本次软件测试已执行；作者掌握程度没有被观测，不标为已完成。
+ 
+ 按作者最新要求，工作树只保留新版核心；旧策略头文件、测试和 ament_cmake_gtest 测试依赖已移除，历史可由 Git 或工作区外备份恢复。移除前曾通过的旧测试不计入最终新版验收。
++
++
++## 2026-10-20 P0-01 增量工作记录
++
++AI 实际完成：读取当前源码与 Git 状态，核对步骤 2–3 现有备份/指纹/五组基准日志，增量起草 P01–G10 测试、接口合同、案例索引及审查证据。保持生产头文件、构建配置和导航资产不变；未运行新增测试或后续新验收。
++
++负责人实际人工审查：尚未收到；能解释、能推导、能修改、能排故均保持待确认。现有文档的历史“测试已执行”不能用于此次新增草稿。请审查三个手算例子、异常类型、误差界、TTL 隔离、拒绝不消耗序号和门控不会主动停车的边界。详情与差异见 [本步草稿报告](verification/p0-01-gfGjKp8O-draft.md)。
+diff --git a/docs/section4_completion_report.md b/docs/section4_completion_report.md
+--- a/docs/section4_completion_report.md
++++ b/docs/section4_completion_report.md
+@@ -147,3 +147,12 @@
+ ```bash
+ ros2 launch nav2_bringup tb3_simulation_launch.py --show-args
+ ```
++
++
++## 2026-10-20 P0-01 复核更正（审查草稿，尚未新验收）
++
++本次实际读取 Ubuntu 项目当前源码：HEAD 为 `062eed30e1d59adf586d0743f1c825110180f0a7`，修改前 core_test.cpp 为 56 行五组简版。其端点、近零、轮速与少量门控检查并未实现本文历史表中列出的全部边界；不据此推测历史变化原因。本文旧结论与旧日志原样保留，不能单凭 5/5 证明当前源码包含所称覆盖。
++
++已核对步骤 2–3 的真实编号 `p0-01-gfGjKp8O`：8 项重点与 69 项已跟踪指纹匹配修改前文件，备份内容一致；既有 Release 基准日志为 5/5，只用于修改前版本。本次未重跑或改写这些基准日志。
++
++本次在原五组内补齐清单缺口并更新接口/测试说明。新草稿未编译、未运行新增测试，独立 Release、ASan/UBSan、Jazzy/ament 和两种安装消费者均待负责人审查后顺序验收；ROS/Nav2/Gazebo/实车均未执行，不写 P0-01 通过结论。实际改动、草稿指纹、差异与新证据链接见 [P0-01 草稿报告](verification/p0-01-gfGjKp8O-draft.md)。本人理解与人工审查未被观察，继续待确认。
+diff --git a/docs/verification/p0-01-gfGjKp8O-draft.md b/docs/verification/p0-01-gfGjKp8O-draft.md
+new file mode 100644
+--- /dev/null
++++ b/docs/verification/p0-01-gfGjKp8O-draft.md
+@@ -0,0 +1,78 @@
++# P0-01 增量测试与证据合同：审查草稿
++
++日期：2026-10-20（Asia/Shanghai）。**停点：步骤 6，待负责人审查；P0-01 未完成验收。** 本报告仅列后续待验收项，不是第 12 步完成报告。
++
++## 现场与基准复核
++
++- 实际工作路径 / Git 根：`/home/robot/commercial_mobile_robot`，Ubuntu Linux aarch64。
++- HEAD：`062eed30e1d59adf586d0743f1c825110180f0a7`；修改前 dirty：仅未跟踪 `evidence/env/p0-01-gfGjKp8O/`。当前工作树含本次测试/文档草稿与新证据，未 commit/push。
++- 既有步骤 2–3 唯一编号：`p0-01-gfGjKp8O`。本次核对后沿用，不另建仓库或混用历史 section4 编号。
++- 证据目录：[evidence/env/p0-01-gfGjKp8O](../../evidence/env/p0-01-gfGjKp8O/)；修改前构建：`build/p0-01-gfGjKp8O-before`。
++- 实际复核：备份中全部 7 个普通文件字节与修改前文件一致；8 个 selected 和 69 个 tracked SHA256 均一致；HEAD 一致；基准 CMakeCache 指向当前核心目录，Release、BUILD_TESTING=ON、禁用 ament 查找、GNU 13.3.0，flags 为 -O3 -DNDEBUG，无 fast-math。
++- 现有基准为 5/5、JUnit tests=5/failures=0；本次仅读取和交叉核对，没有重新执行。该结果只属于修改前简版，绝不绑定新增测试 hash。新增运行项均未执行。
++
++基准原始证据：[备份](../../evidence/env/p0-01-gfGjKp8O/core-and-docs-before.tgz)、[原重点指纹](../../evidence/env/p0-01-gfGjKp8O/selected-sha256-before.json)、[原 tracked 指纹](../../evidence/env/p0-01-gfGjKp8O/tracked-sha256-before.json)、[配置](../../evidence/env/p0-01-gfGjKp8O/before-configure.log)、[构建](../../evidence/env/p0-01-gfGjKp8O/before-build.log)、[发现 5 组](../../evidence/env/p0-01-gfGjKp8O/before-test-list.log)、[CTest 5/5](../../evidence/env/p0-01-gfGjKp8O/before-ctest.log)、[JUnit](../../evidence/env/p0-01-gfGjKp8O/before-ctest.xml)。
++
++本次附加的证据：[基准复核记录](../../evidence/env/p0-01-gfGjKp8O/draft-baseline-review.json)、[草稿前补充备份](../../evidence/env/p0-01-gfGjKp8O/draft-before.tgz)、[静态核对记录](../../evidence/env/p0-01-gfGjKp8O/draft-static-review.json)、[草稿指纹](../../evidence/env/p0-01-gfGjKp8O/draft-sha256.json)、[完整审查差异](../../evidence/env/p0-01-gfGjKp8O/draft-changes.patch)、[当前 Git 状态](../../evidence/env/p0-01-gfGjKp8O/draft-git-status.txt)。原基准文件不覆盖。
++
++## 当前源码与历史描述的更正
++
++修改前 `core_test.cpp` 56 行：只有朝北端点、正四分之一圆、+1e-12 极限、组合轮速/部分 bool 检查和少量 gate 场景。`docs/core_test_design.md` 与旧完成报告所称扩展边界不能从该源码得到支持。此次不推测成因，不抹去历史报告；完成报告只追加本日期复核附记。
++
++## 修改文件与案例证据
++
++| 文件 | 实际改动 |
++|---|---|
++| `src/cmr_core/test/core_test.cpp` | 原五组内增量保留旧检查并补全部 32 个清单 ID；finite 比较、角差、指定异常 helper、逐检查日志；Release 不依赖 assert |
++| `docs/core_contract.md` | 新增现有 API 单位、异常、左右轮顺序、TTL/序号与现有局限草稿 |
++| `docs/core_test_design.md` | 按 ID 对照原覆盖/缺口、独立 oracle、源码锚点和待执行证据合同 |
++| `docs/section4_completion_report.md` | 仅追加带日期复核更正与本报告链接 |
++| `docs/ownership.md` | 仅追加实际 AI 工作与尚未人工审查状态 |
++| `AI_USAGE.md` | 仅追加问题、AI 范围、实际基准复核、未执行项和局限 |
++| `docs/verification/p0-01-gfGjKp8O-draft.md` | 本草稿报告 |
++
++| 类别 | 本阶段证据 | 后续执行证据 |
++|---|---|---|
++| P01–P07 / straight | [测试设计 ID 索引](../core_test_design.md)，测试源代码与完整差异 | 待新增 Release/sanitizer 逐 ID 日志 |
++| A01–A06 / arc | 手算正负四分之一圆、纯转、跨 π、正 dt 逆运动 | 待运行 |
++| N01–N02 / near_zero | 独立几何误差界、正负转向、分支两侧连续性 | 待运行 |
++| W01–W07 / wheels | 手算轮速、精确边界、非法参数、溢出 fail-closed | 待运行 |
++| G01–G10 / gate | 独立 gate、逐字段拒绝与同序号修复、最大序号局限 | 待运行 |
++
++生产头文件、CMakeLists、package.xml、三份 nav2 YAML、tools/make_baselines.py 的指纹须与原 selected-sha256 对照；本步只读，未修改。五组 CMake 注册保持原样，没有创建 ROS 节点/消息、恢复旧 command_policy 或开发导航功能。
++
++## 草稿身份（尚未被新测试执行）
++
++```text
++core.hpp SHA256: 637194346f676c125c14d1359770496373cc5c4653cc91324d10d7cb049f30f3
++core_test.cpp 草稿 SHA256: 411bd138852d83a84281d5944dcb885ede36995257dc802dbd8202ebcdcaaf9b
++CMakeLists.txt SHA256: 83a587a5abc4d79b3f22d76979f1991e0f57d31bd8862d2a0480314d4c8f8f1e
++```
++
++这些 hash 标识审查版本；后续每次验收须另记录实际编译执行的源码 hash、参数、日志、退出码和测试前后是否变化。不能给草稿 hash 配旧 5/5 日志。
++
++## 验收状态与待执行顺序
++
++| 层级 / 项目 | 本阶段状态 | 审查后要求 |
++|---|---|---|
++| 静态检查：源码/文档/范围 | AI 已核对；详见静态记录，负责人未审查 | 人工核对 oracle、异常与实际差异，不能代替运行 |
++| 修改前单元基准 | 既有记录 5/5，指纹已复核；本次未重跑 | 不用于新增案例通过结论 |
++| 步骤 7：新增独立 Release | 未执行，待审查 | 五组发现与实际运行、--no-tests=error、详细案例日志、JUnit、hash |
++| 步骤 8：Debug ASan/UBSan | 未执行，待步骤 7 | 保存配置/编译/运行及 sanitizer 原始日志 |
++| 步骤 9：Jazzy/ament 包级集成 | 未执行，待步骤 8 | 仅 cmr_core，独立编号 build/install/log，实际测试结果非零条目 |
++| 步骤 10：独立安装消费者 | 未执行，待步骤 9 | 使用新安装目标、确认 C++17 传递并运行 |
++| 步骤 10：ament 安装消费者 | 未执行 | 同上，绑定新 ament 安装与源码 |
++| ROS 图与消息集成 | 未执行，本步不要求 | 后续阶段 |
++| Nav2 / Gazebo / 录包 / 真实底盘 | 均未执行 | 后续阶段，不从核心测试推断 |
++
++本阶段未创建后续 release/sanitizer/colcon/consumer 构建或安装目录。后续继续沿用 `p0-01-gfGjKp8O` 的唯一后缀，保留旧 before 产物，按步骤顺序实际执行。
++
++## 局限、人工审查与下一停点
++
++wheel_rates 极端有限输入可能产生 Inf，checker 必须拒绝；本步未更改直接 API。时间差仅覆盖合理可表示范围，不承诺任意 min/max 差值；序号到最大值无回绕会话恢复；门控单写者、无主动 TTL 停车、无鉴权/底盘反馈。有限用例不覆盖无限浮点域，也不支持生产安全性结论。
++
++目前没有新增运行失败日志，因为新增测试未执行。若审查后发现实现违例，须先保存最小失败用例、原始日志、影响范围与建议最小补丁；不改 oracle 迁就实现，不擅改受保护生产文件。
++
++负责人需审查：①单位圆 (1,1,π/2) 与 Euler 反例；②轮速 {1,9}、上限 8 拒绝；③100ms TTL 的 99/100ms 独立判断与拒绝不耗序号；④小角界/舍入容差、异常类型及 dt=0 的角度等价；⑤无自动停车和真实硬件验证的边界。能解释/能推导/能修改/能排故均待本人确认，没有代打勾。
++
++**请先审查完整差异和案例预期。未经本轮人工审查，不执行步骤 7–10，不填写第 12 步通过结论，不进入 P0-02 完成状态。**
+diff --git a/src/cmr_core/test/core_test.cpp b/src/cmr_core/test/core_test.cpp
+--- a/src/cmr_core/test/core_test.cpp
++++ b/src/cmr_core/test/core_test.cpp
+@@ -3,48 +3,270 @@
+ #include <limits>
+ #include <string>
+ 
+-void check(bool ok, const char* message) {
++// Runtime checks remain active with NDEBUG. Every executed check logs its ID.
++void check(bool ok, const std::string& message) {
+   if (!ok) throw std::runtime_error(message);
+-}
+-bool near(double a, double b, double tol = 1e-10) {
+-  return std::abs(a - b) <= tol;
+-}
++  std::cout << "[check] " << message << '\n';
++}
++constexpr double position_tol = 1e-10;  // metres (legacy endpoint tolerance)
++constexpr double angle_tol = 1e-12;     // radians
++constexpr double roundoff = 16 * std::numeric_limits<double>::epsilon();
++bool near(double a, double b, double tol = position_tol) {
++  return std::isfinite(a) && std::isfinite(b) && std::isfinite(tol) &&
++         tol >= 0 && std::abs(a - b) <= tol;
++}
++double angle_error(double actual, double expected) {
++  return std::remainder(actual - expected, 2 * cmr::pi);
++}
++void expect_pose(cmr::Pose2 p, cmr::Pose2 expected, const std::string& id) {
++  check(near(p.x, expected.x) && near(p.y, expected.y), id + " position");
++  check(std::isfinite(p.yaw) &&
++        near(angle_error(p.yaw, expected.yaw), 0, angle_tol), id + " heading");
++  check(std::isfinite(p.yaw) && p.yaw >= -cmr::pi && p.yaw <= cmr::pi,
++        id + " normalized yaw");
++}
++template <class Expected, class F>
++void expect_throws(F action, const std::string& id) {
++  try {
++    action();
++  } catch (const Expected&) {
++    check(true, id + " expected exception");
++    return;
++  } catch (const std::exception& e) {
++    throw std::runtime_error(id + " wrong exception: " + e.what());
++  } catch (...) {
++    throw std::runtime_error(id + " wrong non-standard exception");
++  }
++  throw std::runtime_error(id + " missing exception");
++}
++const std::array<double, 3> nonfinite{
++    std::numeric_limits<double>::quiet_NaN(),
++    std::numeric_limits<double>::infinity(),
++    -std::numeric_limits<double>::infinity()};
++const std::array<const char*, 3> nonfinite_name{"NaN", "+Inf", "-Inf"};
+ 
+ int main(int argc, char** argv) {
+   try {
+     check(argc == 2, "pass one test name");
+     const std::string name = argv[1];
+     if (name == "straight") {
++      // P01: retain the original northbound endpoint, add heading/range.
+       const auto p = cmr::propagate({1, 2, cmr::pi / 2}, {0.5, 0}, 2);
+-      check(near(p.x, 1) && near(p.y, 3), "straight analytic endpoint");
++      check(near(p.x, 1) && near(p.y, 3), "P01 straight analytic endpoint");
++      expect_pose(p, {1, 3, cmr::pi / 2}, "P01");
++      expect_pose(cmr::propagate({1, 2, 0}, {-0.5, 0}, 2), {0, 2, 0}, "P02 reverse");
++      const auto zero_dt = cmr::propagate({1, 2, 4 * cmr::pi + 0.25}, {0.5, 2}, 0);
++      check(near(zero_dt.x, 1, 0) && near(zero_dt.y, 2, 0), "P03 dt=0 unchanged x/y");
++      expect_pose(zero_dt, {1, 2, 0.25}, "P03 dt=0 angle equivalent");
++      expect_throws<std::invalid_argument>([] {
++        cmr::propagate({0, 0, 0}, {1, 0}, -0.1);
++      }, "P04 negative dt");
++      for (std::size_t i = 0; i < nonfinite.size(); ++i) {
++        expect_throws<std::invalid_argument>([&] {
++          cmr::propagate({0, 0, 0}, {1, 0}, nonfinite[i]);
++        }, std::string("P05 dt=") + nonfinite_name[i]);
++      }
++      const std::array<const char*, 5> fields{"x", "y", "yaw", "v", "w"};
++      for (std::size_t f = 0; f < fields.size(); ++f) {
++        for (std::size_t i = 0; i < nonfinite.size(); ++i) {
++          cmr::Pose2 state{1, 2, 0.3};
++          cmr::Twist2 control{0.5, 0.2};
++          if (f == 0) state.x = nonfinite[i];
++          if (f == 1) state.y = nonfinite[i];
++          if (f == 2) state.yaw = nonfinite[i];
++          if (f == 3) control.v = nonfinite[i];
++          if (f == 4) control.w = nonfinite[i];
++          expect_throws<std::invalid_argument>([&] {
++            cmr::propagate(state, control, 1);
++          }, std::string("P06 ") + fields[f] + "=" + nonfinite_name[i]);
++        }
++      }
++      const double largest = std::numeric_limits<double>::max();
++      expect_throws<std::overflow_error>([&] {
++        cmr::propagate({0, 0, 0}, {largest, 0}, 2);
++      }, "P07 finite translation product overflow");
++      expect_throws<std::overflow_error>([&] {
++        cmr::propagate({largest, 0, 0}, {largest, 0}, 1);
++      }, "P07 finite position sum overflow");
++      expect_throws<std::overflow_error>([&] {
++        cmr::propagate({0, 0, 0}, {0, largest}, 4);
++      }, "P07 finite angular product overflow");
+     } else if (name == "arc") {
+       const auto p = cmr::propagate({0, 0, 0}, {1, 1}, cmr::pi / 2);
+-      check(near(p.x, 1) && near(p.y, 1), "unit quarter circle");
+-      check(near(p.yaw, cmr::pi / 2), "quarter circle heading");
++      check(near(p.x, 1) && near(p.y, 1), "A01 unit quarter circle");
++      check(near(p.yaw, cmr::pi / 2), "A01 quarter circle heading");
++      expect_pose(p, {1, 1, cmr::pi / 2}, "A01");
++      expect_pose(cmr::propagate({0, 0, 0}, {1, -1}, cmr::pi / 2),
++                  {1, -1, -cmr::pi / 2}, "A02 negative turn");
++      expect_pose(cmr::propagate({0, 0, 0}, {-1, 1}, cmr::pi / 2),
++                  {-1, -1, cmr::pi / 2}, "A03 reverse arc");
++      expect_pose(cmr::propagate({2, -3, 0.25}, {0, 0.5}, 2),
++                  {2, -3, 1.25}, "A04 pure rotation");
++      expect_pose(cmr::propagate({0, 0, 0}, {1, 1}, 2 * cmr::pi),
++                  {0, 0, 0}, "A05 full circle");
++      expect_pose(cmr::propagate({2, -3, cmr::pi - 0.1}, {0, 0.2}, 1),
++                  {2, -3, -cmr::pi + 0.1}, "A05 cross +pi");
++      expect_pose(cmr::propagate({2, -3, -cmr::pi + 0.1}, {0, -0.2}, 1),
++                  {2, -3, cmr::pi - 0.1}, "A05 cross -pi");
++      const cmr::Pose2 start{1.2, -0.7, 2.8};
++      const auto forward = cmr::propagate(start, {0.8, 0.6}, 1.3);
++      expect_pose(cmr::propagate(forward, {-0.8, -0.6}, 1.3), start,
++                  "A06 inverse motion with positive dt");
+     } else if (name == "near_zero") {
+       const auto p = cmr::propagate({0, 0, 0}, {1, 1e-12}, 1);
+-      check(near(p.x, 1) && std::abs(p.y) < 1e-10, "zero-rate limit");
++      check(near(p.x, 1) && std::isfinite(p.y) && std::abs(p.y) < 1e-10,
++            "N01 zero-rate limit (legacy)");
++      // Independent geometry: x=integral cos(w*t)dt, y=integral sin(w*t)dt.
++      // At dt=v=1: 0<=1-x<=w^2/6 and 0<=sign(w)*y<=|w|/2.
++      // The roundoff allowance is absolute, dimensionless here (unit path).
++      auto small_angle = [](double w, const std::string& id) {
++        const auto a = cmr::propagate({0, 0, 0}, {1, w}, 1);
++        check(std::isfinite(a.x) && std::isfinite(a.y) && std::isfinite(a.yaw),
++              id + " finite");
++        check(1 - a.x >= -roundoff && 1 - a.x <= w * w / 6 + roundoff,
++              id + " x geometric bound");
++        if (w == 0) {
++          check(near(a.y, 0, roundoff), id + " straight y");
++        } else {
++          const double signed_y = w > 0 ? a.y : -a.y;
++          check(signed_y > 0 && signed_y <= std::abs(w) / 2 + roundoff,
++                id + " y sign and geometric bound");
++        }
++        check(near(angle_error(a.yaw, w), 0, roundoff), id + " heading");
++        return a;
++      };
++      for (double w : {0.0, 1e-12, -1e-12}) {
++        small_angle(w, w == 0 ? "N01 w=0" : (w > 0 ? "N01 w=+1e-12" : "N01 w=-1e-12"));
++      }
++      for (double sign : {1.0, -1.0}) {
++        const double lo = sign * 2e-6 * (1 - 1e-3);
++        const double hi = sign * 2e-6 * (1 + 1e-3);
++        const std::string id = sign > 0 ? "N02 positive" : "N02 negative";
++        const auto a = small_angle(lo, id + " below branch");
++        const auto b = small_angle(hi, id + " above branch");
++        // Integral derivatives give |dx/dw|<=|w|/3 and |dy/dw|<=1/2.
++        check(near(a.x, b.x, std::abs(hi) * std::abs(hi - lo) / 3 + roundoff) &&
++              near(a.y, b.y, std::abs(hi - lo) / 2 + roundoff), id + " continuity");
++      }
+     } else if (name == "wheels") {
+       const auto w = cmr::wheel_rates({0.5, 2}, 0.1, 0.4);
+-      check(near(w[0], 1) && near(w[1], 9), "coupled wheel rates");
+-      check(!cmr::wheel_speed_ok({0.5, 2}, 0.1, 0.4, 8), "wheel saturation");
+-      check(cmr::wheel_speed_ok({0.5, 0}, 0.1, 0.4, 8), "valid straight speed");
+-      check(!cmr::wheel_speed_ok({0.5, 0}, 0, 0.4, 8), "invalid radius");
++      check(near(w[0], 1) && near(w[1], 9), "W01 coupled wheel rates left/right");
++      check(!cmr::wheel_speed_ok({0.5, 2}, 0.1, 0.4, 8), "W01 wheel saturation");
++      check(cmr::wheel_speed_ok({0.5, 0}, 0.1, 0.4, 8), "W01 valid straight speed");
++      check(!cmr::wheel_speed_ok({0.5, 0}, 0, 0.4, 8), "W05 invalid radius (legacy)");
++      const auto spin = cmr::wheel_rates({0, 2}, 0.1, 0.4);
++      check(near(spin[0], -4) && near(spin[1], 4), "W02 spin left/right");
++      const auto reverse = cmr::wheel_rates({-0.5, 0}, 0.1, 0.4);
++      check(near(reverse[0], -5) && near(reverse[1], -5), "W03 reverse left/right");
++      const auto exact = cmr::wheel_rates({1, 0}, 0.5, 1);
++      check(near(exact[0], 2, 0) && near(exact[1], 2, 0), "W04 exact rates");
++      for (double v : {1.0, -1.0}) {
++        const std::string id = v > 0 ? "W04 positive" : "W04 negative";
++        check(cmr::wheel_speed_ok({v, 0}, 0.5, 1, 2), id + " equality accepted");
++        check(!cmr::wheel_speed_ok({v, 0}, 0.5, 1, std::nextafter(2.0, 0.0)),
++              id + " immediately smaller limit rejected");
++      }
++      const std::array<double, 5> invalid{0, -0.1, nonfinite[0], nonfinite[1], nonfinite[2]};
++      const std::array<const char*, 5> labels{"zero", "negative", "NaN", "+Inf", "-Inf"};
++      for (std::size_t i = 0; i < invalid.size(); ++i) {
++        for (bool radius_bad : {true, false}) {
++          const double r = radius_bad ? invalid[i] : 0.1;
++          const double b = radius_bad ? 0.4 : invalid[i];
++          const std::string id = std::string("W05 ") + (radius_bad ? "radius " : "track ") + labels[i];
++          expect_throws<std::invalid_argument>([&] { cmr::wheel_rates({0.5, 0}, r, b); }, id);
++          check(!cmr::wheel_speed_ok({0.5, 0}, r, b, 8), id + " checker false");
++        }
++        check(!cmr::wheel_speed_ok({0.5, 0}, 0.1, 0.4, invalid[i]),
++              std::string("W06 invalid limit ") + labels[i]);
++      }
++      for (bool v_bad : {true, false}) {
++        for (std::size_t i = 0; i < nonfinite.size(); ++i) {
++          const cmr::Twist2 u = v_bad ? cmr::Twist2{nonfinite[i], 0} : cmr::Twist2{0.5, nonfinite[i]};
++          const std::string id = std::string("W07 ") + (v_bad ? "v=" : "w=") + nonfinite_name[i];
++          expect_throws<std::invalid_argument>([&] { cmr::wheel_rates(u, 0.1, 0.4); }, id);
++          check(!cmr::wheel_speed_ok(u, 0.1, 0.4, 8), id + " checker false");
++        }
++      }
++      const double largest = std::numeric_limits<double>::max();
++      // Do not require wheel_rates to return Inf: a future reviewed API may throw.
++      check(!cmr::wheel_speed_ok({largest, 0}, 0.5, 1, largest), "W07 division overflow rejected");
++      check(!cmr::wheel_speed_ok({0, largest}, 1, 4, largest), "W07 track product overflow rejected");
+     } else if (name == "gate") {
+       using namespace std::chrono_literals;
+       const auto t0 = cmr::Clock::time_point{};
++      // Retain the original scenario; seq=2 isolates its expiry from duplicate rejection.
+       cmr::CommandGate gate(250ms);
+       cmr::Command c{{0.2, 0}, 1, t0, 100ms};
+-      check(gate.accept(c, t0 + 99ms), "valid command");
+-      check(!gate.accept(c, t0 + 99ms), "duplicate rejected");
++      check(gate.accept(c, t0 + 99ms), "G03 legacy valid command");
++      check(!gate.accept(c, t0 + 99ms), "G04 legacy duplicate rejected");
+       c.seq = 2;
+-      check(!gate.accept(c, t0 + 100ms), "expiry boundary rejected");
+-      check(!gate.accept(c, t0 - 1ms), "future timestamp rejected");
++      check(!gate.accept(c, t0 + 100ms), "G03 legacy expiry boundary rejected");
++      check(!gate.accept(c, t0 - 1ms), "G05 legacy future timestamp rejected");
+       c.created = t0 + 100ms;
+       c.value.v = std::numeric_limits<double>::quiet_NaN();
+-      check(!gate.accept(c, t0 + 101ms), "NaN rejected");
++      check(!gate.accept(c, t0 + 101ms), "G08 legacy NaN rejected");
+       c.value.v = 0.2;
+-      check(gate.accept(c, t0 + 101ms), "rejected seq not consumed");
++      check(gate.accept(c, t0 + 101ms), "G08 legacy rejected seq not consumed");
++      for (auto ttl : {0ms, -1ms}) {
++        expect_throws<std::invalid_argument>([&] { cmr::CommandGate bad(ttl); },
++            ttl == 0ms ? "G01 zero max_ttl" : "G01 negative max_ttl");
++      }
++      cmr::CommandGate first(250ms);
++      check(first.accept({{0.2, 0}, 0, t0, 100ms}, t0), "G02 first seq=0 at created");
++      for (auto age : {99ms, 100ms, 101ms}) {
++        cmr::CommandGate isolated(250ms);
++        const cmr::Command cmd{{0.2, 0}, 7, t0, 100ms};
++        const std::string id = "G03 age=" + std::to_string(age.count()) + "ms";
++        check(isolated.accept(cmd, t0 + age) == (age < 100ms), id + " independent gate");
++        if (age >= 100ms) {
++          auto repaired = cmd;
++          repaired.created = t0 + age;
++          check(isolated.accept(repaired, t0 + age), id + " rejection does not consume seq");
++        }
++      }
++      cmr::CommandGate ordering(250ms);
++      check(ordering.accept({{0.2, 0}, 10, t0, 100ms}, t0), "G04 initial seq=10");
++      check(!ordering.accept({{0.2, 0}, 10, t0, 100ms}, t0), "G04 duplicate seq=10");
++      check(!ordering.accept({{0.2, 0}, 9, t0, 100ms}, t0), "G04 smaller seq=9");
++      check(ordering.accept({{0.2, 0}, 11, t0, 100ms}, t0), "G04 larger seq=11");
++      cmr::CommandGate future(250ms);
++      cmr::Command future_cmd{{0.2, 0}, 8, t0 + 1ms, 100ms};
++      check(!future.accept(future_cmd, t0), "G05 only future created rejected");
++      future_cmd.created = t0;
++      check(future.accept(future_cmd, t0), "G05 repaired same seq accepted");
++      for (auto ttl : {0ms, -1ms, 251ms}) {
++        cmr::CommandGate isolated(250ms);
++        cmr::Command cmd{{0.2, 0}, 8, t0, ttl};
++        const std::string id = "G06 ttl=" + std::to_string(ttl.count()) + "ms";
++        check(!isolated.accept(cmd, t0), id + " rejected");
++        cmd.ttl = 100ms;
++        check(isolated.accept(cmd, t0), id + " repaired same seq accepted");
++      }
++      for (auto age : {0ms, 250ms}) {
++        cmr::CommandGate isolated(250ms);
++        check(isolated.accept({{0.2, 0}, 8, t0, 250ms}, t0 + age) == (age == 0ms),
++              "G07 ttl=max age=" + std::to_string(age.count()) + "ms");
++      }
++      for (bool v_bad : {true, false}) {
++        for (std::size_t i = 0; i < nonfinite.size(); ++i) {
++          cmr::CommandGate isolated(250ms);
++          cmr::Command cmd{{0.2, 0}, 8, t0, 100ms};
++          if (v_bad) cmd.value.v = nonfinite[i]; else cmd.value.w = nonfinite[i];
++          const std::string id = std::string("G08 ") + (v_bad ? "v=" : "w=") + nonfinite_name[i];
++          check(!isolated.accept(cmd, t0), id + " rejected");
++          cmd.value = {0.2, 0};
++          check(isolated.accept(cmd, t0), id + " repaired same seq accepted");
++        }
++      }
++      cmr::CommandGate high(250ms);
++      check(high.accept({{0.2, 0}, 1, t0, 100ms}, t0), "G09 initial seq=1");
++      check(!high.accept({{0.2, 0}, 100, t0, 0ms}, t0), "G09 invalid high seq=100");
++      check(high.accept({{0.2, 0}, 2, t0, 100ms}, t0), "G09 lower valid seq=2 after rejection");
++      cmr::CommandGate maximum(250ms);
++      const auto max_seq = std::numeric_limits<std::uint64_t>::max();
++      check(maximum.accept({{0.2, 0}, max_seq, t0, 100ms}, t0), "G10 first maximum seq accepted");
++      check(!maximum.accept({{0.2, 0}, max_seq, t0, 100ms}, t0), "G10 duplicate maximum rejected");
++      check(!maximum.accept({{0.2, 0}, 0, t0, 100ms}, t0), "G10 no wrap to seq=0");
+     } else {
+       throw std::runtime_error("unknown test");
+     }
+@@ -53,4 +275,4 @@
+     std::cerr << e.what() << '\n';
+     return 1;
+   }
+-}+}
