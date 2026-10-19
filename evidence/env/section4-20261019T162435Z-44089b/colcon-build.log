@@ -1,0 +1,60 @@
+Starting >>> cmr_core
+-- The CXX compiler identification is GNU 13.3.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found Python3: /usr/bin/python3 (found version "3.12.3") found components: Interpreter 
+-- Override CMake install command with custom implementation using symlinks instead of copying resources
+-- Found ament_cmake_gtest: 2.5.6 (/opt/ros/jazzy/share/ament_cmake_gtest/cmake)
+-- Found gtest sources under '/opt/ros/jazzy/src/gtest_vendor': C++ tests using 'Google Test' will be built
+-- The C compiler identification is GNU 13.3.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+-- Found Threads: TRUE  
+-- Configuring done (0.4s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/robot/commercial_mobile_robot/build/section4-20261019T162435Z-44089b-colcon/cmr_core
+[ 12%] Building CXX object CMakeFiles/core_test.dir/test/core_test.cpp.o
+[ 25%] Building CXX object gtest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.o
+[ 37%] Building CXX object gtest/CMakeFiles/gtest.dir/src/gtest-all.cc.o
+[ 50%] Linking CXX executable core_test
+[ 50%] Built target core_test
+[ 62%] Linking CXX static library libgtest_main.a
+[ 62%] Built target gtest_main
+[ 75%] Linking CXX static library libgtest.a
+[ 75%] Built target gtest
+[ 87%] Building CXX object CMakeFiles/command_policy_test.dir/test/command_policy_test.cpp.o
+[100%] Linking CXX executable command_policy_test
+[100%] Built target command_policy_test
+-- Install configuration: "RelWithDebInfo"
+-- Execute custom install script
+-- Symlinking: /home/robot/commercial_mobile_robot/install/section4-20261019T162435Z-44089b-colcon/cmr_core/include/cmr_core/command_policy.hpp
+-- Symlinking: /home/robot/commercial_mobile_robot/install/section4-20261019T162435Z-44089b-colcon/cmr_core/include/cmr_core/core.hpp
+-- Symlinking: /home/robot/commercial_mobile_robot/install/section4-20261019T162435Z-44089b-colcon/cmr_core/share/ament_index/resource_index/package_run_dependencies/cmr_core
+-- Symlinking: /home/robot/commercial_mobile_robot/install/section4-20261019T162435Z-44089b-colcon/cmr_core/share/ament_index/resource_index/parent_prefix_path/cmr_core
+-- Symlinking: /home/robot/commercial_mobile_robot/install/section4-20261019T162435Z-44089b-colcon/cmr_core/share/cmr_core/environment/ament_prefix_path.sh
+-- Symlinking: /home/robot/commercial_mobile_robot/install/section4-20261019T162435Z-44089b-colcon/cmr_core/share/cmr_core/environment/ament_prefix_path.dsv
+-- Symlinking: /home/robot/commercial_mobile_robot/install/section4-20261019T162435Z-44089b-colcon/cmr_core/share/cmr_core/environment/path.sh
+-- Symlinking: /home/robot/commercial_mobile_robot/install/section4-20261019T162435Z-44089b-colcon/cmr_core/share/cmr_core/environment/path.dsv
+-- Symlinking: /home/robot/commercial_mobile_robot/install/section4-20261019T162435Z-44089b-colcon/cmr_core/share/cmr_core/local_setup.bash
+-- Symlinking: /home/robot/commercial_mobile_robot/install/section4-20261019T162435Z-44089b-colcon/cmr_core/share/cmr_core/local_setup.sh
+-- Symlinking: /home/robot/commercial_mobile_robot/install/section4-20261019T162435Z-44089b-colcon/cmr_core/share/cmr_core/local_setup.zsh
+-- Symlinking: /home/robot/commercial_mobile_robot/install/section4-20261019T162435Z-44089b-colcon/cmr_core/share/cmr_core/local_setup.dsv
+-- Symlinking: /home/robot/commercial_mobile_robot/install/section4-20261019T162435Z-44089b-colcon/cmr_core/share/cmr_core/package.dsv
+-- Symlinking: /home/robot/commercial_mobile_robot/install/section4-20261019T162435Z-44089b-colcon/cmr_core/share/ament_index/resource_index/packages/cmr_core
+-- Symlinking: /home/robot/commercial_mobile_robot/install/section4-20261019T162435Z-44089b-colcon/cmr_core/share/cmr_core/cmake/ament_cmake_export_targets-extras.cmake
+-- Symlinking: /home/robot/commercial_mobile_robot/install/section4-20261019T162435Z-44089b-colcon/cmr_core/share/cmr_core/cmake/ament_cmake_export_include_directories-extras.cmake
+-- Symlinking: /home/robot/commercial_mobile_robot/install/section4-20261019T162435Z-44089b-colcon/cmr_core/share/cmr_core/cmake/cmr_coreConfig.cmake
+-- Symlinking: /home/robot/commercial_mobile_robot/install/section4-20261019T162435Z-44089b-colcon/cmr_core/share/cmr_core/cmake/cmr_coreConfig-version.cmake
+-- Symlinking: /home/robot/commercial_mobile_robot/install/section4-20261019T162435Z-44089b-colcon/cmr_core/share/cmr_core/package.xml
+-- Installing: /home/robot/commercial_mobile_robot/install/section4-20261019T162435Z-44089b-colcon/cmr_core/share/cmr_core/cmake/cmr_core_targetsExport.cmake
+Finished <<< cmr_core [5.48s]
+
+Summary: 1 package finished [5.54s]

@@ -1,0 +1,23 @@
+-- The CXX compiler identification is GNU 13.3.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Configuring done (0.1s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/robot/commercial_mobile_robot/build/section4-20261019T162435Z-44089b-consumer-standalone
+Change Dir: '/home/robot/commercial_mobile_robot/build/section4-20261019T162435Z-44089b-consumer-standalone'
+
+Run Build Command(s): /usr/bin/ninja -v
+[1/2] /usr/bin/c++  -isystem /home/robot/commercial_mobile_robot/build/section4-20261019T162435Z-44089b-standalone/prefix/include -std=gnu++17 -MD -MT CMakeFiles/consumer.dir/main.cpp.o -MF CMakeFiles/consumer.dir/main.cpp.o.d -o CMakeFiles/consumer.dir/main.cpp.o -c /home/robot/commercial_mobile_robot/build/section4-20261019T162435Z-44089b-consumer-src/main.cpp
+[2/2] : && /usr/bin/c++   CMakeFiles/consumer.dir/main.cpp.o -o consumer   && :
+
+Internal ctest changing into directory: /home/robot/commercial_mobile_robot/build/section4-20261019T162435Z-44089b-consumer-standalone
+Test project /home/robot/commercial_mobile_robot/build/section4-20261019T162435Z-44089b-consumer-standalone
+    Start 1: consumer
+1/1 Test #1: consumer .........................   Passed    0.00 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.00 sec

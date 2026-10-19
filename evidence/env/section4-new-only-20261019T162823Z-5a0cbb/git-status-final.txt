@@ -1,0 +1,58 @@
+ M .gitignore
+ M .vscode/settings.json
+ M src/cmr_core/CMakeLists.txt
+ D src/cmr_core/include/cmr_core/command_policy.hpp
+ M src/cmr_core/package.xml
+ D src/cmr_core/test/command_policy_test.cpp
+?? docs/charter.md
+?? docs/core_test_design.md
+?? docs/environment.md
+?? docs/ownership.md
+?? docs/section4_completion_report.md
+?? evidence/env/migration-Uz9dGuoc/gazebo_versions.txt
+?? evidence/env/migration-Uz9dGuoc/ros2_doctor.txt
+?? evidence/env/migration-Uz9dGuoc/ros_packages.tsv
+?? evidence/env/section4-20261019T162435Z-44089b/backup.txt
+?? evidence/env/section4-20261019T162435Z-44089b/build-environment.txt
+?? evidence/env/section4-20261019T162435Z-44089b/colcon-build.log
+?? evidence/env/section4-20261019T162435Z-44089b/colcon-list.txt
+?? evidence/env/section4-20261019T162435Z-44089b/colcon-test-result.txt
+?? evidence/env/section4-20261019T162435Z-44089b/colcon-test.log
+?? evidence/env/section4-20261019T162435Z-44089b/consumer-ament.log
+?? evidence/env/section4-20261019T162435Z-44089b/consumer-standalone.log
+?? evidence/env/section4-20261019T162435Z-44089b/cpu.txt
+?? evidence/env/section4-20261019T162435Z-44089b/diff-check.txt
+?? evidence/env/section4-20261019T162435Z-44089b/disk.txt
+?? evidence/env/section4-20261019T162435Z-44089b/final-checks.txt
+?? evidence/env/section4-20261019T162435Z-44089b/gazebo-package-note.txt
+?? evidence/env/section4-20261019T162435Z-44089b/gazebo_packages.tsv
+?? evidence/env/section4-20261019T162435Z-44089b/gazebo_vendor_packages.tsv
+?? evidence/env/section4-20261019T162435Z-44089b/memory.txt
+?? evidence/env/section4-20261019T162435Z-44089b/os.txt
+?? evidence/env/section4-20261019T162435Z-44089b/ros2_doctor.txt
+?? evidence/env/section4-20261019T162435Z-44089b/ros_packages.tsv
+?? evidence/env/section4-20261019T162435Z-44089b/standalone.log
+?? evidence/env/section4-20261019T162435Z-44089b/uname.txt
+?? evidence/env/section4-latest-run.txt
+?? evidence/env/section4-new-only-20261019T162823Z-5a0cbb/backup.txt
+?? evidence/env/section4-new-only-20261019T162823Z-5a0cbb/build-environment.txt
+?? evidence/env/section4-new-only-20261019T162823Z-5a0cbb/colcon-build.log
+?? evidence/env/section4-new-only-20261019T162823Z-5a0cbb/colcon-list.txt
+?? evidence/env/section4-new-only-20261019T162823Z-5a0cbb/colcon-test-result.txt
+?? evidence/env/section4-new-only-20261019T162823Z-5a0cbb/colcon-test.log
+?? evidence/env/section4-new-only-20261019T162823Z-5a0cbb/consumers.log
+?? evidence/env/section4-new-only-20261019T162823Z-5a0cbb/cpu.txt
+?? evidence/env/section4-new-only-20261019T162823Z-5a0cbb/disk.txt
+?? evidence/env/section4-new-only-20261019T162823Z-5a0cbb/final-checks.txt
+?? evidence/env/section4-new-only-20261019T162823Z-5a0cbb/gazebo-package-note.txt
+?? evidence/env/section4-new-only-20261019T162823Z-5a0cbb/gazebo_vendor_packages.tsv
+?? evidence/env/section4-new-only-20261019T162823Z-5a0cbb/memory.txt
+?? evidence/env/section4-new-only-20261019T162823Z-5a0cbb/os.txt
+?? evidence/env/section4-new-only-20261019T162823Z-5a0cbb/ros2_doctor.txt
+?? evidence/env/section4-new-only-20261019T162823Z-5a0cbb/ros_packages.tsv
+?? evidence/env/section4-new-only-20261019T162823Z-5a0cbb/snapshot-note.txt
+?? evidence/env/section4-new-only-20261019T162823Z-5a0cbb/standalone.log
+?? evidence/env/section4-new-only-20261019T162823Z-5a0cbb/uname.txt
+?? experiments/manifests/tb3_launch_args.txt
+?? src/cmr_core/include/cmr_core/core.hpp
+?? src/cmr_core/test/core_test.cpp

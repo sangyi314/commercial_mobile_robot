@@ -6,3 +6,9 @@ experiments/results/raw/
 __pycache__/
 *.pyc
 .cache/
+evidence/bags/
+evidence/runs/*/bag/
+evidence/runs/*/*.log
+*.bag
+*.db3
+*.mcap

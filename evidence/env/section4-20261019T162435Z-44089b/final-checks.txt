@@ -1,0 +1,3 @@
+PASS: git diff --check and untracked source/docs whitespace checks
+PASS: HEAD and remotes unchanged
+PASS: 6 CTest entries including original 11 GTests, parsed from fresh XML

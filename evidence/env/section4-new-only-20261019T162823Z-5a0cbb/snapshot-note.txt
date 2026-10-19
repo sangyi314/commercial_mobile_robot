@@ -1,0 +1,1 @@
+Environment snapshots copied from this same session prior to legacy removal. Builds/tests below are fresh after removal.

@@ -1,3 +1,7 @@
 {
+    "C_Cpp.default.compileCommands": "${workspaceFolder}/build/cmr_core/compile_commands.json",
+    "C_Cpp.default.compilerPath": "/usr/bin/g++",
+    "C_Cpp.default.intelliSenseMode": "linux-gcc-arm64",
+    "C_Cpp.errorSquiggles": "enabled",
     "cmake.sourceDirectory": "/home/robot/commercial_mobile_robot/src/cmr_core"
 }

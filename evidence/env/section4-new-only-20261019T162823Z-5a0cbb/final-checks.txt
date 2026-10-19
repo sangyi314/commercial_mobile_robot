@@ -1,0 +1,4 @@
+PASS: 5 fresh CTest XML entries; no legacy GTest results
+PASS: git diff --check and untracked docs checks
+PASS: HEAD/remotes unchanged; existing core/editor/license/scope records preserved
+PASS: final standalone/ament installations exclude legacy header
