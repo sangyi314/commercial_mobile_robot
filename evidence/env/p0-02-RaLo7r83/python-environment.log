@@ -1,0 +1,5 @@
+Command '】python3' not found, did you mean:
+  command 'bpython3' from deb bpython (0.24-1)
+  command 'python3' from deb python3 (3.12.3-0ubuntu2.1)
+  command 'ipython3' from deb ipython3 (8.14.0-2)
+Try: sudo apt install <deb name>
