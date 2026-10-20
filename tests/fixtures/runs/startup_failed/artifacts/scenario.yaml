@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "scenario_id": "synthetic_static",
+  "scenario_revision": "synthetic-r1",
+  "kind": "static_smoke",
+  "master_scenario_id": "S0",
+  "legacy_id": null,
+  "status": "draft",
+  "resources": {
+    "world": null,
+    "map_yaml": null,
+    "map_image": null,
+    "robot": null,
+    "dependency_lock": null
+  },
+  "task": {
+    "initial_pose": null,
+    "goal_pose": null,
+    "common_constraints_ref": null
+  },
+  "interfaces": [],
+  "dynamic_events": [],
+  "evaluation_scope": null,
+  "verification": {
+    "resource_dependencies": "pending",
+    "world_map_alignment": "pending",
+    "poses_free": "pending",
+    "interfaces_observed": "pending",
+    "evidence_refs": []
+  }
+}

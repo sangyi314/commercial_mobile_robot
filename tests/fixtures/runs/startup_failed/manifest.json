@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "run_id": "synthetic_startup_failed",
+  "record_origin": "fixture",
+  "scenario": {
+    "scenario_id": "synthetic_static",
+    "scenario_revision": "synthetic-r1",
+    "spec_sha256": "7b52f36fb409b42dad154916461f7a1567ff656f3ca01f8fd667f96f42db0b49"
+  },
+  "source": {
+    "git_commit": "1234567890abcdef1234567890abcdef12345678",
+    "dirty": false,
+    "snapshot_ref": null
+  },
+  "baseline": {
+    "method": "mppi",
+    "config_sha256": "f9a6762e1121ab8d88472bd9532fc680365ecab5dbb6f17bbd5d68f71f13d8f6",
+    "expected_plugin": "nav2_mppi_controller::MPPIController",
+    "common_constraints_sha256": "d8bdf2849f192b1bde5c2d9430ac2d7a2ce94bb6bd4c6573f77de1aea1b7493a"
+  },
+  "environment": {
+    "ros_distro": "synthetic-jazzy",
+    "platform": "synthetic-no-robot",
+    "package_versions": {
+      "synthetic_package": "0.fixture"
+    },
+    "external_seed": null,
+    "seed_scope": [],
+    "controller_seed_controlled": false
+  },
+  "clock": {
+    "clock_epoch": "synthetic-epoch-1",
+    "started_at_utc": "2026-10-21T00:00:00Z",
+    "sim_start_s": null
+  },
+  "artifacts": [
+    {
+      "id": "scenario",
+      "path": "artifacts/scenario.yaml",
+      "sha256": "7b52f36fb409b42dad154916461f7a1567ff656f3ca01f8fd667f96f42db0b49",
+      "kind": "scenario"
+    },
+    {
+      "id": "config",
+      "path": "artifacts/config.txt",
+      "sha256": "f9a6762e1121ab8d88472bd9532fc680365ecab5dbb6f17bbd5d68f71f13d8f6",
+      "kind": "config"
+    },
+    {
+      "id": "constraints",
+      "path": "artifacts/constraints.txt",
+      "sha256": "d8bdf2849f192b1bde5c2d9430ac2d7a2ce94bb6bd4c6573f77de1aea1b7493a",
+      "kind": "common_constraints"
+    }
+  ]
+}

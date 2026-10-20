@@ -1,0 +1,6 @@
+Python: 3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]
+Executable: /usr/bin/python3
+jsonschema 4.10.3
+PyYAML 6.0.1
+pytest 7.4.4
+Draft202012Validator import available. No deliverable syntax/meta-schema/unit/CLI acceptance executed.

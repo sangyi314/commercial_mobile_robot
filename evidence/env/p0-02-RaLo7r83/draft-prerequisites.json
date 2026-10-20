@@ -1,0 +1,29 @@
+{
+  "date": "2026-10-20T19:59:57.487743+08:00",
+  "CMR_CHECK_ID": "p0-02-RaLo7r83",
+  "CMR_EVIDENCE": "/home/robot/commercial_mobile_robot/evidence/env/p0-02-RaLo7r83",
+  "head_current": "e15512138a2881f1ad4a00033d12c185af6df2a6",
+  "head_step2": "547fcefe6cf99b92664d65f21c88e5fcb96d3259",
+  "head_difference": [
+    "evidence/env/p0-02-RaLo7r83/backup-index.txt",
+    "evidence/env/p0-02-RaLo7r83/existing-targets.json",
+    "evidence/env/p0-02-RaLo7r83/experiments-before.tgz",
+    "evidence/env/p0-02-RaLo7r83/git-head-before.txt",
+    "evidence/env/p0-02-RaLo7r83/git-status-before.txt",
+    "evidence/env/p0-02-RaLo7r83/protected-before.json",
+    "evidence/env/p0-02-RaLo7r83/python-environment.log",
+    "evidence/env/p0-02-RaLo7r83/schema-before.log",
+    "evidence/env/p0-02-RaLo7r83/staged-before.patch",
+    "evidence/env/p0-02-RaLo7r83/unstaged-before.patch"
+  ],
+  "status_before_draft": "",
+  "protected_unchanged_count": 11,
+  "backup_file_matches": {
+    "experiments/manifests/environment.json": true,
+    "experiments/manifests/ros2_doctor.txt": true,
+    "experiments/manifests/tb3_launch_args.txt": true
+  },
+  "existing_schema_test": "NOT_IMPLEMENTED",
+  "original_dependency_log": "Retained: malformed pasted command with a leading character; this new log confirms actual imports without installing/upgrading.",
+  "acceptance_executed": []
+}

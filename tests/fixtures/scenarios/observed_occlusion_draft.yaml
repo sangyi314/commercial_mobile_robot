@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "scenario_id": "observed_occlusion_draft",
+  "scenario_revision": "r1",
+  "kind": "observed_occlusion",
+  "master_scenario_id": "S3",
+  "legacy_id": "s2_occluded",
+  "status": "draft",
+  "resources": {
+    "world": null,
+    "map_yaml": null,
+    "map_image": null,
+    "robot": null,
+    "dependency_lock": null
+  },
+  "task": {
+    "initial_pose": null,
+    "goal_pose": null,
+    "common_constraints_ref": null
+  },
+  "interfaces": [],
+  "dynamic_events": [
+    {
+      "event_id": "synthetic_event_1",
+      "actor_id": null,
+      "trigger": null,
+      "motion_ref": null
+    }
+  ],
+  "evaluation_scope": null,
+  "verification": {
+    "resource_dependencies": "pending",
+    "world_map_alignment": "pending",
+    "poses_free": "pending",
+    "interfaces_observed": "pending",
+    "evidence_refs": []
+  }
+}

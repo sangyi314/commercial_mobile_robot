@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "run_id": "synthetic_succeeded_unknown",
+  "record_origin": "fixture",
+  "manifest_sha256": "1429d36d8e995106f887084881d90031f6f2e63a69dddf40a21b41b47f60dae0",
+  "status": {
+    "startup": "READY",
+    "action": "SUCCEEDED",
+    "harness": "COMPLETED",
+    "cleanup": "SUCCEEDED",
+    "primary_reason": null
+  },
+  "runtime": {
+    "actual_plugin": "nav2_mppi_controller::MPPIController",
+    "parameters_ref": "parameters"
+  },
+  "time": {
+    "clock_epoch": "synthetic-epoch-1",
+    "sim_start_s": 10,
+    "sim_end_s": 20,
+    "elapsed_monotonic_s": 20,
+    "rtf": {
+      "value": 0.5,
+      "sim_delta_s": 10,
+      "monotonic_delta_s": 20
+    }
+  },
+  "metrics": {
+    "action_success": true,
+    "goal_position_error_m": null,
+    "goal_yaw_error_rad": null,
+    "stop_observed": null,
+    "intervention": null,
+    "delivery_success": null
+  },
+  "evaluation": {
+    "evaluator_version": null,
+    "scope_id": null,
+    "objects": [],
+    "geometry_model": null,
+    "frame_id": null,
+    "clock_epoch": null,
+    "interval_s": null,
+    "coverage": "none",
+    "evaluation_valid": false,
+    "invalid_reason": "Synthetic fixture: evaluation not performed",
+    "evidence_refs": [],
+    "collision": null,
+    "collision_event": null,
+    "min_signed_clearance_m": null,
+    "geometric_contact": null,
+    "contact_sensor_event": null
+  },
+  "artifacts": [
+    {
+      "id": "parameters",
+      "path": "artifacts/parameters.txt",
+      "sha256": "7b424fb72e8b95f31e63225baffa121e1c50238d4f83b06cb394f9289153cdd2",
+      "kind": "runtime_parameters"
+    }
+  ]
+}

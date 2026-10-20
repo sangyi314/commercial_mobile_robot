@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "run_id": "synthetic_startup_failed",
+  "record_origin": "fixture",
+  "manifest_sha256": "884bbde4cbdc89d55e09e398f62404436a2f89c23e3ffaff20bb6128f3f99e13",
+  "status": {
+    "startup": "FAILED",
+    "action": "NOT_SENT",
+    "harness": "STARTUP_FAILED",
+    "cleanup": "NOT_ATTEMPTED",
+    "primary_reason": "Synthetic startup readiness failure"
+  },
+  "runtime": null,
+  "time": {
+    "clock_epoch": "synthetic-epoch-1",
+    "sim_start_s": null,
+    "sim_end_s": null,
+    "elapsed_monotonic_s": 20,
+    "rtf": null
+  },
+  "metrics": {
+    "action_success": null,
+    "goal_position_error_m": null,
+    "goal_yaw_error_rad": null,
+    "stop_observed": null,
+    "intervention": null,
+    "delivery_success": null
+  },
+  "evaluation": {
+    "evaluator_version": null,
+    "scope_id": null,
+    "objects": [],
+    "geometry_model": null,
+    "frame_id": null,
+    "clock_epoch": null,
+    "interval_s": null,
+    "coverage": "none",
+    "evaluation_valid": false,
+    "invalid_reason": "Synthetic fixture: evaluation not performed",
+    "evidence_refs": [],
+    "collision": null,
+    "collision_event": null,
+    "min_signed_clearance_m": null,
+    "geometric_contact": null,
+    "contact_sensor_event": null
+  },
+  "artifacts": []
+}

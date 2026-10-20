@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "run_id": "synthetic_collision_observed_partial",
+  "record_origin": "fixture",
+  "manifest_sha256": "97592fa7bb159f4b6416293807ed1934c76177fe292798bfe1bf81365e7b557d",
+  "status": {
+    "startup": "READY",
+    "action": "SUCCEEDED",
+    "harness": "COMPLETED",
+    "cleanup": "SUCCEEDED",
+    "primary_reason": null
+  },
+  "runtime": {
+    "actual_plugin": "nav2_mppi_controller::MPPIController",
+    "parameters_ref": "parameters"
+  },
+  "time": {
+    "clock_epoch": "synthetic-epoch-1",
+    "sim_start_s": 10,
+    "sim_end_s": 20,
+    "elapsed_monotonic_s": 20,
+    "rtf": {
+      "value": 0.5,
+      "sim_delta_s": 10,
+      "monotonic_delta_s": 20
+    }
+  },
+  "metrics": {
+    "action_success": true,
+    "goal_position_error_m": null,
+    "goal_yaw_error_rad": null,
+    "stop_observed": null,
+    "intervention": null,
+    "delivery_success": null
+  },
+  "evaluation": {
+    "evaluator_version": "synthetic-v1",
+    "scope_id": "synthetic-disc-scope",
+    "objects": [
+      "robot_proxy",
+      "obstacle_proxy"
+    ],
+    "geometry_model": "synthetic_2d_discs_only",
+    "frame_id": "synthetic_map",
+    "clock_epoch": "synthetic-epoch-1",
+    "interval_s": {
+      "start": 10,
+      "end": 20
+    },
+    "coverage": "partial",
+    "evaluation_valid": false,
+    "invalid_reason": "Synthetic partial coverage; rest of interval missing",
+    "evidence_refs": [
+      "evaluation"
+    ],
+    "collision": true,
+    "collision_event": {
+      "at_s": 12,
+      "objects": [
+        "robot_proxy",
+        "obstacle_proxy"
+      ],
+      "source_ref": "evaluation"
+    },
+    "min_signed_clearance_m": -0.02,
+    "geometric_contact": true,
+    "contact_sensor_event": null
+  },
+  "artifacts": [
+    {
+      "id": "parameters",
+      "path": "artifacts/parameters.txt",
+      "sha256": "7b424fb72e8b95f31e63225baffa121e1c50238d4f83b06cb394f9289153cdd2",
+      "kind": "runtime_parameters"
+    },
+    {
+      "id": "evaluation",
+      "path": "artifacts/evaluation.txt",
+      "sha256": "4ce0a4b76d747f5ccfdd793075afdb499b215ff8ff2424f82698073976bc0a2e",
+      "kind": "evaluation"
+    }
+  ]
+}
