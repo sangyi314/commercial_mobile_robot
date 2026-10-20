@@ -1,0 +1,6 @@
+Change Dir: '/home/robot/commercial_mobile_robot/build/p0-01-gfGjKp8O-consumer-standalone'
+
+Run Build Command(s): /usr/bin/ninja -v
+[1/2] /usr/bin/c++  -isystem /home/robot/commercial_mobile_robot/build/p0-01-gfGjKp8O-prefix/include -std=c++17 -MD -MT CMakeFiles/consumer.dir/main.cpp.o -MF CMakeFiles/consumer.dir/main.cpp.o.d -o CMakeFiles/consumer.dir/main.cpp.o -c /home/robot/commercial_mobile_robot/build/p0-01-gfGjKp8O-consumer-src/main.cpp
+[2/2] : && /usr/bin/c++   CMakeFiles/consumer.dir/main.cpp.o -o consumer   && :
+

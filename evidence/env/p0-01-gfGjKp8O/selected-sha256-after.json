@@ -1,0 +1,10 @@
+{
+  "src/cmr_core/include/cmr_core/core.hpp": "637194346f676c125c14d1359770496373cc5c4653cc91324d10d7cb049f30f3",
+  "src/cmr_core/test/core_test.cpp": "411bd138852d83a84281d5944dcb885ede36995257dc802dbd8202ebcdcaaf9b",
+  "src/cmr_core/CMakeLists.txt": "83a587a5abc4d79b3f22d76979f1991e0f57d31bd8862d2a0480314d4c8f8f1e",
+  "src/cmr_core/package.xml": "acbc0337212fd28765ab92bf51aa4a65ff8fe31bb083e4acd8f6fabf2fce7185",
+  "src/cmr_bringup/config/nav2_installed.yaml": "299f9002d6dcfbf661e532c99f32dda1766eab3afa3ab71a52378d80e7ef956f",
+  "src/cmr_bringup/config/nav2_mppi.yaml": "27f34e95dca6c8ac5ed0140d6f600dfd9cab61e5d7e1efc7bd632004bbab54f2",
+  "src/cmr_bringup/config/nav2_dwb.yaml": "7c96ffaeaab924fd514d52e5ee6947e5175735c57ffecf8ad2acb7813518cab4",
+  "tools/make_baselines.py": "4bedbe2cd5ee8a04e0f9814edd1be810860effe2423eabc1136d73c9ad51031e"
+}
