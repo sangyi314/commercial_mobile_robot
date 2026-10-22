@@ -1,0 +1,7 @@
+ M .vscode/settings.json
+?? .vscode/c_cpp_properties.json
+?? docs/dataflow.md
+?? docs/navigation_smoke.md
+?? docs/verification/p0-02-RaLo7r83-handoff-20261022.md
+?? docs/verification/p0-03-nq1hmjaf.md
+?? evidence/runs/

@@ -1,0 +1,149 @@
+{
+  "source": {
+    "path": "artifacts/nav2_mppi.yaml",
+    "sha256": "27f34e95dca6c8ac5ed0140d6f600dfd9cab61e5d7e1efc7bd632004bbab54f2"
+  },
+  "parameter_order": {
+    "velocity": [
+      "vx",
+      "vy",
+      "wz"
+    ],
+    "acceleration": [
+      "ax",
+      "ay",
+      "az"
+    ]
+  },
+  "parameters": [
+    {
+      "source_key": "velocity_smoother.ros__parameters.max_velocity",
+      "explicitly_set": true,
+      "value": [
+        0.3,
+        0.0,
+        1.0
+      ],
+      "units": [
+        "m/s",
+        "m/s",
+        "rad/s"
+      ],
+      "note": null
+    },
+    {
+      "source_key": "velocity_smoother.ros__parameters.min_velocity",
+      "explicitly_set": true,
+      "value": [
+        -0.1,
+        0.0,
+        -1.0
+      ],
+      "units": [
+        "m/s",
+        "m/s",
+        "rad/s"
+      ],
+      "note": null
+    },
+    {
+      "source_key": "velocity_smoother.ros__parameters.max_accel",
+      "explicitly_set": true,
+      "value": [
+        1.0,
+        0.0,
+        2.0
+      ],
+      "units": [
+        "m/s^2",
+        "m/s^2",
+        "rad/s^2"
+      ],
+      "note": null
+    },
+    {
+      "source_key": "velocity_smoother.ros__parameters.max_decel",
+      "explicitly_set": true,
+      "value": [
+        -1.0,
+        0.0,
+        -2.0
+      ],
+      "units": [
+        "m/s^2",
+        "m/s^2",
+        "rad/s^2"
+      ],
+      "note": null
+    },
+    {
+      "source_key": "controller_server.ros__parameters.controller_frequency",
+      "explicitly_set": true,
+      "value": 20.0,
+      "units": "Hz",
+      "note": null
+    },
+    {
+      "source_key": "controller_server.ros__parameters.general_goal_checker",
+      "explicitly_set": true,
+      "value": {
+        "stateful": true,
+        "plugin": "nav2_controller::SimpleGoalChecker",
+        "xy_goal_tolerance": 0.25,
+        "yaw_goal_tolerance": 0.25
+      },
+      "units": {
+        "xy_goal_tolerance": "m",
+        "yaw_goal_tolerance": "rad"
+      },
+      "note": null
+    },
+    {
+      "source_key": "local_costmap.local_costmap.ros__parameters.footprint",
+      "explicitly_set": false,
+      "value": null,
+      "units": "planar vertices in m",
+      "note": "本配置未显式设置"
+    },
+    {
+      "source_key": "local_costmap.local_costmap.ros__parameters.robot_radius",
+      "explicitly_set": true,
+      "value": 0.22,
+      "units": "m",
+      "note": null
+    },
+    {
+      "source_key": "local_costmap.local_costmap.ros__parameters.footprint_padding",
+      "explicitly_set": false,
+      "value": null,
+      "units": "m",
+      "note": "本配置未显式设置"
+    },
+    {
+      "source_key": "global_costmap.global_costmap.ros__parameters.footprint",
+      "explicitly_set": false,
+      "value": null,
+      "units": "planar vertices in m",
+      "note": "本配置未显式设置"
+    },
+    {
+      "source_key": "global_costmap.global_costmap.ros__parameters.robot_radius",
+      "explicitly_set": true,
+      "value": 0.22,
+      "units": "m",
+      "note": null
+    },
+    {
+      "source_key": "global_costmap.global_costmap.ros__parameters.footprint_padding",
+      "explicitly_set": false,
+      "value": null,
+      "units": "m",
+      "note": "本配置未显式设置"
+    }
+  ],
+  "limitations": [
+    "只提取本轮配置快照中的显式键，不补 Nav2 默认值。",
+    "footprint/footprint_padding 未显式设置时保留未知；不根据运行 footprint 反推默认参数。",
+    "本记录不表示两控制器公平调参已经完成，不证明参数已实际生效。"
+  ]
+}

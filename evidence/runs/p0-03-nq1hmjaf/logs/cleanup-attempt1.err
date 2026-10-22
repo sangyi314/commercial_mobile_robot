@@ -1,0 +1,1 @@
+Pre-signal process enumeration stopped on PermissionError reading /proc/1/environ. No signals or cleanup outputs were emitted. Retry filters to current-user processes and skips inaccessible entries.

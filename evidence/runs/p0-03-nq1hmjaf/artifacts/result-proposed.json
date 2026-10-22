@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "run_id": "p0-03-nq1hmjaf",
+  "record_origin": "real",
+  "manifest_sha256": "0e87af927931b13f259b24a056365b4355d6d0de5970148825593fe2e9fdf74e",
+  "status": {
+    "startup": "FAILED",
+    "action": "REJECTED",
+    "harness": "STARTUP_FAILED",
+    "cleanup": "SUCCEEDED",
+    "primary_reason": "Initial navigation bringup failed: global_costmap activation timed out waiting for base_link-to-map TF; bt_navigator remained inactive and rejected the single requested goal."
+  },
+  "runtime": {
+    "actual_plugin": "nav2_mppi_controller::MPPIController",
+    "parameters_ref": "runtime_parameters"
+  },
+  "time": {
+    "clock_epoch": "p0-03-nq1hmjaf:sim0",
+    "sim_start_s": null,
+    "sim_end_s": null,
+    "elapsed_monotonic_s": 6771.903889646001,
+    "rtf": null
+  },
+  "metrics": {
+    "action_success": false,
+    "goal_position_error_m": 2.06113929010702,
+    "goal_yaw_error_rad": 0.015415385484245724,
+    "stop_observed": null,
+    "intervention": null,
+    "delivery_success": null
+  },
+  "evaluation": {
+    "evaluator_version": null,
+    "scope_id": null,
+    "objects": [],
+    "geometry_model": null,
+    "frame_id": null,
+    "clock_epoch": null,
+    "interval_s": null,
+    "coverage": "none",
+    "evaluation_valid": false,
+    "invalid_reason": "Independent collision evaluation was not performed; missing command or sensor evidence is not collision=false.",
+    "evidence_refs": [],
+    "collision": null,
+    "collision_event": null,
+    "min_signed_clearance_m": null,
+    "geometric_contact": null,
+    "contact_sensor_event": null
+  },
+  "artifacts": [
+    {
+      "id": "runtime_parameters",
+      "path": "runtime/controller_server.yaml",
+      "sha256": "1a61c1fed3664c843ce11ad0b0f8b804df88679f80633971294b2b1aae3776fb",
+      "kind": "runtime_parameters"
+    },
+    {
+      "id": "goal_cli",
+      "path": "logs/navigate-goal.log",
+      "sha256": "4530beb7f0971a1fb68a46948a81cbf214d3895918ae063f37f3d4db52f6074a",
+      "kind": "log"
+    },
+    {
+      "id": "goal_cli_exit",
+      "path": "logs/navigate-goal.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "kind": "log"
+    },
+    {
+      "id": "dispatch",
+      "path": "runtime/goal-dispatch-before.json",
+      "sha256": "78d3e9935a80bccbe0b348f99102bf32f18bc41e2a250844623974c7ea2cde6d",
+      "kind": "log"
+    },
+    {
+      "id": "command_return",
+      "path": "runtime/goal-command-returned.json",
+      "sha256": "a8797b08fe8c583f63c1c0ad0817d1e93b11d7fd8a4a3e25225e219238c99489",
+      "kind": "log"
+    },
+    {
+      "id": "original_observations",
+      "path": "runtime/observations.jsonl",
+      "sha256": "da5a0af1c955d4b672979a673211ae1ca713f35e4ae5712d1d1f810ea7bcb7c7",
+      "kind": "log"
+    },
+    {
+      "id": "cleanup_observations",
+      "path": "runtime/observations-cleanup-20261022.jsonl",
+      "sha256": "3c768a53c5b8c4f644ff26c7c65e903dd336e2f8388fd75265fd49bdb35cb672",
+      "kind": "log"
+    },
+    {
+      "id": "observer_source",
+      "path": "artifacts/observe.py",
+      "sha256": "1d91592cd0c6d6f5add37248c19824463a9b2232d4e8b44fa5ea6205b5f7c81c",
+      "kind": "other"
+    },
+    {
+      "id": "analysis_source",
+      "path": "artifacts/analyze_smoke.py",
+      "sha256": "68c987f9a953d6f040422b83af0b77b4ff6583880a4423ac3ec1f76b6176918c",
+      "kind": "other"
+    },
+    {
+      "id": "analysis",
+      "path": "runtime/evidence-summary-20261022.json",
+      "sha256": "4437d70c61efbb413b71dec59dcf1123b6f0151c6e05c86753f159c38aa45289",
+      "kind": "other"
+    },
+    {
+      "id": "cleanup",
+      "path": "runtime/cleanup-evidence-20261022.json",
+      "sha256": "a574553753b6d64657cdd3143559f09d0e9d6e0d131c4dd9a88f0c3340015cc1",
+      "kind": "log"
+    },
+    {
+      "id": "cleanup_events",
+      "path": "logs/cleanup-20261022.jsonl",
+      "sha256": "c2bf2a04d8feeb9ec999a20ae7047a533d91735bd028b3b060e544f8fbc45dbf",
+      "kind": "log"
+    },
+    {
+      "id": "nodes_after_exit",
+      "path": "logs/nodes-after-agent-20261022.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "kind": "log"
+    },
+    {
+      "id": "session_ended",
+      "path": "runtime/session-ended.json",
+      "sha256": "f78b9eea8fa2a8606b01b4a68332e0b82f6bfbf0d137f58f2913d806292f1535",
+      "kind": "log"
+    },
+    {
+      "id": "nav2_launch",
+      "path": "logs/nav2-launch.log",
+      "sha256": "ae66775f3f2faa31b257714fd5a2549f108456f8770e9349b83b872e3c225525",
+      "kind": "log"
+    },
+    {
+      "id": "gazebo",
+      "path": "logs/gazebo.log",
+      "sha256": "94042e18a0a926a58cb22fb012659f23bfed74fe2468908c588e788f279625f6",
+      "kind": "log"
+    },
+    {
+      "id": "observer_cleanup_meta",
+      "path": "runtime/observer-cleanup-20261022.json",
+      "sha256": "e500ae05c455aa8cdc24842a60905245144c64ef8ff2ebf4d874426660ee5f83",
+      "kind": "log"
+    },
+    {
+      "id": "navigator_now",
+      "path": "logs/agent-precleanup-20261022-navigator.out",
+      "sha256": "b78847ee77aa1c451086d932474666ae3185f6acbf68647e1f9af9f94568a8df",
+      "kind": "log"
+    },
+    {
+      "id": "planner_now",
+      "path": "logs/agent-precleanup-20261022-planner.out",
+      "sha256": "b78847ee77aa1c451086d932474666ae3185f6acbf68647e1f9af9f94568a8df",
+      "kind": "log"
+    },
+    {
+      "id": "monitor_now",
+      "path": "logs/agent-precleanup-20261022-monitor.out",
+      "sha256": "b78847ee77aa1c451086d932474666ae3185f6acbf68647e1f9af9f94568a8df",
+      "kind": "log"
+    },
+    {
+      "id": "smoother_now",
+      "path": "logs/agent-precleanup-20261022-smoother.out",
+      "sha256": "b78847ee77aa1c451086d932474666ae3185f6acbf68647e1f9af9f94568a8df",
+      "kind": "log"
+    },
+    {
+      "id": "action_status_probe_exit",
+      "path": "logs/agent-precleanup-20261022-action_status.exit",
+      "sha256": "ca2ebdf97d7469496b1f4b78958f9dc8447efdcb623953fee7b6996b762f6fff",
+      "kind": "log"
+    }
+  ]
+}

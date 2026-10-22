@@ -1,0 +1,121 @@
+Arguments (pass arguments as '<name>:=<value>'):
+
+    'namespace':
+        Top-level namespace
+        (default: '')
+
+    'use_namespace':
+        Whether to apply a namespace to the navigation stack
+        (default: 'false')
+
+    'slam':
+        Whether run a SLAM
+        (default: 'False')
+
+    'map':
+        no description given
+        (default: '/opt/ros/jazzy/share/nav2_bringup/maps/tb3_sandbox.yaml')
+
+    'use_sim_time':
+        Use simulation (Gazebo) clock if true
+        (default: 'true')
+
+    'params_file':
+        Full path to the ROS2 parameters file to use for all launched nodes
+        (default: '/opt/ros/jazzy/share/nav2_bringup/params/nav2_params.yaml')
+
+    'autostart':
+        Automatically startup the nav2 stack
+        (default: 'true')
+
+    'use_composition':
+        Whether to use composed bringup
+        (default: 'True')
+
+    'rviz_config_file':
+        Full path to the RVIZ config file to use
+        (default: '/opt/ros/jazzy/share/nav2_bringup/rviz/nav2_default_view.rviz')
+
+    'use_simulator':
+        Whether to start the simulator
+        (default: 'True')
+
+    'use_robot_state_pub':
+        Whether to start the robot state publisher
+        (default: 'True')
+
+    'use_rviz':
+        Whether to start RVIZ
+        (default: 'True')
+
+    'headless':
+        Whether to execute gzclient)
+        (default: 'True')
+
+    'world':
+        Full path to world model file to load
+        (default: '/opt/ros/jazzy/share/nav2_minimal_tb3_sim/worlds/tb3_sandbox.sdf.xacro')
+
+    'robot_name':
+        name of the robot
+        (default: 'turtlebot3_waffle')
+
+    'robot_sdf':
+        Full path to robot sdf file to spawn the robot in gazebo
+        (default: '/opt/ros/jazzy/share/nav2_minimal_tb3_sim/urdf/gz_waffle.sdf.xacro')
+
+    'use_respawn':
+        Whether to respawn if a node crashes. Applied when composition is disabled.
+        (default: 'False')
+
+    'gz_args':
+        Arguments to be passed to Gazebo Sim
+        (default: '')
+
+    'gz_version':
+        Gazebo Sim's major version
+        (default: '8')
+
+    'ign_args':
+        Deprecated: Arguments to be passed to Gazebo Sim
+        (default: '')
+
+    'ign_version':
+        Deprecated: Gazebo Sim's major version
+        (default: '')
+
+    'debugger':
+        Run in Debugger
+        (default: 'false')
+
+    'debug_env':
+        Debug environment variables
+        (default: 'false')
+
+    'on_exit_shutdown':
+        Shutdown on gz-sim exit
+        (default: 'false')
+
+    'rviz_config':
+        Full path to the RVIZ config file to use
+        (default: '/opt/ros/jazzy/share/nav2_bringup/rviz/nav2_default_view.rviz')
+
+    'log_level':
+        log level
+        (default: 'info')
+
+    'use_localization':
+        Whether to enable localization or not
+        (default: 'True')
+
+    'use_lifecycle_manager':
+        Enable bond connection during node activation
+        (default: 'false')
+
+    'slam_params_file':
+        Full path to the ROS2 parameters file to use for the slam_toolbox node
+        (default: '/opt/ros/jazzy/share/slam_toolbox/config/mapper_params_online_sync.yaml')
+
+    'container_name':
+        the name of conatiner that nodes will load in if use composition
+        (default: 'nav2_container')

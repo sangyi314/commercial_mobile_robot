@@ -1,0 +1,266 @@
+{
+  "run_id": "p0-03-nq1hmjaf",
+  "validation_scope": "record_contract",
+  "action": {
+    "terminal": "REJECTED",
+    "accepted_goal_uuids": [],
+    "accepted_goal_uuid": null,
+    "command_exit": 0,
+    "action_success": false,
+    "dispatch_monotonic_s": 7283.356883222,
+    "return_monotonic_s": 7285.176936098,
+    "command_duration_s": 1.8200528759998633
+  },
+  "original_observation": {
+    "counts": {
+      "observer_started": 1,
+      "tf_unavailable": 6,
+      "clock": 1188,
+      "odom": 6614,
+      "map_base": 1185
+    },
+    "receive_start_s": 6714.712027659,
+    "receive_end_s": 6954.68475269,
+    "clock_jump_events": 0,
+    "invalid_odom_samples": 0,
+    "command_samples": {
+      "/cmd_vel_nav": 0,
+      "/cmd_vel_smoothed": 0,
+      "/cmd_vel": 0
+    },
+    "last_cmd_vel": null,
+    "odom": {
+      "samples": 6614,
+      "sim_start_s": 4610.061,
+      "sim_end_s": 4848.129,
+      "span_sim_s": 238.0680000000002,
+      "first_position": [
+        2.2371907109047647e-07,
+        3.322722479955359e-16,
+        0.0
+      ],
+      "last_position": [
+        2.2371907108897828e-07,
+        3.3227224799107347e-16,
+        0.0
+      ],
+      "max_gap_sim_s": 0.03600000000005821,
+      "nonforward_stamp_pairs": 0,
+      "max_linear_m_s": 2.99990835485898e-20,
+      "max_angular_rad_s": 1.4756671554952966e-19,
+      "max_drift_m": 1.4981895254560437e-18,
+      "net_displacement_m": 1.4981895254560437e-18,
+      "max_odom_vs_nearest_clock_abs_sim_s": 0.14100000000053114,
+      "max_nearest_clock_receive_distance_wall_s": 0.10304795800038846,
+      "stationary_window_criteria": true
+    },
+    "last_map_base": {
+      "kind": "map_base",
+      "receive_monotonic_s": 6954.64934319,
+      "ros_now_s": 4848.093,
+      "data": {
+        "stamp_s": 4848.057,
+        "frame_id": "map",
+        "child_frame_id": "base_footprint",
+        "position": [
+          -1.9948061849445269,
+          -0.4502611288664384,
+          0.0
+        ],
+        "quaternion_xyzw": [
+          0.0,
+          0.0,
+          0.007707616425236968,
+          0.9999702958833534
+        ]
+      }
+    },
+    "clock": {
+      "samples": 1188,
+      "sim_start_s": 4610.202,
+      "sim_end_s": 4848.066,
+      "backsteps": 0
+    },
+    "tf_unique_stamp_count": 1185,
+    "valid_tf_samples": 1185
+  },
+  "supplementary_cleanup_observation": {
+    "counts": {
+      "observer_started": 1,
+      "tf_unavailable": 6,
+      "clock": 70,
+      "odom": 395,
+      "map_base": 68
+    },
+    "receive_start_s": 7600.907963082,
+    "receive_end_s": 7615.89564088,
+    "clock_jump_events": 0,
+    "invalid_odom_samples": 0,
+    "command_samples": {
+      "/cmd_vel_nav": 0,
+      "/cmd_vel_smoothed": 0,
+      "/cmd_vel": 0
+    },
+    "last_cmd_vel": null,
+    "odom": {
+      "samples": 395,
+      "sim_start_s": 5490.693,
+      "sim_end_s": 5505.057,
+      "span_sim_s": 14.363999999999578,
+      "first_position": [
+        2.237190710845679e-07,
+        3.322722479779035e-16,
+        0.0
+      ],
+      "last_position": [
+        2.2371907108446743e-07,
+        3.3227224797760796e-16,
+        0.0
+      ],
+      "max_gap_sim_s": 0.14400000000023283,
+      "nonforward_stamp_pairs": 0,
+      "max_linear_m_s": 2.911675756186657e-20,
+      "max_angular_rad_s": 1.0452642351425019e-19,
+      "max_drift_m": 1.0045281358843968e-19,
+      "net_displacement_m": 1.0045281358843968e-19,
+      "max_odom_vs_nearest_clock_abs_sim_s": 0.4170000000003711,
+      "max_nearest_clock_receive_distance_wall_s": 0.13858895800058235,
+      "stationary_window_criteria": true
+    },
+    "last_map_base": {
+      "kind": "map_base",
+      "receive_monotonic_s": 7615.748381464,
+      "ros_now_s": 5504.910000000001,
+      "data": {
+        "stamp_s": 5504.877,
+        "frame_id": "map",
+        "child_frame_id": "base_footprint",
+        "position": [
+          -1.994806184944527,
+          -0.4502611288664384,
+          0.0
+        ],
+        "quaternion_xyzw": [
+          0.0,
+          0.0,
+          0.00770761642523697,
+          0.9999702958833534
+        ]
+      }
+    },
+    "clock": {
+      "samples": 70,
+      "sim_start_s": 5490.69,
+      "sim_end_s": 5504.988,
+      "backsteps": 0
+    },
+    "tf_unique_stamp_count": 67,
+    "valid_tf_samples": 68
+  },
+  "observer_ended_before_dispatch_s": 328.67213053199976,
+  "action_interval_observed_samples": 0,
+  "action_interval_odom_displacement_m": null,
+  "final_localization_estimate": {
+    "kind": "map_base",
+    "receive_monotonic_s": 7615.748381464,
+    "ros_now_s": 5504.910000000001,
+    "data": {
+      "stamp_s": 5504.877,
+      "frame_id": "map",
+      "child_frame_id": "base_footprint",
+      "position": [
+        -1.994806184944527,
+        -0.4502611288664384,
+        0.0
+      ],
+      "quaternion_xyzw": [
+        0.0,
+        0.0,
+        0.00770761642523697,
+        0.9999702958833534
+      ]
+    },
+    "yaw_rad": 0.015415385484245724,
+    "quaternion_norm_squared": 0.9999999999999999,
+    "goal_position_error_m": 2.06113929010702,
+    "goal_yaw_error_rad": 0.015415385484245724,
+    "after_command_return_wall_s": 330.57144536600026,
+    "ros_now_minus_tf_stamp_s": 0.03300000000035652,
+    "scope": "supplementary pre-cleanup localization estimate; not an immediate navigation terminal pose or physical truth"
+  },
+  "last_cmd_vel": null,
+  "post_success_stop_observed": null,
+  "clock_jump_scope": "No jumps detected in the two recorded windows; the unrecorded gap and whole session are unknown",
+  "cleanup": {
+    "cleanup_status": "FAILED",
+    "resources_released": true,
+    "robot_processes_remaining": [],
+    "nodes_after_exit": 0,
+    "nodes_after_stdout": "",
+    "shutdown_errors": [
+      {
+        "line": 2167,
+        "text": "[ERROR] [rviz2-5]: process has died [pid 4090, exit code -6, cmd '/opt/ros/jazzy/lib/rviz2/rviz2 -d /opt/ros/jazzy/share/nav2_bringup/rviz/nav2_default_view.rviz --ros-args --params-file /tmp/launch_params_1p9cduym']."
+      },
+      {
+        "line": 2168,
+        "text": "[ERROR] [launch]: Caught exception in launch (see debug for traceback): [Errno 2] No such file or directory: '/tmp/nav2_gtkf06nu.sdf'"
+      }
+    ],
+    "reason": "RViz aborted with -6; launch cleanup raised FileNotFoundError for temporary robot SDF. All scoped robot processes nevertheless exited.",
+    "supersedes_initial_assessment": "runtime/cleanup-evidence-20261022.json",
+    "initial_assessment_scope": "Initial check only verified process/resource disappearance; closed-log review is the final cleanup judgement.",
+    "does_not_override_primary_failure": "Navigation bringup TF timeout and subsequent inactive-server rejection remain the first failure."
+  },
+  "session": {
+    "utc": "2026-10-22T08:34:20.311659Z",
+    "monotonic_s": 7815.909181934,
+    "elapsed_monotonic_s": 6771.903889646001,
+    "scope": "whole manual smoke session, including diagnosis and cleanup",
+    "boot_id": "447b7f9a-bfdd-4eac-8893-2f18ffc2831c"
+  },
+  "engineering_result": "FAILED: goal rejected by inactive action server; no accepted-goal motion/success/stop evidence",
+  "limitations": [
+    "No missing Twist samples were converted to zero.",
+    "The supplementary stationary window is pre-cleanup evidence, not successful post-goal stopping.",
+    "No independent collision evaluation or physical ground truth.",
+    "RViz movement was not independently observed by this analysis."
+  ],
+  "input_sha256": {
+    "logs/navigate-goal.log": "4530beb7f0971a1fb68a46948a81cbf214d3895918ae063f37f3d4db52f6074a",
+    "logs/navigate-goal.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "runtime/goal-dispatch-before.json": "78d3e9935a80bccbe0b348f99102bf32f18bc41e2a250844623974c7ea2cde6d",
+    "runtime/goal-command-returned.json": "a8797b08fe8c583f63c1c0ad0817d1e93b11d7fd8a4a3e25225e219238c99489",
+    "runtime/observations.jsonl": "da5a0af1c955d4b672979a673211ae1ca713f35e4ae5712d1d1f810ea7bcb7c7",
+    "runtime/observations-cleanup-20261022.jsonl": "3c768a53c5b8c4f644ff26c7c65e903dd336e2f8388fd75265fd49bdb35cb672",
+    "artifacts/scenario.yaml": "927e7bbff7c8b3076e92b31a9e8e098cb1c6eb8dc1ef756ae77acf45197a6f76",
+    "runtime/cleanup-evidence-20261022.json": "a574553753b6d64657cdd3143559f09d0e9d6e0d131c4dd9a88f0c3340015cc1",
+    "runtime/session-ended.json": "f78b9eea8fa2a8606b01b4a68332e0b82f6bfbf0d137f58f2913d806292f1535",
+    "runtime/cleanup-final-assessment-20261022.json": "73b9d9c805dd6d29e16354f2e061aa29dc4f158bc3eec8ff78689671cab7f269"
+  },
+  "initial_resource_release_assessment": {
+    "cleanup_status": "SUCCEEDED",
+    "processes": {
+      "nav2": {
+        "root_pid": 4079,
+        "remaining": [],
+        "success": true
+      },
+      "gazebo": {
+        "root_pid": 3958,
+        "remaining": [],
+        "success": true
+      }
+    },
+    "nodes_after_exit": 0,
+    "nodes_after_stdout": "",
+    "observer_original": "PID 12459 absent before cleanup; no stale PID was signaled",
+    "observer_supplement": "Owned 15-second observer exited 0 before cleanup",
+    "other_jobs": "No global kill; ROS CLI daemon and terminal shells retained",
+    "note": "Scoped simulation cleanup does not prove control-system stop after navigation."
+  },
+  "analysis_sources_sha256": {
+    "analyze_smoke.py": "68c987f9a953d6f040422b83af0b77b4ff6583880a4423ac3ec1f76b6176918c",
+    "analyze_smoke_final.py": "78505ab44c90bd63e40ab4968bfed1524d4ca754b4cba1b0745bc18f9515407b"
+  }
+}

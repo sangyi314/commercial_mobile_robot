@@ -1,0 +1,58 @@
+diff --git a/tools/validate_run.py b/tools/validate_run.py
+--- a/tools/validate_run.py
++++ b/tools/validate_run.py
+@@ -353,8 +353,8 @@
+     success = {"SUCCEEDED": True, "REJECTED": False, "ABORTED": False, "CANCELED": False, "NOT_SENT": None, "UNKNOWN": None}[status["action"]]
+     if result["metrics"]["action_success"] is not success:
+         fail("ACTION_MISMATCH", where + ".metrics.action_success", "action_success must follow terminal action mapping")
+-    if status["startup"] == "FAILED" and status["action"] != "NOT_SENT":
+-        fail("STATUS_INCONSISTENT", where + ".status.action", "Startup failure cannot have a sent action")
++    if status["startup"] == "FAILED" and status["action"] not in ("NOT_SENT", "REJECTED"):
++        fail("STATUS_INCONSISTENT", where + ".status.action", "Startup failure permits only unsent or explicitly rejected goals")
+     if status["harness"] == "NAV_TIMEOUT" and status["action"] == "SUCCEEDED":
+         fail("STATUS_INCONSISTENT", where + ".status.harness", "Confirmed success cannot be navigation timeout")
+     if (status["harness"] != "COMPLETED" or status["startup"] == "FAILED" or status["cleanup"] == "FAILED") and not status["primary_reason"]:
+diff --git a/experiments/schema.md b/experiments/schema.md
+--- a/experiments/schema.md
++++ b/experiments/schema.md
+@@ -69,7 +69,7 @@
+ - cleanup：SUCCEEDED/FAILED/NOT_ATTEMPTED。
+ - primary_reason：非空字符串或 null；harness 非 COMPLETED、startup FAILED 或 cleanup FAILED 时必须非空。保留最先导致结束的原因，其余失败保留日志，校验器不改写原因或原终态。
+ 
+-metrics=`{action_success,goal_position_error_m,goal_yaw_error_rad,stop_observed,intervention,delivery_success}`。Action 映射为 SUCCEEDED→true，REJECTED/ABORTED/CANCELED→false，NOT_SENT/UNKNOWN→null。startup FAILED 只允许 NOT_SENT/null；NAV_TIMEOUT 不允许 SUCCEEDED，取消未确认用 UNKNOWN。goal_position_error_m 为非负有限米或 null；goal_yaw_error_rad 是 [0,π] 内绝对误差 rad 或 null；stop_observed/intervention 为 bool 或 null；P0 delivery_success 固定 null。
++metrics=`{action_success,goal_position_error_m,goal_yaw_error_rad,stop_observed,intervention,delivery_success}`。Action 映射为 SUCCEEDED→true，REJECTED/ABORTED/CANCELED→false，NOT_SENT/UNKNOWN→null。startup FAILED 时，未发送目标为 NOT_SENT/null；已尝试但被服务器明确拒绝为 REJECTED/false。其他执行/终态组合仍非法，且不能据此声称 READY；NAV_TIMEOUT 不允许 SUCCEEDED，取消未确认用 UNKNOWN。goal_position_error_m 为非负有限米或 null；goal_yaw_error_rad 是 [0,π] 内绝对误差 rad 或 null；stop_observed/intervention 为 bool 或 null；P0 delivery_success 固定 null。
+ 
+ runtime 通常为 `{actual_plugin,parameters_ref}`（各字符串或 null）。**按本轮任务明确要求，启动失败还允许整个 runtime=null**；这是对指南“对象、成员可 null”描述的明确兼容选择。READY 必须为对象、actual_plugin 等于 manifest.expected_plugin，parameters_ref 指向 result.artifacts 的 runtime_parameters 文件；失败记录不强迫伪造插件。参数存在/hash 正确只证明引用一致，不证明插件实际被加载。
+ 
+diff --git a/tests/test_run_schema.py b/tests/test_run_schema.py
+--- a/tests/test_run_schema.py
++++ b/tests/test_run_schema.py
+@@ -575,3 +575,28 @@
+     monkeypatch.setattr(validator, "validate_run_dir", unexpected)
+     assert validator.main(["run", "unused"]) == 1
+     expect(json.loads(capsys.readouterr().out), "INTERNAL_ERROR", "INTERNAL_ERROR")
++
++
++@pytest.mark.parametrize("action,success,valid", [
++    ("NOT_SENT", None, True), ("REJECTED", False, True),
++    ("SUCCEEDED", True, False), ("ABORTED", False, False),
++    ("CANCELED", False, False), ("UNKNOWN", None, False),
++])
++def test_R03_startup_failed_attempted_goal_contract(tmp_path, action, success, valid):
++    # Synthetic fixture only. A rejected request was attempted, never accepted.
++    run = copy_run(tmp_path, "startup_failed")
++    def change(d):
++        d["status"]["action"] = action
++        d["metrics"]["action_success"] = success
++    edit_result(run, change)
++    if valid:
++        expect(run_report(run))
++    else:
++        expect(run_report(run), "INVALID", "STATUS_INCONSISTENT", "status.action")
++
++
++def test_R03_rejected_startup_does_not_allow_unknown_success(tmp_path):
++    run = copy_run(tmp_path, "startup_failed")
++    edit_result(run, lambda d: d["status"].update(action="REJECTED"))
++    # Existing action_success=None must not stand in for explicit rejection false.
++    expect(run_report(run), "INVALID", "ACTION_MISMATCH", "action_success")

@@ -69,7 +69,7 @@ status=`{startup,action,harness,cleanup,primary_reason}`：
 - cleanup：SUCCEEDED/FAILED/NOT_ATTEMPTED。
 - primary_reason：非空字符串或 null；harness 非 COMPLETED、startup FAILED 或 cleanup FAILED 时必须非空。保留最先导致结束的原因，其余失败保留日志，校验器不改写原因或原终态。
 
-metrics=`{action_success,goal_position_error_m,goal_yaw_error_rad,stop_observed,intervention,delivery_success}`。Action 映射为 SUCCEEDED→true，REJECTED/ABORTED/CANCELED→false，NOT_SENT/UNKNOWN→null。startup FAILED 只允许 NOT_SENT/null；NAV_TIMEOUT 不允许 SUCCEEDED，取消未确认用 UNKNOWN。goal_position_error_m 为非负有限米或 null；goal_yaw_error_rad 是 [0,π] 内绝对误差 rad 或 null；stop_observed/intervention 为 bool 或 null；P0 delivery_success 固定 null。
+metrics=`{action_success,goal_position_error_m,goal_yaw_error_rad,stop_observed,intervention,delivery_success}`。Action 映射为 SUCCEEDED→true，REJECTED/ABORTED/CANCELED→false，NOT_SENT/UNKNOWN→null。startup FAILED 时，未发送目标为 NOT_SENT/null；已尝试但被服务器明确拒绝为 REJECTED/false。其他执行/终态组合仍非法，且不能据此声称 READY；NAV_TIMEOUT 不允许 SUCCEEDED，取消未确认用 UNKNOWN。goal_position_error_m 为非负有限米或 null；goal_yaw_error_rad 是 [0,π] 内绝对误差 rad 或 null；stop_observed/intervention 为 bool 或 null；P0 delivery_success 固定 null。
 
 runtime 通常为 `{actual_plugin,parameters_ref}`（各字符串或 null）。**按本轮任务明确要求，启动失败还允许整个 runtime=null**；这是对指南“对象、成员可 null”描述的明确兼容选择。READY 必须为对象、actual_plugin 等于 manifest.expected_plugin，parameters_ref 指向 result.artifacts 的 runtime_parameters 文件；失败记录不强迫伪造插件。参数存在/hash 正确只证明引用一致，不证明插件实际被加载。
 

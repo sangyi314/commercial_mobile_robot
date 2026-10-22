@@ -1,0 +1,8 @@
+{
+  "pid": 13873,
+  "command": "existing artifacts/observe.py --seconds 15; supplementary pre-cleanup capture only",
+  "start_monotonic_s": 7600.709131915,
+  "end_monotonic_s": 7616.090416505,
+  "exit": 0,
+  "utc_end": "2026-10-22T08:31:00.492916Z"
+}

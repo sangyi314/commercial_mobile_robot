@@ -1,0 +1,21 @@
+{
+  "cleanup_status": "FAILED",
+  "resources_released": true,
+  "robot_processes_remaining": [],
+  "nodes_after_exit": 0,
+  "nodes_after_stdout": "",
+  "shutdown_errors": [
+    {
+      "line": 2167,
+      "text": "[ERROR] [rviz2-5]: process has died [pid 4090, exit code -6, cmd '/opt/ros/jazzy/lib/rviz2/rviz2 -d /opt/ros/jazzy/share/nav2_bringup/rviz/nav2_default_view.rviz --ros-args --params-file /tmp/launch_params_1p9cduym']."
+    },
+    {
+      "line": 2168,
+      "text": "[ERROR] [launch]: Caught exception in launch (see debug for traceback): [Errno 2] No such file or directory: '/tmp/nav2_gtkf06nu.sdf'"
+    }
+  ],
+  "reason": "RViz aborted with -6; launch cleanup raised FileNotFoundError for temporary robot SDF. All scoped robot processes nevertheless exited.",
+  "supersedes_initial_assessment": "runtime/cleanup-evidence-20261022.json",
+  "initial_assessment_scope": "Initial check only verified process/resource disappearance; closed-log review is the final cleanup judgement.",
+  "does_not_override_primary_failure": "Navigation bringup TF timeout and subsequent inactive-server rejection remain the first failure."
+}

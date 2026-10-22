@@ -353,8 +353,8 @@ def result_rules(manifest, result, directory, path, manifest_path):
     success = {"SUCCEEDED": True, "REJECTED": False, "ABORTED": False, "CANCELED": False, "NOT_SENT": None, "UNKNOWN": None}[status["action"]]
     if result["metrics"]["action_success"] is not success:
         fail("ACTION_MISMATCH", where + ".metrics.action_success", "action_success must follow terminal action mapping")
-    if status["startup"] == "FAILED" and status["action"] != "NOT_SENT":
-        fail("STATUS_INCONSISTENT", where + ".status.action", "Startup failure cannot have a sent action")
+    if status["startup"] == "FAILED" and status["action"] not in ("NOT_SENT", "REJECTED"):
+        fail("STATUS_INCONSISTENT", where + ".status.action", "Startup failure permits only unsent or explicitly rejected goals")
     if status["harness"] == "NAV_TIMEOUT" and status["action"] == "SUCCEEDED":
         fail("STATUS_INCONSISTENT", where + ".status.harness", "Confirmed success cannot be navigation timeout")
     if (status["harness"] != "COMPLETED" or status["startup"] == "FAILED" or status["cleanup"] == "FAILED") and not status["primary_reason"]:

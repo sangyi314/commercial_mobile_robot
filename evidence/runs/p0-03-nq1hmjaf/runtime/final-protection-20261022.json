@@ -1,0 +1,13 @@
+{
+  "protected_count": 12,
+  "protected_mismatches": [],
+  "frozen_mismatches": [],
+  "manifest_sha256": "0e87af927931b13f259b24a056365b4355d6d0de5970148825593fe2e9fdf74e",
+  "validator_sha256": "8ae5065f20de48448528a21c93bd06c248d2bf2c7b637356b196cf8898b2a62f",
+  "schemas_sha256": {
+    "manifest.schema.json": "67dfe718823e6c9903384a04e278c478f9bfeb203526d571d849c5e9a8880397",
+    "result.schema.json": "eb8ad394896715225a2c6700fd0a6bdb032092e53a67c519980f15ad6541f14f",
+    "scenario.schema.json": "2dbd1750cef1ecde63dc26d6e5a5337b470102f05128deed86f4418aed136950"
+  },
+  "formal_result": "not created due to current-contract conflict and pending owner review"
+}

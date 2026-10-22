@@ -1,0 +1,29 @@
+/velocity_smoother
+  Subscribers:
+    /clock: rosgraph_msgs/msg/Clock
+    /cmd_vel_nav: geometry_msgs/msg/Twist
+    /parameter_events: rcl_interfaces/msg/ParameterEvent
+  Publishers:
+    /cmd_vel_smoothed: geometry_msgs/msg/Twist
+    /parameter_events: rcl_interfaces/msg/ParameterEvent
+    /rosout: rcl_interfaces/msg/Log
+    /velocity_smoother/transition_event: lifecycle_msgs/msg/TransitionEvent
+  Service Servers:
+    /velocity_smoother/change_state: lifecycle_msgs/srv/ChangeState
+    /velocity_smoother/describe_parameters: rcl_interfaces/srv/DescribeParameters
+    /velocity_smoother/get_available_states: lifecycle_msgs/srv/GetAvailableStates
+    /velocity_smoother/get_available_transitions: lifecycle_msgs/srv/GetAvailableTransitions
+    /velocity_smoother/get_parameter_types: rcl_interfaces/srv/GetParameterTypes
+    /velocity_smoother/get_parameters: rcl_interfaces/srv/GetParameters
+    /velocity_smoother/get_state: lifecycle_msgs/srv/GetState
+    /velocity_smoother/get_transition_graph: lifecycle_msgs/srv/GetAvailableTransitions
+    /velocity_smoother/get_type_description: type_description_interfaces/srv/GetTypeDescription
+    /velocity_smoother/list_parameters: rcl_interfaces/srv/ListParameters
+    /velocity_smoother/set_parameters: rcl_interfaces/srv/SetParameters
+    /velocity_smoother/set_parameters_atomically: rcl_interfaces/srv/SetParametersAtomically
+  Service Clients:
+
+  Action Servers:
+
+  Action Clients:
+

@@ -575,3 +575,28 @@ def test_C03_argument_and_internal_errors(tmp_path, monkeypatch, capsys):
     monkeypatch.setattr(validator, "validate_run_dir", unexpected)
     assert validator.main(["run", "unused"]) == 1
     expect(json.loads(capsys.readouterr().out), "INTERNAL_ERROR", "INTERNAL_ERROR")
+
+
+@pytest.mark.parametrize("action,success,valid", [
+    ("NOT_SENT", None, True), ("REJECTED", False, True),
+    ("SUCCEEDED", True, False), ("ABORTED", False, False),
+    ("CANCELED", False, False), ("UNKNOWN", None, False),
+])
+def test_R03_startup_failed_attempted_goal_contract(tmp_path, action, success, valid):
+    # Synthetic fixture only. A rejected request was attempted, never accepted.
+    run = copy_run(tmp_path, "startup_failed")
+    def change(d):
+        d["status"]["action"] = action
+        d["metrics"]["action_success"] = success
+    edit_result(run, change)
+    if valid:
+        expect(run_report(run))
+    else:
+        expect(run_report(run), "INVALID", "STATUS_INCONSISTENT", "status.action")
+
+
+def test_R03_rejected_startup_does_not_allow_unknown_success(tmp_path):
+    run = copy_run(tmp_path, "startup_failed")
+    edit_result(run, lambda d: d["status"].update(action="REJECTED"))
+    # Existing action_success=None must not stand in for explicit rejection false.
+    expect(run_report(run), "INVALID", "ACTION_MISMATCH", "action_success")

@@ -1,0 +1,15 @@
+{
+  "frame_id": "base_scan",
+  "stamp": {
+    "sec": 614,
+    "nanosec": 802000000
+  },
+  "ray_count": 360,
+  "valid_finite_count": 360,
+  "nonfinite_count": 0,
+  "range_min": 9.999999747378752e-06,
+  "range_max": 20.0,
+  "min_valid_m": 0.49045151472091675,
+  "median_valid_m": 1.1238330006599426,
+  "max_valid_m": 4.680463790893555
+}

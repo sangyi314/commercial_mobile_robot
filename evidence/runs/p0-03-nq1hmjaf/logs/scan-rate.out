@@ -1,0 +1,13 @@
+WARNING: topic [/scan] does not appear to be published yet
+average rate: 5.000
+	min: 0.195s max: 0.204s std dev: 0.00269s window: 6
+average rate: 4.991
+	min: 0.195s max: 0.206s std dev: 0.00328s window: 11
+average rate: 4.996
+	min: 0.195s max: 0.206s std dev: 0.00290s window: 17
+average rate: 4.996
+	min: 0.195s max: 0.206s std dev: 0.00263s window: 23
+average rate: 4.991
+	min: 0.195s max: 0.206s std dev: 0.00268s window: 28
+average rate: 4.987
+	min: 0.195s max: 0.206s std dev: 0.00267s window: 33

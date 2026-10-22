@@ -1,0 +1,268 @@
+{
+  "record_type": "input_freeze",
+  "validation_scope": "record_contract",
+  "run_id": "p0-03-nq1hmjaf",
+  "manifest": {
+    "path": "manifest.json",
+    "sha256": "0e87af927931b13f259b24a056365b4355d6d0de5970148825593fe2e9fdf74e"
+  },
+  "referenced_inputs": [
+    {
+      "id": "scenario",
+      "path": "artifacts/scenario.yaml",
+      "sha256": "927e7bbff7c8b3076e92b31a9e8e098cb1c6eb8dc1ef756ae77acf45197a6f76",
+      "kind": "scenario"
+    },
+    {
+      "id": "config",
+      "path": "artifacts/nav2_mppi.yaml",
+      "sha256": "27f34e95dca6c8ac5ed0140d6f600dfd9cab61e5d7e1efc7bd632004bbab54f2",
+      "kind": "config"
+    },
+    {
+      "id": "common_constraints",
+      "path": "artifacts/common_constraints.json",
+      "sha256": "5143932376dbde898ea8a5406e3c41cb46eb662bee53df2f8ea6e95df112b989",
+      "kind": "common_constraints"
+    },
+    {
+      "id": "source_at_start",
+      "path": "artifacts/source-at-start.tgz",
+      "sha256": "7477e1a86253a943ebbdfcef5a2863a8f799be4f4d916a58acbc5b3edd66f43c",
+      "kind": "source_snapshot"
+    },
+    {
+      "id": "goal",
+      "path": "artifacts/goal.yaml",
+      "sha256": "88b658fa4514f08b86f39eccfd43c194985729c5da459f09ca479e655c768913",
+      "kind": "other"
+    },
+    {
+      "id": "initialpose",
+      "path": "runtime/initialpose-recapture-20261022T160722.yaml",
+      "sha256": "510520ec2643a258cb9e0551aa5df3c3fddd049179dd4e77860020a621014842",
+      "kind": "other"
+    },
+    {
+      "id": "world_variant",
+      "path": "artifacts/world-variant.json",
+      "sha256": "68914d785d695a55a27fadd2c90a3fa56d3e23c04cddb8ffe91a07b24bf809c5",
+      "kind": "other"
+    },
+    {
+      "id": "world_used",
+      "path": "artifacts/world-ogre1.sdf",
+      "sha256": "d70fad169fc277f4430f7afb488c025dda5b49aaa36518ed33b7a624865c1bd3",
+      "kind": "other"
+    },
+    {
+      "id": "world_original",
+      "path": "artifacts/world-original.sdf",
+      "sha256": "c07d319a0960c040618d7fcea2e9deda300642c81aacdca8d62a7e1e43117997",
+      "kind": "other"
+    },
+    {
+      "id": "repo_at_start",
+      "path": "repo-at-start.json",
+      "sha256": "eee990e281dd52b9b05770080820c882d88be16216af0d528a82cadb970131e5",
+      "kind": "other"
+    },
+    {
+      "id": "scenario_before",
+      "path": "artifacts/scenario-before.yaml",
+      "sha256": "598d903a76d95d779a0cc87dc6ab881018457aa2042faf507cde841b61863430",
+      "kind": "other"
+    },
+    {
+      "id": "capture_scan-one",
+      "path": "logs/scan-one.out",
+      "sha256": "99b16f93d59f51ae3d94386eb3e3168fe61ff4bf9778e85cee5eda4825d9c42d",
+      "kind": "log"
+    },
+    {
+      "id": "capture_exit_scan-one",
+      "path": "logs/scan-one.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "kind": "log"
+    },
+    {
+      "id": "capture_scan-info",
+      "path": "logs/scan-info.out",
+      "sha256": "a045c10b08b637856a22efebe60c37ebdaccda39aaeffc2d47a2f0d6ec63b4ff",
+      "kind": "log"
+    },
+    {
+      "id": "capture_exit_scan-info",
+      "path": "logs/scan-info.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "kind": "log"
+    },
+    {
+      "id": "capture_graph-topics",
+      "path": "logs/graph-topics.out",
+      "sha256": "f3c808e0a517a95c2c596d2d2377648a6b6f8240ab0dc9f06f9e797f7b3a7da4",
+      "kind": "log"
+    },
+    {
+      "id": "capture_exit_graph-topics",
+      "path": "logs/graph-topics.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "kind": "log"
+    },
+    {
+      "id": "capture_simtime_amcl",
+      "path": "logs/simtime_amcl.out",
+      "sha256": "ce2b1a5018dc8fb72a72ab8e96335de61991f45bc0626cf4efcdb6bb8dad8f5a",
+      "kind": "log"
+    },
+    {
+      "id": "capture_exit_simtime_amcl",
+      "path": "logs/simtime_amcl.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "kind": "log"
+    },
+    {
+      "id": "capture_runtime-plugin",
+      "path": "logs/runtime-plugin.out",
+      "sha256": "37bc95dac5aeeaa7b913c22075c58b86674cdd2d564ff2fc02bb6a39c372d1c8",
+      "kind": "log"
+    },
+    {
+      "id": "capture_exit_runtime-plugin",
+      "path": "logs/runtime-plugin.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "kind": "log"
+    },
+    {
+      "id": "capture_lifecycle_planner_server",
+      "path": "logs/lifecycle_planner_server.out",
+      "sha256": "b78847ee77aa1c451086d932474666ae3185f6acbf68647e1f9af9f94568a8df",
+      "kind": "log"
+    },
+    {
+      "id": "capture_exit_lifecycle_planner_server",
+      "path": "logs/lifecycle_planner_server.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "kind": "log"
+    },
+    {
+      "id": "capture_lifecycle_bt_navigator",
+      "path": "logs/lifecycle_bt_navigator.out",
+      "sha256": "b78847ee77aa1c451086d932474666ae3185f6acbf68647e1f9af9f94568a8df",
+      "kind": "log"
+    },
+    {
+      "id": "capture_exit_lifecycle_bt_navigator",
+      "path": "logs/lifecycle_bt_navigator.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "kind": "log"
+    },
+    {
+      "id": "capture_lifecycle_collision_monitor",
+      "path": "logs/lifecycle_collision_monitor.out",
+      "sha256": "b78847ee77aa1c451086d932474666ae3185f6acbf68647e1f9af9f94568a8df",
+      "kind": "log"
+    },
+    {
+      "id": "capture_exit_lifecycle_collision_monitor",
+      "path": "logs/lifecycle_collision_monitor.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "kind": "log"
+    },
+    {
+      "id": "capture_lifecycle_velocity_smoother",
+      "path": "logs/lifecycle_velocity_smoother.out",
+      "sha256": "b78847ee77aa1c451086d932474666ae3185f6acbf68647e1f9af9f94568a8df",
+      "kind": "log"
+    },
+    {
+      "id": "capture_exit_lifecycle_velocity_smoother",
+      "path": "logs/lifecycle_velocity_smoother.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "kind": "log"
+    }
+  ],
+  "derivation": {
+    "scenario_before": "artifacts/scenario-before.yaml",
+    "scenario_id_preserved": "official_static",
+    "initialpose_source": "runtime/initialpose-recapture-20261022T160722.yaml",
+    "initialpose_semantics": "AMCL initialization input; not independently measured spawn ground truth",
+    "goal_source": "artifacts/goal.yaml",
+    "quaternion_checks": {
+      "initialpose": {
+        "norm_squared": 0.9999999999999999,
+        "norm_squared_absolute_tolerance": 1e-06,
+        "planar_tolerance": 1e-08,
+        "yaw_rad": 0.0040890631075539575
+      },
+      "goal": {
+        "norm_squared": 1.0,
+        "norm_squared_absolute_tolerance": 1e-06,
+        "planar_tolerance": 1e-08,
+        "yaw_rad": 0.0
+      }
+    },
+    "official_world_source_record": "artifacts/world-variant.json"
+  },
+  "validation": {
+    "scenario": {
+      "status": "VALID",
+      "validation_scope": "record_contract",
+      "record_origin": null,
+      "errors": [],
+      "warnings": [
+        "Record references do not prove physical or runtime validity.",
+        "Draft scenario; runtime readiness is not confirmed."
+      ]
+    },
+    "require_ready": {
+      "status": "NOT_READY",
+      "validation_scope": "record_contract",
+      "record_origin": null,
+      "errors": [
+        {
+          "code": "SCENARIO_NOT_READY",
+          "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-03-nq1hmjaf/artifacts/scenario.yaml:$.status",
+          "message": "Valid draft is not ready"
+        }
+      ],
+      "warnings": [
+        "Record references do not prove physical or runtime validity.",
+        "Draft scenario; runtime readiness is not confirmed."
+      ]
+    },
+    "run": {
+      "status": "INCOMPLETE",
+      "validation_scope": "record_contract",
+      "record_origin": "real",
+      "errors": [
+        {
+          "code": "MISSING_RESULT",
+          "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-03-nq1hmjaf/result.json",
+          "message": "Valid manifest has no result; nothing was written"
+        }
+      ],
+      "warnings": [
+        "Reference/hash consistency does not verify log, bag or evaluation content semantics."
+      ]
+    },
+    "common_constraints": "12 source keys matched; 4 absent keys retained as not explicitly set",
+    "unchanged_preexisting_tracked_files": 219
+  },
+  "previous_lifecycle_capture": {
+    "lifecycle_planner_server": "inactive [2]",
+    "lifecycle_bt_navigator": "inactive [2]",
+    "lifecycle_collision_monitor": "inactive [2]",
+    "lifecycle_velocity_smoother": "inactive [2]"
+  },
+  "limitations": [
+    "Freeze binds manifest and referenced inputs by SHA256; original file permissions were not changed.",
+    "Original runtime/initialpose.yaml remains empty; the explicitly supplied recapture is the referenced source.",
+    "sim_start_s remains null: later /clock samples are not the run start time.",
+    "Scenario remains draft; dependency closure, world/map alignment, poses free and complete interface verification remain pending.",
+    "Expected plugin describes static intent; the separate recorded runtime-plugin check is retained as evidence without asserting all nodes READY.",
+    "Lifecycle entries are earlier recorded checks, not a new query of current process state.",
+    "No result.json was created; no navigation success, collision outcome or stop observation is asserted.",
+    "No ROS/Nav2/Gazebo process was started or stopped and no goal or initialpose was published by this task."
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "authorization": "User confirmed facts and explicitly authorized minimal startup FAILED/REJECTED contract revision plus regression on 2026-10-22; no JSON Schema/core/Nav2 changes authorized.",
+  "files_before": {
+    "tools/validate_run.py": "8ae5065f20de48448528a21c93bd06c248d2bf2c7b637356b196cf8898b2a62f",
+    "experiments/schema.md": "161b2340d3be99818b15873414c60a560b891aefd7f5b063c0c0057416cfe3da",
+    "tests/test_run_schema.py": "e585a2a0734b73b8c6971a93c07316148b7e918a86e9baf9a0f4739dda3a8537"
+  },
+  "git_head": "a5ae76caa2781a14c8d2ab688803d35edb870633",
+  "git_status": " M .vscode/settings.json\n?? .vscode/c_cpp_properties.json\n?? docs/dataflow.md\n?? docs/navigation_smoke.md\n?? docs/verification/p0-02-RaLo7r83-handoff-20261022.md\n?? docs/verification/p0-03-nq1hmjaf.md\n?? evidence/runs/\n"
+}
