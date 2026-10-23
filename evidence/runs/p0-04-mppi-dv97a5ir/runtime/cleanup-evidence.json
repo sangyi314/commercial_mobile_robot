@@ -1,0 +1,47 @@
+{
+  "processes": [
+    {
+      "label": "navigation",
+      "pid": 115185,
+      "forced": false,
+      "shutdown_service": true,
+      "exit": 0
+    },
+    {
+      "label": "localization",
+      "pid": 115142,
+      "forced": false,
+      "shutdown_service": true,
+      "exit": 0
+    },
+    {
+      "label": "bridge",
+      "pid": 115113,
+      "forced": false,
+      "shutdown_service": null,
+      "exit": 0
+    },
+    {
+      "label": "robot_state_publisher",
+      "pid": 115112,
+      "forced": false,
+      "shutdown_service": null,
+      "exit": 0
+    },
+    {
+      "label": "gazebo",
+      "pid": 115044,
+      "forced": false,
+      "stop_service_exit": 0,
+      "stop_service_response": "data: true\n\n",
+      "exit": -11
+    }
+  ],
+  "remaining_owned_groups": [],
+  "nodes_after": [
+    "cmr_p0_03_start",
+    "_ros2cli_daemon_71_f64f4f9018c145eea9ae256c527a8786"
+  ],
+  "monotonic_s": 93108.163026771,
+  "scope": "Owned navigation then localization, bridge/RSP, then Gazebo. No global kill."
+}

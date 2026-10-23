@@ -1,0 +1,17 @@
+{
+  "scan": {
+    "stamp_s": 17.202,
+    "receive_age_wall_s": 0.006365791996358894,
+    "clock_age_sim_s": 0.002999999999996561
+  },
+  "odom": {
+    "stamp_s": 17.172,
+    "receive_age_wall_s": 0.03944804200727958,
+    "clock_age_sim_s": 0.0329999999999977
+  },
+  "clock": {
+    "stamp_s": 17.205,
+    "receive_age_wall_s": 0.0071048749960027635,
+    "clock_age_sim_s": 0.0
+  }
+}

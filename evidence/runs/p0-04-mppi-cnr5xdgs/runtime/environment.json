@@ -1,0 +1,13 @@
+{
+  "ROS_DOMAIN_ID": "71",
+  "GZ_PARTITION": "cmr_p0-04-mppi-cnr5xdgs",
+  "ROS_AUTOMATIC_DISCOVERY_RANGE": "SYSTEM_DEFAULT",
+  "RMW_IMPLEMENTATION": "rmw_fastrtps_cpp",
+  "FASTRTPS_DEFAULT_PROFILES_FILE": "/home/robot/commercial_mobile_robot/src/cmr_bringup/config/fastdds_loopback_udp.xml",
+  "FASTDDS_DEFAULT_PROFILES_FILE": "/home/robot/commercial_mobile_robot/src/cmr_bringup/config/fastdds_loopback_udp.xml",
+  "LIBGL_ALWAYS_SOFTWARE": "1",
+  "QT_QPA_PLATFORM": "xcb",
+  "GZ_SIM_RESOURCE_PATH": "/opt/ros/jazzy/share/nav2_minimal_tb3_sim/models:/opt/ros/jazzy/share",
+  "DISPLAY": ":0",
+  "XAUTHORITY": "/home/robot/.Xauthority"
+}

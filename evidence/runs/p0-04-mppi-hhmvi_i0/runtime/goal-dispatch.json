@@ -1,0 +1,33 @@
+{
+  "kind": "dispatch",
+  "monotonic_s": 93422.526946504,
+  "ros_s": 0.0,
+  "data": {
+    "uuid": "b95904295fb345dfa735767608d7848a",
+    "request": {
+      "pose": {
+        "header": {
+          "stamp": {
+            "sec": 0,
+            "nanosec": 0
+          },
+          "frame_id": "map"
+        },
+        "pose": {
+          "position": {
+            "x": -1.9568372509483436,
+            "y": 0.40347409679604745,
+            "z": 0.0
+          },
+          "orientation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.7024746319078363,
+            "w": 0.7117087828079331
+          }
+        }
+      },
+      "behavior_tree": ""
+    }
+  }
+}

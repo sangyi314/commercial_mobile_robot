@@ -1,0 +1,8 @@
+{
+  "record_origin": "real",
+  "phase": "preparation",
+  "action": "NOT_SENT",
+  "simulation_started": false,
+  "reason": "Commissioning script treated its own newly added untracked evidence as forbidden source modification; stopped before simulator creation. Original files retained.",
+  "formal_record": "No manifest or result existed; do not treat as successful or valid run."
+}

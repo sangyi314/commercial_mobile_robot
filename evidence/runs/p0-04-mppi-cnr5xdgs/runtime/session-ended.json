@@ -1,0 +1,8 @@
+{
+  "utc": "2026-10-23T08:12:52.620888+00:00",
+  "monotonic_s": 92928.218443935,
+  "elapsed_monotonic_s": 27.538875305006513,
+  "boot_id": "447b7f9a-bfdd-4eac-8893-2f18ffc2831c",
+  "same_boot": true,
+  "scope": "Whole commissioning session including startup and cleanup; not controller performance."
+}

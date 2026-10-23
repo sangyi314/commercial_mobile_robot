@@ -1,0 +1,239 @@
+[
+  {
+    "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-03-0pl9lbsf",
+    "selected_method": null,
+    "method": "mppi",
+    "status": null,
+    "record_complete": false,
+    "reason_not_selected": "No complete manifest/result in this directory; no terminal inference. Historical functional handoff is separately referenced.",
+    "validator_exit": null
+  },
+  {
+    "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-03-1zbkargo",
+    "selected_method": null,
+    "method": "mppi_config_only",
+    "status": null,
+    "record_complete": false,
+    "reason_not_selected": "No complete manifest/result in this directory; no terminal inference. Historical functional handoff is separately referenced.",
+    "validator_exit": null
+  },
+  {
+    "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-03-3hg1954j",
+    "selected_method": null,
+    "method": "mppi",
+    "status": {
+      "startup": "FAILED",
+      "action": "NOT_SENT",
+      "harness": "STARTUP_FAILED",
+      "cleanup": "FAILED",
+      "primary_reason": "route_server, behavior_server, collision_monitor and navigation manager did not finish ROS initialization; navigation startup request timed out; no goal sent."
+    },
+    "record_complete": true,
+    "reason_not_selected": "route_server, behavior_server, collision_monitor and navigation manager did not finish ROS initialization; navigation startup request timed out; no goal sent.",
+    "validator_exit": 0
+  },
+  {
+    "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-03-43qqheq0",
+    "selected_method": null,
+    "method": "mppi_config_only",
+    "status": null,
+    "record_complete": false,
+    "reason_not_selected": "No complete manifest/result in this directory; no terminal inference. Historical functional handoff is separately referenced.",
+    "validator_exit": null
+  },
+  {
+    "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-03-5u34h8ya",
+    "selected_method": null,
+    "method": "mppi",
+    "status": {
+      "startup": "READY",
+      "action": "SUCCEEDED",
+      "harness": "COMPLETED",
+      "cleanup": "FAILED",
+      "primary_reason": "Navigation succeeded, but shutdown produced abnormal process exits/forced termination; cleanup failed. See closed launch and cleanup logs."
+    },
+    "record_complete": true,
+    "reason_not_selected": "Navigation succeeded, but shutdown produced abnormal process exits/forced termination; cleanup failed. See closed launch and cleanup logs.",
+    "validator_exit": 0
+  },
+  {
+    "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-03-68uajn_f",
+    "selected_method": null,
+    "method": "mppi_config_only",
+    "status": null,
+    "record_complete": false,
+    "reason_not_selected": "No complete manifest/result in this directory; no terminal inference. Historical functional handoff is separately referenced.",
+    "validator_exit": null
+  },
+  {
+    "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-03-chnntxl6",
+    "selected_method": null,
+    "method": "mppi",
+    "status": {
+      "startup": "FAILED",
+      "action": "NOT_SENT",
+      "harness": "STARTUP_FAILED",
+      "cleanup": "FAILED",
+      "primary_reason": "Several ROS nodes did not complete initialization before activation timeout. Run-local UDPv4 transport isolation did not resolve it. No goal was sent; blocked nodes required forced cleanup."
+    },
+    "record_complete": true,
+    "reason_not_selected": "Several ROS nodes did not complete initialization before activation timeout. Run-local UDPv4 transport isolation did not resolve it. No goal was sent; blocked nodes required forced cleanup.",
+    "validator_exit": 0
+  },
+  {
+    "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-03-hr881jec",
+    "selected_method": null,
+    "method": "mppi_config_only",
+    "status": null,
+    "record_complete": false,
+    "reason_not_selected": "No complete manifest/result in this directory; no terminal inference. Historical functional handoff is separately referenced.",
+    "validator_exit": null
+  },
+  {
+    "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-03-i34wwg82",
+    "selected_method": null,
+    "method": "mppi_config_only",
+    "status": null,
+    "record_complete": false,
+    "reason_not_selected": "No complete manifest/result in this directory; no terminal inference. Historical functional handoff is separately referenced.",
+    "validator_exit": null
+  },
+  {
+    "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-03-lpgh50p8",
+    "selected_method": null,
+    "method": "mppi",
+    "status": {
+      "startup": "FAILED",
+      "action": "NOT_SENT",
+      "harness": "STARTUP_FAILED",
+      "cleanup": "SUCCEEDED",
+      "primary_reason": "The single localization STARTUP service request did not return within 30 wall seconds. Subsequent read-only GetState responses showed map_server and amcl unconfigured; shutdown later responded successfully. Navigation processes were never created and no initial pose or goal was sent. Service transport/callback cause remains unresolved."
+    },
+    "record_complete": true,
+    "reason_not_selected": "The single localization STARTUP service request did not return within 30 wall seconds. Subsequent read-only GetState responses showed map_server and amcl unconfigured; shutdown later responded successfully. Navigation processes were never created and no initial pose or goal was sent. Service transport/callback cause remains unresolved.",
+    "validator_exit": 0
+  },
+  {
+    "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-03-nq1hmjaf",
+    "selected_method": null,
+    "method": "mppi",
+    "status": {
+      "startup": "FAILED",
+      "action": "REJECTED",
+      "harness": "STARTUP_FAILED",
+      "cleanup": "FAILED",
+      "primary_reason": "Initial navigation bringup failed: global_costmap activation timed out waiting for base_link-to-map TF; bt_navigator remained inactive and rejected the single requested goal."
+    },
+    "record_complete": true,
+    "reason_not_selected": "Initial navigation bringup failed: global_costmap activation timed out waiting for base_link-to-map TF; bt_navigator remained inactive and rejected the single requested goal.",
+    "validator_exit": 3
+  },
+  {
+    "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-03-tepp9bqf",
+    "selected_method": null,
+    "method": "mppi_config_only",
+    "status": null,
+    "record_complete": false,
+    "reason_not_selected": "No complete manifest/result in this directory; no terminal inference. Historical functional handoff is separately referenced.",
+    "validator_exit": null
+  },
+  {
+    "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-04-dwb-76fqnpi5",
+    "selected_method": "dwb",
+    "method": "dwb",
+    "status": {
+      "startup": "READY",
+      "action": "SUCCEEDED",
+      "harness": "COMPLETED",
+      "cleanup": "SUCCEEDED",
+      "primary_reason": null
+    },
+    "record_complete": true,
+    "reason_not_selected": null,
+    "validator_exit": 0
+  },
+  {
+    "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-04-dwb-qhkiu70g",
+    "selected_method": null,
+    "method": "dwb",
+    "status": {
+      "startup": "READY",
+      "action": "SUCCEEDED",
+      "harness": "COMPLETED",
+      "cleanup": "FAILED",
+      "primary_reason": "Navigation action SUCCEEDED; cleanup abnormal: [{\"label\": \"gazebo\", \"pid\": 115739, \"forced\": false, \"stop_service_exit\": 0, \"stop_service_response\": \"data: true\\n\\n\", \"exit\": -11}]"
+    },
+    "record_complete": true,
+    "reason_not_selected": "Navigation action SUCCEEDED; cleanup abnormal: [{\"label\": \"gazebo\", \"pid\": 115739, \"forced\": false, \"stop_service_exit\": 0, \"stop_service_response\": \"data: true\\n\\n\", \"exit\": -11}]",
+    "validator_exit": 0
+  },
+  {
+    "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-04-mppi-8w2ri1i8",
+    "selected_method": null,
+    "method": null,
+    "status": null,
+    "record_complete": false,
+    "reason_not_selected": "Commissioning script treated its own newly added untracked evidence as forbidden source modification; stopped before simulator creation. Original files retained.",
+    "validator_exit": null
+  },
+  {
+    "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-04-mppi-cnr5xdgs",
+    "selected_method": null,
+    "method": "mppi",
+    "status": {
+      "startup": "READY",
+      "action": "NOT_SENT",
+      "harness": "INTERNAL_ERROR",
+      "cleanup": "FAILED",
+      "primary_reason": "('manifest-check', '')"
+    },
+    "record_complete": true,
+    "reason_not_selected": "('manifest-check', '')",
+    "validator_exit": 2
+  },
+  {
+    "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-04-mppi-dv97a5ir",
+    "selected_method": null,
+    "method": "mppi",
+    "status": {
+      "startup": "READY",
+      "action": "SUCCEEDED",
+      "harness": "COMPLETED",
+      "cleanup": "FAILED",
+      "primary_reason": "Navigation action SUCCEEDED; cleanup abnormal: [{\"label\": \"gazebo\", \"pid\": 115044, \"forced\": false, \"stop_service_exit\": 0, \"stop_service_response\": \"data: true\\n\\n\", \"exit\": -11}]"
+    },
+    "record_complete": true,
+    "reason_not_selected": "Navigation action SUCCEEDED; cleanup abnormal: [{\"label\": \"gazebo\", \"pid\": 115044, \"forced\": false, \"stop_service_exit\": 0, \"stop_service_response\": \"data: true\\n\\n\", \"exit\": -11}]",
+    "validator_exit": 0
+  },
+  {
+    "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-04-mppi-hhmvi_i0",
+    "selected_method": "mppi",
+    "method": "mppi",
+    "status": {
+      "startup": "READY",
+      "action": "SUCCEEDED",
+      "harness": "COMPLETED",
+      "cleanup": "SUCCEEDED",
+      "primary_reason": null
+    },
+    "record_complete": true,
+    "reason_not_selected": null,
+    "validator_exit": 0
+  },
+  {
+    "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-04-mppi-zkxon7rx",
+    "selected_method": null,
+    "method": "mppi",
+    "status": {
+      "startup": "READY",
+      "action": "NOT_SENT",
+      "harness": "INTERNAL_ERROR",
+      "cleanup": "FAILED",
+      "primary_reason": "('pre-goal-run-check', '{\"status\": \"INVALID\", \"validation_scope\": \"record_contract\", \"record_origin\": \"real\", \"errors\": [{\"code\": \"UTC_INVALID\", \"path\": \"/home/robot/commercial_mobile_robot/evidence/runs/p0-04-mppi-zkxon7rx/manifest.json:$.clock.started_at_utc\", \"message\": \"Expected actual UTC timestamp ending in Z\"}], \"warnings\": [\"Reference/hash consistency does not verify log, bag or evaluation content semantics.\"]}\\n', '')"
+    },
+    "record_complete": true,
+    "reason_not_selected": "('pre-goal-run-check', '{\"status\": \"INVALID\", \"validation_scope\": \"record_contract\", \"record_origin\": \"real\", \"errors\": [{\"code\": \"UTC_INVALID\", \"path\": \"/home/robot/commercial_mobile_robot/evidence/runs/p0-04-mppi-zkxon7rx/manifest.json:$.clock.started_at_utc\", \"message\": \"Expected actual UTC timestamp ending in Z\"}], \"warnings\": [\"Reference/hash consistency does not verify log, bag or evaluation content semantics.\"]}\\n', '')",
+    "validator_exit": 2
+  }
+]

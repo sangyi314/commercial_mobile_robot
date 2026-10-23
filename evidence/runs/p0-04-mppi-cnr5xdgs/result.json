@@ -1,0 +1,412 @@
+{
+  "schema_version": 1,
+  "run_id": "p0-04-mppi-cnr5xdgs",
+  "record_origin": "real",
+  "manifest_sha256": "68a5652caba87656597bfc85fa953a3e2888245ae3926c87bfa666b835b6e434",
+  "status": {
+    "startup": "READY",
+    "action": "NOT_SENT",
+    "harness": "INTERNAL_ERROR",
+    "cleanup": "FAILED",
+    "primary_reason": "('manifest-check', '')"
+  },
+  "runtime": {
+    "actual_plugin": "nav2_mppi_controller::MPPIController",
+    "parameters_ref": "runtime_parameters"
+  },
+  "time": {
+    "clock_epoch": "p0-04-mppi-cnr5xdgs:sim0",
+    "sim_start_s": null,
+    "sim_end_s": null,
+    "elapsed_monotonic_s": 27.538875305006513,
+    "rtf": null
+  },
+  "metrics": {
+    "action_success": null,
+    "goal_position_error_m": null,
+    "goal_yaw_error_rad": null,
+    "stop_observed": null,
+    "intervention": null,
+    "delivery_success": null
+  },
+  "evaluation": {
+    "evaluator_version": null,
+    "scope_id": null,
+    "objects": [],
+    "geometry_model": null,
+    "frame_id": null,
+    "clock_epoch": null,
+    "interval_s": null,
+    "coverage": "none",
+    "evaluation_valid": false,
+    "invalid_reason": "Independent collision evaluation not performed. Localization estimates and absence of monitor triggers are not collision truth.",
+    "evidence_refs": [],
+    "collision": null,
+    "collision_event": null,
+    "min_signed_clearance_m": null,
+    "geometric_contact": null,
+    "contact_sensor_event": null
+  },
+  "artifacts": [
+    {
+      "id": "evidence_0",
+      "path": "artifacts/commission.py",
+      "sha256": "6cc964ba9a055e48985e9b0163fc748643b3ab9468088efa8c287b4f4b600e28",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_1",
+      "path": "artifacts/common_constraints.json",
+      "sha256": "fe17b54e792bdcd87bd221c303a7d43b0ab6375256188d57d62cfb0326b7d320",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_2",
+      "path": "artifacts/finalize_v2.py",
+      "sha256": "38af6a4660b2c77a2e1cf4e336ad8ca8b17db5361e13e45ff2b53fd0978d4370",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_3",
+      "path": "artifacts/goal.yaml",
+      "sha256": "ec2f5831f69823f2b94dfc13779b98d71ef8fae0f6e19f41d9c657b2232e5688",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_4",
+      "path": "artifacts/independent_analyze.py",
+      "sha256": "4f0b5407d79b8c5f211b99f25e3aea54e1042dde2bd4b3c59fa9e4e2852e7c43",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_5",
+      "path": "artifacts/initialpose-template.yaml",
+      "sha256": "2715c536466808a3ca498d57e7a7d1b0ab1204dd466a6f0f019a517d040eae46",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_6",
+      "path": "artifacts/nav2.yaml",
+      "sha256": "27f34e95dca6c8ac5ed0140d6f600dfd9cab61e5d7e1efc7bd632004bbab54f2",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_7",
+      "path": "artifacts/observe.py",
+      "sha256": "1d91592cd0c6d6f5add37248c19824463a9b2232d4e8b44fa5ea6205b5f7c81c",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_8",
+      "path": "artifacts/pair-at-start.json",
+      "sha256": "4769a5a4b72b9f7e70d5d7837d862da2a13ca00c43125bb9252c46ae807cdc72",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_9",
+      "path": "artifacts/resource-dependencies.json",
+      "sha256": "b566ab2e9696579dc090d714b41703c70f7a043cb3377c8fbe78538eaef9a431",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_10",
+      "path": "artifacts/robot.sdf",
+      "sha256": "2e176104db94a82c46d9bf37b88a2b1faa62743c2e443f5dfcefead263411541",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_11",
+      "path": "artifacts/scenario-before.yaml",
+      "sha256": "1201c04121676d40cf0d0a575f8b2cb57f7a441980bca069d9d5b7e8bab64f44",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_12",
+      "path": "artifacts/scenario.yaml",
+      "sha256": "59a9837e44eb46df02ba8bf781379d3016e0f7a6767e4f38c9ac1bdca008eed1",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_13",
+      "path": "artifacts/send_one_goal.py",
+      "sha256": "8d2927e015a5c7901e0c83dbaa51b95e5da923b231cd48303e4e155d2e9824dc",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_14",
+      "path": "artifacts/source-at-start.tgz",
+      "sha256": "4c9c0d178325670d0f41c7d537c407c23523d25c428c85b1186d2c214046ca0e",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_15",
+      "path": "artifacts/startup_scoped.py",
+      "sha256": "71419a7b4657a132a451949051ce5966c82b84855519dfa44579c524aed21e25",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_16",
+      "path": "artifacts/world-ogre1.sdf",
+      "sha256": "d70fad169fc277f4430f7afb488c025dda5b49aaa36518ed33b7a624865c1bd3",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_17",
+      "path": "artifacts/world-variant.json",
+      "sha256": "68914d785d695a55a27fadd2c90a3fa56d3e23c04cddb8ffe91a07b24bf809c5",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_18",
+      "path": "logs/bridge.log",
+      "sha256": "a9b532dceb8be9facb86f5fd507c3327ad3d8a8ec7b4c1c987296ec52b938f2b",
+      "kind": "log"
+    },
+    {
+      "id": "evidence_19",
+      "path": "logs/gazebo.log",
+      "sha256": "556dc6759adec77cacad72866f756bc9c9fb38fbc41d184a0eaab172723d6b1c",
+      "kind": "log"
+    },
+    {
+      "id": "evidence_20",
+      "path": "logs/localization.log",
+      "sha256": "1e05746abc81ba5c4e5f1da319f5b36f699f8265f3a077e45184bdaba3571b50",
+      "kind": "log"
+    },
+    {
+      "id": "evidence_21",
+      "path": "logs/manifest-check.exit",
+      "sha256": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3",
+      "kind": "log"
+    },
+    {
+      "id": "evidence_22",
+      "path": "logs/manifest-check.out",
+      "sha256": "c86cf3f67f6adf25e86b7a4766b616f16ca351d51f4a7a30c8724e92e6f23bb6",
+      "kind": "log"
+    },
+    {
+      "id": "evidence_23",
+      "path": "logs/navigation.log",
+      "sha256": "0febb22a223111c3501050d0813318c36da08a8ad70029f777d6603d37352bc5",
+      "kind": "log"
+    },
+    {
+      "id": "evidence_24",
+      "path": "logs/robot_state_publisher.log",
+      "sha256": "2d3d125414c1a27e80cdd12a8309e161a73b67fd593df9ed77b99db2e1526a0f",
+      "kind": "log"
+    },
+    {
+      "id": "evidence_25",
+      "path": "logs/runtime-plugin.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "kind": "log"
+    },
+    {
+      "id": "evidence_26",
+      "path": "logs/runtime-plugin.out",
+      "sha256": "37bc95dac5aeeaa7b913c22075c58b86674cdd2d564ff2fc02bb6a39c372d1c8",
+      "kind": "log"
+    },
+    {
+      "id": "evidence_27",
+      "path": "logs/scenario-check.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "kind": "log"
+    },
+    {
+      "id": "evidence_28",
+      "path": "logs/scenario-check.out",
+      "sha256": "ab8c54d2e3cc4b3ec6c28405068715d5d3149d39213d7ea4f24baf59709cc5da",
+      "kind": "log"
+    },
+    {
+      "id": "evidence_29",
+      "path": "logs/session-events.jsonl",
+      "sha256": "be10336d09854f808f602dce16648ca866c40c0c1da84dce7282458e19bcd049",
+      "kind": "log"
+    },
+    {
+      "id": "evidence_30",
+      "path": "logs/spawn.err",
+      "sha256": "64986566575282701a6e50f66c599cf31ac2550aa9f9ce9cacbbce72f23f5994",
+      "kind": "log"
+    },
+    {
+      "id": "evidence_31",
+      "path": "logs/spawn.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "kind": "log"
+    },
+    {
+      "id": "evidence_32",
+      "path": "logs/world-state-before.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "kind": "log"
+    },
+    {
+      "id": "evidence_33",
+      "path": "logs/world-state-before.out",
+      "sha256": "49839ebb9dbef88f5ca4b9513b691c52ff503289ed633b0a7be1566bce9318c6",
+      "kind": "log"
+    },
+    {
+      "id": "evidence_34",
+      "path": "repo-at-start.json",
+      "sha256": "5a7076f0f9c64d8eaae626671180fa96d6433bd9c5a986dc7fee82ae433afe86",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_35",
+      "path": "runtime/all-parameters.json",
+      "sha256": "02d2fd61f79de59fca8dd8605b337e0cc2210b4f225efab6793f4d7b76714a2e",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_36",
+      "path": "runtime/amcl.yaml",
+      "sha256": "bf9d9379fbdb90a56b74faaaaa5cb7ec8bfcadf96fb597066509e785278d5177",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_37",
+      "path": "runtime/behavior_server.yaml",
+      "sha256": "c800f4db103082f432c96063f4b56b7a9aa2b09850d6f9946bad6147e240c17c",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_38",
+      "path": "runtime/bt_navigator.yaml",
+      "sha256": "09003ab2e502dcdc38862003a7b170230d3b275f49e73c65eb677dbd83d6e415",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_39",
+      "path": "runtime/cleanup-evidence.json",
+      "sha256": "341a5d23801bab7ff6dddacfc9334a6756b662fc07161fd89fbce8472045b81c",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_40",
+      "path": "runtime/collision_monitor.yaml",
+      "sha256": "6e3a8b5f0f028bd3d2224f10b1b6f87015efaa99a1723b619d045710e2d02de5",
+      "kind": "other"
+    },
+    {
+      "id": "runtime_parameters",
+      "path": "runtime/controller_server.yaml",
+      "sha256": "950ec619ed4a7812a478c0d17aea23428c2fdf5e0907caa598cb04b29653c24c",
+      "kind": "runtime_parameters"
+    },
+    {
+      "id": "evidence_42",
+      "path": "runtime/docking_server.yaml",
+      "sha256": "d80337cf2c58c9a1c04fd02136d6e42cbdd0ef8b33636a172ad2dc2a540ffaa9",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_43",
+      "path": "runtime/environment.json",
+      "sha256": "569a24f3ef2a0e732e6ca6d78fe3e2602d6985f1f7b5cecdadc5f5715cd93fe3",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_44",
+      "path": "runtime/global-costmap.yaml.gz",
+      "sha256": "1d24af4a019bd9b6b39c2c44aa6d301fe8061531a59e8e92e0c7b238561254e0",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_45",
+      "path": "runtime/global_costmap__global_costmap.yaml",
+      "sha256": "27b039e655826e97ad66b4e4c89698e990e87a0c634ca380c9918e321cf69d07",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_46",
+      "path": "runtime/initialpose-request.yaml",
+      "sha256": "1b749206abb8da919371e9ebc490e5d68792dbf19def0c0e57785643ef98e7c7",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_47",
+      "path": "runtime/local-costmap.yaml.gz",
+      "sha256": "ad0d4dc6f865a409e6df20431cff78a72c040661ec0cde03d2d8c825eacb773a",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_48",
+      "path": "runtime/local_costmap__local_costmap.yaml",
+      "sha256": "608b085226c79e6a3e8bfbd2b566e820c806fef705570e0beba8b49476368b37",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_49",
+      "path": "runtime/map_server.yaml",
+      "sha256": "d37682076840f51b39858e3a0c117e8d254e00676d48f581b0bc2b05be19a6a2",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_50",
+      "path": "runtime/observations.jsonl",
+      "sha256": "e5af776929ae1a8da788b49bc7e69d422eaa634f05468b37929d8582f6167282",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_51",
+      "path": "runtime/planner_server.yaml",
+      "sha256": "8b8976d7426dea65e10536a8c918bc35b25ab4a397fceda5e418dfad0deeb09c",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_52",
+      "path": "runtime/pre-goal.json",
+      "sha256": "85d3a84b79253b8973773a133738e8099b4f36d6bd64fd7c7e6c44806b9a7f01",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_53",
+      "path": "runtime/route_server.yaml",
+      "sha256": "ab94b5c5e0f78ff80ae2cd8847235a8a24a4e851372b3bcd7642a7f19dd89eda",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_54",
+      "path": "runtime/session-ended.json",
+      "sha256": "ec93180814c6080938e3dfb8395acf36151c084aad101070b5e15c17b96c734c",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_55",
+      "path": "runtime/session-failure.json",
+      "sha256": "b8aba148e3ec740916396e0bab669cf7c64c30769dfffbf8028b6a06b1c03d44",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_56",
+      "path": "runtime/smoother_server.yaml",
+      "sha256": "147abb9c471f7761483940b43dbdf7015b57839975b68e292f65bed53a241479",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_57",
+      "path": "runtime/velocity_smoother.yaml",
+      "sha256": "9eabf837e51a75f265d4193d2c191519a6950b265adb9be71bcf8a3efcf02f00",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_58",
+      "path": "runtime/waypoint_follower.yaml",
+      "sha256": "b6d798fefda5871eef34861bce096b570c1e013e5007467dc365f43d19c3bbc4",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_59",
+      "path": "session.bash",
+      "sha256": "0ad1fa75ab20c0717c0aa85a5aa5e295804e644770fc85981a7a410a93da7960",
+      "kind": "other"
+    }
+  ]
+}

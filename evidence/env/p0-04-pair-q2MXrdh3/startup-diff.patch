@@ -1,0 +1,35 @@
+--- tools/p0_03_navigation.py
++++ inputs/startup_scoped.py
+@@ -126,7 +126,7 @@
+             raise RuntimeError(f'Existing ROS owners: {sorted(conflicts)}; stop their launcher first')
+         sim = Path(get_package_share_directory('nav2_minimal_tb3_sim'))
+         nav = Path(get_package_share_directory('nav2_bringup'))
+-        config = Path(__file__).resolve().parents[1] / 'src/cmr_bringup/config/nav2_mppi.yaml'
++        config = Path(os.environ['CMR_RUN']) / 'artifacts/nav2.yaml'
+         self.start('robot_state_publisher', [
+             '/opt/ros/jazzy/lib/robot_state_publisher/robot_state_publisher', '--ros-args',
+             '-p', 'use_sim_time:=true', '-p', 'robot_description:=' +
+@@ -152,6 +152,10 @@
+         msg.pose.pose.orientation.z, msg.pose.pose.orientation.w = math.sin(yaw / 2), math.cos(yaw / 2)
+         msg.pose.covariance[0] = msg.pose.covariance[7] = 0.25
+         msg.pose.covariance[35] = 0.0685389
++        from rosidl_runtime_py.convert import message_to_ordereddict
++        import json
++        with (Path(os.environ['CMR_RUN'])/'runtime/initialpose-request.yaml').open('x') as f:
++            json.dump(message_to_ordereddict(msg),f,indent=2)
+         self.pub.publish(msg)
+         print('INITIALPOSE sent once:', self.pose, msg.header.stamp, flush=True)
+         self.wait('AMCL and fresh map -> base_link TF', self.localized, 30)
+@@ -160,11 +164,7 @@
+         self.start('navigation', ['ros2', 'launch', '--noninteractive', 'nav2_bringup', 'navigation_launch.py', *common])
+         self.wait_manager('navigation', NAV_NODES)
+         print('P0-03 READY; no goal sent. Ctrl-C to shut down.', flush=True)
+-        while True:
+-            rclpy.spin_once(self.node, timeout_sec=0.1)
+-            for name, proc in self.children:
+-                if proc.poll() is not None:
+-                    raise RuntimeError(f'{name} exited: {proc.returncode}')
++        return
+ 
+     def close(self):
+         for name, proc in reversed(self.children):

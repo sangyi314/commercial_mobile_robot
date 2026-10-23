@@ -1,0 +1,257 @@
+{
+  "run_id": "p0-04-dwb-76fqnpi5",
+  "uuid": "392920a92f94406ea2b867643bba9363",
+  "checks": {
+    "unique_accepted_succeeded": true,
+    "movement": true,
+    "arrival": true,
+    "final_command": true,
+    "stop": true
+  },
+  "action": {
+    "dispatch": {
+      "kind": "dispatch",
+      "monotonic_s": 93484.240830117,
+      "ros_s": 0.0,
+      "data": {
+        "uuid": "392920a92f94406ea2b867643bba9363",
+        "request": {
+          "pose": {
+            "header": {
+              "stamp": {
+                "sec": 0,
+                "nanosec": 0
+              },
+              "frame_id": "map"
+            },
+            "pose": {
+              "position": {
+                "x": -1.9568372509483436,
+                "y": 0.40347409679604745,
+                "z": 0.0
+              },
+              "orientation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.7024746319078363,
+                "w": 0.7117087828079331
+              }
+            }
+          },
+          "behavior_tree": ""
+        }
+      },
+      "source_line": 1
+    },
+    "response": {
+      "kind": "response",
+      "monotonic_s": 93484.241694034,
+      "ros_s": 17.715,
+      "data": {
+        "accepted": true,
+        "uuid": "392920a92f94406ea2b867643bba9363"
+      },
+      "source_line": 2
+    },
+    "terminal": {
+      "kind": "terminal",
+      "monotonic_s": 93491.592606579,
+      "ros_s": 25.062,
+      "data": {
+        "action": "SUCCEEDED",
+        "status": 4,
+        "uuid": "392920a92f94406ea2b867643bba9363",
+        "result": {
+          "error_code": 0,
+          "error_msg": ""
+        }
+      },
+      "source_line": 737
+    },
+    "status_evidence": [
+      {
+        "line": 286,
+        "goal_uuid": "392920a92f94406ea2b867643bba9363",
+        "status": 2,
+        "accepted_stamp_s": 17.715
+      },
+      {
+        "line": 1004,
+        "goal_uuid": "392920a92f94406ea2b867643bba9363",
+        "status": 4,
+        "accepted_stamp_s": 17.715
+      }
+    ]
+  },
+  "movement": {
+    "start_line": 285,
+    "end_line": 1025,
+    "start_position": [
+      2.2371907111853767e-07,
+      3.322722480791671e-16,
+      0.0
+    ],
+    "end_position": [
+      0.17930999374830506,
+      0.7717786005665884,
+      0.0
+    ],
+    "net_displacement_m": 0.7923346527323274,
+    "max_offset_m": 0.7930977699278746,
+    "path_length_m": 0.969890119201688,
+    "samples": 212,
+    "scope": "Odometry motion evidence, not independent physical truth."
+  },
+  "arrival": {
+    "first_line": 1012,
+    "last_line": 1351,
+    "first_error": {
+      "position_m": 0.22757556398618123,
+      "yaw_rad": 0.23233190610225485
+    },
+    "last_error": {
+      "position_m": 0.24123415506685747,
+      "yaw_rad": 0.23859970804388486
+    },
+    "last_pose": {
+      "kind": "map_base",
+      "receive_monotonic_s": 93499.742027833,
+      "ros_now_s": 33.213,
+      "data": {
+        "stamp_s": 33.192,
+        "frame_id": "map",
+        "child_frame_id": "base_footprint",
+        "position": [
+          -1.7793786386597295,
+          0.24006553369294703,
+          0.0
+        ],
+        "quaternion_xyzw": [
+          0.0,
+          0.0,
+          0.7821870806195299,
+          0.6230436348377996
+        ]
+      },
+      "source_line": 1351
+    },
+    "fresh_samples": 41,
+    "xy_tolerance_m": 0.25,
+    "yaw_tolerance_rad": 0.25,
+    "stateful": true,
+    "scope": "Fresh map->base AMCL/TF localization estimate; no independent arrival truth."
+  },
+  "commands": {
+    "/cmd_vel_nav": {
+      "count": 147,
+      "last": {
+        "kind": "/cmd_vel_nav",
+        "receive_monotonic_s": 93491.562985579,
+        "ros_now_s": 25.032,
+        "data": {
+          "linear": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "angular": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "message_type": "geometry_msgs/msg/Twist"
+        },
+        "source_line": 1002
+      },
+      "last_nonzero_line": 996,
+      "last_vx": 0.0,
+      "last_wz": 0.0,
+      "last_near_zero": true,
+      "nonzero_after_last": false,
+      "observation_tail_wall_s": 8.17904225399252
+    },
+    "/cmd_vel_smoothed": {
+      "count": 166,
+      "last": {
+        "kind": "/cmd_vel_smoothed",
+        "receive_monotonic_s": 93492.549370121,
+        "ros_now_s": 26.019000000000002,
+        "data": {
+          "linear": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "angular": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "message_type": "geometry_msgs/msg/Twist"
+        },
+        "source_line": 1079
+      },
+      "last_nonzero_line": 1005,
+      "last_vx": 0.0,
+      "last_wz": 0.0,
+      "last_near_zero": true,
+      "nonzero_after_last": false,
+      "observation_tail_wall_s": 7.192657711988431
+    },
+    "/cmd_vel": {
+      "count": 166,
+      "last": {
+        "kind": "/cmd_vel",
+        "receive_monotonic_s": 93492.559880288,
+        "ros_now_s": 26.028000000000002,
+        "data": {
+          "linear": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "angular": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "message_type": "geometry_msgs/msg/Twist"
+        },
+        "source_line": 1081
+      },
+      "last_nonzero_line": 1007,
+      "last_vx": 0.0,
+      "last_wz": 0.0,
+      "last_near_zero": true,
+      "nonzero_after_last": false,
+      "observation_tail_wall_s": 7.182147544997861
+    }
+  },
+  "stop": {
+    "first_line": 1099,
+    "last_line": 1287,
+    "start_sim_s": 26.532,
+    "end_sim_s": 31.5,
+    "span_sim_s": 4.968,
+    "samples": 139,
+    "min_gap_sim_s": 0.03599999999999781,
+    "max_gap_sim_s": 0.036000000000001364,
+    "max_linear_m_s": 0.0,
+    "max_abs_wz_rad_s": 0.0,
+    "max_drift_from_first_m": 0.0,
+    "max_pairwise_drift_m": 0.0,
+    "max_odom_stamp_age_sim_s": 3.552713678800501e-15,
+    "max_nearby_clock_stamp_error_s": 0.0990000000000002,
+    "clock_nonadvancing_samples": 0,
+    "invalid_odom_in_window": []
+  },
+  "invalid_odom_lines": [],
+  "invalid_command_lines": [],
+  "clock_jumps": [],
+  "raw_sha256": {
+    "runtime/observations.jsonl": "a5aa9f179918483cb54a5d4015dd062058590aa1e91671aa4e305aa949cfb65d",
+    "logs/action-client.jsonl": "dc507dfa695aa7c43289f2b380344856a4b5ef76fd96ca7dc0b6fbcc36aa687b",
+    "runtime/all-parameters.json": "8777f0622e983c48ae6f3b27eac94b381c045b29b00c74b043661f7c5edd95eb",
+    "artifacts/goal.yaml": "ec2f5831f69823f2b94dfc13779b98d71ef8fae0f6e19f41d9c657b2232e5688"
+  }
+}

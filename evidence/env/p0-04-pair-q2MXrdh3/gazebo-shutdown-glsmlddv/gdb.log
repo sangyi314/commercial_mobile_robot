@@ -1,0 +1,1591 @@
+SIGINT is used by the debugger.
+Are you sure you want to change it? (y or n) [answered Y; input not from terminal]
+Function "gz::sim::v8::Server::~Server()" not defined.
+Breakpoint 1 (gz::sim::v8::Server::~Server()) pending.
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/aarch64-linux-gnu/libthread_db.so.1".
+[New Thread 0xffffe861f180 (LWP 116864)]
+[New Thread 0xffffe7e0f180 (LWP 116865)]
+[New Thread 0xffffe75ff180 (LWP 116866)]
+[New Thread 0xffffe6def180 (LWP 116867)]
+[New Thread 0xffffe65df180 (LWP 116868)]
+[New Thread 0xffffe5dcf180 (LWP 116869)]
+[1;32m[Msg] [0m[1;32mGazebo Sim Server v[0m[1;32m8.15.0[0m[1;32m[0m
+[1;32m[Msg] [0m[1;32mLoading SDF world file[[0m[1;32m/home/robot/commercial_mobile_robot/evidence/env/p0-04-pair-q2MXrdh3/gazebo-shutdown-glsmlddv/world-with-robot.sdf[0m[1;32m].[0m
+[1;33mWarning [Utils.cc:132][0m [/sdf/world[@name="default"]/model[@name="turtlebot3_waffle"]/link[@name="imu_link"]/sensor[@name="tb3_imu"]/gz_frame_id:/home/robot/commercial_mobile_robot/evidence/env/p0-04-pair-q2MXrdh3/gazebo-shutdown-glsmlddv/world-with-robot.sdf:L107]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
+[1;33mWarning [Utils.cc:132][0m [/sdf/world[@name="default"]/model[@name="turtlebot3_waffle"]/link[@name="base_scan"]/sensor[@name="hls_lfcd_lds"]/gz_frame_id:/home/robot/commercial_mobile_robot/evidence/env/p0-04-pair-q2MXrdh3/gazebo-shutdown-glsmlddv/world-with-robot.sdf:L192]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
+[1;33mWarning [Utils.cc:132][0m [/sdf/world[@name="default"]/model[@name="turtlebot3_waffle"]/link[@name="camera_link"]/sensor[@name="intel_realsense_r200_depth"]/gz_frame_id:/home/robot/commercial_mobile_robot/evidence/env/p0-04-pair-q2MXrdh3/gazebo-shutdown-glsmlddv/world-with-robot.sdf:L419]: XML Element[gz_frame_id], child of element[sensor], not defined in SDF. Copying[gz_frame_id] as children of [sensor].
+[New Thread 0xffffce5ff180 (LWP 116870)]
+[1;33m[Wrn] [SdfEntityCreator.cc:933] [0m[1;33mGazebo does not support Ogre material scripts. See [0m[1;33mhttps://gazebosim.org/api/sim/8/migrationsdf.html#:~:text=Materials [0m[1;33mfor details.[0m[1;33m[0m
+[1;33m[Wrn] [SdfEntityCreator.cc:949] [0m[1;33mUsing an internal gazebo.material to parse [0m[1;33mGazebo/White[0m[1;33m[0m
+[1;33m[Wrn] [SdfEntityCreator.cc:933] [0m[1;33mGazebo does not support Ogre material scripts. See [0m[1;33mhttps://gazebosim.org/api/sim/8/migrationsdf.html#:~:text=Materials [0m[1;33mfor details.[0m[1;33m[0m
+[1;33m[Wrn] [SdfEntityCreator.cc:949] [0m[1;33mUsing an internal gazebo.material to parse [0m[1;33mGazebo/White[0m[1;33m[0m
+[1;33m[Wrn] [SdfEntityCreator.cc:933] [0m[1;33mGazebo does not support Ogre material scripts. See [0m[1;33mhttps://gazebosim.org/api/sim/8/migrationsdf.html#:~:text=Materials [0m[1;33mfor details.[0m[1;33m[0m
+[1;33m[Wrn] [SdfEntityCreator.cc:949] [0m[1;33mUsing an internal gazebo.material to parse [0m[1;33mGazebo/White[0m[1;33m[0m
+[1;33m[Wrn] [SdfEntityCreator.cc:933] [0m[1;33mGazebo does not support Ogre material scripts. See [0m[1;33mhttps://gazebosim.org/api/sim/8/migrationsdf.html#:~:text=Materials [0m[1;33mfor details.[0m[1;33m[0m
+[1;33m[Wrn] [SdfEntityCreator.cc:949] [0m[1;33mUsing an internal gazebo.material to parse [0m[1;33mGazebo/White[0m[1;33m[0m
+[1;33m[Wrn] [SdfEntityCreator.cc:933] [0m[1;33mGazebo does not support Ogre material scripts. See [0m[1;33mhttps://gazebosim.org/api/sim/8/migrationsdf.html#:~:text=Materials [0m[1;33mfor details.[0m[1;33m[0m
+[1;33m[Wrn] [SdfEntityCreator.cc:949] [0m[1;33mUsing an internal gazebo.material to parse [0m[1;33mGazebo/White[0m[1;33m[0m
+[1;33m[Wrn] [SdfEntityCreator.cc:933] [0m[1;33mGazebo does not support Ogre material scripts. See [0m[1;33mhttps://gazebosim.org/api/sim/8/migrationsdf.html#:~:text=Materials [0m[1;33mfor details.[0m[1;33m[0m
+[1;33m[Wrn] [SdfEntityCreator.cc:949] [0m[1;33mUsing an internal gazebo.material to parse [0m[1;33mGazebo/White[0m[1;33m[0m
+[1;33m[Wrn] [SdfEntityCreator.cc:933] [0m[1;33mGazebo does not support Ogre material scripts. See [0m[1;33mhttps://gazebosim.org/api/sim/8/migrationsdf.html#:~:text=Materials [0m[1;33mfor details.[0m[1;33m[0m
+[1;33m[Wrn] [SdfEntityCreator.cc:949] [0m[1;33mUsing an internal gazebo.material to parse [0m[1;33mGazebo/White[0m[1;33m[0m
+[1;33m[Wrn] [SdfEntityCreator.cc:933] [0m[1;33mGazebo does not support Ogre material scripts. See [0m[1;33mhttps://gazebosim.org/api/sim/8/migrationsdf.html#:~:text=Materials [0m[1;33mfor details.[0m[1;33m[0m
+[1;33m[Wrn] [SdfEntityCreator.cc:949] [0m[1;33mUsing an internal gazebo.material to parse [0m[1;33mGazebo/White[0m[1;33m[0m
+[1;33m[Wrn] [SdfEntityCreator.cc:933] [0m[1;33mGazebo does not support Ogre material scripts. See [0m[1;33mhttps://gazebosim.org/api/sim/8/migrationsdf.html#:~:text=Materials [0m[1;33mfor details.[0m[1;33m[0m
+[1;33m[Wrn] [SdfEntityCreator.cc:949] [0m[1;33mUsing an internal gazebo.material to parse [0m[1;33mGazebo/White[0m[1;33m[0m
+[1;33m[Wrn] [SdfEntityCreator.cc:933] [0m[1;33mGazebo does not support Ogre material scripts. See [0m[1;33mhttps://gazebosim.org/api/sim/8/migrationsdf.html#:~:text=Materials [0m[1;33mfor details.[0m[1;33m[0m
+[1;33m[Wrn] [SdfEntityCreator.cc:949] [0m[1;33mUsing an internal gazebo.material to parse [0m[1;33mGazebo/Green[0m[1;33m[0m
+[1;33m[Wrn] [SdfEntityCreator.cc:933] [0m[1;33mGazebo does not support Ogre material scripts. See [0m[1;33mhttps://gazebosim.org/api/sim/8/migrationsdf.html#:~:text=Materials [0m[1;33mfor details.[0m[1;33m[0m
+[1;33m[Wrn] [SdfEntityCreator.cc:949] [0m[1;33mUsing an internal gazebo.material to parse [0m[1;33mGazebo/Green[0m[1;33m[0m
+[1;33m[Wrn] [SdfEntityCreator.cc:933] [0m[1;33mGazebo does not support Ogre material scripts. See [0m[1;33mhttps://gazebosim.org/api/sim/8/migrationsdf.html#:~:text=Materials [0m[1;33mfor details.[0m[1;33m[0m
+[1;33m[Wrn] [SdfEntityCreator.cc:949] [0m[1;33mUsing an internal gazebo.material to parse [0m[1;33mGazebo/Green[0m[1;33m[0m
+[1;33m[Wrn] [SdfEntityCreator.cc:933] [0m[1;33mGazebo does not support Ogre material scripts. See [0m[1;33mhttps://gazebosim.org/api/sim/8/migrationsdf.html#:~:text=Materials [0m[1;33mfor details.[0m[1;33m[0m
+[1;33m[Wrn] [SdfEntityCreator.cc:949] [0m[1;33mUsing an internal gazebo.material to parse [0m[1;33mGazebo/Green[0m[1;33m[0m
+[1;33m[Wrn] [SdfEntityCreator.cc:933] [0m[1;33mGazebo does not support Ogre material scripts. See [0m[1;33mhttps://gazebosim.org/api/sim/8/migrationsdf.html#:~:text=Materials [0m[1;33mfor details.[0m[1;33m[0m
+[1;33m[Wrn] [SdfEntityCreator.cc:949] [0m[1;33mUsing an internal gazebo.material to parse [0m[1;33mGazebo/Green[0m[1;33m[0m
+[1;33m[Wrn] [SdfEntityCreator.cc:933] [0m[1;33mGazebo does not support Ogre material scripts. See [0m[1;33mhttps://gazebosim.org/api/sim/8/migrationsdf.html#:~:text=Materials [0m[1;33mfor details.[0m[1;33m[0m
+[1;33m[Wrn] [SdfEntityCreator.cc:949] [0m[1;33mUsing an internal gazebo.material to parse [0m[1;33mGazebo/FlatBlack[0m[1;33m[0m
+[1;32m[Msg] [0m[1;32mServing entity system service on [[0m[1;32m/[0m[1;32mentity/system/add[0m[1;32m][0m[1;32m[0m
+[1;32m[Msg] [0m[1;32mCreate[0m[1;32m service on [[0m[1;32m/world/default/create_multiple[0m[1;32m] (async)[0m[1;32m[0m
+[1;32m[Msg] [0m[1;32mCreate[0m[1;32m service on [[0m[1;32m/world/default/create_multiple/blocking[0m[1;32m] (blocking)[0m[1;32m[0m
+[1;32m[Msg] [0m[1;32mRemove[0m[1;32m service on [[0m[1;32m/world/default/remove[0m[1;32m] (async)[0m[1;32m[0m
+[1;32m[Msg] [0m[1;32mRemove[0m[1;32m service on [[0m[1;32m/world/default/remove/blocking[0m[1;32m] (blocking)[0m[1;32m[0m
+[1;32m[Msg] [0m[1;32mPose[0m[1;32m service on [[0m[1;32m/world/default/set_pose[0m[1;32m] (async)[0m[1;32m[0m
+[1;32m[Msg] [0m[1;32mPose[0m[1;32m service on [[0m[1;32m/world/default/set_pose/blocking[0m[1;32m] (blocking)[0m[1;32m[0m
+[1;32m[Msg] [0m[1;32mPose[0m[1;32m service on [[0m[1;32m/world/default/set_pose_vector[0m[1;32m] (async)[0m[1;32m[0m
+[1;32m[Msg] [0m[1;32mPose[0m[1;32m service on [[0m[1;32m/world/default/set_pose_vector/blocking[0m[1;32m] (blocking)[0m[1;32m[0m
+[1;32m[Msg] [0m[1;32mLight configuration[0m[1;32m service on [[0m[1;32m/world/default/light_config[0m[1;32m] (async)[0m[1;32m[0m
+[1;32m[Msg] [0m[1;32mLight configuration[0m[1;32m service on [[0m[1;32m/world/default/light_config/blocking[0m[1;32m] (blocking)[0m[1;32m[0m
+[1;32m[Msg] [0m[1;32mPhysics[0m[1;32m service on [[0m[1;32m/world/default/set_physics[0m[1;32m] (async)[0m[1;32m[0m
+[1;32m[Msg] [0m[1;32mPhysics[0m[1;32m service on [[0m[1;32m/world/default/set_physics/blocking[0m[1;32m] (blocking)[0m[1;32m[0m
+[1;32m[Msg] [0m[1;32mSphericalCoordinates[0m[1;32m service on [[0m[1;32m/world/default/set_spherical_coordinates[0m[1;32m] (async)[0m[1;32m[0m
+[1;32m[Msg] [0m[1;32mSphericalCoordinates[0m[1;32m service on [[0m[1;32m/world/default/set_spherical_coordinates/blocking[0m[1;32m] (blocking)[0m[1;32m[0m
+[1;32m[Msg] [0m[1;32mEnable collision[0m[1;32m service on [[0m[1;32m/world/default/enable_collision[0m[1;32m] (async)[0m[1;32m[0m
+[1;32m[Msg] [0m[1;32mEnable collision[0m[1;32m service on [[0m[1;32m/world/default/enable_collision/blocking[0m[1;32m] (blocking)[0m[1;32m[0m
+[1;32m[Msg] [0m[1;32mDisable collision[0m[1;32m service on [[0m[1;32m/world/default/disable_collision[0m[1;32m] (async)[0m[1;32m[0m
+[1;32m[Msg] [0m[1;32mDisable collision[0m[1;32m service on [[0m[1;32m/world/default/disable_collision/blocking[0m[1;32m] (blocking)[0m[1;32m[0m
+[1;32m[Msg] [0m[1;32mMaterial[0m[1;32m service on [[0m[1;32m/world/default/visual_config[0m[1;32m] (async)[0m[1;32m[0m
+[1;32m[Msg] [0m[1;32mMaterial[0m[1;32m service on [[0m[1;32m/world/default/visual_config/blocking[0m[1;32m] (blocking)[0m[1;32m[0m
+[1;32m[Msg] [0m[1;32mMaterial[0m[1;32m service on [[0m[1;32m/world/default/wheel_slip[0m[1;32m] (async)[0m[1;32m[0m
+[1;32m[Msg] [0m[1;32mMaterial[0m[1;32m service on [[0m[1;32m/world/default/wheel_slip/blocking[0m[1;32m] (blocking)[0m[1;32m[0m
+[1;32m[Msg] [0m[1;32mDiffDrive subscribing to twist messages on [[0m[1;32m/cmd_vel[0m[1;32m][0m[1;32m[0m
+[1;32m[Msg] [0m[1;32mLoaded level [[0m[1;32mdefault[0m[1;32m][0m[1;32m[0m
+[1;32m[Msg] [0m[1;32mServing world controls on [[0m[1;32m/world/default[0m[1;32m/control], [[0m[1;32m/world/default[0m[1;32m/control/state] and [[0m[1;32m/world/default[0m[1;32m/playback/control][0m[1;32m[0m
+[1;32m[Msg] [0m[1;32mServing GUI information on [[0m[1;32m/world/default[0m[1;32m/[0m[1;32mgui/info[0m[1;32m][0m[1;32m[0m
+[1;32m[Msg] [0m[1;32mWorld [[0m[1;32mdefault[0m[1;32m] initialized with [[0m[1;32m3ms[0m[1;32m] physics profile.[0m[1;32m[0m
+[1;32m[Msg] [0m[1;32mServing world SDF generation service on [[0m[1;32m/world/default[0m[1;32m/[0m[1;32mgenerate_world_sdf[0m[1;32m][0m[1;32m[0m
+[1;32m[Msg] [0m[1;32mServing w[New Thread 0xffffcdccf180 (LWP 116892)]
+[New Thread 0xffffcd4bf180 (LWP 116893)]
+[New Thread 0xffffcccaf180 (LWP 116894)]
+[New Thread 0xffffbffff180 (LWP 116895)]
+[New Thread 0xffffbe82f180 (LWP 116896)]
+[New Thread 0xffffbe01f180 (LWP 116897)]
+[New Thread 0xffffbd80f180 (LWP 116898)]
+[New Thread 0xffffbcfff180 (LWP 116899)]
+[New Thread 0xffffa8bff180 (LWP 116900)]
+[New Thread 0xffff93fff180 (LWP 116901)]
+[New Thread 0xffff937ef180 (LWP 116902)]
+[New Thread 0xffff92fdf180 (LWP 116903)]
+[New Thread 0xffff927cf180 (LWP 116904)]
+[New Thread 0xffff919a3180 (LWP 116905)]
+[New Thread 0xffff91193180 (LWP 116906)]
+[New Thread 0xffff90983180 (LWP 116907)]
+[New Thread 0xffff73fff180 (LWP 116908)]
+[New Thread 0xffff73595180 (LWP 117021)]
+[Thread 0xffff919a3180 (LWP 116905) exited]
+[Thread 0xffff91193180 (LWP 116906) exited]
+[Thread 0xffff90983180 (LWP 116907) exited]
+[Thread 0xffff73fff180 (LWP 116908) exited]
+
+Thread 1 "ruby" hit Breakpoint 1, 0x0000fffff1b81dc4 in gz::sim::v8::Server::~Server() () from /opt/ros/jazzy/opt/gz_sim_vendor/lib/libgz-sim8.so.8
+process 116855
+Mapped address spaces:
+
+          Start Addr           End Addr       Size     Offset  Perms  objfile
+      0xaaaaaaaa0000     0xaaaaaaaa1000     0x1000        0x0  r-xp   /usr/bin/ruby3.2
+      0xaaaaaaabf000     0xaaaaaaac0000     0x1000     0xf000  r--p   /usr/bin/ruby3.2
+      0xaaaaaaac0000     0xaaaaaaac1000     0x1000    0x10000  rw-p   /usr/bin/ruby3.2
+      0xaaaaaaac1000     0xaaaaaf47d000  0x49bc000        0x0  rw-p   [heap]
+      0xffff64000000     0xffff64021000    0x21000        0x0  rw-p   
+      0xffff64021000     0xffff68000000  0x3fdf000        0x0  ---p   
+      0xffff6c000000     0xffff6c021000    0x21000        0x0  rw-p   
+      0xffff6c021000     0xffff70000000  0x3fdf000        0x0  ---p   
+      0xffff72d86000     0xffff72d96000    0x10000        0x0  ---p   
+      0xffff72d96000     0xffff73596000   0x800000        0x0  rw-p   
+      0xffff737f0000     0xffff73800000    0x10000        0x0  ---p   
+      0xffff73800000     0xffff74000000   0x800000        0x0  rw-p   
+      0xffff74000000     0xffff74021000    0x21000        0x0  rw-p   
+      0xffff74021000     0xffff78000000  0x3fdf000        0x0  ---p   
+      0xffff78000000     0xffff78021000    0x21000        0x0  rw-p   
+      0xffff78021000     0xffff7c000000  0x3fdf000        0x0  ---p   
+      0xffff7c000000     0xffff7c021000    0x21000        0x0  rw-p   
+      0xffff7c021000     0xffff80000000  0x3fdf000        0x0  ---p   
+      0xffff80000000     0xffff80021000    0x21000        0x0  rw-p   
+      0xffff80021000     0xffff84000000  0x3fdf000        0x0  ---p   
+      0xffff84000000     0xffff84021000    0x21000        0x0  rw-p   
+      0xffff84021000     0xffff88000000  0x3fdf000        0x0  ---p   
+      0xffff88000000     0xffff88021000    0x21000        0x0  rw-p   
+      0xffff88021000     0xffff8c000000  0x3fdf000        0x0  ---p   
+      0xffff8c000000     0xffff8c021000    0x21000        0x0  rw-p   
+      0xffff8c021000     0xffff90000000  0x3fdf000        0x0  ---p   
+      0xffff90074000     0xffff90174000   0x100000        0x0  rw-p   
+      0xffff90174000     0xffff90184000    0x10000        0x0  ---p   
+      0xffff90184000     0xffff90984000   0x800000        0x0  rw-p   
+      0xffff90984000     0xffff90994000    0x10000        0x0  ---p   
+      0xffff90994000     0xffff91194000   0x800000        0x0  rw-p   
+      0xffff91194000     0xffff911a4000    0x10000        0x0  ---p   
+      0xffff911a4000     0xffff919a4000   0x800000        0x0  rw-p   
+      0xffff919a4000     0xffff91d70000   0x3cc000        0x0  rw-p   
+      0xffff91d70000     0xffff91d9a000    0x2a000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/OGRE-1.9.0/Plugin_OctreeSceneManager.so.1.9.0
+      0xffff91d9a000     0xffff91dac000    0x12000    0x2a000  ---p   /usr/lib/aarch64-linux-gnu/OGRE-1.9.0/Plugin_OctreeSceneManager.so.1.9.0
+      0xffff91dac000     0xffff91db0000     0x4000    0x2c000  r--p   /usr/lib/aarch64-linux-gnu/OGRE-1.9.0/Plugin_OctreeSceneManager.so.1.9.0
+      0xffff91db0000     0xffff91db1000     0x1000    0x30000  rw-p   /usr/lib/aarch64-linux-gnu/OGRE-1.9.0/Plugin_OctreeSceneManager.so.1.9.0
+      0xffff91dc0000     0xffff91fc0000   0x200000        0x0  rw-p   
+      0xffff91fc0000     0xffff91fd0000    0x10000        0x0  ---p   
+      0xffff91fd0000     0xffff927d0000   0x800000        0x0  rw-p   
+      0xffff927d0000     0xffff927e0000    0x10000        0x0  ---p   
+      0xffff927e0000     0xffff92fe0000   0x800000        0x0  rw-p   
+      0xffff92fe0000     0xffff92ff0000    0x10000        0x0  ---p   
+      0xffff92ff0000     0xffff937f0000   0x800000        0x0  rw-p   
+      0xffff937f0000     0xffff93800000    0x10000        0x0  ---p   
+      0xffff93800000     0xffff94000000   0x800000        0x0  rw-p   
+      0xffff94000000     0xffff94021000    0x21000        0x0  rw-p   
+      0xffff94021000     0xffff98000000  0x3fdf000        0x0  ---p   
+      0xffff98000000     0xffff98021000    0x21000        0x0  rw-p   
+      0xffff98021000     0xffff9c000000  0x3fdf000        0x0  ---p   
+      0xffff9c000000     0xffff9c021000    0x21000        0x0  rw-p   
+      0xffff9c021000     0xffffa0000000  0x3fdf000        0x0  ---p   
+      0xffffa0000000     0xffffa0021000    0x21000        0x0  rw-p   
+      0xffffa0021000     0xffffa4000000  0x3fdf000        0x0  ---p   
+      0xffffa4000000     0xffffa4021000    0x21000        0x0  rw-p   
+      0xffffa4021000     0xffffa8000000  0x3fdf000        0x0  ---p   
+      0xffffa8020000     0xffffa8055000    0x35000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/OGRE-1.9.0/Plugin_BSPSceneManager.so.1.9.0
+      0xffffa8055000     0xffffa806c000    0x17000    0x35000  ---p   /usr/lib/aarch64-linux-gnu/OGRE-1.9.0/Plugin_BSPSceneManager.so.1.9.0
+      0xffffa806c000     0xffffa8070000     0x4000    0x3c000  r--p   /usr/lib/aarch64-linux-gnu/OGRE-1.9.0/Plugin_BSPSceneManager.so.1.9.0
+      0xffffa8070000     0xffffa8071000     0x1000    0x40000  rw-p   /usr/lib/aarch64-linux-gnu/OGRE-1.9.0/Plugin_BSPSceneManager.so.1.9.0
+      0xffffa8080000     0xffffa80af000    0x2f000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/OGRE-1.9.0/Plugin_ParticleFX.so.1.9.0
+      0xffffa80af000     0xffffa80bc000     0xd000    0x2f000  ---p   /usr/lib/aarch64-linux-gnu/OGRE-1.9.0/Plugin_ParticleFX.so.1.9.0
+      0xffffa80bc000     0xffffa80c0000     0x4000    0x3c000  r--p   /usr/lib/aarch64-linux-gnu/OGRE-1.9.0/Plugin_ParticleFX.so.1.9.0
+      0xffffa80c0000     0xffffa80c1000     0x1000    0x40000  rw-p   /usr/lib/aarch64-linux-gnu/OGRE-1.9.0/Plugin_ParticleFX.so.1.9.0
+      0xffffa80d0000     0xffffa81b0000    0xe0000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/OGRE-1.9.0/RenderSystem_GL.so.1.9.0
+      0xffffa81b0000     0xffffa81b9000     0x9000    0xe0000  ---p   /usr/lib/aarch64-linux-gnu/OGRE-1.9.0/RenderSystem_GL.so.1.9.0
+      0xffffa81b9000     0xffffa81c0000     0x7000    0xe9000  r--p   /usr/lib/aarch64-linux-gnu/OGRE-1.9.0/RenderSystem_GL.so.1.9.0
+      0xffffa81c0000     0xffffa81c4000     0x4000    0xf0000  rw-p   /usr/lib/aarch64-linux-gnu/OGRE-1.9.0/RenderSystem_GL.so.1.9.0
+      0xffffa81c4000     0xffffa81ec000    0x28000        0x0  rw-p   
+      0xffffa81f0000     0xffffa83f0000   0x200000        0x0  rw-p   
+      0xffffa83f0000     0xffffa8400000    0x10000        0x0  ---p   
+      0xffffa8400000     0xffffa8c00000   0x800000        0x0  rw-p   
+      0xffffa8c00000     0xffffb0988000  0x7d88000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libLLVM.so.20.1
+      0xffffb0988000     0xffffb0998000    0x10000  0x7d88000  ---p   /usr/lib/aarch64-linux-gnu/libLLVM.so.20.1
+      0xffffb0998000     0xffffb1030000   0x698000  0x7d88000  r--p   /usr/lib/aarch64-linux-gnu/libLLVM.so.20.1
+      0xffffb1030000     0xffffb1078000    0x48000  0x8420000  rw-p   /usr/lib/aarch64-linux-gnu/libLLVM.so.20.1
+      0xffffb1078000     0xffffb1120000    0xa8000        0x0  rw-p   
+      0xffffb1130000     0xffffb3c59000  0x2b29000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libgallium-25.2.8-0ubuntu0.24.04.4.so
+      0xffffb3c59000     0xffffb3c6e000    0x15000  0x2b29000  ---p   /usr/lib/aarch64-linux-gnu/libgallium-25.2.8-0ubuntu0.24.04.4.so
+      0xffffb3c6e000     0xffffb3e00000   0x192000  0x2b2e000  r--p   /usr/lib/aarch64-linux-gnu/libgallium-25.2.8-0ubuntu0.24.04.4.so
+      0xffffb3e00000     0xffffb3e30000    0x30000  0x2cc0000  rw-p   /usr/lib/aarch64-linux-gnu/libgallium-25.2.8-0ubuntu0.24.04.4.so
+      0xffffb3e30000     0xffffb3ffb000   0x1cb000        0x0  rw-p   
+      0xffffb4000000     0xffffb4021000    0x21000        0x0  rw-p   
+      0xffffb4021000     0xffffb8000000  0x3fdf000        0x0  ---p   
+      0xffffb8000000     0xffffb8021000    0x21000        0x0  rw-p   
+      0xffffb8021000     0xffffbc000000  0x3fdf000        0x0  ---p   
+      0xffffbc020000     0xffffbc029000     0x9000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libXrender.so.1.3.0
+      0xffffbc029000     0xffffbc03f000    0x16000     0x9000  ---p   /usr/lib/aarch64-linux-gnu/libXrender.so.1.3.0
+      0xffffbc03f000     0xffffbc040000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/libXrender.so.1.3.0
+      0xffffbc040000     0xffffbc041000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/libXrender.so.1.3.0
+      0xffffbc050000     0xffffbc05b000     0xb000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libXrandr.so.2.2.0
+      0xffffbc05b000     0xffffbc06f000    0x14000     0xb000  ---p   /usr/lib/aarch64-linux-gnu/libXrandr.so.2.2.0
+      0xffffbc06f000     0xffffbc070000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/libXrandr.so.2.2.0
+      0xffffbc070000     0xffffbc071000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/libXrandr.so.2.2.0
+      0xffffbc080000     0xffffbc0cc000    0x4c000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libGLU.so.1.3.1
+      0xffffbc0cc000     0xffffbc0df000    0x13000    0x4c000  ---p   /usr/lib/aarch64-linux-gnu/libGLU.so.1.3.1
+      0xffffbc0df000     0xffffbc0e0000     0x1000    0x4f000  r--p   /usr/lib/aarch64-linux-gnu/libGLU.so.1.3.1
+      0xffffbc0e0000     0xffffbc0e1000     0x1000    0x50000  rw-p   /usr/lib/aarch64-linux-gnu/libGLU.so.1.3.1
+      0xffffbc0e4000     0xffffbc6af000   0x5cb000        0x0  rw-p   
+      0xffffbc6af000     0xffffbc7f0000   0x141000        0x0  rw-s   /home/robot/.cache/mesa_shader_cache/index
+      0xffffbc7f0000     0xffffbc800000    0x10000        0x0  ---p   
+      0xffffbc800000     0xffffbd000000   0x800000        0x0  rw-p   
+      0xffffbd000000     0xffffbd010000    0x10000        0x0  ---p   
+      0xffffbd010000     0xffffbd810000   0x800000        0x0  rw-p   
+      0xffffbd810000     0xffffbd820000    0x10000        0x0  ---p   
+      0xffffbd820000     0xffffbe020000   0x800000        0x0  rw-p   
+      0xffffbe020000     0xffffbe030000    0x10000        0x0  ---p   
+      0xffffbe030000     0xffffbe830000   0x800000        0x0  rw-p   
+      0xffffbe830000     0xffffbe85f000    0x2f000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libtinfo.so.6.4
+      0xffffbe85f000     0xffffbe86c000     0xd000    0x2f000  ---p   /usr/lib/aarch64-linux-gnu/libtinfo.so.6.4
+      0xffffbe86c000     0xffffbe870000     0x4000    0x3c000  r--p   /usr/lib/aarch64-linux-gnu/libtinfo.so.6.4
+      0xffffbe870000     0xffffbe871000     0x1000    0x40000  rw-p   /usr/lib/aarch64-linux-gnu/libtinfo.so.6.4
+      0xffffbe880000     0xffffbe8b3000    0x33000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libedit.so.2.0.72
+      0xffffbe8b3000     0xffffbe8ce000    0x1b000    0x33000  ---p   /usr/lib/aarch64-linux-gnu/libedit.so.2.0.72
+      0xffffbe8ce000     0xffffbe8d0000     0x2000    0x3e000  r--p   /usr/lib/aarch64-linux-gnu/libedit.so.2.0.72
+      0xffffbe8d0000     0xffffbe8d1000     0x1000    0x40000  rw-p   /usr/lib/aarch64-linux-gnu/libedit.so.2.0.72
+      0xffffbe8d1000     0xffffbe8d5000     0x4000        0x0  rw-p   
+      0xffffbe8e0000     0xffffbe8fe000    0x1e000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libelf-0.190.so
+      0xffffbe8fe000     0xffffbe90f000    0x11000    0x1e000  ---p   /usr/lib/aarch64-linux-gnu/libelf-0.190.so
+      0xffffbe90f000     0xffffbe910000     0x1000    0x1f000  r--p   /usr/lib/aarch64-linux-gnu/libelf-0.190.so
+      0xffffbe910000     0xffffbe911000     0x1000    0x20000  rw-p   /usr/lib/aarch64-linux-gnu/libelf-0.190.so
+      0xffffbe920000     0xffffbe92b000     0xb000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libdrm_amdgpu.so.1.125.0
+      0xffffbe92b000     0xffffbe93f000    0x14000     0xb000  ---p   /usr/lib/aarch64-linux-gnu/libdrm_amdgpu.so.1.125.0
+      0xffffbe93f000     0xffffbe940000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/libdrm_amdgpu.so.1.125.0
+      0xffffbe940000     0xffffbe941000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/libdrm_amdgpu.so.1.125.0
+      0xffffbe950000     0xffffbe952000     0x2000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libxshmfence.so.1.0.0
+      0xffffbe952000     0xffffbe96f000    0x1d000     0x2000  ---p   /usr/lib/aarch64-linux-gnu/libxshmfence.so.1.0.0
+      0xffffbe96f000     0xffffbe970000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/libxshmfence.so.1.0.0
+      0xffffbe970000     0xffffbe971000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/libxshmfence.so.1.0.0
+      0xffffbe980000     0xffffbe986000     0x6000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libxcb-sync.so.1.0.0
+      0xffffbe986000     0xffffbe99f000    0x19000     0x6000  ---p   /usr/lib/aarch64-linux-gnu/libxcb-sync.so.1.0.0
+      0xffffbe99f000     0xffffbe9a0000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/libxcb-sync.so.1.0.0
+      0xffffbe9a0000     0xffffbe9a1000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/libxcb-sync.so.1.0.0
+      0xffffbe9b0000     0xffffbe9c0000    0x10000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libxcb-randr.so.0.1.0
+      0xffffbe9c0000     0xffffbe9cf000     0xf000    0x10000  ---p   /usr/lib/aarch64-linux-gnu/libxcb-randr.so.0.1.0
+      0xffffbe9cf000     0xffffbe9d0000     0x1000    0x1f000  r--p   /usr/lib/aarch64-linux-gnu/libxcb-randr.so.0.1.0
+      0xffffbe9d0000     0xffffbe9d1000     0x1000    0x20000  rw-p   /usr/lib/aarch64-linux-gnu/libxcb-randr.so.0.1.0
+      0xffffbe9e0000     0xffffbe9ed000     0xd000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libsensors.so.5.0.0
+      0xffffbe9ed000     0xffffbe9ff000    0x12000     0xd000  ---p   /usr/lib/aarch64-linux-gnu/libsensors.so.5.0.0
+      0xffffbe9ff000     0xffffbea00000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/libsensors.so.5.0.0
+      0xffffbea00000     0xffffbea01000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/libsensors.so.5.0.0
+      0xffffbea10000     0xffffbea18000     0x8000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libxcb-xfixes.so.0.0.0
+      0xffffbea18000     0xffffbea2f000    0x17000     0x8000  ---p   /usr/lib/aarch64-linux-gnu/libxcb-xfixes.so.0.0.0
+      0xffffbea2f000     0xffffbea30000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/libxcb-xfixes.so.0.0.0
+      0xffffbea30000     0xffffbea31000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/libxcb-xfixes.so.0.0.0
+      0xffffbea40000     0xffffbea42000     0x2000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libxcb-present.so.0.0.0
+      0xffffbea42000     0xffffbea5f000    0x1d000     0x2000  ---p   /usr/lib/aarch64-linux-gnu/libxcb-present.so.0.0.0
+      0xffffbea5f000     0xffffbea60000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/libxcb-present.so.0.0.0
+      0xffffbea60000     0xffffbea61000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/libxcb-present.so.0.0.0
+      0xffffbea70000     0xffffbea74000     0x4000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libxcb-dri3.so.0.1.0
+      0xffffbea74000     0xffffbea8f000    0x1b000     0x4000  ---p   /usr/lib/aarch64-linux-gnu/libxcb-dri3.so.0.1.0
+      0xffffbea8f000     0xffffbea90000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/libxcb-dri3.so.0.1.0
+      0xffffbea90000     0xffffbea91000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/libxcb-dri3.so.0.1.0
+      0xffffbeaa0000     0xffffbeaa2000     0x2000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libxcb-shm.so.0.0.0
+      0xffffbeaa2000     0xffffbeabf000    0x1d000     0x2000  ---p   /usr/lib/aarch64-linux-gnu/libxcb-shm.so.0.0.0
+      0xffffbeabf000     0xffffbeac0000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/libxcb-shm.so.0.0.0
+      0xffffbeac0000     0xffffbeac1000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/libxcb-shm.so.0.0.0
+      0xffffbead0000     0xffffbead4000     0x4000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libXxf86vm.so.1.0.0
+      0xffffbead4000     0xffffbeaef000    0x1b000     0x4000  ---p   /usr/lib/aarch64-linux-gnu/libXxf86vm.so.1.0.0
+      0xffffbeaef000     0xffffbeaf0000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/libXxf86vm.so.1.0.0
+      0xffffbeaf0000     0xffffbeaf1000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/libXxf86vm.so.1.0.0
+      0xffffbeb00000     0xffffbeb01000     0x1000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libX11-xcb.so.1.0.0
+      0xffffbeb01000     0xffffbeb1f000    0x1e000     0x1000  ---p   /usr/lib/aarch64-linux-gnu/libX11-xcb.so.1.0.0
+      0xffffbeb1f000     0xffffbeb20000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/libX11-xcb.so.1.0.0
+      0xffffbeb20000     0xffffbeb21000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/libX11-xcb.so.1.0.0
+      0xffffbeb30000     0xffffbeb4c000    0x1c000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libxcb-glx.so.0.0.0
+      0xffffbeb4c000     0xffffbeb5e000    0x12000    0x1c000  ---p   /usr/lib/aarch64-linux-gnu/libxcb-glx.so.0.0.0
+      0xffffbeb5e000     0xffffbeb60000     0x2000    0x1e000  r--p   /usr/lib/aarch64-linux-gnu/libxcb-glx.so.0.0.0
+      0xffffbeb60000     0xffffbeb61000     0x1000    0x20000  rw-p   /usr/lib/aarch64-linux-gnu/libxcb-glx.so.0.0.0
+      0xffffbeb70000     0xffffbeb87000    0x17000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libdrm.so.2.125.0
+      0xffffbeb87000     0xffffbeb9f000    0x18000    0x17000  ---p   /usr/lib/aarch64-linux-gnu/libdrm.so.2.125.0
+      0xffffbeb9f000     0xffffbeba0000     0x1000    0x1f000  r--p   /usr/lib/aarch64-linux-gnu/libdrm.so.2.125.0
+      0xffffbeba0000     0xffffbeba1000     0x1000    0x20000  rw-p   /usr/lib/aarch64-linux-gnu/libdrm.so.2.125.0
+      0xffffbebb0000     0xffffbec00000    0x50000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libGLX_mesa.so.0.0.0
+      0xffffbec00000     0xffffbec0d000     0xd000    0x50000  ---p   /usr/lib/aarch64-linux-gnu/libGLX_mesa.so.0.0.0
+      0xffffbec0d000     0xffffbec10000     0x3000    0x5d000  r--p   /usr/lib/aarch64-linux-gnu/libGLX_mesa.so.0.0.0
+      0xffffbec10000     0xffffbec11000     0x1000    0x60000  rw-p   /usr/lib/aarch64-linux-gnu/libGLX_mesa.so.0.0.0
+      0xffffbec11000     0xffffbec12000     0x1000        0x0  rw-p   
+      0xffffbec20000     0xffffbef20000   0x300000        0x0  rw-p   
+      0xffffbef20000     0xffffbef30000    0x10000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libXpm.so.4.11.0
+      0xffffbef30000     0xffffbef3f000     0xf000    0x10000  ---p   /usr/lib/aarch64-linux-gnu/libXpm.so.4.11.0
+      0xffffbef3f000     0xffffbef40000     0x1000    0x1f000  r--p   /usr/lib/aarch64-linux-gnu/libXpm.so.4.11.0
+      0xffffbef40000     0xffffbef41000     0x1000    0x20000  rw-p   /usr/lib/aarch64-linux-gnu/libXpm.so.4.11.0
+      0xffffbef50000     0xffffbef69000    0x19000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libXmu.so.6.2.0
+      0xffffbef69000     0xffffbef7f000    0x16000    0x19000  ---p   /usr/lib/aarch64-linux-gnu/libXmu.so.6.2.0
+      0xffffbef7f000     0xffffbef80000     0x1000    0x1f000  r--p   /usr/lib/aarch64-linux-gnu/libXmu.so.6.2.0
+      0xffffbef80000     0xffffbef81000     0x1000    0x20000  rw-p   /usr/lib/aarch64-linux-gnu/libXmu.so.6.2.0
+      0xffffbef90000     0xffffbefa3000    0x13000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libXext.so.6.4.0
+      0xffffbefa3000     0xffffbefbf000    0x1c000    0x13000  ---p   /usr/lib/aarch64-linux-gnu/libXext.so.6.4.0
+      0xffffbefbf000     0xffffbefc0000     0x1000    0x1f000  r--p   /usr/lib/aarch64-linux-gnu/libXext.so.6.4.0
+      0xffffbefc0000     0xffffbefc1000     0x1000    0x20000  rw-p   /usr/lib/aarch64-linux-gnu/libXext.so.6.4.0
+      0xffffbefd0000     0xffffbefe7000    0x17000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libICE.so.6.3.0
+      0xffffbefe7000     0xffffbefff000    0x18000    0x17000  ---p   /usr/lib/aarch64-linux-gnu/libICE.so.6.3.0
+      0xffffbefff000     0xffffbf000000     0x1000    0x1f000  r--p   /usr/lib/aarch64-linux-gnu/libICE.so.6.3.0
+      0xffffbf000000     0xffffbf001000     0x1000    0x20000  rw-p   /usr/lib/aarch64-linux-gnu/libICE.so.6.3.0
+      0xffffbf001000     0xffffbf004000     0x3000        0x0  rw-p   
+      0xffffbf010000     0xffffbf018000     0x8000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libSM.so.6.0.1
+      0xffffbf018000     0xffffbf02f000    0x17000     0x8000  ---p   /usr/lib/aarch64-linux-gnu/libSM.so.6.0.1
+      0xffffbf02f000     0xffffbf030000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/libSM.so.6.0.1
+      0xffffbf030000     0xffffbf031000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/libSM.so.6.0.1
+      0xffffbf040000     0xffffbf047000     0x7000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libzzip-0.so.13.0.72
+      0xffffbf047000     0xffffbf05f000    0x18000     0x7000  ---p   /usr/lib/aarch64-linux-gnu/libzzip-0.so.13.0.72
+      0xffffbf05f000     0xffffbf060000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/libzzip-0.so.13.0.72
+      0xffffbf060000     0xffffbf061000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/libzzip-0.so.13.0.72
+      0xffffbf070000     0xffffbf0dc000    0x6c000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libXaw7.so.7.0.0
+      0xffffbf0dc000     0xffffbf0ef000    0x13000    0x6c000  ---p   /usr/lib/aarch64-linux-gnu/libXaw7.so.7.0.0
+      0xffffbf0ef000     0xffffbf0f0000     0x1000    0x6f000  r--p   /usr/lib/aarch64-linux-gnu/libXaw7.so.7.0.0
+      0xffffbf0f0000     0xffffbf0fa000     0xa000    0x70000  rw-p   /usr/lib/aarch64-linux-gnu/libXaw7.so.7.0.0
+      0xffffbf100000     0xffffbf166000    0x66000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libXt.so.6.0.0
+      0xffffbf166000     0xffffbf17f000    0x19000    0x66000  ---p   /usr/lib/aarch64-linux-gnu/libXt.so.6.0.0
+      0xffffbf17f000     0xffffbf180000     0x1000    0x6f000  r--p   /usr/lib/aarch64-linux-gnu/libXt.so.6.0.0
+      0xffffbf180000     0xffffbf185000     0x5000    0x70000  rw-p   /usr/lib/aarch64-linux-gnu/libXt.so.6.0.0
+      0xffffbf190000     0xffffbf1bd000    0x2d000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libOgrePaging.so.1.9.0
+      0xffffbf1bd000     0xffffbf1ce000    0x11000    0x2d000  ---p   /usr/lib/aarch64-linux-gnu/libOgrePaging.so.1.9.0
+      0xffffbf1ce000     0xffffbf1d0000     0x2000    0x2e000  r--p   /usr/lib/aarch64-linux-gnu/libOgrePaging.so.1.9.0
+      0xffffbf1d0000     0xffffbf1d1000     0x1000    0x30000  rw-p   /usr/lib/aarch64-linux-gnu/libOgrePaging.so.1.9.0
+      0xffffbf1e0000     0xffffbf22c000    0x4c000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libOgreOverlay.so.1.9.0
+      0xffffbf22c000     0xffffbf23c000    0x10000    0x4c000  ---p   /usr/lib/aarch64-linux-gnu/libOgreOverlay.so.1.9.0
+      0xffffbf23c000     0xffffbf240000     0x4000    0x4c000  r--p   /usr/lib/aarch64-linux-gnu/libOgreOverlay.so.1.9.0
+      0xffffbf240000     0xffffbf241000     0x1000    0x50000  rw-p   /usr/lib/aarch64-linux-gnu/libOgreOverlay.so.1.9.0
+      0xffffbf250000     0xffffbf2c8000    0x78000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libOgreTerrain.so.1.9.0
+      0xffffbf2c8000     0xffffbf2dc000    0x14000    0x78000  ---p   /usr/lib/aarch64-linux-gnu/libOgreTerrain.so.1.9.0
+      0xffffbf2dc000     0xffffbf2e0000     0x4000    0x7c000  r--p   /usr/lib/aarch64-linux-gnu/libOgreTerrain.so.1.9.0
+      0xffffbf2e0000     0xffffbf2e1000     0x1000    0x80000  rw-p   /usr/lib/aarch64-linux-gnu/libOgreTerrain.so.1.9.0
+      0xffffbf2f0000     0xffffbf7a9000   0x4b9000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libOgreMain.so.1.9.0
+      0xffffbf7a9000     0xffffbf7bb000    0x12000   0x4b9000  ---p   /usr/lib/aarch64-linux-gnu/libOgreMain.so.1.9.0
+      0xffffbf7bb000     0xffffbf7e0000    0x25000   0x4bb000  r--p   /usr/lib/aarch64-linux-gnu/libOgreMain.so.1.9.0
+      0xffffbf7e0000     0xffffbf7e3000     0x3000   0x4e0000  rw-p   /usr/lib/aarch64-linux-gnu/libOgreMain.so.1.9.0
+      0xffffbf7e3000     0xffffbf7ec000     0x9000        0x0  rw-p   
+      0xffffbf7f0000     0xffffbf800000    0x10000        0x0  ---p   
+      0xffffbf800000     0xffffc0000000   0x800000        0x0  rw-p   
+      0xffffc0000000     0xffffc002b000    0x2b000        0x0  rw-p   
+      0xffffc002b000     0xffffc4000000  0x3fd5000        0x0  ---p   
+      0xffffc4000000     0xffffc4021000    0x21000        0x0  rw-p   
+      0xffffc4021000     0xffffc8000000  0x3fdf000        0x0  ---p   
+      0xffffc8000000     0xffffcbbb1000  0x3bb1000        0x0  rw-p   
+      0xffffcbbb1000     0xffffcc000000   0x44f000        0x0  ---p   
+      0xffffcc010000     0xffffcc02e000    0x1e000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libboost_thread.so.1.83.0
+      0xffffcc02e000     0xffffcc03e000    0x10000    0x1e000  ---p   /usr/lib/aarch64-linux-gnu/libboost_thread.so.1.83.0
+      0xffffcc03e000     0xffffcc040000     0x2000    0x1e000  r--p   /usr/lib/aarch64-linux-gnu/libboost_thread.so.1.83.0
+      0xffffcc040000     0xffffcc041000     0x1000    0x20000  rw-p   /usr/lib/aarch64-linux-gnu/libboost_thread.so.1.83.0
+      0xffffcc050000     0xffffcc121000    0xd1000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libOgreRTShaderSystem.so.1.9.0
+      0xffffcc121000     0xffffcc13a000    0x19000    0xd1000  ---p   /usr/lib/aarch64-linux-gnu/libOgreRTShaderSystem.so.1.9.0
+      0xffffcc13a000     0xffffcc140000     0x6000    0xda000  r--p   /usr/lib/aarch64-linux-gnu/libOgreRTShaderSystem.so.1.9.0
+      0xffffcc140000     0xffffcc141000     0x1000    0xe0000  rw-p   /usr/lib/aarch64-linux-gnu/libOgreRTShaderSystem.so.1.9.0
+      0xffffcc141000     0xffffcc143000     0x2000        0x0  rw-p   
+      0xffffcc150000     0xffffcc1a6000    0x56000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libOpenGL.so.0.0.0
+      0xffffcc1a6000     0xffffcc1bb000    0x15000    0x56000  ---p   /usr/lib/aarch64-linux-gnu/libOpenGL.so.0.0.0
+      0xffffcc1bb000     0xffffcc1c0000     0x5000    0x5b000  r--p   /usr/lib/aarch64-linux-gnu/libOpenGL.so.0.0.0
+      0xffffcc1c0000     0xffffcc1c1000     0x1000    0x60000  rw-p   /usr/lib/aarch64-linux-gnu/libOpenGL.so.0.0.0
+      0xffffcc1d0000     0xffffcc3f8000   0x228000        0x0  r-xp   /opt/ros/jazzy/opt/gz_rendering_vendor/lib/gz-rendering-8/engine-plugins/libgz-rendering8-ogre.so.8.2.3
+      0xffffcc3f8000     0xffffcc405000     0xd000   0x228000  ---p   /opt/ros/jazzy/opt/gz_rendering_vendor/lib/gz-rendering-8/engine-plugins/libgz-rendering8-ogre.so.8.2.3
+      0xffffcc405000     0xffffcc490000    0x8b000   0x235000  r--p   /opt/ros/jazzy/opt/gz_rendering_vendor/lib/gz-rendering-8/engine-plugins/libgz-rendering8-ogre.so.8.2.3
+      0xffffcc490000     0xffffcc493000     0x3000   0x2c0000  rw-p   /opt/ros/jazzy/opt/gz_rendering_vendor/lib/gz-rendering-8/engine-plugins/libgz-rendering8-ogre.so.8.2.3
+      0xffffcc493000     0xffffcc49a000     0x7000        0x0  rw-p   
+      0xffffcc4a0000     0xffffcc4b0000    0x10000        0x0  ---p   
+      0xffffcc4b0000     0xffffcccb0000   0x800000        0x0  rw-p   
+      0xffffcccb0000     0xffffcccc0000    0x10000        0x0  ---p   
+      0xffffcccc0000     0xffffcd4c0000   0x800000        0x0  rw-p   
+      0xffffcd4c0000     0xffffcd4d0000    0x10000        0x0  ---p   
+      0xffffcd4d0000     0xffffcdcd0000   0x800000        0x0  rw-p   
+      0xffffcdcd0000     0xffffcdcfa000    0x2a000        0x0  r-xp   /opt/ros/jazzy/opt/gz_sim_vendor/lib/gz-sim-8/plugins/libgz-sim8-joint-state-publisher-system.so.8.15.0
+      0xffffcdcfa000     0xffffcdd0e000    0x14000    0x2a000  ---p   /opt/ros/jazzy/opt/gz_sim_vendor/lib/gz-sim-8/plugins/libgz-sim8-joint-state-publisher-system.so.8.15.0
+      0xffffcdd0e000     0xffffcdd10000     0x2000    0x2e000  r--p   /opt/ros/jazzy/opt/gz_sim_vendor/lib/gz-sim-8/plugins/libgz-sim8-joint-state-publisher-system.so.8.15.0
+      0xffffcdd10000     0xffffcdd11000     0x1000    0x30000  rw-p   /opt/ros/jazzy/opt/gz_sim_vendor/lib/gz-sim-8/plugins/libgz-sim8-joint-state-publisher-system.so.8.15.0
+      0xffffcdd20000     0xffffcdd4a000    0x2a000        0x0  r-xp   /opt/ros/jazzy/opt/gz_sim_vendor/lib/gz-sim-8/plugins/libgz-sim8-diff-drive-system.so.8.15.0
+      0xffffcdd4a000     0xffffcdd5f000    0x15000    0x2a000  ---p   /opt/ros/jazzy/opt/gz_sim_vendor/lib/gz-sim-8/plugins/libgz-sim8-diff-drive-system.so.8.15.0
+      0xffffcdd5f000     0xffffcdd60000     0x1000    0x2f000  r--p   /opt/ros/jazzy/opt/gz_sim_vendor/lib/gz-sim-8/plugins/libgz-sim8-diff-drive-system.so.8.15.0
+      0xffffcdd60000     0xffffcdd61000     0x1000    0x30000  rw-p   /opt/ros/jazzy/opt/gz_sim_vendor/lib/gz-sim-8/plugins/libgz-sim8-diff-drive-system.so.8.15.0
+      0xffffcdd70000     0xffffcdd7b000     0xb000        0x0  r-xp   /opt/ros/jazzy/opt/gz_sensors_vendor/lib/libgz-sensors8-imu.so.8.2.2
+      0xffffcdd7b000     0xffffcdd8f000    0x14000     0xb000  ---p   /opt/ros/jazzy/opt/gz_sensors_vendor/lib/libgz-sensors8-imu.so.8.2.2
+      0xffffcdd8f000     0xffffcdd90000     0x1000     0xf000  r--p   /opt/ros/jazzy/opt/gz_sensors_vendor/lib/libgz-sensors8-imu.so.8.2.2
+      0xffffcdd90000     0xffffcdd91000     0x1000    0x10000  rw-p   /opt/ros/jazzy/opt/gz_sensors_vendor/lib/libgz-sensors8-imu.so.8.2.2
+      0xffffcdda0000     0xffffcddca000    0x2a000        0x0  r-xp   /opt/ros/jazzy/opt/gz_sim_vendor/lib/gz-sim-8/plugins/libgz-sim8-imu-system.so.8.15.0
+      0xffffcddca000     0xffffcddde000    0x14000    0x2a000  ---p   /opt/ros/jazzy/opt/gz_sim_vendor/lib/gz-sim-8/plugins/libgz-sim8-imu-system.so.8.15.0
+      0xffffcddde000     0xffffcdde0000     0x2000    0x2e000  r--p   /opt/ros/jazzy/opt/gz_sim_vendor/lib/gz-sim-8/plugins/libgz-sim8-imu-system.so.8.15.0
+      0xffffcdde0000     0xffffcdde1000     0x1000    0x30000  rw-p   /opt/ros/jazzy/opt/gz_sim_vendor/lib/gz-sim-8/plugins/libgz-sim8-imu-system.so.8.15.0
+      0xffffcddf0000     0xffffcde00000    0x10000        0x0  ---p   
+      0xffffcde00000     0xffffce600000   0x800000        0x0  rw-p   
+      0xffffce600000     0xffffce60b000     0xb000        0x0  r-xp   /opt/ros/jazzy/opt/gz_sensors_vendor/lib/libgz-sensors8-lidar.so.8.2.2
+      0xffffce60b000     0xffffce61f000    0x14000     0xb000  ---p   /opt/ros/jazzy/opt/gz_sensors_vendor/lib/libgz-sensors8-lidar.so.8.2.2
+      0xffffce61f000     0xffffce620000     0x1000     0xf000  r--p   /opt/ros/jazzy/opt/gz_sensors_vendor/lib/libgz-sensors8-lidar.so.8.2.2
+      0xffffce620000     0xffffce621000     0x1000    0x10000  rw-p   /opt/ros/jazzy/opt/gz_sensors_vendor/lib/libgz-sensors8-lidar.so.8.2.2
+      0xffffce630000     0xffffce6c8000    0x98000        0x0  r-xp   /opt/ros/jazzy/opt/gz_rendering_vendor/lib/libgz-rendering8.so.8.2.3
+      0xffffce6c8000     0xffffce6df000    0x17000    0x98000  ---p   /opt/ros/jazzy/opt/gz_rendering_vendor/lib/libgz-rendering8.so.8.2.3
+      0xffffce6df000     0xffffce6f0000    0x11000    0x9f000  r--p   /opt/ros/jazzy/opt/gz_rendering_vendor/lib/libgz-rendering8.so.8.2.3
+      0xffffce6f0000     0xffffce6f1000     0x1000    0xb0000  rw-p   /opt/ros/jazzy/opt/gz_rendering_vendor/lib/libgz-rendering8.so.8.2.3
+      0xffffce6f1000     0xffffce6f4000     0x3000        0x0  rw-p   
+      0xffffce700000     0xffffce722000    0x22000        0x0  r-xp   /opt/ros/jazzy/opt/gz_sensors_vendor/lib/libgz-sensors8.so.8.2.2
+      0xffffce722000     0xffffce73f000    0x1d000    0x22000  ---p   /opt/ros/jazzy/opt/gz_sensors_vendor/lib/libgz-sensors8.so.8.2.2
+      0xffffce73f000     0xffffce740000     0x1000    0x2f000  r--p   /opt/ros/jazzy/opt/gz_sensors_vendor/lib/libgz-sensors8.so.8.2.2
+      0xffffce740000     0xffffce741000     0x1000    0x30000  rw-p   /opt/ros/jazzy/opt/gz_sensors_vendor/lib/libgz-sensors8.so.8.2.2
+      0xffffce750000     0xffffce75e000     0xe000        0x0  r-xp   /opt/ros/jazzy/opt/gz_sensors_vendor/lib/libgz-sensors8-rendering.so.8.2.2
+      0xffffce75e000     0xffffce76f000    0x11000     0xe000  ---p   /opt/ros/jazzy/opt/gz_sensors_vendor/lib/libgz-sensors8-rendering.so.8.2.2
+      0xffffce76f000     0xffffce770000     0x1000     0xf000  r--p   /opt/ros/jazzy/opt/gz_sensors_vendor/lib/libgz-sensors8-rendering.so.8.2.2
+      0xffffce770000     0xffffce771000     0x1000    0x10000  rw-p   /opt/ros/jazzy/opt/gz_sensors_vendor/lib/libgz-sensors8-rendering.so.8.2.2
+      0xffffce780000     0xffffce795000    0x15000        0x0  r-xp   /opt/ros/jazzy/opt/gz_sensors_vendor/lib/libgz-sensors8-camera.so.8.2.2
+      0xffffce795000     0xffffce7af000    0x1a000    0x15000  ---p   /opt/ros/jazzy/opt/gz_sensors_vendor/lib/libgz-sensors8-camera.so.8.2.2
+      0xffffce7af000     0xffffce7b0000     0x1000    0x1f000  r--p   /opt/ros/jazzy/opt/gz_sensors_vendor/lib/libgz-sensors8-camera.so.8.2.2
+      0xffffce7b0000     0xffffce7b1000     0x1000    0x20000  rw-p   /opt/ros/jazzy/opt/gz_sensors_vendor/lib/libgz-sensors8-camera.so.8.2.2
+      0xffffce7c0000     0xffffce7d3000    0x13000        0x0  r-xp   /opt/ros/jazzy/opt/gz_sensors_vendor/lib/libgz-sensors8-wide_angle_camera.so.8.2.2
+      0xffffce7d3000     0xffffce7ef000    0x1c000    0x13000  ---p   /opt/ros/jazzy/opt/gz_sensors_vendor/lib/libgz-sensors8-wide_angle_camera.so.8.2.2
+      0xffffce7ef000     0xffffce7f0000     0x1000    0x1f000  r--p   /opt/ros/jazzy/opt/gz_sensors_vendor/lib/libgz-sensors8-wide_angle_camera.so.8.2.2
+      0xffffce7f0000     0xffffce7f1000     0x1000    0x20000  rw-p   /opt/ros/jazzy/opt/gz_sensors_vendor/lib/libgz-sensors8-wide_angle_camera.so.8.2.2
+      0xffffce800000     0xffffce812000    0x12000        0x0  r-xp   /opt/ros/jazzy/opt/gz_sensors_vendor/lib/libgz-sensors8-thermal_camera.so.8.2.2
+      0xffffce812000     0xffffce82f000    0x1d000    0x12000  ---p   /opt/ros/jazzy/opt/gz_sensors_vendor/lib/libgz-sensors8-thermal_camera.so.8.2.2
+      0xffffce82f000     0xffffce830000     0x1000    0x1f000  r--p   /opt/ros/jazzy/opt/gz_sensors_vendor/lib/libgz-sensors8-thermal_camera.so.8.2.2
+      0xffffce830000     0xffffce831000     0x1000    0x20000  rw-p   /opt/ros/jazzy/opt/gz_sensors_vendor/lib/libgz-sensors8-thermal_camera.so.8.2.2
+      0xffffce840000     0xffffce853000    0x13000        0x0  r-xp   /opt/ros/jazzy/opt/gz_sensors_vendor/lib/libgz-sensors8-segmentation_camera.so.8.2.2
+      0xffffce853000     0xffffce86f000    0x1c000    0x13000  ---p   /opt/ros/jazzy/opt/gz_sensors_vendor/lib/libgz-sensors8-segmentation_camera.so.8.2.2
+      0xffffce86f000     0xffffce870000     0x1000    0x1f000  r--p   /opt/ros/jazzy/opt/gz_sensors_vendor/lib/libgz-sensors8-segmentation_camera.so.8.2.2
+      0xffffce870000     0xffffce871000     0x1000    0x20000  rw-p   /opt/ros/jazzy/opt/gz_sensors_vendor/lib/libgz-sensors8-segmentation_camera.so.8.2.2
+      0xffffce880000     0xffffce892000    0x12000        0x0  r-xp   /opt/ros/jazzy/opt/gz_sensors_vendor/lib/libgz-sensors8-rgbd_camera.so.8.2.2
+      0xffffce892000     0xffffce8af000    0x1d000    0x12000  ---p   /opt/ros/jazzy/opt/gz_sensors_vendor/lib/libgz-sensors8-rgbd_camera.so.8.2.2
+      0xffffce8af000     0xffffce8b0000     0x1000    0x1f000  r--p   /opt/ros/jazzy/opt/gz_sensors_vendor/lib/libgz-sensors8-rgbd_camera.so.8.2.2
+      0xffffce8b0000     0xffffce8b1000     0x1000    0x20000  rw-p   /opt/ros/jazzy/opt/gz_sensors_vendor/lib/libgz-sensors8-rgbd_camera.so.8.2.2
+      0xffffce8c0000     0xffffce8cf000     0xf000        0x0  r-xp   /opt/ros/jazzy/opt/gz_sensors_vendor/lib/libgz-sensors8-gpu_lidar.so.8.2.2
+      0xffffce8cf000     0xffffce8df000    0x10000     0xf000  ---p   /opt/ros/jazzy/opt/gz_sensors_vendor/lib/libgz-sensors8-gpu_lidar.so.8.2.2
+      0xffffce8df000     0xffffce8e0000     0x1000     0xf000  r--p   /opt/ros/jazzy/opt/gz_sensors_vendor/lib/libgz-sensors8-gpu_lidar.so.8.2.2
+      0xffffce8e0000     0xffffce8e1000     0x1000    0x10000  rw-p   /opt/ros/jazzy/opt/gz_sensors_vendor/lib/libgz-sensors8-gpu_lidar.so.8.2.2
+      0xffffce8f0000     0xffffce904000    0x14000        0x0  r-xp   /opt/ros/jazzy/opt/gz_sensors_vendor/lib/libgz-sensors8-depth_camera.so.8.2.2
+      0xffffce904000     0xffffce91f000    0x1b000    0x14000  ---p   /opt/ros/jazzy/opt/gz_sensors_vendor/lib/libgz-sensors8-depth_camera.so.8.2.2
+      0xffffce91f000     0xffffce920000     0x1000    0x1f000  r--p   /opt/ros/jazzy/opt/gz_sensors_vendor/lib/libgz-sensors8-depth_camera.so.8.2.2
+      0xffffce920000     0xffffce921000     0x1000    0x20000  rw-p   /opt/ros/jazzy/opt/gz_sensors_vendor/lib/libgz-sensors8-depth_camera.so.8.2.2
+      0xffffce930000     0xffffce946000    0x16000        0x0  r-xp   /opt/ros/jazzy/opt/gz_sensors_vendor/lib/libgz-sensors8-boundingbox_camera.so.8.2.2
+      0xffffce946000     0xffffce95f000    0x19000    0x16000  ---p   /opt/ros/jazzy/opt/gz_sensors_vendor/lib/libgz-sensors8-boundingbox_camera.so.8.2.2
+      0xffffce95f000     0xffffce960000     0x1000    0x1f000  r--p   /opt/ros/jazzy/opt/gz_sensors_vendor/lib/libgz-sensors8-boundingbox_camera.so.8.2.2
+      0xffffce960000     0xffffce961000     0x1000    0x20000  rw-p   /opt/ros/jazzy/opt/gz_sensors_vendor/lib/libgz-sensors8-boundingbox_camera.so.8.2.2
+      0xffffce970000     0xffffcea48000    0xd8000        0x0  r-xp   /opt/ros/jazzy/opt/gz_sim_vendor/lib/libgz-sim8-rendering.so.8.15.0
+      0xffffcea48000     0xffffcea5c000    0x14000    0xd8000  ---p   /opt/ros/jazzy/opt/gz_sim_vendor/lib/libgz-sim8-rendering.so.8.15.0
+      0xffffcea5c000     0xffffcea60000     0x4000    0xdc000  r--p   /opt/ros/jazzy/opt/gz_sim_vendor/lib/libgz-sim8-rendering.so.8.15.0
+      0xffffcea60000     0xffffcea62000     0x2000    0xe0000  rw-p   /opt/ros/jazzy/opt/gz_sim_vendor/lib/libgz-sim8-rendering.so.8.15.0
+      0xffffcea62000     0xffffcea63000     0x1000        0x0  rw-p   
+      0xffffcea70000     0xffffceab3000    0x43000        0x0  r-xp   /opt/ros/jazzy/opt/gz_sim_vendor/lib/gz-sim-8/plugins/libgz-sim8-sensors-system.so.8.15.0
+      0xffffceab3000     0xffffceace000    0x1b000    0x43000  ---p   /opt/ros/jazzy/opt/gz_sim_vendor/lib/gz-sim-8/plugins/libgz-sim8-sensors-system.so.8.15.0
+      0xffffceace000     0xffffcead0000     0x2000    0x4e000  r--p   /opt/ros/jazzy/opt/gz_sim_vendor/lib/gz-sim-8/plugins/libgz-sim8-sensors-system.so.8.15.0
+      0xffffcead0000     0xffffcead1000     0x1000    0x50000  rw-p   /opt/ros/jazzy/opt/gz_sim_vendor/lib/gz-sim-8/plugins/libgz-sim8-sensors-system.so.8.15.0
+      0xffffceae0000     0xffffceb57000    0x77000        0x0  r-xp   /opt/ros/jazzy/opt/gz_sim_vendor/lib/gz-sim-8/plugins/libgz-sim8-user-commands-system.so.8.15.0
+      0xffffceb57000     0xffffceb6c000    0x15000    0x77000  ---p   /opt/ros/jazzy/opt/gz_sim_vendor/lib/gz-sim-8/plugins/libgz-sim8-user-commands-system.so.8.15.0
+      0xffffceb6c000     0xffffceb70000     0x4000    0x7c000  r--p   /opt/ros/jazzy/opt/gz_sim_vendor/lib/gz-sim-8/plugins/libgz-sim8-user-commands-system.so.8.15.0
+      0xffffceb70000     0xffffceb71000     0x1000    0x80000  rw-p   /opt/ros/jazzy/opt/gz_sim_vendor/lib/gz-sim-8/plugins/libgz-sim8-user-commands-system.so.8.15.0
+      0xffffceb80000     0xffffceb87000     0x7000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libccd.so.2.0
+      0xffffceb87000     0xffffceb96000     0xf000     0x7000  ---p   /usr/lib/aarch64-linux-gnu/libccd.so.2.0
+      0xffffceb96000     0xffffceb97000     0x1000     0x6000  r--p   /usr/lib/aarch64-linux-gnu/libccd.so.2.0
+      0xffffceb97000     0xffffceb98000     0x1000     0x7000  rw-p   /usr/lib/aarch64-linux-gnu/libccd.so.2.0
+      0xffffceba0000     0xffffceba5000     0x5000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/liboctomath.so.1.9.7
+      0xffffceba5000     0xffffcebbf000    0x1a000     0x5000  ---p   /usr/lib/aarch64-linux-gnu/liboctomath.so.1.9.7
+      0xffffcebbf000     0xffffcebc0000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/liboctomath.so.1.9.7
+      0xffffcebc0000     0xffffcebc1000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/liboctomath.so.1.9.7
+      0xffffcebd0000     0xffffcec0b000    0x3b000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/liboctomap.so.1.9.7
+      0xffffcec0b000     0xffffcec1e000    0x13000    0x3b000  ---p   /usr/lib/aarch64-linux-gnu/liboctomap.so.1.9.7
+      0xffffcec1e000     0xffffcec20000     0x2000    0x3e000  r--p   /usr/lib/aarch64-linux-gnu/liboctomap.so.1.9.7
+      0xffffcec20000     0xffffcec21000     0x1000    0x40000  rw-p   /usr/lib/aarch64-linux-gnu/liboctomap.so.1.9.7
+      0xffffcec30000     0xffffcf109000   0x4d9000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libfcl.so.0.7.0
+      0xffffcf109000     0xffffcf119000    0x10000   0x4d9000  ---p   /usr/lib/aarch64-linux-gnu/libfcl.so.0.7.0
+      0xffffcf119000     0xffffcf150000    0x37000   0x4d9000  r--p   /usr/lib/aarch64-linux-gnu/libfcl.so.0.7.0
+      0xffffcf150000     0xffffcf151000     0x1000   0x510000  rw-p   /usr/lib/aarch64-linux-gnu/libfcl.so.0.7.0
+      0xffffcf151000     0xffffcf155000     0x4000        0x0  rw-p   
+      0xffffcf160000     0xffffcf16a000     0xa000        0x0  r-xp   /opt/ros/jazzy/opt/gz_dartsim_vendor/lib/libdart-external-odelcpsolver.so.6.13.2
+      0xffffcf16a000     0xffffcf17f000    0x15000     0xa000  ---p   /opt/ros/jazzy/opt/gz_dartsim_vendor/lib/libdart-external-odelcpsolver.so.6.13.2
+      0xffffcf17f000     0xffffcf180000     0x1000     0xf000  r--p   /opt/ros/jazzy/opt/gz_dartsim_vendor/lib/libdart-external-odelcpsolver.so.6.13.2
+      0xffffcf180000     0xffffcf181000     0x1000    0x10000  rw-p   /opt/ros/jazzy/opt/gz_dartsim_vendor/lib/libdart-external-odelcpsolver.so.6.13.2
+      0xffffcf190000     0xffffcf282000    0xf2000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libode.so.8.0.2
+      0xffffcf282000     0xffffcf29d000    0x1b000    0xf2000  ---p   /usr/lib/aarch64-linux-gnu/libode.so.8.0.2
+      0xffffcf29d000     0xffffcf2a0000     0x3000    0xfd000  r--p   /usr/lib/aarch64-linux-gnu/libode.so.8.0.2
+      0xffffcf2a0000     0xffffcf2a1000     0x1000   0x100000  rw-p   /usr/lib/aarch64-linux-gnu/libode.so.8.0.2
+      0xffffcf2a1000     0xffffcf2a8000     0x7000        0x0  rw-p   
+      0xffffcf2b0000     0xffffcf368000    0xb8000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libBulletCollision.so.3.24
+      0xffffcf368000     0xffffcf37a000    0x12000    0xb8000  ---p   /usr/lib/aarch64-linux-gnu/libBulletCollision.so.3.24
+      0xffffcf37a000     0xffffcf380000     0x6000    0xba000  r--p   /usr/lib/aarch64-linux-gnu/libBulletCollision.so.3.24
+      0xffffcf380000     0xffffcf381000     0x1000    0xc0000  rw-p   /usr/lib/aarch64-linux-gnu/libBulletCollision.so.3.24
+      0xffffcf381000     0xffffcf382000     0x1000        0x0  rw-p   
+      0xffffcf390000     0xffffcf7b6000   0x426000        0x0  r-xp   /opt/ros/jazzy/opt/gz_dartsim_vendor/lib/libdart.so.6.13.2
+      0xffffcf7b6000     0xffffcf7cd000    0x17000   0x426000  ---p   /opt/ros/jazzy/opt/gz_dartsim_vendor/lib/libdart.so.6.13.2
+      0xffffcf7cd000     0xffffcf820000    0x53000   0x42d000  r--p   /opt/ros/jazzy/opt/gz_dartsim_vendor/lib/libdart.so.6.13.2
+      0xffffcf820000     0xffffcf824000     0x4000   0x480000  rw-p   /opt/ros/jazzy/opt/gz_dartsim_vendor/lib/libdart.so.6.13.2
+      0xffffcf824000     0xffffcf828000     0x4000        0x0  rw-p   
+      0xffffcf830000     0xffffcf849000    0x19000        0x0  r-xp   /opt/ros/jazzy/lib/aarch64-linux-gnu/liburdfdom_world.so.4.0
+      0xffffcf849000     0xffffcf85f000    0x16000    0x19000  ---p   /opt/ros/jazzy/lib/aarch64-linux-gnu/liburdfdom_world.so.4.0
+      0xffffcf85f000     0xffffcf860000     0x1000    0x1f000  r--p   /opt/ros/jazzy/lib/aarch64-linux-gnu/liburdfdom_world.so.4.0
+      0xffffcf860000     0xffffcf861000     0x1000    0x20000  rw-p   /opt/ros/jazzy/lib/aarch64-linux-gnu/liburdfdom_world.so.4.0
+      0xffffcf870000     0xffffcf880000    0x10000        0x0  r-xp   /opt/ros/jazzy/opt/gz_dartsim_vendor/lib/libdart-collision-ode.so.6.13.2
+      0xffffcf880000     0xffffcf88f000     0xf000    0x10000  ---p   /opt/ros/jazzy/opt/gz_dartsim_vendor/lib/libdart-collision-ode.so.6.13.2
+      0xffffcf88f000     0xffffcf890000     0x1000     0xf000  r--p   /opt/ros/jazzy/opt/gz_dartsim_vendor/lib/libdart-collision-ode.so.6.13.2
+      0xffffcf890000     0xffffcf891000     0x1000    0x10000  rw-p   /opt/ros/jazzy/opt/gz_dartsim_vendor/lib/libdart-collision-ode.so.6.13.2
+      0xffffcf8a0000     0xffffcf8b7000    0x17000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libLinearMath.so.3.24
+      0xffffcf8b7000     0xffffcf8cf000    0x18000    0x17000  ---p   /usr/lib/aarch64-linux-gnu/libLinearMath.so.3.24
+      0xffffcf8cf000     0xffffcf8d0000     0x1000    0x1f000  r--p   /usr/lib/aarch64-linux-gnu/libLinearMath.so.3.24
+      0xffffcf8d0000     0xffffcf8d7000     0x7000    0x20000  rw-p   /usr/lib/aarch64-linux-gnu/libLinearMath.so.3.24
+      0xffffcf8e0000     0xffffcf8f8000    0x18000        0x0  r-xp   /opt/ros/jazzy/opt/gz_dartsim_vendor/lib/libdart-collision-bullet.so.6.13.2
+      0xffffcf8f8000     0xffffcf90f000    0x17000    0x18000  ---p   /opt/ros/jazzy/opt/gz_dartsim_vendor/lib/libdart-collision-bullet.so.6.13.2
+      0xffffcf90f000     0xffffcf910000     0x1000    0x1f000  r--p   /opt/ros/jazzy/opt/gz_dartsim_vendor/lib/libdart-collision-bullet.so.6.13.2
+      0xffffcf910000     0xffffcf911000     0x1000    0x20000  rw-p   /opt/ros/jazzy/opt/gz_dartsim_vendor/lib/libdart-collision-bullet.so.6.13.2
+      0xffffcf920000     0xffffcfb53000   0x233000        0x0  r-xp   /opt/ros/jazzy/opt/gz_physics_vendor/lib/gz-physics-7/engine-plugins/libgz-physics7-dartsim-plugin.so.7.8.0
+      0xffffcfb53000     0xffffcfb61000     0xe000   0x233000  ---p   /opt/ros/jazzy/opt/gz_physics_vendor/lib/gz-physics-7/engine-plugins/libgz-physics7-dartsim-plugin.so.7.8.0
+      0xffffcfb61000     0xffffcfb80000    0x1f000   0x241000  r--p   /opt/ros/jazzy/opt/gz_physics_vendor/lib/gz-physics-7/engine-plugins/libgz-physics7-dartsim-plugin.so.7.8.0
+      0xffffcfb80000     0xffffcfb81000     0x1000   0x260000  rw-p   /opt/ros/jazzy/opt/gz_physics_vendor/lib/gz-physics-7/engine-plugins/libgz-physics7-dartsim-plugin.so.7.8.0
+      0xffffcfb81000     0xffffcfb82000     0x1000        0x0  rw-p   
+      0xffffcfb90000     0xffffcfb93000     0x3000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libplds4.so
+      0xffffcfb93000     0xffffcfbaf000    0x1c000     0x3000  ---p   /usr/lib/aarch64-linux-gnu/libplds4.so
+      0xffffcfbaf000     0xffffcfbb0000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/libplds4.so
+      0xffffcfbb0000     0xffffcfbb1000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/libplds4.so
+      0xffffcfbc0000     0xffffcfd47000   0x187000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libgfortran.so.5.0.0
+      0xffffcfd47000     0xffffcfd5f000    0x18000   0x187000  ---p   /usr/lib/aarch64-linux-gnu/libgfortran.so.5.0.0
+      0xffffcfd5f000     0xffffcfd60000     0x1000   0x18f000  r--p   /usr/lib/aarch64-linux-gnu/libgfortran.so.5.0.0
+      0xffffcfd60000     0xffffcfd62000     0x2000   0x190000  rw-p   /usr/lib/aarch64-linux-gnu/libgfortran.so.5.0.0
+      0xffffcfd70000     0xffffcffd4000   0x264000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libgeos.so.3.12.1
+      0xffffcffd4000     0xffffcffe9000    0x15000   0x264000  ---p   /usr/lib/aarch64-linux-gnu/libgeos.so.3.12.1
+      0xffffcffe9000     0xffffcfff0000     0x7000   0x269000  r--p   /usr/lib/aarch64-linux-gnu/libgeos.so.3.12.1
+      0xffffcfff0000     0xffffcfff1000     0x1000   0x270000  rw-p   /usr/lib/aarch64-linux-gnu/libgeos.so.3.12.1
+      0xffffd0000000     0xffffd0021000    0x21000        0x0  rw-p   
+      0xffffd0021000     0xffffd4000000  0x3fdf000        0x0  ---p   
+      0xffffd4020000     0xffffd404b000    0x2b000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libnssutil3.so
+      0xffffd404b000     0xffffd4059000     0xe000    0x2b000  ---p   /usr/lib/aarch64-linux-gnu/libnssutil3.so
+      0xffffd4059000     0xffffd4060000     0x7000    0x39000  r--p   /usr/lib/aarch64-linux-gnu/libnssutil3.so
+      0xffffd4060000     0xffffd4061000     0x1000    0x40000  rw-p   /usr/lib/aarch64-linux-gnu/libnssutil3.so
+      0xffffd4070000     0xffffd409d000    0x2d000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libtirpc.so.3.0.0
+      0xffffd409d000     0xffffd40af000    0x12000    0x2d000  ---p   /usr/lib/aarch64-linux-gnu/libtirpc.so.3.0.0
+      0xffffd40af000     0xffffd40b0000     0x1000    0x2f000  r--p   /usr/lib/aarch64-linux-gnu/libtirpc.so.3.0.0
+      0xffffd40b0000     0xffffd40b1000     0x1000    0x30000  rw-p   /usr/lib/aarch64-linux-gnu/libtirpc.so.3.0.0
+      0xffffd40c0000     0xffffd4131000    0x71000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/librttopo.so.1.1.0
+      0xffffd4131000     0xffffd414f000    0x1e000    0x71000  ---p   /usr/lib/aarch64-linux-gnu/librttopo.so.1.1.0
+      0xffffd414f000     0xffffd4150000     0x1000    0x7f000  r--p   /usr/lib/aarch64-linux-gnu/librttopo.so.1.1.0
+      0xffffd4150000     0xffffd4151000     0x1000    0x80000  rw-p   /usr/lib/aarch64-linux-gnu/librttopo.so.1.1.0
+      0xffffd4160000     0xffffd4166000     0x6000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libfygm.so.0.0.0
+      0xffffd4166000     0xffffd417f000    0x19000     0x6000  ---p   /usr/lib/aarch64-linux-gnu/libfygm.so.0.0.0
+      0xffffd417f000     0xffffd4180000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/libfygm.so.0.0.0
+      0xffffd4180000     0xffffd4181000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/libfygm.so.0.0.0
+      0xffffd4190000     0xffffd4199000     0x9000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libfyut.so.0.0.0
+      0xffffd4199000     0xffffd41af000    0x16000     0x9000  ---p   /usr/lib/aarch64-linux-gnu/libfyut.so.0.0.0
+      0xffffd41af000     0xffffd41b0000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/libfyut.so.0.0.0
+      0xffffd41b0000     0xffffd41b1000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/libfyut.so.0.0.0
+      0xffffd41c0000     0xffffd41d6000    0x16000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/liburiparser.so.1.0.30
+      0xffffd41d6000     0xffffd41ef000    0x19000    0x16000  ---p   /usr/lib/aarch64-linux-gnu/liburiparser.so.1.0.30
+      0xffffd41ef000     0xffffd41f0000     0x1000    0x1f000  r--p   /usr/lib/aarch64-linux-gnu/liburiparser.so.1.0.30
+      0xffffd41f0000     0xffffd41f1000     0x1000    0x20000  rw-p   /usr/lib/aarch64-linux-gnu/liburiparser.so.1.0.30
+      0xffffd4200000     0xffffd4202000     0x2000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libsz.so.2.0.1
+      0xffffd4202000     0xffffd421f000    0x1d000     0x2000  ---p   /usr/lib/aarch64-linux-gnu/libsz.so.2.0.1
+      0xffffd421f000     0xffffd4220000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/libsz.so.2.0.1
+      0xffffd4220000     0xffffd4221000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/libsz.so.2.0.1
+      0xffffd4230000     0xffffd424f000    0x1f000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libhdf5_serial_hl.so.100.1.7
+      0xffffd424f000     0xffffd425f000    0x10000    0x1f000  ---p   /usr/lib/aarch64-linux-gnu/libhdf5_serial_hl.so.100.1.7
+      0xffffd425f000     0xffffd4260000     0x1000    0x1f000  r--p   /usr/lib/aarch64-linux-gnu/libhdf5_serial_hl.so.100.1.7
+      0xffffd4260000     0xffffd4261000     0x1000    0x20000  rw-p   /usr/lib/aarch64-linux-gnu/libhdf5_serial_hl.so.100.1.7
+      0xffffd4261000     0xffffd4262000     0x1000        0x0  rw-p   
+      0xffffd4270000     0xffffd42ad000    0x3d000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libnspr4.so
+      0xffffd42ad000     0xffffd42bf000    0x12000    0x3d000  ---p   /usr/lib/aarch64-linux-gnu/libnspr4.so
+      0xffffd42bf000     0xffffd42c0000     0x1000    0x3f000  r--p   /usr/lib/aarch64-linux-gnu/libnspr4.so
+      0xffffd42c0000     0xffffd42c1000     0x1000    0x40000  rw-p   /usr/lib/aarch64-linux-gnu/libnspr4.so
+      0xffffd42c1000     0xffffd42c4000     0x3000        0x0  rw-p   
+      0xffffd42d0000     0xffffd42d4000     0x4000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libplc4.so
+      0xffffd42d4000     0xffffd42ef000    0x1b000     0x4000  ---p   /usr/lib/aarch64-linux-gnu/libplc4.so
+      0xffffd42ef000     0xffffd42f0000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/libplc4.so
+      0xffffd42f0000     0xffffd42f1000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/libplc4.so
+      0xffffd4300000     0xffffd4324000    0x24000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libsmime3.so
+      0xffffd4324000     0xffffd433d000    0x19000    0x24000  ---p   /usr/lib/aarch64-linux-gnu/libsmime3.so
+      0xffffd433d000     0xffffd4340000     0x3000    0x2d000  r--p   /usr/lib/aarch64-linux-gnu/libsmime3.so
+      0xffffd4340000     0xffffd4341000     0x1000    0x30000  rw-p   /usr/lib/aarch64-linux-gnu/libsmime3.so
+      0xffffd4350000     0xffffd4461000   0x111000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libnss3.so
+      0xffffd4461000     0xffffd447a000    0x19000   0x111000  ---p   /usr/lib/aarch64-linux-gnu/libnss3.so
+      0xffffd447a000     0xffffd4480000     0x6000   0x11a000  r--p   /usr/lib/aarch64-linux-gnu/libnss3.so
+      0xffffd4480000     0xffffd4481000     0x1000   0x120000  rw-p   /usr/lib/aarch64-linux-gnu/libnss3.so
+      0xffffd4481000     0xffffd4483000     0x2000        0x0  rw-p   
+      0xffffd4490000     0xffffd44e0000    0x50000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libfontconfig.so.1.12.1
+      0xffffd44e0000     0xffffd44ee000     0xe000    0x50000  ---p   /usr/lib/aarch64-linux-gnu/libfontconfig.so.1.12.1
+      0xffffd44ee000     0xffffd44f0000     0x2000    0x5e000  r--p   /usr/lib/aarch64-linux-gnu/libfontconfig.so.1.12.1
+      0xffffd44f0000     0xffffd44f1000     0x1000    0x60000  rw-p   /usr/lib/aarch64-linux-gnu/libfontconfig.so.1.12.1
+      0xffffd4500000     0xffffd45ac000    0xac000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libcurl-gnutls.so.4.8.0
+      0xffffd45ac000     0xffffd45bc000    0x10000    0xac000  ---p   /usr/lib/aarch64-linux-gnu/libcurl-gnutls.so.4.8.0
+      0xffffd45bc000     0xffffd45c0000     0x4000    0xac000  r--p   /usr/lib/aarch64-linux-gnu/libcurl-gnutls.so.4.8.0
+      0xffffd45c0000     0xffffd45c3000     0x3000    0xb0000  rw-p   /usr/lib/aarch64-linux-gnu/libcurl-gnutls.so.4.8.0
+      0xffffd45d0000     0xffffd4634000    0x64000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libsuperlu.so.6.0.1
+      0xffffd4634000     0xffffd464f000    0x1b000    0x64000  ---p   /usr/lib/aarch64-linux-gnu/libsuperlu.so.6.0.1
+      0xffffd464f000     0xffffd4650000     0x1000    0x6f000  r--p   /usr/lib/aarch64-linux-gnu/libsuperlu.so.6.0.1
+      0xffffd4650000     0xffffd4651000     0x1000    0x70000  rw-p   /usr/lib/aarch64-linux-gnu/libsuperlu.so.6.0.1
+      0xffffd4660000     0xffffd469c000    0x3c000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libarpack.so.2.1.0
+      0xffffd469c000     0xffffd46af000    0x13000    0x3c000  ---p   /usr/lib/aarch64-linux-gnu/libarpack.so.2.1.0
+      0xffffd46af000     0xffffd46b0000     0x1000    0x3f000  r--p   /usr/lib/aarch64-linux-gnu/libarpack.so.2.1.0
+      0xffffd46b0000     0xffffd46b1000     0x1000    0x40000  rw-p   /usr/lib/aarch64-linux-gnu/libarpack.so.2.1.0
+      0xffffd46c0000     0xffffd4c54000   0x594000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/lapack/liblapack.so.3.12.0
+      0xffffd4c54000     0xffffd4c6c000    0x18000   0x594000  ---p   /usr/lib/aarch64-linux-gnu/lapack/liblapack.so.3.12.0
+      0xffffd4c6c000     0xffffd4c70000     0x4000   0x59c000  r--p   /usr/lib/aarch64-linux-gnu/lapack/liblapack.so.3.12.0
+      0xffffd4c70000     0xffffd4c72000     0x2000   0x5a0000  rw-p   /usr/lib/aarch64-linux-gnu/lapack/liblapack.so.3.12.0
+      0xffffd4c80000     0xffffd4cee000    0x6e000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/blas/libblas.so.3.12.0
+      0xffffd4cee000     0xffffd4cff000    0x11000    0x6e000  ---p   /usr/lib/aarch64-linux-gnu/blas/libblas.so.3.12.0
+      0xffffd4cff000     0xffffd4d00000     0x1000    0x6f000  r--p   /usr/lib/aarch64-linux-gnu/blas/libblas.so.3.12.0
+      0xffffd4d00000     0xffffd4d01000     0x1000    0x70000  rw-p   /usr/lib/aarch64-linux-gnu/blas/libblas.so.3.12.0
+      0xffffd4d10000     0xffffd4d18000     0x8000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libsnappy.so.1.1.10
+      0xffffd4d18000     0xffffd4d2f000    0x17000     0x8000  ---p   /usr/lib/aarch64-linux-gnu/libsnappy.so.1.1.10
+      0xffffd4d2f000     0xffffd4d30000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/libsnappy.so.1.1.10
+      0xffffd4d30000     0xffffd4d31000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/libsnappy.so.1.1.10
+      0xffffd4d40000     0xffffd4d49000     0x9000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libltdl.so.7.3.2
+      0xffffd4d49000     0xffffd4d5f000    0x16000     0x9000  ---p   /usr/lib/aarch64-linux-gnu/libltdl.so.7.3.2
+      0xffffd4d5f000     0xffffd4d60000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/libltdl.so.7.3.2
+      0xffffd4d60000     0xffffd4d61000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/libltdl.so.7.3.2
+      0xffffd4d70000     0xffffd4d97000    0x27000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libmfhdfalt.so.0.0.0
+      0xffffd4d97000     0xffffd4daf000    0x18000    0x27000  ---p   /usr/lib/aarch64-linux-gnu/libmfhdfalt.so.0.0.0
+      0xffffd4daf000     0xffffd4db0000     0x1000    0x2f000  r--p   /usr/lib/aarch64-linux-gnu/libmfhdfalt.so.0.0.0
+      0xffffd4db0000     0xffffd4db1000     0x1000    0x30000  rw-p   /usr/lib/aarch64-linux-gnu/libmfhdfalt.so.0.0.0
+      0xffffd4db1000     0xffffd4db2000     0x1000        0x0  rw-p   
+      0xffffd4dc0000     0xffffd4e3b000    0x7b000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libdfalt.so.0.0.0
+      0xffffd4e3b000     0xffffd4e4e000    0x13000    0x7b000  ---p   /usr/lib/aarch64-linux-gnu/libdfalt.so.0.0.0
+      0xffffd4e4e000     0xffffd4e50000     0x2000    0x7e000  r--p   /usr/lib/aarch64-linux-gnu/libdfalt.so.0.0.0
+      0xffffd4e50000     0xffffd4e51000     0x1000    0x80000  rw-p   /usr/lib/aarch64-linux-gnu/libdfalt.so.0.0.0
+      0xffffd4e51000     0xffffd4e7a000    0x29000        0x0  rw-p   
+      0xffffd4e80000     0xffffd4e91000    0x11000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libjson-c.so.5.3.0
+      0xffffd4e91000     0xffffd4eaf000    0x1e000    0x11000  ---p   /usr/lib/aarch64-linux-gnu/libjson-c.so.5.3.0
+      0xffffd4eaf000     0xffffd4eb0000     0x1000    0x1f000  r--p   /usr/lib/aarch64-linux-gnu/libjson-c.so.5.3.0
+      0xffffd4eb0000     0xffffd4eb1000     0x1000    0x20000  rw-p   /usr/lib/aarch64-linux-gnu/libjson-c.so.5.3.0
+      0xffffd4ec0000     0xffffd522f000   0x36f000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libproj.so.25.9.4.0
+      0xffffd522f000     0xffffd5237000     0x8000   0x36f000  ---p   /usr/lib/aarch64-linux-gnu/libproj.so.25.9.4.0
+      0xffffd5237000     0xffffd5250000    0x19000   0x377000  r--p   /usr/lib/aarch64-linux-gnu/libproj.so.25.9.4.0
+      0xffffd5250000     0xffffd5251000     0x1000   0x390000  rw-p   /usr/lib/aarch64-linux-gnu/libproj.so.25.9.4.0
+      0xffffd5251000     0xffffd5254000     0x3000        0x0  rw-p   
+      0xffffd5260000     0xffffd52a8000    0x48000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libgeos_c.so.1.18.1
+      0xffffd52a8000     0xffffd52bf000    0x17000    0x48000  ---p   /usr/lib/aarch64-linux-gnu/libgeos_c.so.1.18.1
+      0xffffd52bf000     0xffffd52c0000     0x1000    0x4f000  r--p   /usr/lib/aarch64-linux-gnu/libgeos_c.so.1.18.1
+      0xffffd52c0000     0xffffd52c1000     0x1000    0x50000  rw-p   /usr/lib/aarch64-linux-gnu/libgeos_c.so.1.18.1
+      0xffffd52d0000     0xffffd52ea000    0x1a000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libogdi.so.4.1
+      0xffffd52ea000     0xffffd52ff000    0x15000    0x1a000  ---p   /usr/lib/aarch64-linux-gnu/libogdi.so.4.1
+      0xffffd52ff000     0xffffd5300000     0x1000    0x1f000  r--p   /usr/lib/aarch64-linux-gnu/libogdi.so.4.1
+      0xffffd5300000     0xffffd5301000     0x1000    0x20000  rw-p   /usr/lib/aarch64-linux-gnu/libogdi.so.4.1
+      0xffffd5310000     0xffffd531e000     0xe000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libfreexl.so.1.2.0
+      0xffffd531e000     0xffffd532f000    0x11000     0xe000  ---p   /usr/lib/aarch64-linux-gnu/libfreexl.so.1.2.0
+      0xffffd532f000     0xffffd5330000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/libfreexl.so.1.2.0
+      0xffffd5330000     0xffffd5331000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/libfreexl.so.1.2.0
+      0xffffd5340000     0xffffd56be000   0x37e000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libmysqlclient.so.21.2.46
+      0xffffd56be000     0xffffd56c9000     0xb000   0x37e000  ---p   /usr/lib/aarch64-linux-gnu/libmysqlclient.so.21.2.46
+      0xffffd56c9000     0xffffd56d0000     0x7000   0x389000  r--p   /usr/lib/aarch64-linux-gnu/libmysqlclient.so.21.2.46
+      0xffffd56d0000     0xffffd59bd000   0x2ed000   0x390000  rw-p   /usr/lib/aarch64-linux-gnu/libmysqlclient.so.21.2.46
+      0xffffd59bd000     0xffffd59c2000     0x5000        0x0  rw-p   
+      0xffffd59d0000     0xffffd6154000   0x784000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libspatialite.so.8.1.0
+      0xffffd6154000     0xffffd616e000    0x1a000   0x784000  ---p   /usr/lib/aarch64-linux-gnu/libspatialite.so.8.1.0
+      0xffffd616e000     0xffffd6170000     0x2000   0x78e000  r--p   /usr/lib/aarch64-linux-gnu/libspatialite.so.8.1.0
+      0xffffd6170000     0xffffd6172000     0x2000   0x790000  rw-p   /usr/lib/aarch64-linux-gnu/libspatialite.so.8.1.0
+      0xffffd6172000     0xffffd6173000     0x1000        0x0  rw-p   
+      0xffffd6180000     0xffffd61b5000    0x35000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libfyba.so.0.0.0
+      0xffffd61b5000     0xffffd61cf000    0x1a000    0x35000  ---p   /usr/lib/aarch64-linux-gnu/libfyba.so.0.0.0
+      0xffffd61cf000     0xffffd61d0000     0x1000    0x3f000  r--p   /usr/lib/aarch64-linux-gnu/libfyba.so.0.0.0
+      0xffffd61d0000     0xffffd61d1000     0x1000    0x40000  rw-p   /usr/lib/aarch64-linux-gnu/libfyba.so.0.0.0
+      0xffffd61d1000     0xffffd61f0000    0x1f000        0x0  rw-p   
+      0xffffd6200000     0xffffd6289000    0x89000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libkmldom.so.1.3.0
+      0xffffd6289000     0xffffd629a000    0x11000    0x89000  ---p   /usr/lib/aarch64-linux-gnu/libkmldom.so.1.3.0
+      0xffffd629a000     0xffffd62a0000     0x6000    0x8a000  r--p   /usr/lib/aarch64-linux-gnu/libkmldom.so.1.3.0
+      0xffffd62a0000     0xffffd62a1000     0x1000    0x90000  rw-p   /usr/lib/aarch64-linux-gnu/libkmldom.so.1.3.0
+      0xffffd62a1000     0xffffd62a2000     0x1000        0x0  rw-p   
+      0xffffd62b0000     0xffffd6669000   0x3b9000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libhdf5_serial.so.103.4.0
+      0xffffd6669000     0xffffd6677000     0xe000   0x3b9000  ---p   /usr/lib/aarch64-linux-gnu/libhdf5_serial.so.103.4.0
+      0xffffd6677000     0xffffd6680000     0x9000   0x3c7000  r--p   /usr/lib/aarch64-linux-gnu/libhdf5_serial.so.103.4.0
+      0xffffd6680000     0xffffd6685000     0x5000   0x3d0000  rw-p   /usr/lib/aarch64-linux-gnu/libhdf5_serial.so.103.4.0
+      0xffffd6685000     0xffffd6687000     0x2000        0x0  rw-p   
+      0xffffd6690000     0xffffd67f9000   0x169000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libcfitsio.so.10.4.3.1
+      0xffffd67f9000     0xffffd680f000    0x16000   0x169000  ---p   /usr/lib/aarch64-linux-gnu/libcfitsio.so.10.4.3.1
+      0xffffd680f000     0xffffd6810000     0x1000   0x16f000  r--p   /usr/lib/aarch64-linux-gnu/libcfitsio.so.10.4.3.1
+      0xffffd6810000     0xffffd6812000     0x2000   0x170000  rw-p   /usr/lib/aarch64-linux-gnu/libcfitsio.so.10.4.3.1
+      0xffffd6812000     0xffffd69a2000   0x190000        0x0  rw-p   
+      0xffffd69b0000     0xffffd7ebe000  0x150e000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libgdal.so.34.3.8.4
+      0xffffd7ebe000     0xffffd7ec0000     0x2000  0x150e000  ---p   /usr/lib/aarch64-linux-gnu/libgdal.so.34.3.8.4
+      0xffffd7ec0000     0xffffd7fb0000    0xf0000  0x1510000  r--p   /usr/lib/aarch64-linux-gnu/libgdal.so.34.3.8.4
+      0xffffd7fb0000     0xffffd7fb3000     0x3000  0x1600000  rw-p   /usr/lib/aarch64-linux-gnu/libgdal.so.34.3.8.4
+      0xffffd7fb3000     0xffffd7ff5000    0x42000        0x0  rw-p   
+      0xffffd8000000     0xffffd8021000    0x21000        0x0  rw-p   
+      0xffffd8021000     0xffffdc000000  0x3fdf000        0x0  ---p   
+      0xffffdc000000     0xffffdc021000    0x21000        0x0  rw-p   
+      0xffffdc021000     0xffffe0000000  0x3fdf000        0x0  ---p   
+      0xffffe0000000     0xffffe0032000    0x32000        0x0  rw-p   
+      0xffffe0032000     0xffffe4000000  0x3fce000        0x0  ---p   
+      0xffffe4010000     0xffffe403a000    0x2a000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libkmlengine.so.1.3.0
+      0xffffe403a000     0xffffe404f000    0x15000    0x2a000  ---p   /usr/lib/aarch64-linux-gnu/libkmlengine.so.1.3.0
+      0xffffe404f000     0xffffe4050000     0x1000    0x2f000  r--p   /usr/lib/aarch64-linux-gnu/libkmlengine.so.1.3.0
+      0xffffe4050000     0xffffe4051000     0x1000    0x30000  rw-p   /usr/lib/aarch64-linux-gnu/libkmlengine.so.1.3.0
+      0xffffe4060000     0xffffe4079000    0x19000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libkmlbase.so.1.3.0
+      0xffffe4079000     0xffffe408f000    0x16000    0x19000  ---p   /usr/lib/aarch64-linux-gnu/libkmlbase.so.1.3.0
+      0xffffe408f000     0xffffe4090000     0x1000    0x1f000  r--p   /usr/lib/aarch64-linux-gnu/libkmlbase.so.1.3.0
+      0xffffe4090000     0xffffe4091000     0x1000    0x20000  rw-p   /usr/lib/aarch64-linux-gnu/libkmlbase.so.1.3.0
+      0xffffe40a0000     0xffffe40f1000    0x51000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libpq.so.5.16
+      0xffffe40f1000     0xffffe410d000    0x1c000    0x51000  ---p   /usr/lib/aarch64-linux-gnu/libpq.so.5.16
+      0xffffe410d000     0xffffe4110000     0x3000    0x5d000  r--p   /usr/lib/aarch64-linux-gnu/libpq.so.5.16
+      0xffffe4110000     0xffffe4111000     0x1000    0x60000  rw-p   /usr/lib/aarch64-linux-gnu/libpq.so.5.16
+      0xffffe4120000     0xffffe4285000   0x165000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libsqlite3.so.0.8.6
+      0xffffe4285000     0xffffe429c000    0x17000   0x165000  ---p   /usr/lib/aarch64-linux-gnu/libsqlite3.so.0.8.6
+      0xffffe429c000     0xffffe42a0000     0x4000   0x16c000  r--p   /usr/lib/aarch64-linux-gnu/libsqlite3.so.0.8.6
+      0xffffe42a0000     0xffffe42a5000     0x5000   0x170000  rw-p   /usr/lib/aarch64-linux-gnu/libsqlite3.so.0.8.6
+      0xffffe42b0000     0xffffe440c000   0x15c000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libnetcdf.so.19
+      0xffffe440c000     0xffffe441d000    0x11000   0x15c000  ---p   /usr/lib/aarch64-linux-gnu/libnetcdf.so.19
+      0xffffe441d000     0xffffe4420000     0x3000   0x15d000  r--p   /usr/lib/aarch64-linux-gnu/libnetcdf.so.19
+      0xffffe4420000     0xffffe4429000     0x9000   0x160000  rw-p   /usr/lib/aarch64-linux-gnu/libnetcdf.so.19
+      0xffffe4429000     0xffffe44be000    0x95000        0x0  rw-p   
+      0xffffe44c0000     0xffffe44c9000     0x9000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libgif.so.7.2.0
+      0xffffe44c9000     0xffffe44df000    0x16000     0x9000  ---p   /usr/lib/aarch64-linux-gnu/libgif.so.7.2.0
+      0xffffe44df000     0xffffe44e0000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/libgif.so.7.2.0
+      0xffffe44e0000     0xffffe44e1000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/libgif.so.7.2.0
+      0xffffe44f0000     0xffffe47ed000   0x2fd000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libpoppler.so.134.0.0
+      0xffffe47ed000     0xffffe47f9000     0xc000   0x2fd000  ---p   /usr/lib/aarch64-linux-gnu/libpoppler.so.134.0.0
+      0xffffe47f9000     0xffffe4850000    0x57000   0x309000  r--p   /usr/lib/aarch64-linux-gnu/libpoppler.so.134.0.0
+      0xffffe4850000     0xffffe4856000     0x6000   0x360000  rw-p   /usr/lib/aarch64-linux-gnu/libpoppler.so.134.0.0
+      0xffffe4860000     0xffffe4867000     0x7000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libaec.so.0.1.2
+      0xffffe4867000     0xffffe487f000    0x18000     0x7000  ---p   /usr/lib/aarch64-linux-gnu/libaec.so.0.1.2
+      0xffffe487f000     0xffffe4880000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/libaec.so.0.1.2
+      0xffffe4880000     0xffffe4881000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/libaec.so.0.1.2
+      0xffffe4890000     0xffffe4944000    0xb4000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libheif.so.1.17.6
+      0xffffe4944000     0xffffe495b000    0x17000    0xb4000  ---p   /usr/lib/aarch64-linux-gnu/libheif.so.1.17.6
+      0xffffe495b000     0xffffe4960000     0x5000    0xbb000  r--p   /usr/lib/aarch64-linux-gnu/libheif.so.1.17.6
+      0xffffe4960000     0xffffe4961000     0x1000    0xc0000  rw-p   /usr/lib/aarch64-linux-gnu/libheif.so.1.17.6
+      0xffffe4970000     0xffffe499b000    0x2b000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libgeotiff.so.5.2.1
+      0xffffe499b000     0xffffe49a7000     0xc000    0x2b000  ---p   /usr/lib/aarch64-linux-gnu/libgeotiff.so.5.2.1
+      0xffffe49a7000     0xffffe49b0000     0x9000    0x37000  r--p   /usr/lib/aarch64-linux-gnu/libgeotiff.so.5.2.1
+      0xffffe49b0000     0xffffe49b1000     0x1000    0x40000  rw-p   /usr/lib/aarch64-linux-gnu/libgeotiff.so.5.2.1
+      0xffffe49c0000     0xffffe4ce9000   0x329000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libxerces-c-3.2.so
+      0xffffe4ce9000     0xffffe4cfd000    0x14000   0x329000  ---p   /usr/lib/aarch64-linux-gnu/libxerces-c-3.2.so
+      0xffffe4cfd000     0xffffe4d10000    0x13000   0x32d000  r--p   /usr/lib/aarch64-linux-gnu/libxerces-c-3.2.so
+      0xffffe4d10000     0xffffe4d32000    0x22000   0x340000  rw-p   /usr/lib/aarch64-linux-gnu/libxerces-c-3.2.so
+      0xffffe4d40000     0xffffe4da9000    0x69000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libqhull_r.so.8.0.2
+      0xffffe4da9000     0xffffe4dbf000    0x16000    0x69000  ---p   /usr/lib/aarch64-linux-gnu/libqhull_r.so.8.0.2
+      0xffffe4dbf000     0xffffe4dc0000     0x1000    0x6f000  r--p   /usr/lib/aarch64-linux-gnu/libqhull_r.so.8.0.2
+      0xffffe4dc0000     0xffffe4dc1000     0x1000    0x70000  rw-p   /usr/lib/aarch64-linux-gnu/libqhull_r.so.8.0.2
+      0xffffe4dd0000     0xffffe4de3000    0x13000        0x0  r-xp   /usr/lib/libarmadillo.so.12.6.7
+      0xffffe4de3000     0xffffe4dff000    0x1c000    0x13000  ---p   /usr/lib/libarmadillo.so.12.6.7
+      0xffffe4dff000     0xffffe4e00000     0x1000    0x1f000  r--p   /usr/lib/libarmadillo.so.12.6.7
+      0xffffe4e00000     0xffffe4e01000     0x1000    0x20000  rw-p   /usr/lib/libarmadillo.so.12.6.7
+      0xffffe4e10000     0xffffe4e18000     0x8000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libblosc.so.1.21.5
+      0xffffe4e18000     0xffffe4e2f000    0x17000     0x8000  ---p   /usr/lib/aarch64-linux-gnu/libblosc.so.1.21.5
+      0xffffe4e2f000     0xffffe4e30000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/libblosc.so.1.21.5
+      0xffffe4e30000     0xffffe4e31000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/libblosc.so.1.21.5
+      0xffffe4e40000     0xffffe4e5e000    0x1e000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/liblz4.so.1.9.4
+      0xffffe4e5e000     0xffffe4e6f000    0x11000    0x1e000  ---p   /usr/lib/aarch64-linux-gnu/liblz4.so.1.9.4
+      0xffffe4e6f000     0xffffe4e70000     0x1000    0x1f000  r--p   /usr/lib/aarch64-linux-gnu/liblz4.so.1.9.4
+      0xffffe4e70000     0xffffe4e71000     0x1000    0x20000  rw-p   /usr/lib/aarch64-linux-gnu/liblz4.so.1.9.4
+      0xffffe4e80000     0xffffe506d000   0x1ed000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libxml2.so.2.9.14
+      0xffffe506d000     0xffffe5077000     0xa000   0x1ed000  ---p   /usr/lib/aarch64-linux-gnu/libxml2.so.2.9.14
+      0xffffe5077000     0xffffe5080000     0x9000   0x1f7000  r--p   /usr/lib/aarch64-linux-gnu/libxml2.so.2.9.14
+      0xffffe5080000     0xffffe5081000     0x1000   0x200000  rw-p   /usr/lib/aarch64-linux-gnu/libxml2.so.2.9.14
+      0xffffe5081000     0xffffe5082000     0x1000        0x0  rw-p   
+      0xffffe5090000     0xffffe509e000     0xe000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libodbcinst.so.2.0.0
+      0xffffe509e000     0xffffe50af000    0x11000     0xe000  ---p   /usr/lib/aarch64-linux-gnu/libodbcinst.so.2.0.0
+      0xffffe50af000     0xffffe50b0000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/libodbcinst.so.2.0.0
+      0xffffe50b0000     0xffffe50b1000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/libodbcinst.so.2.0.0
+      0xffffe50b1000     0xffffe50b4000     0x3000        0x0  rw-p   
+      0xffffe50c0000     0xffffe511b000    0x5b000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libodbc.so.2.0.0
+      0xffffe511b000     0xffffe512f000    0x14000    0x5b000  ---p   /usr/lib/aarch64-linux-gnu/libodbc.so.2.0.0
+      0xffffe512f000     0xffffe5130000     0x1000    0x5f000  r--p   /usr/lib/aarch64-linux-gnu/libodbc.so.2.0.0
+      0xffffe5130000     0xffffe5137000     0x7000    0x60000  rw-p   /usr/lib/aarch64-linux-gnu/libodbc.so.2.0.0
+      0xffffe5137000     0xffffe513b000     0x4000        0x0  rw-p   
+      0xffffe5140000     0xffffe514a000     0xa000        0x0  r-xp   /opt/ros/jazzy/opt/gz_common_vendor/lib/libgz-common5-geospatial.so.5.9.0
+      0xffffe514a000     0xffffe515f000    0x15000     0xa000  ---p   /opt/ros/jazzy/opt/gz_common_vendor/lib/libgz-common5-geospatial.so.5.9.0
+      0xffffe515f000     0xffffe5160000     0x1000     0xf000  r--p   /opt/ros/jazzy/opt/gz_common_vendor/lib/libgz-common5-geospatial.so.5.9.0
+      0xffffe5160000     0xffffe5161000     0x1000    0x10000  rw-p   /opt/ros/jazzy/opt/gz_common_vendor/lib/libgz-common5-geospatial.so.5.9.0
+      0xffffe5170000     0xffffe5193000    0x23000        0x0  r-xp   /opt/ros/jazzy/opt/gz_physics_vendor/lib/libgz-physics7.so.7.8.0
+      0xffffe5193000     0xffffe51af000    0x1c000    0x23000  ---p   /opt/ros/jazzy/opt/gz_physics_vendor/lib/libgz-physics7.so.7.8.0
+      0xffffe51af000     0xffffe51b0000     0x1000    0x2f000  r--p   /opt/ros/jazzy/opt/gz_physics_vendor/lib/libgz-physics7.so.7.8.0
+      0xffffe51b0000     0xffffe51b1000     0x1000    0x30000  rw-p   /opt/ros/jazzy/opt/gz_physics_vendor/lib/libgz-physics7.so.7.8.0
+      0xffffe51c0000     0xffffe5342000   0x182000        0x0  r-xp   /opt/ros/jazzy/opt/gz_sim_vendor/lib/gz-sim-8/plugins/libgz-sim8-physics-system.so.8.15.0
+      0xffffe5342000     0xffffe5350000     0xe000   0x182000  ---p   /opt/ros/jazzy/opt/gz_sim_vendor/lib/gz-sim-8/plugins/libgz-sim8-physics-system.so.8.15.0
+      0xffffe5350000     0xffffe5370000    0x20000   0x190000  r--p   /opt/ros/jazzy/opt/gz_sim_vendor/lib/gz-sim-8/plugins/libgz-sim8-physics-system.so.8.15.0
+      0xffffe5370000     0xffffe5371000     0x1000   0x1b0000  rw-p   /opt/ros/jazzy/opt/gz_sim_vendor/lib/gz-sim-8/plugins/libgz-sim8-physics-system.so.8.15.0
+      0xffffe5371000     0xffffe5372000     0x1000        0x0  rw-p   
+      0xffffe537f000     0xffffe55c0000   0x241000        0x0  rw-p   
+      0xffffe55c0000     0xffffe55d0000    0x10000        0x0  ---p   
+      0xffffe55d0000     0xffffe5dd0000   0x800000        0x0  rw-p   
+      0xffffe5dd0000     0xffffe5de0000    0x10000        0x0  ---p   
+      0xffffe5de0000     0xffffe65e0000   0x800000        0x0  rw-p   
+      0xffffe65e0000     0xffffe65f0000    0x10000        0x0  ---p   
+      0xffffe65f0000     0xffffe6df0000   0x800000        0x0  rw-p   
+      0xffffe6df0000     0xffffe6e00000    0x10000        0x0  ---p   
+      0xffffe6e00000     0xffffe7600000   0x800000        0x0  rw-p   
+      0xffffe7600000     0xffffe7610000    0x10000        0x0  ---p   
+      0xffffe7610000     0xffffe7e10000   0x800000        0x0  rw-p   
+      0xffffe7e10000     0xffffe7e20000    0x10000        0x0  ---p   
+      0xffffe7e20000     0xffffe8620000   0x800000        0x0  rw-p   
+      0xffffe8620000     0xffffe8625000     0x5000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libXdmcp.so.6.0.0
+      0xffffe8625000     0xffffe863f000    0x1a000     0x5000  ---p   /usr/lib/aarch64-linux-gnu/libXdmcp.so.6.0.0
+      0xffffe863f000     0xffffe8640000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/libXdmcp.so.6.0.0
+      0xffffe8640000     0xffffe8641000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/libXdmcp.so.6.0.0
+      0xffffe8650000     0xffffe8652000     0x2000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libXau.so.6.0.0
+      0xffffe8652000     0xffffe866f000    0x1d000     0x2000  ---p   /usr/lib/aarch64-linux-gnu/libXau.so.6.0.0
+      0xffffe866f000     0xffffe8670000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/libXau.so.6.0.0
+      0xffffe8670000     0xffffe8671000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/libXau.so.6.0.0
+      0xffffe8680000     0xffffe8683000     0x3000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libsharpyuv.so.0.0.1
+      0xffffe8683000     0xffffe869f000    0x1c000     0x3000  ---p   /usr/lib/aarch64-linux-gnu/libsharpyuv.so.0.0.1
+      0xffffe869f000     0xffffe86a0000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/libsharpyuv.so.0.0.1
+      0xffffe86a0000     0xffffe86a1000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/libsharpyuv.so.0.0.1
+      0xffffe86a1000     0xffffe86a2000     0x1000        0x0  rw-p   
+      0xffffe86b0000     0xffffe86dc000    0x2c000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libxcb.so.1.1.0
+      0xffffe86dc000     0xffffe86ef000    0x13000    0x2c000  ---p   /usr/lib/aarch64-linux-gnu/libxcb.so.1.1.0
+      0xffffe86ef000     0xffffe86f0000     0x1000    0x2f000  r--p   /usr/lib/aarch64-linux-gnu/libxcb.so.1.1.0
+      0xffffe86f0000     0xffffe86f1000     0x1000    0x30000  rw-p   /usr/lib/aarch64-linux-gnu/libxcb.so.1.1.0
+      0xffffe8700000     0xffffe870d000     0xd000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libresolv.so.2
+      0xffffe870d000     0xffffe871f000    0x12000     0xd000  ---p   /usr/lib/aarch64-linux-gnu/libresolv.so.2
+      0xffffe871f000     0xffffe8720000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/libresolv.so.2
+      0xffffe8720000     0xffffe8721000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/libresolv.so.2
+      0xffffe8721000     0xffffe8723000     0x2000        0x0  rw-p   
+      0xffffe8730000     0xffffe8734000     0x4000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libkeyutils.so.1.10
+      0xffffe8734000     0xffffe874f000    0x1b000     0x4000  ---p   /usr/lib/aarch64-linux-gnu/libkeyutils.so.1.10
+      0xffffe874f000     0xffffe8750000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/libkeyutils.so.1.10
+      0xffffe8750000     0xffffe8751000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/libkeyutils.so.1.10
+      0xffffe8760000     0xffffe8774000    0x14000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libtasn1.so.6.6.3
+      0xffffe8774000     0xffffe878f000    0x1b000    0x14000  ---p   /usr/lib/aarch64-linux-gnu/libtasn1.so.6.6.3
+      0xffffe878f000     0xffffe8790000     0x1000    0x1f000  r--p   /usr/lib/aarch64-linux-gnu/libtasn1.so.6.6.3
+      0xffffe8790000     0xffffe8791000     0x1000    0x20000  rw-p   /usr/lib/aarch64-linux-gnu/libtasn1.so.6.6.3
+      0xffffe87a0000     0xffffe8949000   0x1a9000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libp11-kit.so.0.3.1
+      0xffffe8949000     0xffffe8953000     0xa000   0x1a9000  ---p   /usr/lib/aarch64-linux-gnu/libp11-kit.so.0.3.1
+      0xffffe8953000     0xffffe8960000     0xd000   0x1b3000  r--p   /usr/lib/aarch64-linux-gnu/libp11-kit.so.0.3.1
+      0xffffe8960000     0xffffe896d000     0xd000   0x1c0000  rw-p   /usr/lib/aarch64-linux-gnu/libp11-kit.so.0.3.1
+      0xffffe896d000     0xffffe896e000     0x1000        0x0  rw-p   
+      0xffffe8970000     0xffffe8977000     0x7000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libIlmThread-3_1.so.30.5.1
+      0xffffe8977000     0xffffe898f000    0x18000     0x7000  ---p   /usr/lib/aarch64-linux-gnu/libIlmThread-3_1.so.30.5.1
+      0xffffe898f000     0xffffe8990000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/libIlmThread-3_1.so.30.5.1
+      0xffffe8990000     0xffffe8991000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/libIlmThread-3_1.so.30.5.1
+      0xffffe89a0000     0xffffe89b0000    0x10000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libdeflate.so.0
+      0xffffe89b0000     0xffffe89bf000     0xf000    0x10000  ---p   /usr/lib/aarch64-linux-gnu/libdeflate.so.0
+      0xffffe89bf000     0xffffe89c0000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/libdeflate.so.0
+      0xffffe89c0000     0xffffe89c1000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/libdeflate.so.0
+      0xffffe89d0000     0xffffe89db000     0xb000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libjbig.so.0
+      0xffffe89db000     0xffffe89ef000    0x14000     0xb000  ---p   /usr/lib/aarch64-linux-gnu/libjbig.so.0
+      0xffffe89ef000     0xffffe89f0000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/libjbig.so.0
+      0xffffe89f0000     0xffffe89f3000     0x3000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/libjbig.so.0
+      0xffffe8a00000     0xffffe8a71000    0x71000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libLerc.so.4
+      0xffffe8a71000     0xffffe8a8f000    0x1e000    0x71000  ---p   /usr/lib/aarch64-linux-gnu/libLerc.so.4
+      0xffffe8a8f000     0xffffe8a90000     0x1000    0x7f000  r--p   /usr/lib/aarch64-linux-gnu/libLerc.so.4
+      0xffffe8a90000     0xffffe8a91000     0x1000    0x80000  rw-p   /usr/lib/aarch64-linux-gnu/libLerc.so.4
+      0xffffe8aa0000     0xffffe8ace000    0x2e000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/liblzma.so.5.4.5
+      0xffffe8ace000     0xffffe8adf000    0x11000    0x2e000  ---p   /usr/lib/aarch64-linux-gnu/liblzma.so.5.4.5
+      0xffffe8adf000     0xffffe8ae0000     0x1000    0x2f000  r--p   /usr/lib/aarch64-linux-gnu/liblzma.so.5.4.5
+      0xffffe8ae0000     0xffffe8ae1000     0x1000    0x30000  rw-p   /usr/lib/aarch64-linux-gnu/liblzma.so.5.4.5
+      0xffffe8af0000     0xffffe8b48000    0x58000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libwebp.so.7.1.8
+      0xffffe8b48000     0xffffe8b5f000    0x17000    0x58000  ---p   /usr/lib/aarch64-linux-gnu/libwebp.so.7.1.8
+      0xffffe8b5f000     0xffffe8b60000     0x1000    0x5f000  r--p   /usr/lib/aarch64-linux-gnu/libwebp.so.7.1.8
+      0xffffe8b60000     0xffffe8b61000     0x1000    0x60000  rw-p   /usr/lib/aarch64-linux-gnu/libwebp.so.7.1.8
+      0xffffe8b61000     0xffffe8b62000     0x1000        0x0  rw-p   
+      0xffffe8b70000     0xffffe8bc1000    0x51000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libgomp.so.1.0.0
+      0xffffe8bc1000     0xffffe8bdf000    0x1e000    0x51000  ---p   /usr/lib/aarch64-linux-gnu/libgomp.so.1.0.0
+      0xffffe8bdf000     0xffffe8be0000     0x1000    0x5f000  r--p   /usr/lib/aarch64-linux-gnu/libgomp.so.1.0.0
+      0xffffe8be0000     0xffffe8be1000     0x1000    0x60000  rw-p   /usr/lib/aarch64-linux-gnu/libgomp.so.1.0.0
+      0xffffe8bf0000     0xffffe8c4e000    0x5e000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/liblcms2.so.2.0.14
+      0xffffe8c4e000     0xffffe8c5e000    0x10000    0x5e000  ---p   /usr/lib/aarch64-linux-gnu/liblcms2.so.2.0.14
+      0xffffe8c5e000     0xffffe8c60000     0x2000    0x5e000  r--p   /usr/lib/aarch64-linux-gnu/liblcms2.so.2.0.14
+      0xffffe8c60000     0xffffe8c63000     0x3000    0x60000  rw-p   /usr/lib/aarch64-linux-gnu/liblcms2.so.2.0.14
+      0xffffe8c63000     0xffffe8c65000     0x2000        0x0  rw-p   
+      0xffffe8c70000     0xffffe8ca2000    0x32000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libjpegxr.so.1.2
+      0xffffe8ca2000     0xffffe8cbf000    0x1d000    0x32000  ---p   /usr/lib/aarch64-linux-gnu/libjpegxr.so.1.2
+      0xffffe8cbf000     0xffffe8cc0000     0x1000    0x3f000  r--p   /usr/lib/aarch64-linux-gnu/libjpegxr.so.1.2
+      0xffffe8cc0000     0xffffe8cc1000     0x1000    0x40000  rw-p   /usr/lib/aarch64-linux-gnu/libjpegxr.so.1.2
+      0xffffe8cd0000     0xffffe8e12000   0x142000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libX11.so.6.4.0
+      0xffffe8e12000     0xffffe8e2f000    0x1d000   0x142000  ---p   /usr/lib/aarch64-linux-gnu/libX11.so.6.4.0
+      0xffffe8e2f000     0xffffe8e30000     0x1000   0x14f000  r--p   /usr/lib/aarch64-linux-gnu/libX11.so.6.4.0
+      0xffffe8e30000     0xffffe8e34000     0x4000   0x150000  rw-p   /usr/lib/aarch64-linux-gnu/libX11.so.6.4.0
+      0xffffe8e40000     0xffffe8e4b000     0xb000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libmd.so.0.1.0
+      0xffffe8e4b000     0xffffe8e5f000    0x14000     0xb000  ---p   /usr/lib/aarch64-linux-gnu/libmd.so.0.1.0
+      0xffffe8e5f000     0xffffe8e60000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/libmd.so.0.1.0
+      0xffffe8e60000     0xffffe8e61000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/libmd.so.0.1.0
+      0xffffe8e70000     0xffffe8e90000    0x20000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libbrotlicommon.so.1.1.0
+      0xffffe8e90000     0xffffe8e9f000     0xf000    0x20000  ---p   /usr/lib/aarch64-linux-gnu/libbrotlicommon.so.1.1.0
+      0xffffe8e9f000     0xffffe8ea0000     0x1000    0x2f000  r--p   /usr/lib/aarch64-linux-gnu/libbrotlicommon.so.1.1.0
+      0xffffe8ea0000     0xffffe8ea1000     0x1000    0x30000  rw-p   /usr/lib/aarch64-linux-gnu/libbrotlicommon.so.1.1.0
+      0xffffe8eb0000     0xffffe8ec7000    0x17000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libsasl2.so.2.0.25
+      0xffffe8ec7000     0xffffe8edf000    0x18000    0x17000  ---p   /usr/lib/aarch64-linux-gnu/libsasl2.so.2.0.25
+      0xffffe8edf000     0xffffe8ee0000     0x1000    0x1f000  r--p   /usr/lib/aarch64-linux-gnu/libsasl2.so.2.0.25
+      0xffffe8ee0000     0xffffe8ee1000     0x1000    0x20000  rw-p   /usr/lib/aarch64-linux-gnu/libsasl2.so.2.0.25
+      0xffffe8ef0000     0xffffe8efb000     0xb000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libkrb5support.so.0.1
+      0xffffe8efb000     0xffffe8f0f000    0x14000     0xb000  ---p   /usr/lib/aarch64-linux-gnu/libkrb5support.so.0.1
+      0xffffe8f0f000     0xffffe8f10000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/libkrb5support.so.0.1
+      0xffffe8f10000     0xffffe8f11000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/libkrb5support.so.0.1
+      0xffffe8f20000     0xffffe8f23000     0x3000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libcom_err.so.2.1
+      0xffffe8f23000     0xffffe8f3f000    0x1c000     0x3000  ---p   /usr/lib/aarch64-linux-gnu/libcom_err.so.2.1
+      0xffffe8f3f000     0xffffe8f40000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/libcom_err.so.2.1
+      0xffffe8f40000     0xffffe8f41000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/libcom_err.so.2.1
+      0xffffe8f50000     0xffffe8f7a000    0x2a000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libk5crypto.so.3.1
+      0xffffe8f7a000     0xffffe8f8f000    0x15000    0x2a000  ---p   /usr/lib/aarch64-linux-gnu/libk5crypto.so.3.1
+      0xffffe8f8f000     0xffffe8f90000     0x1000    0x2f000  r--p   /usr/lib/aarch64-linux-gnu/libk5crypto.so.3.1
+      0xffffe8f90000     0xffffe8f91000     0x1000    0x30000  rw-p   /usr/lib/aarch64-linux-gnu/libk5crypto.so.3.1
+      0xffffe8fa0000     0xffffe9062000    0xc2000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libkrb5.so.3.3
+      0xffffe9062000     0xffffe9075000    0x13000    0xc2000  ---p   /usr/lib/aarch64-linux-gnu/libkrb5.so.3.3
+      0xffffe9075000     0xffffe9080000     0xb000    0xc5000  r--p   /usr/lib/aarch64-linux-gnu/libkrb5.so.3.3
+      0xffffe9080000     0xffffe9082000     0x2000    0xd0000  rw-p   /usr/lib/aarch64-linux-gnu/libkrb5.so.3.3
+      0xffffe9090000     0xffffe90e0000    0x50000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libnettle.so.8.8
+      0xffffe90e0000     0xffffe90ee000     0xe000    0x50000  ---p   /usr/lib/aarch64-linux-gnu/libnettle.so.8.8
+      0xffffe90ee000     0xffffe90f0000     0x2000    0x5e000  r--p   /usr/lib/aarch64-linux-gnu/libnettle.so.8.8
+      0xffffe90f0000     0xffffe90f1000     0x1000    0x60000  rw-p   /usr/lib/aarch64-linux-gnu/libnettle.so.8.8
+      0xffffe9100000     0xffffe9146000    0x46000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libhogweed.so.6.8
+      0xffffe9146000     0xffffe915e000    0x18000    0x46000  ---p   /usr/lib/aarch64-linux-gnu/libhogweed.so.6.8
+      0xffffe915e000     0xffffe9160000     0x2000    0x4e000  r--p   /usr/lib/aarch64-linux-gnu/libhogweed.so.6.8
+      0xffffe9160000     0xffffe9161000     0x1000    0x50000  rw-p   /usr/lib/aarch64-linux-gnu/libhogweed.so.6.8
+      0xffffe9170000     0xffffe936c000   0x1fc000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libgnutls.so.30.37.1
+      0xffffe936c000     0xffffe9370000     0x4000   0x1fc000  ---p   /usr/lib/aarch64-linux-gnu/libgnutls.so.30.37.1
+      0xffffe9370000     0xffffe9380000    0x10000   0x200000  r--p   /usr/lib/aarch64-linux-gnu/libgnutls.so.30.37.1
+      0xffffe9380000     0xffffe9382000     0x2000   0x210000  rw-p   /usr/lib/aarch64-linux-gnu/libgnutls.so.30.37.1
+      0xffffe9382000     0xffffe9385000     0x3000        0x0  rw-p   
+      0xffffe9390000     0xffffe9538000   0x1a8000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libunistring.so.5.0.0
+      0xffffe9538000     0xffffe954c000    0x14000   0x1a8000  ---p   /usr/lib/aarch64-linux-gnu/libunistring.so.5.0.0
+      0xffffe954c000     0xffffe9550000     0x4000   0x1ac000  r--p   /usr/lib/aarch64-linux-gnu/libunistring.so.5.0.0
+      0xffffe9550000     0xffffe9551000     0x1000   0x1b0000  rw-p   /usr/lib/aarch64-linux-gnu/libunistring.so.5.0.0
+      0xffffe9560000     0xffffe95a9000    0x49000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libImath-3_1.so.29.8.0
+      0xffffe95a9000     0xffffe95bf000    0x16000    0x49000  ---p   /usr/lib/aarch64-linux-gnu/libImath-3_1.so.29.8.0
+      0xffffe95bf000     0xffffe95c0000     0x1000    0x4f000  r--p   /usr/lib/aarch64-linux-gnu/libImath-3_1.so.29.8.0
+      0xffffe95c0000     0xffffe95c1000     0x1000    0x50000  rw-p   /usr/lib/aarch64-linux-gnu/libImath-3_1.so.29.8.0
+      0xffffe95d0000     0xffffe9659000    0x89000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libIex-3_1.so.30.5.1
+      0xffffe9659000     0xffffe966c000    0x13000    0x89000  ---p   /usr/lib/aarch64-linux-gnu/libIex-3_1.so.30.5.1
+      0xffffe966c000     0xffffe9670000     0x4000    0x8c000  r--p   /usr/lib/aarch64-linux-gnu/libIex-3_1.so.30.5.1
+      0xffffe9670000     0xffffe9671000     0x1000    0x90000  rw-p   /usr/lib/aarch64-linux-gnu/libIex-3_1.so.30.5.1
+      0xffffe9680000     0xffffe996e000   0x2ee000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libOpenEXR-3_1.so.30.5.1
+      0xffffe996e000     0xffffe997d000     0xf000   0x2ee000  ---p   /usr/lib/aarch64-linux-gnu/libOpenEXR-3_1.so.30.5.1
+      0xffffe997d000     0xffffe9980000     0x3000   0x2fd000  r--p   /usr/lib/aarch64-linux-gnu/libOpenEXR-3_1.so.30.5.1
+      0xffffe9980000     0xffffe9981000     0x1000   0x300000  rw-p   /usr/lib/aarch64-linux-gnu/libOpenEXR-3_1.so.30.5.1
+      0xffffe9990000     0xffffe999b000     0xb000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libwebpmux.so.3.0.13
+      0xffffe999b000     0xffffe99af000    0x14000     0xb000  ---p   /usr/lib/aarch64-linux-gnu/libwebpmux.so.3.0.13
+      0xffffe99af000     0xffffe99b0000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/libwebpmux.so.3.0.13
+      0xffffe99b0000     0xffffe99b1000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/libwebpmux.so.3.0.13
+      0xffffe99c0000     0xffffe9a44000    0x84000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libtiff.so.6.0.1
+      0xffffe9a44000     0xffffe9a5b000    0x17000    0x84000  ---p   /usr/lib/aarch64-linux-gnu/libtiff.so.6.0.1
+      0xffffe9a5b000     0xffffe9a60000     0x5000    0x8b000  r--p   /usr/lib/aarch64-linux-gnu/libtiff.so.6.0.1
+      0xffffe9a60000     0xffffe9a61000     0x1000    0x90000  rw-p   /usr/lib/aarch64-linux-gnu/libtiff.so.6.0.1
+      0xffffe9a70000     0xffffe9b31000    0xc1000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libraw.so.23.0.0
+      0xffffe9b31000     0xffffe9b41000    0x10000    0xc1000  ---p   /usr/lib/aarch64-linux-gnu/libraw.so.23.0.0
+      0xffffe9b41000     0xffffe9b50000     0xf000    0xc1000  r--p   /usr/lib/aarch64-linux-gnu/libraw.so.23.0.0
+      0xffffe9b50000     0xffffe9b94000    0x44000    0xd0000  rw-p   /usr/lib/aarch64-linux-gnu/libraw.so.23.0.0
+      0xffffe9ba0000     0xffffe9bf8000    0x58000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libopenjp2.so.2.5.0
+      0xffffe9bf8000     0xffffe9c0f000    0x17000    0x58000  ---p   /usr/lib/aarch64-linux-gnu/libopenjp2.so.2.5.0
+      0xffffe9c0f000     0xffffe9c10000     0x1000    0x5f000  r--p   /usr/lib/aarch64-linux-gnu/libopenjp2.so.2.5.0
+      0xffffe9c10000     0xffffe9c11000     0x1000    0x60000  rw-p   /usr/lib/aarch64-linux-gnu/libopenjp2.so.2.5.0
+      0xffffe9c20000     0xffffe9c72000    0x52000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libjpeg.so.8.2.2
+      0xffffe9c72000     0xffffe9c8f000    0x1d000    0x52000  ---p   /usr/lib/aarch64-linux-gnu/libjpeg.so.8.2.2
+      0xffffe9c8f000     0xffffe9c90000     0x1000    0x5f000  r--p   /usr/lib/aarch64-linux-gnu/libjpeg.so.8.2.2
+      0xffffe9c90000     0xffffe9c91000     0x1000    0x60000  rw-p   /usr/lib/aarch64-linux-gnu/libjpeg.so.8.2.2
+      0xffffe9ca0000     0xffffe9cc0000    0x20000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libjxrglue.so.1.2
+      0xffffe9cc0000     0xffffe9cce000     0xe000    0x20000  ---p   /usr/lib/aarch64-linux-gnu/libjxrglue.so.1.2
+      0xffffe9cce000     0xffffe9cd0000     0x2000    0x2e000  r--p   /usr/lib/aarch64-linux-gnu/libjxrglue.so.1.2
+      0xffffe9cd0000     0xffffe9cd1000     0x1000    0x30000  rw-p   /usr/lib/aarch64-linux-gnu/libjxrglue.so.1.2
+      0xffffe9cd1000     0xffffe9cd2000     0x1000        0x0  rw-p   
+      0xffffe9ce0000     0xffffe9d1b000    0x3b000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libpugixml.so.1.14
+      0xffffe9d1b000     0xffffe9d2f000    0x14000    0x3b000  ---p   /usr/lib/aarch64-linux-gnu/libpugixml.so.1.14
+      0xffffe9d2f000     0xffffe9d30000     0x1000    0x3f000  r--p   /usr/lib/aarch64-linux-gnu/libpugixml.so.1.14
+      0xffffe9d30000     0xffffe9d31000     0x1000    0x40000  rw-p   /usr/lib/aarch64-linux-gnu/libpugixml.so.1.14
+      0xffffe9d40000     0xffffe9d4a000     0xa000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libminizip.so.1.0.0
+      0xffffe9d4a000     0xffffe9d5f000    0x15000     0xa000  ---p   /usr/lib/aarch64-linux-gnu/libminizip.so.1.0.0
+      0xffffe9d5f000     0xffffe9d60000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/libminizip.so.1.0.0
+      0xffffe9d60000     0xffffe9d61000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/libminizip.so.1.0.0
+      0xffffe9d70000     0xffffe9fff000   0x28f000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libdraco.so.8.0.0
+      0xffffe9fff000     0xffffea00b000     0xc000   0x28f000  ---p   /usr/lib/aarch64-linux-gnu/libdraco.so.8.0.0
+      0xffffea00b000     0xffffea010000     0x5000   0x29b000  r--p   /usr/lib/aarch64-linux-gnu/libdraco.so.8.0.0
+      0xffffea010000     0xffffea011000     0x1000   0x2a0000  rw-p   /usr/lib/aarch64-linux-gnu/libdraco.so.8.0.0
+      0xffffea020000     0xffffea0a8000    0x88000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libpcre2-8.so.0.11.2
+      0xffffea0a8000     0xffffea0bf000    0x17000    0x88000  ---p   /usr/lib/aarch64-linux-gnu/libpcre2-8.so.0.11.2
+      0xffffea0bf000     0xffffea0c0000     0x1000    0x8f000  r--p   /usr/lib/aarch64-linux-gnu/libpcre2-8.so.0.11.2
+      0xffffea0c0000     0xffffea0c1000     0x1000    0x90000  rw-p   /usr/lib/aarch64-linux-gnu/libpcre2-8.so.0.11.2
+      0xffffea0d0000     0xffffebe2c000  0x1d5c000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libicudata.so.74.2
+      0xffffebe2c000     0xffffebe3f000    0x13000  0x1d5c000  ---p   /usr/lib/aarch64-linux-gnu/libicudata.so.74.2
+      0xffffebe3f000     0xffffebe40000     0x1000  0x1d5f000  r--p   /usr/lib/aarch64-linux-gnu/libicudata.so.74.2
+      0xffffebe40000     0xffffebe41000     0x1000  0x1d60000  rw-p   /usr/lib/aarch64-linux-gnu/libicudata.so.74.2
+      0xffffebe50000     0xffffebe6d000    0x1d000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libgraphite2.so.3.2.1
+      0xffffebe6d000     0xffffebe7e000    0x11000    0x1d000  ---p   /usr/lib/aarch64-linux-gnu/libgraphite2.so.3.2.1
+      0xffffebe7e000     0xffffebe80000     0x2000    0x1e000  r--p   /usr/lib/aarch64-linux-gnu/libgraphite2.so.3.2.1
+      0xffffebe80000     0xffffebe81000     0x1000    0x20000  rw-p   /usr/lib/aarch64-linux-gnu/libgraphite2.so.3.2.1
+      0xffffebe90000     0xffffebf50000    0xc0000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libfreetype.so.6.20.1
+      0xffffebf50000     0xffffebf59000     0x9000    0xc0000  ---p   /usr/lib/aarch64-linux-gnu/libfreetype.so.6.20.1
+      0xffffebf59000     0xffffebf60000     0x7000    0xc9000  r--p   /usr/lib/aarch64-linux-gnu/libfreetype.so.6.20.1
+      0xffffebf60000     0xffffebf61000     0x1000    0xd0000  rw-p   /usr/lib/aarch64-linux-gnu/libfreetype.so.6.20.1
+      0xffffebf70000     0xffffebf91000    0x21000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libGLX.so.0.0.0
+      0xffffebf91000     0xffffebfaf000    0x1e000    0x21000  ---p   /usr/lib/aarch64-linux-gnu/libGLX.so.0.0.0
+      0xffffebfaf000     0xffffebfb0000     0x1000    0x2f000  r--p   /usr/lib/aarch64-linux-gnu/libGLX.so.0.0.0
+      0xffffebfb0000     0xffffebfb1000     0x1000    0x30000  rw-p   /usr/lib/aarch64-linux-gnu/libGLX.so.0.0.0
+      0xffffebfb1000     0xffffebfc1000    0x10000        0x0  rw-p   
+      0xffffebfd0000     0xffffec126000   0x156000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libGLdispatch.so.0.0.0
+      0xffffec126000     0xffffec134000     0xe000   0x156000  ---p   /usr/lib/aarch64-linux-gnu/libGLdispatch.so.0.0.0
+      0xffffec134000     0xffffec150000    0x1c000   0x164000  r--p   /usr/lib/aarch64-linux-gnu/libGLdispatch.so.0.0.0
+      0xffffec150000     0xffffec151000     0x1000   0x180000  rw-p   /usr/lib/aarch64-linux-gnu/libGLdispatch.so.0.0.0
+      0xffffec151000     0xffffec159000     0x8000        0x0  rw-p   
+      0xffffec160000     0xffffec1b3000    0x53000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libnorm.so.1
+      0xffffec1b3000     0xffffec1cd000    0x1a000    0x53000  ---p   /usr/lib/aarch64-linux-gnu/libnorm.so.1
+      0xffffec1cd000     0xffffec1d0000     0x3000    0x5d000  r--p   /usr/lib/aarch64-linux-gnu/libnorm.so.1
+      0xffffec1d0000     0xffffec1d1000     0x1000    0x60000  rw-p   /usr/lib/aarch64-linux-gnu/libnorm.so.1
+      0xffffec1d1000     0xffffec281000    0xb0000        0x0  rw-p   
+      0xffffec290000     0xffffec2d4000    0x44000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libpgm-5.3.so.0.0.128
+      0xffffec2d4000     0xffffec2ef000    0x1b000    0x44000  ---p   /usr/lib/aarch64-linux-gnu/libpgm-5.3.so.0.0.128
+      0xffffec2ef000     0xffffec2f0000     0x1000    0x4f000  r--p   /usr/lib/aarch64-linux-gnu/libpgm-5.3.so.0.0.128
+      0xffffec2f0000     0xffffec2f1000     0x1000    0x50000  rw-p   /usr/lib/aarch64-linux-gnu/libpgm-5.3.so.0.0.128
+      0xffffec2f1000     0xffffec2f5000     0x4000        0x0  rw-p   
+      0xffffec300000     0xffffec33c000    0x3c000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libsodium.so.23.3.0
+      0xffffec33c000     0xffffec34f000    0x13000    0x3c000  ---p   /usr/lib/aarch64-linux-gnu/libsodium.so.23.3.0
+      0xffffec34f000     0xffffec350000     0x1000    0x3f000  r--p   /usr/lib/aarch64-linux-gnu/libsodium.so.23.3.0
+      0xffffec350000     0xffffec351000     0x1000    0x40000  rw-p   /usr/lib/aarch64-linux-gnu/libsodium.so.23.3.0
+      0xffffec360000     0xffffec372000    0x12000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libbsd.so.0.12.1
+      0xffffec372000     0xffffec38f000    0x1d000    0x12000  ---p   /usr/lib/aarch64-linux-gnu/libbsd.so.0.12.1
+      0xffffec38f000     0xffffec390000     0x1000    0x1f000  r--p   /usr/lib/aarch64-linux-gnu/libbsd.so.0.12.1
+      0xffffec390000     0xffffec391000     0x1000    0x20000  rw-p   /usr/lib/aarch64-linux-gnu/libbsd.so.0.12.1
+      0xffffec391000     0xffffec392000     0x1000        0x0  rw-p   
+      0xffffec3a0000     0xffffec3a3000     0x3000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libconsole_bridge.so.1.0
+      0xffffec3a3000     0xffffec3bf000    0x1c000     0x3000  ---p   /usr/lib/aarch64-linux-gnu/libconsole_bridge.so.1.0
+      0xffffec3bf000     0xffffec3c0000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/libconsole_bridge.so.1.0
+      0xffffec3c0000     0xffffec3c1000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/libconsole_bridge.so.1.0
+      0xffffec3d0000     0xffffec3da000     0xa000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libbrotlidec.so.1.1.0
+      0xffffec3da000     0xffffec3ef000    0x15000     0xa000  ---p   /usr/lib/aarch64-linux-gnu/libbrotlidec.so.1.1.0
+      0xffffec3ef000     0xffffec3f0000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/libbrotlidec.so.1.1.0
+      0xffffec3f0000     0xffffec3f1000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/libbrotlidec.so.1.1.0
+      0xffffec400000     0xffffec40e000     0xe000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/liblber.so.2.0.200
+      0xffffec40e000     0xffffec41f000    0x11000     0xe000  ---p   /usr/lib/aarch64-linux-gnu/liblber.so.2.0.200
+      0xffffec41f000     0xffffec420000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/liblber.so.2.0.200
+      0xffffec420000     0xffffec421000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/liblber.so.2.0.200
+      0xffffec430000     0xffffec48b000    0x5b000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libldap.so.2.0.200
+      0xffffec48b000     0xffffec49e000    0x13000    0x5b000  ---p   /usr/lib/aarch64-linux-gnu/libldap.so.2.0.200
+      0xffffec49e000     0xffffec4a0000     0x2000    0x5e000  r--p   /usr/lib/aarch64-linux-gnu/libldap.so.2.0.200
+      0xffffec4a0000     0xffffec4a1000     0x1000    0x60000  rw-p   /usr/lib/aarch64-linux-gnu/libldap.so.2.0.200
+      0xffffec4a1000     0xffffec4a3000     0x2000        0x0  rw-p   
+      0xffffec4b0000     0xffffec4fe000    0x4e000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libgssapi_krb5.so.2.2
+      0xffffec4fe000     0xffffec50e000    0x10000    0x4e000  ---p   /usr/lib/aarch64-linux-gnu/libgssapi_krb5.so.2.2
+      0xffffec50e000     0xffffec510000     0x2000    0x4e000  r--p   /usr/lib/aarch64-linux-gnu/libgssapi_krb5.so.2.2
+      0xffffec510000     0xffffec512000     0x2000    0x50000  rw-p   /usr/lib/aarch64-linux-gnu/libgssapi_krb5.so.2.2
+      0xffffec520000     0xffffec5c3000    0xa3000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libssl.so.3
+      0xffffec5c3000     0xffffec5d6000    0x13000    0xa3000  ---p   /usr/lib/aarch64-linux-gnu/libssl.so.3
+      0xffffec5d6000     0xffffec5e0000     0xa000    0xa6000  r--p   /usr/lib/aarch64-linux-gnu/libssl.so.3
+      0xffffec5e0000     0xffffec5e4000     0x4000    0xb0000  rw-p   /usr/lib/aarch64-linux-gnu/libssl.so.3
+      0xffffec5f0000     0xffffec601000    0x11000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libpsl.so.5.3.4
+      0xffffec601000     0xffffec61f000    0x1e000    0x11000  ---p   /usr/lib/aarch64-linux-gnu/libpsl.so.5.3.4
+      0xffffec61f000     0xffffec620000     0x1000    0x1f000  r--p   /usr/lib/aarch64-linux-gnu/libpsl.so.5.3.4
+      0xffffec620000     0xffffec621000     0x1000    0x20000  rw-p   /usr/lib/aarch64-linux-gnu/libpsl.so.5.3.4
+      0xffffec630000     0xffffec69e000    0x6e000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libssh.so.4.9.6
+      0xffffec69e000     0xffffec6ae000    0x10000    0x6e000  ---p   /usr/lib/aarch64-linux-gnu/libssh.so.4.9.6
+      0xffffec6ae000     0xffffec6b0000     0x2000    0x6e000  r--p   /usr/lib/aarch64-linux-gnu/libssh.so.4.9.6
+      0xffffec6b0000     0xffffec6b2000     0x2000    0x70000  rw-p   /usr/lib/aarch64-linux-gnu/libssh.so.4.9.6
+      0xffffec6c0000     0xffffec6dc000    0x1c000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/librtmp.so.1
+      0xffffec6dc000     0xffffec6ef000    0x13000    0x1c000  ---p   /usr/lib/aarch64-linux-gnu/librtmp.so.1
+      0xffffec6ef000     0xffffec6f0000     0x1000    0x1f000  r--p   /usr/lib/aarch64-linux-gnu/librtmp.so.1
+      0xffffec6f0000     0xffffec6f1000     0x1000    0x20000  rw-p   /usr/lib/aarch64-linux-gnu/librtmp.so.1
+      0xffffec700000     0xffffec71e000    0x1e000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libidn2.so.0.4.0
+      0xffffec71e000     0xffffec72f000    0x11000    0x1e000  ---p   /usr/lib/aarch64-linux-gnu/libidn2.so.0.4.0
+      0xffffec72f000     0xffffec730000     0x1000    0x1f000  r--p   /usr/lib/aarch64-linux-gnu/libidn2.so.0.4.0
+      0xffffec730000     0xffffec731000     0x1000    0x20000  rw-p   /usr/lib/aarch64-linux-gnu/libidn2.so.0.4.0
+      0xffffec740000     0xffffec767000    0x27000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libnghttp2.so.14.26.0
+      0xffffec767000     0xffffec77d000    0x16000    0x27000  ---p   /usr/lib/aarch64-linux-gnu/libnghttp2.so.14.26.0
+      0xffffec77d000     0xffffec780000     0x3000    0x2d000  r--p   /usr/lib/aarch64-linux-gnu/libnghttp2.so.14.26.0
+      0xffffec780000     0xffffec781000     0x1000    0x30000  rw-p   /usr/lib/aarch64-linux-gnu/libnghttp2.so.14.26.0
+      0xffffec790000     0xffffecbaa000   0x41a000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libcrypto.so.3
+      0xffffecbaa000     0xffffecbba000    0x10000   0x41a000  ---p   /usr/lib/aarch64-linux-gnu/libcrypto.so.3
+      0xffffecbba000     0xffffecc10000    0x56000   0x41a000  r--p   /usr/lib/aarch64-linux-gnu/libcrypto.so.3
+      0xffffecc10000     0xffffecc13000     0x3000   0x470000  rw-p   /usr/lib/aarch64-linux-gnu/libcrypto.so.3
+      0xffffecc13000     0xffffecc16000     0x3000        0x0  rw-p   
+      0xffffecc20000     0xffffecc30000    0x10000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libbz2.so.1.0.4
+      0xffffecc30000     0xffffecc3f000     0xf000    0x10000  ---p   /usr/lib/aarch64-linux-gnu/libbz2.so.1.0.4
+      0xffffecc3f000     0xffffecc40000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/libbz2.so.1.0.4
+      0xffffecc40000     0xffffecc41000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/libbz2.so.1.0.4
+      0xffffecc50000     0xffffecc79000    0x29000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libexpat.so.1.9.1
+      0xffffecc79000     0xffffecc8e000    0x15000    0x29000  ---p   /usr/lib/aarch64-linux-gnu/libexpat.so.1.9.1
+      0xffffecc8e000     0xffffecc90000     0x2000    0x2e000  r--p   /usr/lib/aarch64-linux-gnu/libexpat.so.1.9.1
+      0xffffecc90000     0xffffecc91000     0x1000    0x30000  rw-p   /usr/lib/aarch64-linux-gnu/libexpat.so.1.9.1
+      0xffffecca0000     0xffffecd47000    0xa7000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libfreeimage-3.18.0.so
+      0xffffecd47000     0xffffecd5d000    0x16000    0xa7000  ---p   /usr/lib/aarch64-linux-gnu/libfreeimage-3.18.0.so
+      0xffffecd5d000     0xffffecd60000     0x3000    0xad000  r--p   /usr/lib/aarch64-linux-gnu/libfreeimage-3.18.0.so
+      0xffffecd60000     0xffffecd6a000     0xa000    0xb0000  rw-p   /usr/lib/aarch64-linux-gnu/libfreeimage-3.18.0.so
+      0xffffecd70000     0xffffecdc9000    0x59000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libgts-0.7.so.5.0.1
+      0xffffecdc9000     0xffffecddf000    0x16000    0x59000  ---p   /usr/lib/aarch64-linux-gnu/libgts-0.7.so.5.0.1
+      0xffffecddf000     0xffffecde0000     0x1000    0x5f000  r--p   /usr/lib/aarch64-linux-gnu/libgts-0.7.so.5.0.1
+      0xffffecde0000     0xffffecde1000     0x1000    0x60000  rw-p   /usr/lib/aarch64-linux-gnu/libgts-0.7.so.5.0.1
+      0xffffecde1000     0xffffecde2000     0x1000        0x0  rw-p   
+      0xffffecdf0000     0xffffed441000   0x651000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libassimp.so.5.3.0
+      0xffffed441000     0xffffed45a000    0x19000   0x651000  ---p   /usr/lib/aarch64-linux-gnu/libassimp.so.5.3.0
+      0xffffed45a000     0xffffed4d0000    0x76000   0x65a000  r--p   /usr/lib/aarch64-linux-gnu/libassimp.so.5.3.0
+      0xffffed4d0000     0xffffed4d1000     0x1000   0x6d0000  rw-p   /usr/lib/aarch64-linux-gnu/libassimp.so.5.3.0
+      0xffffed4d1000     0xffffed4d6000     0x5000        0x0  rw-p   
+      0xffffed4e0000     0xffffed637000   0x157000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libglib-2.0.so.0.8000.0
+      0xffffed637000     0xffffed64f000    0x18000   0x157000  ---p   /usr/lib/aarch64-linux-gnu/libglib-2.0.so.0.8000.0
+      0xffffed64f000     0xffffed650000     0x1000   0x15f000  r--p   /usr/lib/aarch64-linux-gnu/libglib-2.0.so.0.8000.0
+      0xffffed650000     0xffffed651000     0x1000   0x160000  rw-p   /usr/lib/aarch64-linux-gnu/libglib-2.0.so.0.8000.0
+      0xffffed651000     0xffffed652000     0x1000        0x0  rw-p   
+      0xffffed660000     0xffffed6fb000    0x9b000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libzstd.so.1.5.5
+      0xffffed6fb000     0xffffed70f000    0x14000    0x9b000  ---p   /usr/lib/aarch64-linux-gnu/libzstd.so.1.5.5
+      0xffffed70f000     0xffffed710000     0x1000    0x9f000  r--p   /usr/lib/aarch64-linux-gnu/libzstd.so.1.5.5
+      0xffffed710000     0xffffed711000     0x1000    0xa0000  rw-p   /usr/lib/aarch64-linux-gnu/libzstd.so.1.5.5
+      0xffffed720000     0xffffed79d000    0x7d000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libpcre2-16.so.0.11.2
+      0xffffed79d000     0xffffed7af000    0x12000    0x7d000  ---p   /usr/lib/aarch64-linux-gnu/libpcre2-16.so.0.11.2
+      0xffffed7af000     0xffffed7b0000     0x1000    0x7f000  r--p   /usr/lib/aarch64-linux-gnu/libpcre2-16.so.0.11.2
+      0xffffed7b0000     0xffffed7b1000     0x1000    0x80000  rw-p   /usr/lib/aarch64-linux-gnu/libpcre2-16.so.0.11.2
+      0xffffed7c0000     0xffffed9c8000   0x208000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libicuuc.so.74.2
+      0xffffed9c8000     0xffffed9dd000    0x15000   0x208000  ---p   /usr/lib/aarch64-linux-gnu/libicuuc.so.74.2
+      0xffffed9dd000     0xffffed9f0000    0x13000   0x20d000  r--p   /usr/lib/aarch64-linux-gnu/libicuuc.so.74.2
+      0xffffed9f0000     0xffffed9f1000     0x1000   0x220000  rw-p   /usr/lib/aarch64-linux-gnu/libicuuc.so.74.2
+      0xffffed9f1000     0xffffed9f3000     0x2000        0x0  rw-p   
+      0xffffeda00000     0xffffedd4e000   0x34e000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libicui18n.so.74.2
+      0xffffedd4e000     0xffffedd5e000    0x10000   0x34e000  ---p   /usr/lib/aarch64-linux-gnu/libicui18n.so.74.2
+      0xffffedd5e000     0xffffedd70000    0x12000   0x34e000  r--p   /usr/lib/aarch64-linux-gnu/libicui18n.so.74.2
+      0xffffedd70000     0xffffedd71000     0x1000   0x360000  rw-p   /usr/lib/aarch64-linux-gnu/libicui18n.so.74.2
+      0xffffedd71000     0xffffedd72000     0x1000        0x0  rw-p   
+      0xffffedd80000     0xffffedd92000    0x12000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libdouble-conversion.so.3.1
+      0xffffedd92000     0xffffeddaf000    0x1d000    0x12000  ---p   /usr/lib/aarch64-linux-gnu/libdouble-conversion.so.3.1
+      0xffffeddaf000     0xffffeddb0000     0x1000    0x1f000  r--p   /usr/lib/aarch64-linux-gnu/libdouble-conversion.so.3.1
+      0xffffeddb0000     0xffffeddb1000     0x1000    0x20000  rw-p   /usr/lib/aarch64-linux-gnu/libdouble-conversion.so.3.1
+      0xffffeddc0000     0xffffeddce000     0xe000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libmd4c.so.0.4.8
+      0xffffeddce000     0xffffedddf000    0x11000     0xe000  ---p   /usr/lib/aarch64-linux-gnu/libmd4c.so.0.4.8
+      0xffffedddf000     0xffffedde0000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/libmd4c.so.0.4.8
+      0xffffedde0000     0xffffedde1000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/libmd4c.so.0.4.8
+      0xffffeddf0000     0xffffedef4000   0x104000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libharfbuzz.so.0.60830.0
+      0xffffedef4000     0xffffedf0f000    0x1b000   0x104000  ---p   /usr/lib/aarch64-linux-gnu/libharfbuzz.so.0.60830.0
+      0xffffedf0f000     0xffffedf10000     0x1000   0x10f000  r--p   /usr/lib/aarch64-linux-gnu/libharfbuzz.so.0.60830.0
+      0xffffedf10000     0xffffedf11000     0x1000   0x110000  rw-p   /usr/lib/aarch64-linux-gnu/libharfbuzz.so.0.60830.0
+      0xffffedf20000     0xffffedf55000    0x35000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libpng16.so.16.43.0
+      0xffffedf55000     0xffffedf6f000    0x1a000    0x35000  ---p   /usr/lib/aarch64-linux-gnu/libpng16.so.16.43.0
+      0xffffedf6f000     0xffffedf70000     0x1000    0x3f000  r--p   /usr/lib/aarch64-linux-gnu/libpng16.so.16.43.0
+      0xffffedf70000     0xffffedf71000     0x1000    0x40000  rw-p   /usr/lib/aarch64-linux-gnu/libpng16.so.16.43.0
+      0xffffedf80000     0xffffee058000    0xd8000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libGL.so.1.7.0
+      0xffffee058000     0xffffee062000     0xa000    0xd8000  ---p   /usr/lib/aarch64-linux-gnu/libGL.so.1.7.0
+      0xffffee062000     0xffffee070000     0xe000    0xe2000  r--p   /usr/lib/aarch64-linux-gnu/libGL.so.1.7.0
+      0xffffee070000     0xffffee071000     0x1000    0xf0000  rw-p   /usr/lib/aarch64-linux-gnu/libGL.so.1.7.0
+      0xffffee071000     0xffffee072000     0x1000        0x0  rw-p   
+      0xffffee080000     0xffffee248000   0x1c8000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libQt5Network.so.5.15.13
+      0xffffee248000     0xffffee25a000    0x12000   0x1c8000  ---p   /usr/lib/aarch64-linux-gnu/libQt5Network.so.5.15.13
+      0xffffee25a000     0xffffee260000     0x6000   0x1ca000  r--p   /usr/lib/aarch64-linux-gnu/libQt5Network.so.5.15.13
+      0xffffee260000     0xffffee262000     0x2000   0x1d0000  rw-p   /usr/lib/aarch64-linux-gnu/libQt5Network.so.5.15.13
+      0xffffee262000     0xffffee263000     0x1000        0x0  rw-p   
+      0xffffee270000     0xffffee2ff000    0x8f000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libQt5QmlModels.so.5.15.13
+      0xffffee2ff000     0xffffee30b000     0xc000    0x8f000  ---p   /usr/lib/aarch64-linux-gnu/libQt5QmlModels.so.5.15.13
+      0xffffee30b000     0xffffee310000     0x5000    0x9b000  r--p   /usr/lib/aarch64-linux-gnu/libQt5QmlModels.so.5.15.13
+      0xffffee310000     0xffffee311000     0x1000    0xa0000  rw-p   /usr/lib/aarch64-linux-gnu/libQt5QmlModels.so.5.15.13
+      0xffffee320000     0xffffee3ae000    0x8e000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libzmq.so.5.2.5
+      0xffffee3ae000     0xffffee3b8000     0xa000    0x8e000  ---p   /usr/lib/aarch64-linux-gnu/libzmq.so.5.2.5
+      0xffffee3b8000     0xffffee3c0000     0x8000    0x98000  r--p   /usr/lib/aarch64-linux-gnu/libzmq.so.5.2.5
+      0xffffee3c0000     0xffffee3c1000     0x1000    0xa0000  rw-p   /usr/lib/aarch64-linux-gnu/libzmq.so.5.2.5
+      0xffffee3d0000     0xffffee3d6000     0x6000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libuuid.so.1.3.0
+      0xffffee3d6000     0xffffee3ef000    0x19000     0x6000  ---p   /usr/lib/aarch64-linux-gnu/libuuid.so.1.3.0
+      0xffffee3ef000     0xffffee3f0000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/libuuid.so.1.3.0
+      0xffffee3f0000     0xffffee3f1000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/libuuid.so.1.3.0
+      0xffffee400000     0xffffee419000    0x19000        0x0  r-xp   /opt/ros/jazzy/lib/aarch64-linux-gnu/liburdfdom_model.so.4.0
+      0xffffee419000     0xffffee42f000    0x16000    0x19000  ---p   /opt/ros/jazzy/lib/aarch64-linux-gnu/liburdfdom_model.so.4.0
+      0xffffee42f000     0xffffee430000     0x1000    0x1f000  r--p   /opt/ros/jazzy/lib/aarch64-linux-gnu/liburdfdom_model.so.4.0
+      0xffffee430000     0xffffee431000     0x1000    0x20000  rw-p   /opt/ros/jazzy/lib/aarch64-linux-gnu/liburdfdom_model.so.4.0
+      0xffffee440000     0xffffee446000     0x6000        0x0  r-xp   /opt/ros/jazzy/opt/gz_utils_vendor/lib/libgz-utils2.so.2.2.1
+      0xffffee446000     0xffffee45f000    0x19000     0x6000  ---p   /opt/ros/jazzy/opt/gz_utils_vendor/lib/libgz-utils2.so.2.2.1
+      0xffffee45f000     0xffffee460000     0x1000     0xf000  r--p   /opt/ros/jazzy/opt/gz_utils_vendor/lib/libgz-utils2.so.2.2.1
+      0xffffee460000     0xffffee461000     0x1000    0x10000  rw-p   /opt/ros/jazzy/opt/gz_utils_vendor/lib/libgz-utils2.so.2.2.1
+      0xffffee470000     0xffffee520000    0xb0000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libcurl.so.4.8.0
+      0xffffee520000     0xffffee52c000     0xc000    0xb0000  ---p   /usr/lib/aarch64-linux-gnu/libcurl.so.4.8.0
+      0xffffee52c000     0xffffee530000     0x4000    0xbc000  r--p   /usr/lib/aarch64-linux-gnu/libcurl.so.4.8.0
+      0xffffee530000     0xffffee533000     0x3000    0xc0000  rw-p   /usr/lib/aarch64-linux-gnu/libcurl.so.4.8.0
+      0xffffee540000     0xffffee55b000    0x1b000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libzip.so.4.0
+      0xffffee55b000     0xffffee56f000    0x14000    0x1b000  ---p   /usr/lib/aarch64-linux-gnu/libzip.so.4.0
+      0xffffee56f000     0xffffee570000     0x1000    0x1f000  r--p   /usr/lib/aarch64-linux-gnu/libzip.so.4.0
+      0xffffee570000     0xffffee571000     0x1000    0x20000  rw-p   /usr/lib/aarch64-linux-gnu/libzip.so.4.0
+      0xffffee580000     0xffffee5b2000    0x32000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libjsoncpp.so.1.9.5
+      0xffffee5b2000     0xffffee5cf000    0x1d000    0x32000  ---p   /usr/lib/aarch64-linux-gnu/libjsoncpp.so.1.9.5
+      0xffffee5cf000     0xffffee5d0000     0x1000    0x3f000  r--p   /usr/lib/aarch64-linux-gnu/libjsoncpp.so.1.9.5
+      0xffffee5d0000     0xffffee5d1000     0x1000    0x40000  rw-p   /usr/lib/aarch64-linux-gnu/libjsoncpp.so.1.9.5
+      0xffffee5e0000     0xffffeec98000   0x6b8000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libpython3.12.so.1.0
+      0xffffeec98000     0xffffeeca8000    0x10000   0x6b8000  ---p   /usr/lib/aarch64-linux-gnu/libpython3.12.so.1.0
+      0xffffeeca8000     0xffffeed20000    0x78000   0x6b8000  r--p   /usr/lib/aarch64-linux-gnu/libpython3.12.so.1.0
+      0xffffeed20000     0xffffeee8c000   0x16c000   0x730000  rw-p   /usr/lib/aarch64-linux-gnu/libpython3.12.so.1.0
+      0xffffeee8c000     0xffffeee8f000     0x3000        0x0  rw-p   
+      0xffffeee90000     0xffffeeeae000    0x1e000        0x0  r-xp   /opt/ros/jazzy/opt/gz_transport_vendor/lib/libgz-transport13-parameters.so.13.6.0
+      0xffffeeeae000     0xffffeeebf000    0x11000    0x1e000  ---p   /opt/ros/jazzy/opt/gz_transport_vendor/lib/libgz-transport13-parameters.so.13.6.0
+      0xffffeeebf000     0xffffeeec0000     0x1000    0x1f000  r--p   /opt/ros/jazzy/opt/gz_transport_vendor/lib/libgz-transport13-parameters.so.13.6.0
+      0xffffeeec0000     0xffffeeec1000     0x1000    0x20000  rw-p   /opt/ros/jazzy/opt/gz_transport_vendor/lib/libgz-transport13-parameters.so.13.6.0
+      0xffffeeed0000     0xffffeefa7000    0xd7000        0x0  r-xp   /opt/ros/jazzy/opt/gz_common_vendor/lib/libgz-common5-graphics.so.5.9.0
+      0xffffeefa7000     0xffffeefbe000    0x17000    0xd7000  ---p   /opt/ros/jazzy/opt/gz_common_vendor/lib/libgz-common5-graphics.so.5.9.0
+      0xffffeefbe000     0xffffeefc0000     0x2000    0xde000  r--p   /opt/ros/jazzy/opt/gz_common_vendor/lib/libgz-common5-graphics.so.5.9.0
+      0xffffeefc0000     0xffffeefc2000     0x2000    0xe0000  rw-p   /opt/ros/jazzy/opt/gz_common_vendor/lib/libgz-common5-graphics.so.5.9.0
+      0xffffeefc2000     0xffffeefc4000     0x2000        0x0  rw-p   
+      0xffffeefd0000     0xffffeefd4000     0x4000        0x0  r-xp   /opt/ros/jazzy/opt/gz_common_vendor/lib/libgz-common5-events.so.5.9.0
+      0xffffeefd4000     0xffffeefef000    0x1b000     0x4000  ---p   /opt/ros/jazzy/opt/gz_common_vendor/lib/libgz-common5-events.so.5.9.0
+      0xffffeefef000     0xffffeeff0000     0x1000     0xf000  r--p   /opt/ros/jazzy/opt/gz_common_vendor/lib/libgz-common5-events.so.5.9.0
+      0xffffeeff0000     0xffffeeff1000     0x1000    0x10000  rw-p   /opt/ros/jazzy/opt/gz_common_vendor/lib/libgz-common5-events.so.5.9.0
+      0xffffef000000     0xffffef013000    0x13000        0x0  r-xp   /opt/ros/jazzy/opt/gz_plugin_vendor/lib/libgz-plugin2-loader.so.2.0.4
+      0xffffef013000     0xffffef02f000    0x1c000    0x13000  ---p   /opt/ros/jazzy/opt/gz_plugin_vendor/lib/libgz-plugin2-loader.so.2.0.4
+      0xffffef02f000     0xffffef030000     0x1000    0x1f000  r--p   /opt/ros/jazzy/opt/gz_plugin_vendor/lib/libgz-plugin2-loader.so.2.0.4
+      0xffffef030000     0xffffef031000     0x1000    0x20000  rw-p   /opt/ros/jazzy/opt/gz_plugin_vendor/lib/libgz-plugin2-loader.so.2.0.4
+      0xffffef040000     0xffffef055000    0x15000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libtinyxml2.so.10.0.0
+      0xffffef055000     0xffffef06f000    0x1a000    0x15000  ---p   /usr/lib/aarch64-linux-gnu/libtinyxml2.so.10.0.0
+      0xffffef06f000     0xffffef070000     0x1000    0x1f000  r--p   /usr/lib/aarch64-linux-gnu/libtinyxml2.so.10.0.0
+      0xffffef070000     0xffffef071000     0x1000    0x20000  rw-p   /usr/lib/aarch64-linux-gnu/libtinyxml2.so.10.0.0
+      0xffffef080000     0xffffef089000     0x9000        0x0  r-xp   /opt/ros/jazzy/opt/gz_plugin_vendor/lib/libgz-plugin2.so.2.0.4
+      0xffffef089000     0xffffef09f000    0x16000     0x9000  ---p   /opt/ros/jazzy/opt/gz_plugin_vendor/lib/libgz-plugin2.so.2.0.4
+      0xffffef09f000     0xffffef0a0000     0x1000     0xf000  r--p   /opt/ros/jazzy/opt/gz_plugin_vendor/lib/libgz-plugin2.so.2.0.4
+      0xffffef0a0000     0xffffef0a1000     0x1000    0x10000  rw-p   /opt/ros/jazzy/opt/gz_plugin_vendor/lib/libgz-plugin2.so.2.0.4
+      0xffffef0b0000     0xffffef634000   0x584000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libQt5Core.so.5.15.13
+      0xffffef634000     0xffffef643000     0xf000   0x584000  ---p   /usr/lib/aarch64-linux-gnu/libQt5Core.so.5.15.13
+      0xffffef643000     0xffffef650000     0xd000   0x593000  r--p   /usr/lib/aarch64-linux-gnu/libQt5Core.so.5.15.13
+      0xffffef650000     0xffffef652000     0x2000   0x5a0000  rw-p   /usr/lib/aarch64-linux-gnu/libQt5Core.so.5.15.13
+      0xffffef652000     0xffffef655000     0x3000        0x0  rw-p   
+      0xffffef660000     0xffffefcf0000   0x690000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libQt5Gui.so.5.15.13
+      0xffffefcf0000     0xffffefcff000     0xf000   0x690000  ---p   /usr/lib/aarch64-linux-gnu/libQt5Gui.so.5.15.13
+      0xffffefcff000     0xffffefd10000    0x11000   0x69f000  r--p   /usr/lib/aarch64-linux-gnu/libQt5Gui.so.5.15.13
+      0xffffefd10000     0xffffefd14000     0x4000   0x6b0000  rw-p   /usr/lib/aarch64-linux-gnu/libQt5Gui.so.5.15.13
+      0xffffefd14000     0xffffefd1f000     0xb000        0x0  rw-p   
+      0xffffefd20000     0xfffff01b5000   0x495000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libQt5Qml.so.5.15.13
+      0xfffff01b5000     0xfffff01c4000     0xf000   0x495000  ---p   /usr/lib/aarch64-linux-gnu/libQt5Qml.so.5.15.13
+      0xfffff01c4000     0xfffff01e0000    0x1c000   0x4a4000  r--p   /usr/lib/aarch64-linux-gnu/libQt5Qml.so.5.15.13
+      0xfffff01e0000     0xfffff01e1000     0x1000   0x4c0000  rw-p   /usr/lib/aarch64-linux-gnu/libQt5Qml.so.5.15.13
+      0xfffff01e1000     0xfffff01e3000     0x2000        0x0  rw-p   
+      0xfffff01f0000     0xfffff077d000   0x58d000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libQt5Quick.so.5.15.13
+      0xfffff077d000     0xfffff0783000     0x6000   0x58d000  ---p   /usr/lib/aarch64-linux-gnu/libQt5Quick.so.5.15.13
+      0xfffff0783000     0xfffff07b0000    0x2d000   0x593000  r--p   /usr/lib/aarch64-linux-gnu/libQt5Quick.so.5.15.13
+      0xfffff07b0000     0xfffff07b1000     0x1000   0x5c0000  rw-p   /usr/lib/aarch64-linux-gnu/libQt5Quick.so.5.15.13
+      0xfffff07b1000     0xfffff07b2000     0x1000        0x0  rw-p   
+      0xfffff07c0000     0xfffff0e90000   0x6d0000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libQt5Widgets.so.5.15.13
+      0xfffff0e90000     0xfffff0e93000     0x3000   0x6d0000  ---p   /usr/lib/aarch64-linux-gnu/libQt5Widgets.so.5.15.13
+      0xfffff0e93000     0xfffff0ec0000    0x2d000   0x6d3000  r--p   /usr/lib/aarch64-linux-gnu/libQt5Widgets.so.5.15.13
+      0xfffff0ec0000     0xfffff0ec5000     0x5000   0x700000  rw-p   /usr/lib/aarch64-linux-gnu/libQt5Widgets.so.5.15.13
+      0xfffff0ec5000     0xfffff0ec6000     0x1000        0x0  rw-p   
+      0xfffff0ed0000     0xfffff0f64000    0x94000        0x0  r-xp   /opt/ros/jazzy/opt/gz_gui_vendor/lib/libgz-gui8.so.8.4.0
+      0xfffff0f64000     0xfffff0f7e000    0x1a000    0x94000  ---p   /opt/ros/jazzy/opt/gz_gui_vendor/lib/libgz-gui8.so.8.4.0
+      0xfffff0f7e000     0xfffff0f80000     0x2000    0x9e000  r--p   /opt/ros/jazzy/opt/gz_gui_vendor/lib/libgz-gui8.so.8.4.0
+      0xfffff0f80000     0xfffff0f82000     0x2000    0xa0000  rw-p   /opt/ros/jazzy/opt/gz_gui_vendor/lib/libgz-gui8.so.8.4.0
+      0xfffff0f90000     0xfffff0fe1000    0x51000        0x0  r-xp   /opt/ros/jazzy/opt/gz_math_vendor/lib/libgz-math7.so.7.7.0
+      0xfffff0fe1000     0xfffff0ffe000    0x1d000    0x51000  ---p   /opt/ros/jazzy/opt/gz_math_vendor/lib/libgz-math7.so.7.7.0
+      0xfffff0ffe000     0xfffff1000000     0x2000    0x5e000  r--p   /opt/ros/jazzy/opt/gz_math_vendor/lib/libgz-math7.so.7.7.0
+      0xfffff1000000     0xfffff1001000     0x1000    0x60000  rw-p   /opt/ros/jazzy/opt/gz_math_vendor/lib/libgz-math7.so.7.7.0
+      0xfffff1001000     0xfffff1002000     0x1000        0x0  rw-p   
+      0xfffff1010000     0xfffff12ea000   0x2da000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libprotobuf.so.32.0.12
+      0xfffff12ea000     0xfffff12f8000     0xe000   0x2da000  ---p   /usr/lib/aarch64-linux-gnu/libprotobuf.so.32.0.12
+      0xfffff12f8000     0xfffff1300000     0x8000   0x2e8000  r--p   /usr/lib/aarch64-linux-gnu/libprotobuf.so.32.0.12
+      0xfffff1300000     0xfffff1302000     0x2000   0x2f0000  rw-p   /usr/lib/aarch64-linux-gnu/libprotobuf.so.32.0.12
+      0xfffff1330000     0xfffff15db000   0x2ab000        0x0  r-xp   /opt/ros/jazzy/opt/gz_msgs_vendor/lib/libgz-msgs10.so.10.4.0
+      0xfffff15db000     0xfffff15ec000    0x11000   0x2ab000  ---p   /opt/ros/jazzy/opt/gz_msgs_vendor/lib/libgz-msgs10.so.10.4.0
+      0xfffff15ec000     0xfffff1600000    0x14000   0x2ac000  r--p   /opt/ros/jazzy/opt/gz_msgs_vendor/lib/libgz-msgs10.so.10.4.0
+      0xfffff1600000     0xfffff160e000     0xe000   0x2c0000  rw-p   /opt/ros/jazzy/opt/gz_msgs_vendor/lib/libgz-msgs10.so.10.4.0
+      0xfffff160e000     0xfffff1614000     0x6000        0x0  rw-p   
+      0xfffff1620000     0xfffff1689000    0x69000        0x0  r-xp   /opt/ros/jazzy/opt/gz_transport_vendor/lib/libgz-transport13.so.13.6.0
+      0xfffff1689000     0xfffff169e000    0x15000    0x69000  ---p   /opt/ros/jazzy/opt/gz_transport_vendor/lib/libgz-transport13.so.13.6.0
+      0xfffff169e000     0xfffff16a0000     0x2000    0x6e000  r--p   /opt/ros/jazzy/opt/gz_transport_vendor/lib/libgz-transport13.so.13.6.0
+      0xfffff16a0000     0xfffff16a1000     0x1000    0x70000  rw-p   /opt/ros/jazzy/opt/gz_transport_vendor/lib/libgz-transport13.so.13.6.0
+      0xfffff16b0000     0xfffff170b000    0x5b000        0x0  r-xp   /opt/ros/jazzy/opt/gz_common_vendor/lib/libgz-common5.so.5.9.0
+      0xfffff170b000     0xfffff171f000    0x14000    0x5b000  ---p   /opt/ros/jazzy/opt/gz_common_vendor/lib/libgz-common5.so.5.9.0
+      0xfffff171f000     0xfffff1720000     0x1000    0x5f000  r--p   /opt/ros/jazzy/opt/gz_common_vendor/lib/libgz-common5.so.5.9.0
+      0xfffff1720000     0xfffff1721000     0x1000    0x60000  rw-p   /opt/ros/jazzy/opt/gz_common_vendor/lib/libgz-common5.so.5.9.0
+      0xfffff1721000     0xfffff1722000     0x1000        0x0  rw-p   
+      0xfffff1730000     0xfffff198a000   0x25a000        0x0  r-xp   /opt/ros/jazzy/opt/sdformat_vendor/lib/libsdformat14.so.14.9.0
+      0xfffff198a000     0xfffff199e000    0x14000   0x25a000  ---p   /opt/ros/jazzy/opt/sdformat_vendor/lib/libsdformat14.so.14.9.0
+      0xfffff199e000     0xfffff19a0000     0x2000   0x25e000  r--p   /opt/ros/jazzy/opt/sdformat_vendor/lib/libsdformat14.so.14.9.0
+      0xfffff19a0000     0xfffff19a3000     0x3000   0x260000  rw-p   /opt/ros/jazzy/opt/sdformat_vendor/lib/libsdformat14.so.14.9.0
+      0xfffff19b0000     0xfffff1a2e000    0x7e000        0x0  r-xp   /opt/ros/jazzy/opt/gz_fuel_tools_vendor/lib/libgz-fuel_tools9.so.9.1.1
+      0xfffff1a2e000     0xfffff1a3f000    0x11000    0x7e000  ---p   /opt/ros/jazzy/opt/gz_fuel_tools_vendor/lib/libgz-fuel_tools9.so.9.1.1
+      0xfffff1a3f000     0xfffff1a40000     0x1000    0x7f000  r--p   /opt/ros/jazzy/opt/gz_fuel_tools_vendor/lib/libgz-fuel_tools9.so.9.1.1
+      0xfffff1a40000     0xfffff1a42000     0x2000    0x80000  rw-p   /opt/ros/jazzy/opt/gz_fuel_tools_vendor/lib/libgz-fuel_tools9.so.9.1.1
+      0xfffff1a50000     0xfffff1c59000   0x209000        0x0  r-xp   /opt/ros/jazzy/opt/gz_sim_vendor/lib/libgz-sim8.so.8.15.0
+      0xfffff1c59000     0xfffff1c65000     0xc000   0x209000  ---p   /opt/ros/jazzy/opt/gz_sim_vendor/lib/libgz-sim8.so.8.15.0
+      0xfffff1c65000     0xfffff1c70000     0xb000   0x215000  r--p   /opt/ros/jazzy/opt/gz_sim_vendor/lib/libgz-sim8.so.8.15.0
+      0xfffff1c70000     0xfffff1c74000     0x4000   0x220000  rw-p   /opt/ros/jazzy/opt/gz_sim_vendor/lib/libgz-sim8.so.8.15.0
+      0xfffff1c74000     0xfffff1c76000     0x2000        0x0  rw-p   
+      0xfffff1c80000     0xfffff1e89000   0x209000        0x0  r-xp   /opt/ros/jazzy/opt/gz_sim_vendor/lib/libgz-sim8-gui.so.8.15.0
+      0xfffff1e89000     0xfffff1e97000     0xe000   0x209000  ---p   /opt/ros/jazzy/opt/gz_sim_vendor/lib/libgz-sim8-gui.so.8.15.0
+      0xfffff1e97000     0xfffff1ea0000     0x9000   0x217000  r--p   /opt/ros/jazzy/opt/gz_sim_vendor/lib/libgz-sim8-gui.so.8.15.0
+      0xfffff1ea0000     0xfffff1ea2000     0x2000   0x220000  rw-p   /opt/ros/jazzy/opt/gz_sim_vendor/lib/libgz-sim8-gui.so.8.15.0
+      0xfffff1ea2000     0xfffff1ea3000     0x1000        0x0  rw-p   
+      0xfffff1eb0000     0xfffff1ef8000    0x48000        0x0  r-xp   /opt/ros/jazzy/opt/gz_sim_vendor/lib/libgz-sim8-gz.so.8.15.0
+      0xfffff1ef8000     0xfffff1f0e000    0x16000    0x48000  ---p   /opt/ros/jazzy/opt/gz_sim_vendor/lib/libgz-sim8-gz.so.8.15.0
+      0xfffff1f0e000     0xfffff1f10000     0x2000    0x4e000  r--p   /opt/ros/jazzy/opt/gz_sim_vendor/lib/libgz-sim8-gz.so.8.15.0
+      0xfffff1f10000     0xfffff1f11000     0x1000    0x50000  rw-p   /opt/ros/jazzy/opt/gz_sim_vendor/lib/libgz-sim8-gz.so.8.15.0
+      0xfffff1f20000     0xfffff1f28000     0x8000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/ruby/3.2.0/pathname.so
+      0xfffff1f28000     0xfffff1f3f000    0x17000     0x8000  ---p   /usr/lib/aarch64-linux-gnu/ruby/3.2.0/pathname.so
+      0xfffff1f3f000     0xfffff1f40000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/ruby/3.2.0/pathname.so
+      0xfffff1f40000     0xfffff1f41000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/ruby/3.2.0/pathname.so
+      0xfffff1f50000     0xfffff1f52000     0x2000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/ruby/3.2.0/erb/escape.so
+      0xfffff1f52000     0xfffff1f6f000    0x1d000     0x2000  ---p   /usr/lib/aarch64-linux-gnu/ruby/3.2.0/erb/escape.so
+      0xfffff1f6f000     0xfffff1f70000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/ruby/3.2.0/erb/escape.so
+      0xfffff1f70000     0xfffff1f71000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/ruby/3.2.0/erb/escape.so
+      0xfffff1f80000     0xfffff1f86000     0x6000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/ruby/3.2.0/strscan.so
+      0xfffff1f86000     0xfffff1f9f000    0x19000     0x6000  ---p   /usr/lib/aarch64-linux-gnu/ruby/3.2.0/strscan.so
+      0xfffff1f9f000     0xfffff1fa0000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/ruby/3.2.0/strscan.so
+      0xfffff1fa0000     0xfffff1fa1000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/ruby/3.2.0/strscan.so
+      0xfffff1fb0000     0xfffff1fb4000     0x4000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/ruby/3.2.0/cgi/escape.so
+      0xfffff1fb4000     0xfffff1fcf000    0x1b000     0x4000  ---p   /usr/lib/aarch64-linux-gnu/ruby/3.2.0/cgi/escape.so
+      0xfffff1fcf000     0xfffff1fd0000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/ruby/3.2.0/cgi/escape.so
+      0xfffff1fd0000     0xfffff1fd1000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/ruby/3.2.0/cgi/escape.so
+      0xfffff1fe0000     0xfffff1ff0000    0x10000        0x0  rw-p   
+      0xfffff1fff000     0xfffff2800000   0x801000        0x0  rw-p   
+      0xfffff2800000     0xfffff281f000    0x1f000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libgcc_s.so.1
+      0xfffff281f000     0xfffff282f000    0x10000    0x1f000  ---p   /usr/lib/aarch64-linux-gnu/libgcc_s.so.1
+      0xfffff282f000     0xfffff2830000     0x1000    0x1f000  r--p   /usr/lib/aarch64-linux-gnu/libgcc_s.so.1
+      0xfffff2830000     0xfffff2831000     0x1000    0x20000  rw-p   /usr/lib/aarch64-linux-gnu/libgcc_s.so.1
+      0xfffff2840000     0xfffff2aad000   0x26d000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libstdc++.so.6.0.33
+      0xfffff2aad000     0xfffff2ab5000     0x8000   0x26d000  ---p   /usr/lib/aarch64-linux-gnu/libstdc++.so.6.0.33
+      0xfffff2ab5000     0xfffff2ac0000     0xb000   0x275000  r--p   /usr/lib/aarch64-linux-gnu/libstdc++.so.6.0.33
+      0xfffff2ac0000     0xfffff2ac3000     0x3000   0x280000  rw-p   /usr/lib/aarch64-linux-gnu/libstdc++.so.6.0.33
+      0xfffff2ac3000     0xfffff2ac7000     0x4000        0x0  rw-p   
+      0xfffff2ad0000     0xfffff2ad9000     0x9000        0x0  r-xp   /opt/ros/jazzy/opt/gz_tools_vendor/lib/libgz-tools2-backward.so.2.0.4
+      0xfffff2ad9000     0xfffff2aef000    0x16000     0x9000  ---p   /opt/ros/jazzy/opt/gz_tools_vendor/lib/libgz-tools2-backward.so.2.0.4
+      0xfffff2aef000     0xfffff2af0000     0x1000     0xf000  r--p   /opt/ros/jazzy/opt/gz_tools_vendor/lib/libgz-tools2-backward.so.2.0.4
+      0xfffff2af0000     0xfffff2af1000     0x1000    0x10000  rw-p   /opt/ros/jazzy/opt/gz_tools_vendor/lib/libgz-tools2-backward.so.2.0.4
+      0xfffff2b00000     0xfffff2b08000     0x8000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libffi.so.8.1.4
+      0xfffff2b08000     0xfffff2b1f000    0x17000     0x8000  ---p   /usr/lib/aarch64-linux-gnu/libffi.so.8.1.4
+      0xfffff2b1f000     0xfffff2b20000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/libffi.so.8.1.4
+      0xfffff2b20000     0xfffff2b21000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/libffi.so.8.1.4
+      0xfffff2b40000     0xfffff2b50000    0x10000        0x0  rw-p   
+      0xfffff2b50000     0xfffff2b5d000     0xd000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/ruby/3.2.0/fiddle.so
+      0xfffff2b5d000     0xfffff2b6f000    0x12000     0xd000  ---p   /usr/lib/aarch64-linux-gnu/ruby/3.2.0/fiddle.so
+      0xfffff2b6f000     0xfffff2b70000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/ruby/3.2.0/fiddle.so
+      0xfffff2b70000     0xfffff2b71000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/ruby/3.2.0/fiddle.so
+      0xfffff2b80000     0xfffff2b88000     0x8000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/ruby/3.2.0/stringio.so
+      0xfffff2b88000     0xfffff2b9f000    0x17000     0x8000  ---p   /usr/lib/aarch64-linux-gnu/ruby/3.2.0/stringio.so
+      0xfffff2b9f000     0xfffff2ba0000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/ruby/3.2.0/stringio.so
+      0xfffff2ba0000     0xfffff2ba1000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/ruby/3.2.0/stringio.so
+      0xfffff2bb0000     0xfffff2bcc000    0x1c000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libyaml-0.so.2.0.9
+      0xfffff2bcc000     0xfffff2bdf000    0x13000    0x1c000  ---p   /usr/lib/aarch64-linux-gnu/libyaml-0.so.2.0.9
+      0xfffff2bdf000     0xfffff2be0000     0x1000    0x1f000  r--p   /usr/lib/aarch64-linux-gnu/libyaml-0.so.2.0.9
+      0xfffff2be0000     0xfffff2be1000     0x1000    0x20000  rw-p   /usr/lib/aarch64-linux-gnu/libyaml-0.so.2.0.9
+      0xfffff2c00000     0xfffff2c10000    0x10000        0x0  rw-p   
+      0xfffff2c10000     0xfffff2c16000     0x6000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/ruby/3.2.0/psych.so
+      0xfffff2c16000     0xfffff2c2f000    0x19000     0x6000  ---p   /usr/lib/aarch64-linux-gnu/ruby/3.2.0/psych.so
+      0xfffff2c2f000     0xfffff2c30000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/ruby/3.2.0/psych.so
+      0xfffff2c30000     0xfffff2c31000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/ruby/3.2.0/psych.so
+      0xfffff2c40000     0xfffff2c70000    0x30000        0x0  rw-p   
+      0xfffff2c70000     0xfffff2c72000     0x2000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/ruby/3.2.0/monitor.so
+      0xfffff2c72000     0xfffff2c8f000    0x1d000     0x2000  ---p   /usr/lib/aarch64-linux-gnu/ruby/3.2.0/monitor.so
+      0xfffff2c8f000     0xfffff2c90000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/ruby/3.2.0/monitor.so
+      0xfffff2c90000     0xfffff2c91000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/ruby/3.2.0/monitor.so
+      0xfffff2ca0000     0xfffff2d20000    0x80000        0x0  rw-p   
+      0xfffff2d30000     0xfffff2db0000    0x80000        0x0  rw-p   
+      0xfffff2db7000     0xfffff2db8000     0x1000        0x0  ---p   
+      0xfffff2db8000     0xfffff2e59000    0xa1000        0x0  rw-p   
+      0xfffff2e59000     0xfffff2e5a000     0x1000        0x0  ---p   
+      0xfffff2e5a000     0xfffff2efb000    0xa1000        0x0  rw-p   
+      0xfffff2efb000     0xfffff2efc000     0x1000        0x0  ---p   
+      0xfffff2efc000     0xfffff2f9d000    0xa1000        0x0  rw-p   
+      0xfffff2f9d000     0xfffff2f9e000     0x1000        0x0  ---p   
+      0xfffff2f9e000     0xfffff303f000    0xa1000        0x0  rw-p   
+      0xfffff303f000     0xfffff3040000     0x1000        0x0  ---p   
+      0xfffff3040000     0xfffff30e1000    0xa1000        0x0  rw-p   
+      0xfffff30e1000     0xfffff30e2000     0x1000        0x0  ---p   
+      0xfffff30e2000     0xfffff3183000    0xa1000        0x0  rw-p   
+      0xfffff3183000     0xfffff3184000     0x1000        0x0  ---p   
+      0xfffff3184000     0xfffff3225000    0xa1000        0x0  rw-p   
+      0xfffff3225000     0xfffff3226000     0x1000        0x0  ---p   
+      0xfffff3226000     0xfffff32c7000    0xa1000        0x0  rw-p   
+      0xfffff32c7000     0xfffff32c8000     0x1000        0x0  ---p   
+      0xfffff32c8000     0xfffff3369000    0xa1000        0x0  rw-p   
+      0xfffff3369000     0xfffff336a000     0x1000        0x0  ---p   
+      0xfffff336a000     0xfffff340b000    0xa1000        0x0  rw-p   
+      0xfffff340b000     0xfffff340c000     0x1000        0x0  ---p   
+      0xfffff340c000     0xfffff34ad000    0xa1000        0x0  rw-p   
+      0xfffff34ad000     0xfffff34ae000     0x1000        0x0  ---p   
+      0xfffff34ae000     0xfffff354f000    0xa1000        0x0  rw-p   
+      0xfffff354f000     0xfffff3550000     0x1000        0x0  ---p   
+      0xfffff3550000     0xfffff35f1000    0xa1000        0x0  rw-p   
+      0xfffff35f1000     0xfffff35f2000     0x1000        0x0  ---p   
+      0xfffff35f2000     0xfffff3693000    0xa1000        0x0  rw-p   
+      0xfffff3693000     0xfffff3694000     0x1000        0x0  ---p   
+      0xfffff3694000     0xfffff3735000    0xa1000        0x0  rw-p   
+      0xfffff3735000     0xfffff3736000     0x1000        0x0  ---p   
+      0xfffff3736000     0xfffff37d7000    0xa1000        0x0  rw-p   
+      0xfffff37d7000     0xfffff37d8000     0x1000        0x0  ---p   
+      0xfffff37d8000     0xfffff3879000    0xa1000        0x0  rw-p   
+      0xfffff3879000     0xfffff387a000     0x1000        0x0  ---p   
+      0xfffff387a000     0xfffff391b000    0xa1000        0x0  rw-p   
+      0xfffff391b000     0xfffff391c000     0x1000        0x0  ---p   
+      0xfffff391c000     0xfffff39bd000    0xa1000        0x0  rw-p   
+      0xfffff39bd000     0xfffff39be000     0x1000        0x0  ---p   
+      0xfffff39be000     0xfffff3a5f000    0xa1000        0x0  rw-p   
+      0xfffff3a5f000     0xfffff3a60000     0x1000        0x0  ---p   
+      0xfffff3a60000     0xfffff3b01000    0xa1000        0x0  rw-p   
+      0xfffff3b01000     0xfffff3b02000     0x1000        0x0  ---p   
+      0xfffff3b02000     0xfffff3ba3000    0xa1000        0x0  rw-p   
+      0xfffff3ba3000     0xfffff3ba4000     0x1000        0x0  ---p   
+      0xfffff3ba4000     0xfffff3c45000    0xa1000        0x0  rw-p   
+      0xfffff3c45000     0xfffff3c46000     0x1000        0x0  ---p   
+      0xfffff3c46000     0xfffff3ce7000    0xa1000        0x0  rw-p   
+      0xfffff3ce7000     0xfffff3ce8000     0x1000        0x0  ---p   
+      0xfffff3ce8000     0xfffff3d89000    0xa1000        0x0  rw-p   
+      0xfffff3d89000     0xfffff3d8a000     0x1000        0x0  ---p   
+      0xfffff3d8a000     0xfffff3e2b000    0xa1000        0x0  rw-p   
+      0xfffff3e2b000     0xfffff3e2c000     0x1000        0x0  ---p   
+      0xfffff3e2c000     0xfffff3ecd000    0xa1000        0x0  rw-p   
+      0xfffff3ecd000     0xfffff3ece000     0x1000        0x0  ---p   
+      0xfffff3ece000     0xfffff3f6f000    0xa1000        0x0  rw-p   
+      0xfffff3f6f000     0xfffff3f70000     0x1000        0x0  ---p   
+      0xfffff3f70000     0xfffff4011000    0xa1000        0x0  rw-p   
+      0xfffff4011000     0xfffff4012000     0x1000        0x0  ---p   
+      0xfffff4012000     0xfffff40b3000    0xa1000        0x0  rw-p   
+      0xfffff40b3000     0xfffff40b4000     0x1000        0x0  ---p   
+      0xfffff40b4000     0xfffff4155000    0xa1000        0x0  rw-p   
+      0xfffff4155000     0xfffff4156000     0x1000        0x0  ---p   
+      0xfffff4156000     0xfffff41f7000    0xa1000        0x0  rw-p   
+      0xfffff41f7000     0xfffff7200000  0x3009000        0x0  rw-p   
+      0xfffff7210000     0xfffff7260000    0x50000        0x0  rw-p   
+      0xfffff7260000     0xfffff7262000     0x2000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/ruby/3.2.0/enc/trans/transdb.so
+      0xfffff7262000     0xfffff727f000    0x1d000     0x2000  ---p   /usr/lib/aarch64-linux-gnu/ruby/3.2.0/enc/trans/transdb.so
+      0xfffff727f000     0xfffff7280000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/ruby/3.2.0/enc/trans/transdb.so
+      0xfffff7280000     0xfffff7281000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/ruby/3.2.0/enc/trans/transdb.so
+      0xfffff7290000     0xfffff7292000     0x2000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/ruby/3.2.0/enc/encdb.so
+      0xfffff7292000     0xfffff72af000    0x1d000     0x2000  ---p   /usr/lib/aarch64-linux-gnu/ruby/3.2.0/enc/encdb.so
+      0xfffff72af000     0xfffff72b0000     0x1000     0xf000  r--p   /usr/lib/aarch64-linux-gnu/ruby/3.2.0/enc/encdb.so
+      0xfffff72b0000     0xfffff72b1000     0x1000    0x10000  rw-p   /usr/lib/aarch64-linux-gnu/ruby/3.2.0/enc/encdb.so
+      0xfffff72c0000     0xfffff72f0000    0x30000        0x0  rw-p   
+      0xfffff72ff000     0xfffff7400000   0x101000        0x0  rw-p   
+      0xfffff7400000     0xfffff76eb000   0x2eb000        0x0  r--p   /usr/lib/locale/locale-archive
+      0xfffff76ff000     0xfffff77b0000    0xb1000        0x0  rw-p   
+      0xfffff77b7000     0xfffff7810000    0x59000        0x0  r--p   /usr/lib/locale/C.utf8/LC_CTYPE
+      0xfffff7810000     0xfffff79aa000   0x19a000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libc.so.6
+      0xfffff79aa000     0xfffff79bd000    0x13000   0x19a000  ---p   /usr/lib/aarch64-linux-gnu/libc.so.6
+      0xfffff79bd000     0xfffff79c0000     0x3000   0x19d000  r--p   /usr/lib/aarch64-linux-gnu/libc.so.6
+      0xfffff79c0000     0xfffff79c2000     0x2000   0x1a0000  rw-p   /usr/lib/aarch64-linux-gnu/libc.so.6
+      0xfffff79c2000     0xfffff79ce000     0xc000        0x0  rw-p   
+      0xfffff79d0000     0xfffff7a55000    0x85000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libm.so.6
+      0xfffff7a55000     0xfffff7a6f000    0x1a000    0x85000  ---p   /usr/lib/aarch64-linux-gnu/libm.so.6
+      0xfffff7a6f000     0xfffff7a70000     0x1000    0x8f000  r--p   /usr/lib/aarch64-linux-gnu/libm.so.6
+      0xfffff7a70000     0xfffff7a71000     0x1000    0x90000  rw-p   /usr/lib/aarch64-linux-gnu/libm.so.6
+      0xfffff7a80000     0xfffff7aad000    0x2d000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libcrypt.so.1.1.0
+      0xfffff7aad000     0xfffff7abf000    0x12000    0x2d000  ---p   /usr/lib/aarch64-linux-gnu/libcrypt.so.1.1.0
+      0xfffff7abf000     0xfffff7ac0000     0x1000    0x2f000  r--p   /usr/lib/aarch64-linux-gnu/libcrypt.so.1.1.0
+      0xfffff7ac0000     0xfffff7ac1000     0x1000    0x30000  rw-p   /usr/lib/aarch64-linux-gnu/libcrypt.so.1.1.0
+      0xfffff7ac1000     0xfffff7ac9000     0x8000        0x0  rw-p   
+      0xfffff7ad0000     0xfffff7b4a000    0x7a000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libgmp.so.10.5.0
+      0xfffff7b4a000     0xfffff7b5f000    0x15000    0x7a000  ---p   /usr/lib/aarch64-linux-gnu/libgmp.so.10.5.0
+      0xfffff7b5f000     0xfffff7b60000     0x1000    0x7f000  r--p   /usr/lib/aarch64-linux-gnu/libgmp.so.10.5.0
+      0xfffff7b60000     0xfffff7b61000     0x1000    0x80000  rw-p   /usr/lib/aarch64-linux-gnu/libgmp.so.10.5.0
+      0xfffff7b70000     0xfffff7b8a000    0x1a000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libz.so.1.3
+      0xfffff7b8a000     0xfffff7b9f000    0x15000    0x1a000  ---p   /usr/lib/aarch64-linux-gnu/libz.so.1.3
+      0xfffff7b9f000     0xfffff7ba0000     0x1000    0x1f000  r--p   /usr/lib/aarch64-linux-gnu/libz.so.1.3
+      0xfffff7ba0000     0xfffff7ba1000     0x1000    0x20000  rw-p   /usr/lib/aarch64-linux-gnu/libz.so.1.3
+      0xfffff7bb0000     0xfffff7f64000   0x3b4000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/libruby-3.2.so.3.2.3
+      0xfffff7f64000     0xfffff7f76000    0x12000   0x3b4000  ---p   /usr/lib/aarch64-linux-gnu/libruby-3.2.so.3.2.3
+      0xfffff7f76000     0xfffff7f80000     0xa000   0x3b6000  r--p   /usr/lib/aarch64-linux-gnu/libruby-3.2.so.3.2.3
+      0xfffff7f80000     0xfffff7f81000     0x1000   0x3c0000  rw-p   /usr/lib/aarch64-linux-gnu/libruby-3.2.so.3.2.3
+      0xfffff7f81000     0xfffff7f93000    0x12000        0x0  rw-p   
+      0xfffff7f95000     0xfffff7f99000     0x4000        0x0  rw-s   /SYSV00000000 (deleted)
+      0xfffff7f99000     0xfffff7f9a000     0x1000        0x0  r--p   
+      0xfffff7f9a000     0xfffff7f9b000     0x1000        0x0  r-xp   
+      0xfffff7f9b000     0xfffff7f9c000     0x1000        0x0  r--p   
+      0xfffff7f9c000     0xfffff7f9d000     0x1000        0x0  r-xp   
+      0xfffff7f9d000     0xfffff7f9e000     0x1000        0x0  r--p   
+      0xfffff7f9e000     0xfffff7f9f000     0x1000        0x0  r-xp   
+      0xfffff7f9f000     0xfffff7fa0000     0x1000        0x0  r--p   
+      0xfffff7fa0000     0xfffff7fb0000    0x10000        0x0  rw-p   
+      0xfffff7fb0000     0xfffff7fb1000     0x1000        0x0  r-xp   
+      0xfffff7fb1000     0xfffff7fb2000     0x1000        0x0  r--p   
+      0xfffff7fb2000     0xfffff7fb3000     0x1000        0x0  r-xp   
+      0xfffff7fb3000     0xfffff7fb7000     0x4000        0x0  rw-s   /SYSV00000000 (deleted)
+      0xfffff7fb7000     0xfffff7fb8000     0x1000        0x0  r--p   
+      0xfffff7fb8000     0xfffff7fb9000     0x1000        0x0  r-xp   
+      0xfffff7fb9000     0xfffff7fba000     0x1000        0x0  r--p   
+      0xfffff7fba000     0xfffff7fbb000     0x1000        0x0  r-xp   
+      0xfffff7fbb000     0xfffff7fbc000     0x1000        0x0  r--p   
+      0xfffff7fbc000     0xfffff7fbd000     0x1000        0x0  r-xp   
+      0xfffff7fbd000     0xfffff7fbe000     0x1000        0x0  r--p   
+      0xfffff7fbe000     0xfffff7fe5000    0x27000        0x0  r-xp   /usr/lib/aarch64-linux-gnu/ld-linux-aarch64.so.1
+      0xfffff7fe5000     0xfffff7fe6000     0x1000        0x0  r-xp   
+      0xfffff7fe6000     0xfffff7fe7000     0x1000        0x0  r--p   
+      0xfffff7fe7000     0xfffff7fe8000     0x1000        0x0  r-xp   
+      0xfffff7fe8000     0xfffff7fec000     0x4000        0x0  rw-p   
+      0xfffff7fec000     0xfffff7ff3000     0x7000        0x0  r--s   /usr/lib/aarch64-linux-gnu/gconv/gconv-modules.cache
+      0xfffff7ff3000     0xfffff7ff9000     0x6000        0x0  rw-p   
+      0xfffff7ff9000     0xfffff7ffb000     0x2000        0x0  r--p   [vvar]
+      0xfffff7ffb000     0xfffff7ffc000     0x1000        0x0  r-xp   [vdso]
+      0xfffff7ffc000     0xfffff7ffe000     0x2000    0x2e000  r--p   /usr/lib/aarch64-linux-gnu/ld-linux-aarch64.so.1
+      0xfffff7ffe000     0xfffff8000000     0x2000    0x30000  rw-p   /usr/lib/aarch64-linux-gnu/ld-linux-aarch64.so.1
+      0xffffff801000    0x1000000000000   0x7ff000        0x0  rw-p   [stack]
+[Thread 0xffff92fdf180 (LWP 116903) exited]
+[Thread 0xffff937ef180 (LWP 116902) exited]
+[Thread 0xffff93fff180 (LWP 116901) exited]
+[Thread 0xffffa8bff180 (LWP 116900) exited]
+[Thread 0xffffbd80f180 (LWP 116898) exited]
+[Thread 0xffffbe01f180 (LWP 116897) exited]
+[Thread 0xffffbcfff180 (LWP 116899) exited]
+[Thread 0xffffbe82f180 (LWP 116896) exited]
+[Thread 0xffff927cf180 (LWP 116904) exited]
+
+Thread 8 "ruby" received signal SIGSEGV, Segmentation fault.
+[Switching to Thread 0xffffce5ff180 (LWP 116870)]
+0x0000ffffcc01cba0 in ?? ()
+
+Thread 26 (Thread 0xffff73595180 (LWP 117021) "ruby"):
+#0  0x0000fffff7891d6c in __futex_abstimed_wait_common64 (private=128, cancel=true, abstime=0x0, op=265, expected=116870, futex_word=0xffffce5ff250) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=128, abstime=0x0, clockid=0, expected=116870, futex_word=0xffffce5ff250) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0xffffce5ff250, expected=116870, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=128) at ./nptl/futex-internal.c:139
+#3  0x0000fffff7897218 in __pthread_clockjoin_ex (threadid=281474144137600, thread_return=0x0, clockid=0, abstime=0x0, block=<optimized out>) at ./nptl/pthread_join_common.c:102
+#4  0x0000fffff2921bc4 in std::thread::join() () from /lib/aarch64-linux-gnu/libstdc++.so.6
+#5  0x0000ffffcea8f950 [PAC] in gz::sim::v8::systems::SensorsPrivate::Stop() () from /opt/ros/jazzy/opt/gz_sim_vendor/lib/gz-sim-8/plugins/libgz-sim-sensors-system.so
+#6  0x0000fffff1b9ca48 [PAC] in ?? () from /opt/ros/jazzy/opt/gz_sim_vendor/lib/libgz-sim8.so.8
+#7  0x0000fffff1b91f90 [PAC] in ?? () from /opt/ros/jazzy/opt/gz_sim_vendor/lib/libgz-sim8.so.8
+#8  0x0000fffff2921ae0 [PAC] in ?? () from /lib/aarch64-linux-gnu/libstdc++.so.6
+#9  0x0000fffff789582c [PAC] in start_thread (arg=0xffffe75ff8c0) at ./nptl/pthread_create.c:447
+#10 0x0000fffff78fbb4c in thread_start () at ../sysdeps/unix/sysv/linux/aarch64/clone3.S:76
+
+Thread 12 (Thread 0xffffbffff180 (LWP 116895) "ruby"):
+#0  0x0000fffff7891d6c in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0xaaaaaefbf01c) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0xaaaaaefbf01c) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0xaaaaaefbf01c, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x0000fffff78949f0 in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0xaaaaaefbefc0, cond=0xaaaaaefbeff0) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0xaaaaaefbeff0, mutex=0xaaaaaefbefc0) at ./nptl/pthread_cond_wait.c:627
+#5  0x0000fffff1af9f50 in gz::sim::v8::Barrier::Wait() () from /opt/ros/jazzy/opt/gz_sim_vendor/lib/libgz-sim8.so.8
+#6  0x0000fffff1b94c94 [PAC] in ?? () from /opt/ros/jazzy/opt/gz_sim_vendor/lib/libgz-sim8.so.8
+#7  0x0000fffff2921ae0 [PAC] in ?? () from /lib/aarch64-linux-gnu/libstdc++.so.6
+#8  0x0000fffff789582c [PAC] in start_thread (arg=0xfffff7ff3b80) at ./nptl/pthread_create.c:447
+#9  0x0000fffff78fbb4c in thread_start () at ../sysdeps/unix/sysv/linux/aarch64/clone3.S:76
+
+Thread 11 (Thread 0xffffcccaf180 (LWP 116894) "ruby"):
+#0  0x0000fffff7891d6c in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0xaaaaaefbf01c) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0xaaaaaefbf01c) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0xaaaaaefbf01c, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x0000fffff78949f0 in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0xaaaaaefbefc0, cond=0xaaaaaefbeff0) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0xaaaaaefbeff0, mutex=0xaaaaaefbefc0) at ./nptl/pthread_cond_wait.c:627
+#5  0x0000fffff1af9f50 in gz::sim::v8::Barrier::Wait() () from /opt/ros/jazzy/opt/gz_sim_vendor/lib/libgz-sim8.so.8
+#6  0x0000fffff1b94c94 [PAC] in ?? () from /opt/ros/jazzy/opt/gz_sim_vendor/lib/libgz-sim8.so.8
+#7  0x0000fffff2921ae0 [PAC] in ?? () from /lib/aarch64-linux-gnu/libstdc++.so.6
+#8  0x0000fffff789582c [PAC] in start_thread (arg=0xfffff7ff3b80) at ./nptl/pthread_create.c:447
+#9  0x0000fffff78fbb4c in thread_start () at ../sysdeps/unix/sysv/linux/aarch64/clone3.S:76
+
+Thread 10 (Thread 0xffffcd4bf180 (LWP 116893) "ruby"):
+#0  0x0000fffff7891d6c in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0xaaaaaefbf01c) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0xaaaaaefbf01c) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0xaaaaaefbf01c, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x0000fffff78949f0 in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0xaaaaaefbefc0, cond=0xaaaaaefbeff0) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0xaaaaaefbeff0, mutex=0xaaaaaefbefc0) at ./nptl/pthread_cond_wait.c:627
+#5  0x0000fffff1af9f50 in gz::sim::v8::Barrier::Wait() () from /opt/ros/jazzy/opt/gz_sim_vendor/lib/libgz-sim8.so.8
+#6  0x0000fffff1b94c94 [PAC] in ?? () from /opt/ros/jazzy/opt/gz_sim_vendor/lib/libgz-sim8.so.8
+#7  0x0000fffff2921ae0 [PAC] in ?? () from /lib/aarch64-linux-gnu/libstdc++.so.6
+#8  0x0000fffff789582c [PAC] in start_thread (arg=0xfffff7ff3b80) at ./nptl/pthread_create.c:447
+#9  0x0000fffff78fbb4c in thread_start () at ../sysdeps/unix/sysv/linux/aarch64/clone3.S:76
+
+Thread 9 (Thread 0xffffcdccf180 (LWP 116892) "ruby"):
+#0  0x0000fffff7891d6c in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0xaaaaaefbf01c) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0xaaaaaefbf01c) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0xaaaaaefbf01c, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x0000fffff78949f0 in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0xaaaaaefbefc0, cond=0xaaaaaefbeff0) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0xaaaaaefbeff0, mutex=0xaaaaaefbefc0) at ./nptl/pthread_cond_wait.c:627
+#5  0x0000fffff1af9f50 in gz::sim::v8::Barrier::Wait() () from /opt/ros/jazzy/opt/gz_sim_vendor/lib/libgz-sim8.so.8
+#6  0x0000fffff1b94c94 [PAC] in ?? () from /opt/ros/jazzy/opt/gz_sim_vendor/lib/libgz-sim8.so.8
+#7  0x0000fffff2921ae0 [PAC] in ?? () from /lib/aarch64-linux-gnu/libstdc++.so.6
+#8  0x0000fffff789582c [PAC] in start_thread (arg=0xfffff7ff3b80) at ./nptl/pthread_create.c:447
+#9  0x0000fffff78fbb4c in thread_start () at ../sysdeps/unix/sysv/linux/aarch64/clone3.S:76
+
+Thread 8 (Thread 0xffffce5ff180 (LWP 116870) "ruby"):
+#0  0x0000ffffcc01cba0 in ?? ()
+#1  0x0000fffff7892424 in __GI___nptl_deallocate_tsd () at ./nptl/nptl_deallocate_tsd.c:73
+#2  0x0000fffff7895654 in start_thread (arg=0xfffff7ff3b80) at ./nptl/pthread_create.c:455
+#3  0x0000fffff78fbb4c in thread_start () at ../sysdeps/unix/sysv/linux/aarch64/clone3.S:76
+
+Thread 7 (Thread 0xffffe5dcf180 (LWP 116869) "ruby"):
+#0  0x0000fffff7891d6c in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0xffffe5dce818, op=393, expected=0, futex_word=0xaaaaaaf857b8) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0xffffe5dce818, clockid=-142487752, expected=0, futex_word=0xaaaaaaf857b8) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0xaaaaaaf857b8, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0xffffe5dce818, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x0000fffff7894d20 in __pthread_cond_wait_common (abstime=0xffffe5dce818, clockid=0, mutex=0xaaaaaaf85748, cond=0xaaaaaaf85790) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_timedwait64 (cond=0xaaaaaaf85790, mutex=0xaaaaaaf85748, abstime=0xffffe5dce818) at ./nptl/pthread_cond_wait.c:652
+#5  0x0000fffff1661fdc in gz::transport::v13::NodeSharedPrivate::PublishThread() () from /opt/ros/jazzy/opt/gz_transport_vendor/lib/libgz-transport13.so.13
+#6  0x0000fffff2921ae0 [PAC] in ?? () from /lib/aarch64-linux-gnu/libstdc++.so.6
+#7  0x0000fffff789582c [PAC] in start_thread (arg=0xfffff7ff3b80) at ./nptl/pthread_create.c:447
+#8  0x0000fffff78fbb4c in thread_start () at ../sysdeps/unix/sysv/linux/aarch64/clone3.S:76
+
+Thread 6 (Thread 0xffffe65df180 (LWP 116868) "ruby"):
+#0  0x0000fffff78f0bdc in __GI___poll (fds=0xffffe65de740, nfds=1, timeout=<optimized out>) at ../sysdeps/unix/sysv/linux/poll.c:41
+#1  0x0000ffffee3834c8 in zmq_poll () from /lib/aarch64-linux-gnu/libzmq.so.5
+#2  0x0000fffff1637db0 [PAC] in gz::transport::v13::pollSockets(std::vector<int, std::allocator<int> > const&, int) () from /opt/ros/jazzy/opt/gz_transport_vendor/lib/libgz-transport13.so.13
+#3  0x0000fffff165ef5c [PAC] in gz::transport::v13::Discovery<gz::transport::v13::ServicePublisher>::RecvMessages() () from /opt/ros/jazzy/opt/gz_transport_vendor/lib/libgz-transport13.so.13
+#4  0x0000fffff2921ae0 [PAC] in ?? () from /lib/aarch64-linux-gnu/libstdc++.so.6
+#5  0x0000fffff789582c [PAC] in start_thread (arg=0xfffff7ff3b80) at ./nptl/pthread_create.c:447
+#6  0x0000fffff78fbb4c in thread_start () at ../sysdeps/unix/sysv/linux/aarch64/clone3.S:76
+
+Thread 5 (Thread 0xffffe6def180 (LWP 116867) "ruby"):
+#0  0x0000fffff78f0bdc in __GI___poll (fds=0xffffe6dee740, nfds=1, timeout=<optimized out>) at ../sysdeps/unix/sysv/linux/poll.c:41
+#1  0x0000ffffee3834c8 in zmq_poll () from /lib/aarch64-linux-gnu/libzmq.so.5
+#2  0x0000fffff1637db0 [PAC] in gz::transport::v13::pollSockets(std::vector<int, std::allocator<int> > const&, int) () from /opt/ros/jazzy/opt/gz_transport_vendor/lib/libgz-transport13.so.13
+#3  0x0000fffff1663cc0 [PAC] in gz::transport::v13::Discovery<gz::transport::v13::MessagePublisher>::RecvMessages() () from /opt/ros/jazzy/opt/gz_transport_vendor/lib/libgz-transport13.so.13
+#4  0x0000fffff2921ae0 [PAC] in ?? () from /lib/aarch64-linux-gnu/libstdc++.so.6
+#5  0x0000fffff789582c [PAC] in start_thread (arg=0xfffff7ff3b80) at ./nptl/pthread_create.c:447
+#6  0x0000fffff78fbb4c in thread_start () at ../sysdeps/unix/sysv/linux/aarch64/clone3.S:76
+
+Thread 4 (Thread 0xffffe75ff180 (LWP 116866) "ruby"):
+#0  0x0000fffff78f0bdc in __GI___poll (fds=0xffffe75fe750, nfds=3, timeout=<optimized out>) at ../sysdeps/unix/sysv/linux/poll.c:41
+#1  0x0000ffffee3834c8 in zmq_poll () from /lib/aarch64-linux-gnu/libzmq.so.5
+#2  0x0000fffff16584d0 [PAC] in gz::transport::v13::NodeShared::RunReceptionTask() () from /opt/ros/jazzy/opt/gz_transport_vendor/lib/libgz-transport13.so.13
+#3  0x0000fffff2921ae0 [PAC] in ?? () from /lib/aarch64-linux-gnu/libstdc++.so.6
+#4  0x0000fffff789582c [PAC] in start_thread (arg=0xfffff7ff3b80) at ./nptl/pthread_create.c:447
+#5  0x0000fffff78fbb4c in thread_start () at ../sysdeps/unix/sysv/linux/aarch64/clone3.S:76
+
+Thread 3 (Thread 0xffffe7e0f180 (LWP 116865) "ZMQbg/IO/0"):
+#0  0x0000fffff78fbe74 in __GI_epoll_pwait (epfd=10, events=0xffffe7e0d718, maxevents=256, timeout=116, set=0x0) at ../sysdeps/unix/sysv/linux/epoll_pwait.c:40
+#1  0x0000ffffee346338 in ?? () from /lib/aarch64-linux-gnu/libzmq.so.5
+#2  0x0000ffffee3769a0 [PAC] in ?? () from /lib/aarch64-linux-gnu/libzmq.so.5
+#3  0x0000fffff789582c [PAC] in start_thread (arg=0xfffff7ff3b80) at ./nptl/pthread_create.c:447
+#4  0x0000fffff78fbb4c in thread_start () at ../sysdeps/unix/sysv/linux/aarch64/clone3.S:76
+
+Thread 2 (Thread 0xffffe861f180 (LWP 116864) "ZMQbg/Reaper"):
+#0  0x0000fffff78fbe74 in __GI_epoll_pwait (epfd=8, events=0xffffe861d718, maxevents=256, timeout=-1, set=0x0) at ../sysdeps/unix/sysv/linux/epoll_pwait.c:40
+#1  0x0000ffffee346338 in ?? () from /lib/aarch64-linux-gnu/libzmq.so.5
+#2  0x0000ffffee3769a0 [PAC] in ?? () from /lib/aarch64-linux-gnu/libzmq.so.5
+#3  0x0000fffff789582c [PAC] in start_thread (arg=0xfffff7ff3b80) at ./nptl/pthread_create.c:447
+#4  0x0000fffff78fbb4c in thread_start () at ../sysdeps/unix/sysv/linux/aarch64/clone3.S:76
+
+Thread 1 (Thread 0xfffff7ff3440 (LWP 116855) "ruby"):
+#0  0x0000fffff7891d6c in __futex_abstimed_wait_common64 (private=128, cancel=true, abstime=0x0, op=265, expected=117021, futex_word=0xffff73595250) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=128, abstime=0x0, clockid=0, expected=117021, futex_word=0xffff73595250) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0xffff73595250, expected=117021, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=128) at ./nptl/futex-internal.c:139
+#3  0x0000fffff7897218 in __pthread_clockjoin_ex (threadid=281472616976768, thread_return=0x0, clockid=0, abstime=0x0, block=<optimized out>) at ./nptl/pthread_join_common.c:102
+#4  0x0000fffff2921bc4 in std::thread::join() () from /lib/aarch64-linux-gnu/libstdc++.so.6
+#5  0x0000fffff1b9081c [PAC] in ?? () from /opt/ros/jazzy/opt/gz_sim_vendor/lib/libgz-sim8.so.8
+#6  0x0000fffff1b81de4 [PAC] in gz::sim::v8::Server::~Server() () from /opt/ros/jazzy/opt/gz_sim_vendor/lib/libgz-sim8.so.8
+#7  0x0000fffff1ecfa8c [PAC] in runServer () from /opt/ros/jazzy/opt/gz_sim_vendor/lib/libgz-sim8-gz.so.8.15.0
+#8  0x0000fffff2b06624 [PAC] in ?? () from /lib/aarch64-linux-gnu/libffi.so.8
+#9  0x0000fffff2b0383c in ?? () from /lib/aarch64-linux-gnu/libffi.so.8
+#10 0x0000fffff2b55ec4 [PAC] in ?? () from /usr/lib/aarch64-linux-gnu/ruby/3.2.0/fiddle.so
+#11 0x0000fffff7dc2c38 [PAC] in rb_nogvl () from /lib/aarch64-linux-gnu/libruby-3.2.so.3.2

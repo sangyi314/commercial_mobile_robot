@@ -1,0 +1,664 @@
+{
+  "runs": {
+    "mppi": "/home/robot/commercial_mobile_robot/evidence/runs/p0-04-mppi-hhmvi_i0",
+    "dwb": "/home/robot/commercial_mobile_robot/evidence/runs/p0-04-dwb-76fqnpi5"
+  },
+  "common_runtime_differences": [
+    {
+      "node": "controller_server",
+      "parameter": "controller_server.verbose",
+      "mppi": false,
+      "dwb": null
+    }
+  ],
+  "algorithm_private_differences": {
+    "FollowPath.BaseObstacle.class": {
+      "mppi": null,
+      "dwb": "BaseObstacle"
+    },
+    "FollowPath.BaseObstacle.scale": {
+      "mppi": null,
+      "dwb": 0.02
+    },
+    "FollowPath.BaseObstacle.sum_scores": {
+      "mppi": null,
+      "dwb": false
+    },
+    "FollowPath.ConstraintCritic.cost_power": {
+      "mppi": 1,
+      "dwb": null
+    },
+    "FollowPath.ConstraintCritic.cost_weight": {
+      "mppi": 4.0,
+      "dwb": null
+    },
+    "FollowPath.ConstraintCritic.enabled": {
+      "mppi": true,
+      "dwb": null
+    },
+    "FollowPath.CostCritic.collision_cost": {
+      "mppi": 1000000.0,
+      "dwb": null
+    },
+    "FollowPath.CostCritic.consider_footprint": {
+      "mppi": false,
+      "dwb": null
+    },
+    "FollowPath.CostCritic.cost_power": {
+      "mppi": 1,
+      "dwb": null
+    },
+    "FollowPath.CostCritic.cost_weight": {
+      "mppi": 3.809999942779541,
+      "dwb": null
+    },
+    "FollowPath.CostCritic.critical_cost": {
+      "mppi": 300.0,
+      "dwb": null
+    },
+    "FollowPath.CostCritic.enabled": {
+      "mppi": true,
+      "dwb": null
+    },
+    "FollowPath.CostCritic.inflation_layer_name": {
+      "mppi": "",
+      "dwb": null
+    },
+    "FollowPath.CostCritic.near_collision_cost": {
+      "mppi": 253,
+      "dwb": null
+    },
+    "FollowPath.CostCritic.near_goal_distance": {
+      "mppi": 0.5,
+      "dwb": null
+    },
+    "FollowPath.CostCritic.trajectory_point_step": {
+      "mppi": 2,
+      "dwb": null
+    },
+    "FollowPath.GoalAlign.aggregation_type": {
+      "mppi": null,
+      "dwb": "last"
+    },
+    "FollowPath.GoalAlign.class": {
+      "mppi": null,
+      "dwb": "GoalAlign"
+    },
+    "FollowPath.GoalAlign.forward_point_distance": {
+      "mppi": null,
+      "dwb": 0.1
+    },
+    "FollowPath.GoalAlign.scale": {
+      "mppi": null,
+      "dwb": 16.0
+    },
+    "FollowPath.GoalAngleCritic.cost_power": {
+      "mppi": 1,
+      "dwb": null
+    },
+    "FollowPath.GoalAngleCritic.cost_weight": {
+      "mppi": 3.0,
+      "dwb": null
+    },
+    "FollowPath.GoalAngleCritic.enabled": {
+      "mppi": true,
+      "dwb": null
+    },
+    "FollowPath.GoalAngleCritic.symmetric_yaw_tolerance": {
+      "mppi": false,
+      "dwb": null
+    },
+    "FollowPath.GoalAngleCritic.threshold_to_consider": {
+      "mppi": 0.5,
+      "dwb": null
+    },
+    "FollowPath.GoalCritic.cost_power": {
+      "mppi": 1,
+      "dwb": null
+    },
+    "FollowPath.GoalCritic.cost_weight": {
+      "mppi": 5.0,
+      "dwb": null
+    },
+    "FollowPath.GoalCritic.enabled": {
+      "mppi": true,
+      "dwb": null
+    },
+    "FollowPath.GoalCritic.threshold_to_consider": {
+      "mppi": 1.399999976158142,
+      "dwb": null
+    },
+    "FollowPath.GoalDist.aggregation_type": {
+      "mppi": null,
+      "dwb": "last"
+    },
+    "FollowPath.GoalDist.class": {
+      "mppi": null,
+      "dwb": "GoalDist"
+    },
+    "FollowPath.GoalDist.scale": {
+      "mppi": null,
+      "dwb": 16.0
+    },
+    "FollowPath.Oscillation.class": {
+      "mppi": null,
+      "dwb": "Oscillation"
+    },
+    "FollowPath.Oscillation.oscillation_reset_angle": {
+      "mppi": null,
+      "dwb": 0.2
+    },
+    "FollowPath.Oscillation.oscillation_reset_dist": {
+      "mppi": null,
+      "dwb": 0.05
+    },
+    "FollowPath.Oscillation.oscillation_reset_time": {
+      "mppi": null,
+      "dwb": -1.0
+    },
+    "FollowPath.Oscillation.scale": {
+      "mppi": null,
+      "dwb": 1.0
+    },
+    "FollowPath.Oscillation.x_only_threshold": {
+      "mppi": null,
+      "dwb": 0.05
+    },
+    "FollowPath.PathAlign.aggregation_type": {
+      "mppi": null,
+      "dwb": "last"
+    },
+    "FollowPath.PathAlign.class": {
+      "mppi": null,
+      "dwb": "PathAlign"
+    },
+    "FollowPath.PathAlign.forward_point_distance": {
+      "mppi": null,
+      "dwb": 0.1
+    },
+    "FollowPath.PathAlign.scale": {
+      "mppi": null,
+      "dwb": 24.0
+    },
+    "FollowPath.PathAlignCritic.cost_power": {
+      "mppi": 1,
+      "dwb": null
+    },
+    "FollowPath.PathAlignCritic.cost_weight": {
+      "mppi": 10.0,
+      "dwb": null
+    },
+    "FollowPath.PathAlignCritic.enabled": {
+      "mppi": true,
+      "dwb": null
+    },
+    "FollowPath.PathAlignCritic.max_path_occupancy_ratio": {
+      "mppi": 0.07000000029802322,
+      "dwb": null
+    },
+    "FollowPath.PathAlignCritic.offset_from_furthest": {
+      "mppi": 20,
+      "dwb": null
+    },
+    "FollowPath.PathAlignCritic.threshold_to_consider": {
+      "mppi": 0.5,
+      "dwb": null
+    },
+    "FollowPath.PathAlignCritic.trajectory_point_step": {
+      "mppi": 4,
+      "dwb": null
+    },
+    "FollowPath.PathAlignCritic.use_path_orientations": {
+      "mppi": false,
+      "dwb": null
+    },
+    "FollowPath.PathAngleCritic.cost_power": {
+      "mppi": 1,
+      "dwb": null
+    },
+    "FollowPath.PathAngleCritic.cost_weight": {
+      "mppi": 2.200000047683716,
+      "dwb": null
+    },
+    "FollowPath.PathAngleCritic.enabled": {
+      "mppi": true,
+      "dwb": null
+    },
+    "FollowPath.PathAngleCritic.max_angle_to_furthest": {
+      "mppi": 0.785398006439209,
+      "dwb": null
+    },
+    "FollowPath.PathAngleCritic.mode": {
+      "mppi": 0,
+      "dwb": null
+    },
+    "FollowPath.PathAngleCritic.offset_from_furthest": {
+      "mppi": 4,
+      "dwb": null
+    },
+    "FollowPath.PathAngleCritic.threshold_to_consider": {
+      "mppi": 0.5,
+      "dwb": null
+    },
+    "FollowPath.PathDist.aggregation_type": {
+      "mppi": null,
+      "dwb": "last"
+    },
+    "FollowPath.PathDist.class": {
+      "mppi": null,
+      "dwb": "PathDist"
+    },
+    "FollowPath.PathDist.scale": {
+      "mppi": null,
+      "dwb": 24.0
+    },
+    "FollowPath.PathFollowCritic.cost_power": {
+      "mppi": 1,
+      "dwb": null
+    },
+    "FollowPath.PathFollowCritic.cost_weight": {
+      "mppi": 5.0,
+      "dwb": null
+    },
+    "FollowPath.PathFollowCritic.enabled": {
+      "mppi": true,
+      "dwb": null
+    },
+    "FollowPath.PathFollowCritic.offset_from_furthest": {
+      "mppi": 6,
+      "dwb": null
+    },
+    "FollowPath.PathFollowCritic.threshold_to_consider": {
+      "mppi": 1.399999976158142,
+      "dwb": null
+    },
+    "FollowPath.PreferForwardCritic.cost_power": {
+      "mppi": 1,
+      "dwb": null
+    },
+    "FollowPath.PreferForwardCritic.cost_weight": {
+      "mppi": 5.0,
+      "dwb": null
+    },
+    "FollowPath.PreferForwardCritic.enabled": {
+      "mppi": true,
+      "dwb": null
+    },
+    "FollowPath.PreferForwardCritic.threshold_to_consider": {
+      "mppi": 0.5,
+      "dwb": null
+    },
+    "FollowPath.RotateToGoal.class": {
+      "mppi": null,
+      "dwb": "RotateToGoal"
+    },
+    "FollowPath.RotateToGoal.lookahead_time": {
+      "mppi": null,
+      "dwb": -1.0
+    },
+    "FollowPath.RotateToGoal.scale": {
+      "mppi": null,
+      "dwb": 24.0
+    },
+    "FollowPath.RotateToGoal.slowing_factor": {
+      "mppi": null,
+      "dwb": 5.0
+    },
+    "FollowPath.TrajectoryVisualizer.time_step": {
+      "mppi": 3,
+      "dwb": null
+    },
+    "FollowPath.TrajectoryVisualizer.trajectory_step": {
+      "mppi": 5,
+      "dwb": null
+    },
+    "FollowPath.acc_lim_theta": {
+      "mppi": null,
+      "dwb": 2.0
+    },
+    "FollowPath.acc_lim_x": {
+      "mppi": null,
+      "dwb": 1.0
+    },
+    "FollowPath.acc_lim_y": {
+      "mppi": null,
+      "dwb": 0.0
+    },
+    "FollowPath.angular_granularity": {
+      "mppi": null,
+      "dwb": 0.025
+    },
+    "FollowPath.ax_max": {
+      "mppi": 1.0,
+      "dwb": null
+    },
+    "FollowPath.ax_min": {
+      "mppi": -1.0,
+      "dwb": null
+    },
+    "FollowPath.ay_max": {
+      "mppi": 0.0,
+      "dwb": null
+    },
+    "FollowPath.ay_min": {
+      "mppi": -3.0,
+      "dwb": null
+    },
+    "FollowPath.az_max": {
+      "mppi": 2.0,
+      "dwb": null
+    },
+    "FollowPath.batch_size": {
+      "mppi": 1000,
+      "dwb": null
+    },
+    "FollowPath.critics": {
+      "mppi": [
+        "ConstraintCritic",
+        "CostCritic",
+        "GoalCritic",
+        "GoalAngleCritic",
+        "PathAlignCritic",
+        "PathFollowCritic",
+        "PathAngleCritic",
+        "PreferForwardCritic"
+      ],
+      "dwb": [
+        "RotateToGoal",
+        "Oscillation",
+        "BaseObstacle",
+        "GoalAlign",
+        "PathAlign",
+        "PathDist",
+        "GoalDist"
+      ]
+    },
+    "FollowPath.debug_trajectory_details": {
+      "mppi": null,
+      "dwb": false
+    },
+    "FollowPath.decel_lim_theta": {
+      "mppi": null,
+      "dwb": -2.0
+    },
+    "FollowPath.decel_lim_x": {
+      "mppi": null,
+      "dwb": -1.0
+    },
+    "FollowPath.decel_lim_y": {
+      "mppi": null,
+      "dwb": 0.0
+    },
+    "FollowPath.default_critic_namespaces": {
+      "mppi": null,
+      "dwb": []
+    },
+    "FollowPath.discretize_by_time": {
+      "mppi": null,
+      "dwb": false
+    },
+    "FollowPath.enforce_path_inversion": {
+      "mppi": false,
+      "dwb": null
+    },
+    "FollowPath.forward_prune_distance": {
+      "mppi": null,
+      "dwb": 2.0
+    },
+    "FollowPath.gamma": {
+      "mppi": 0.015,
+      "dwb": null
+    },
+    "FollowPath.include_last_point": {
+      "mppi": null,
+      "dwb": true
+    },
+    "FollowPath.iteration_count": {
+      "mppi": 1,
+      "dwb": null
+    },
+    "FollowPath.limit_vel_cmd_in_traj": {
+      "mppi": null,
+      "dwb": false
+    },
+    "FollowPath.linear_granularity": {
+      "mppi": null,
+      "dwb": 0.05
+    },
+    "FollowPath.marker_lifetime": {
+      "mppi": null,
+      "dwb": 0.1
+    },
+    "FollowPath.max_robot_pose_search_dist": {
+      "mppi": 1.5,
+      "dwb": null
+    },
+    "FollowPath.max_speed_xy": {
+      "mppi": null,
+      "dwb": 0.3
+    },
+    "FollowPath.max_vel_theta": {
+      "mppi": null,
+      "dwb": 1.0
+    },
+    "FollowPath.max_vel_x": {
+      "mppi": null,
+      "dwb": 0.3
+    },
+    "FollowPath.max_vel_y": {
+      "mppi": null,
+      "dwb": 0.0
+    },
+    "FollowPath.min_speed_theta": {
+      "mppi": null,
+      "dwb": 0.0
+    },
+    "FollowPath.min_speed_xy": {
+      "mppi": null,
+      "dwb": 0.0
+    },
+    "FollowPath.min_vel_x": {
+      "mppi": null,
+      "dwb": -0.1
+    },
+    "FollowPath.min_vel_y": {
+      "mppi": null,
+      "dwb": 0.0
+    },
+    "FollowPath.model_dt": {
+      "mppi": 0.05,
+      "dwb": null
+    },
+    "FollowPath.motion_model": {
+      "mppi": "DiffDrive",
+      "dwb": null
+    },
+    "FollowPath.open_loop": {
+      "mppi": false,
+      "dwb": null
+    },
+    "FollowPath.plugin": {
+      "mppi": "nav2_mppi_controller::MPPIController",
+      "dwb": "dwb_core::DWBLocalPlanner"
+    },
+    "FollowPath.prune_distance": {
+      "mppi": 1.7,
+      "dwb": 2.0
+    },
+    "FollowPath.prune_plan": {
+      "mppi": null,
+      "dwb": true
+    },
+    "FollowPath.publish_cost_grid_pc": {
+      "mppi": null,
+      "dwb": false
+    },
+    "FollowPath.publish_evaluation": {
+      "mppi": null,
+      "dwb": true
+    },
+    "FollowPath.publish_global_plan": {
+      "mppi": null,
+      "dwb": true
+    },
+    "FollowPath.publish_local_plan": {
+      "mppi": null,
+      "dwb": true
+    },
+    "FollowPath.publish_trajectories": {
+      "mppi": null,
+      "dwb": true
+    },
+    "FollowPath.publish_transformed_plan": {
+      "mppi": null,
+      "dwb": true
+    },
+    "FollowPath.regenerate_noises": {
+      "mppi": false,
+      "dwb": null
+    },
+    "FollowPath.retry_attempt_limit": {
+      "mppi": 1,
+      "dwb": null
+    },
+    "FollowPath.short_circuit_trajectory_evaluation": {
+      "mppi": null,
+      "dwb": true
+    },
+    "FollowPath.shorten_transformed_plan": {
+      "mppi": null,
+      "dwb": true
+    },
+    "FollowPath.sim_time": {
+      "mppi": null,
+      "dwb": 2.5
+    },
+    "FollowPath.temperature": {
+      "mppi": 0.3,
+      "dwb": null
+    },
+    "FollowPath.time_granularity": {
+      "mppi": null,
+      "dwb": 0.5
+    },
+    "FollowPath.time_steps": {
+      "mppi": 50,
+      "dwb": null
+    },
+    "FollowPath.trajectory_generator_name": {
+      "mppi": null,
+      "dwb": "dwb_plugins::StandardTrajectoryGenerator"
+    },
+    "FollowPath.trans_stopped_velocity": {
+      "mppi": null,
+      "dwb": 0.02
+    },
+    "FollowPath.visualize": {
+      "mppi": false,
+      "dwb": null
+    },
+    "FollowPath.vtheta_samples": {
+      "mppi": null,
+      "dwb": 30
+    },
+    "FollowPath.vx_max": {
+      "mppi": 0.3,
+      "dwb": null
+    },
+    "FollowPath.vx_min": {
+      "mppi": -0.1,
+      "dwb": null
+    },
+    "FollowPath.vx_samples": {
+      "mppi": null,
+      "dwb": 20
+    },
+    "FollowPath.vx_std": {
+      "mppi": 0.15,
+      "dwb": null
+    },
+    "FollowPath.vy_max": {
+      "mppi": 0.0,
+      "dwb": null
+    },
+    "FollowPath.vy_samples": {
+      "mppi": null,
+      "dwb": 1
+    },
+    "FollowPath.vy_std": {
+      "mppi": 0.15,
+      "dwb": null
+    },
+    "FollowPath.wz_max": {
+      "mppi": 1.0,
+      "dwb": null
+    },
+    "FollowPath.wz_std": {
+      "mppi": 0.35,
+      "dwb": null
+    },
+    "FollowPath.xy_goal_tolerance": {
+      "mppi": null,
+      "dwb": 0.25
+    }
+  },
+  "semantic_limits": {
+    "vx_max": {
+      "mppi": 0.3,
+      "dwb": 0.3,
+      "equal": true
+    },
+    "vx_min": {
+      "mppi": -0.1,
+      "dwb": -0.1,
+      "equal": true
+    },
+    "vy_max": {
+      "mppi": 0.0,
+      "dwb": 0.0,
+      "equal": true
+    },
+    "wz_max": {
+      "mppi": 1.0,
+      "dwb": 1.0,
+      "equal": true
+    },
+    "ax_max": {
+      "mppi": 1.0,
+      "dwb": 1.0,
+      "equal": true
+    },
+    "ax_min": {
+      "mppi": -1.0,
+      "dwb": -1.0,
+      "equal": true
+    },
+    "ay_max": {
+      "mppi": 0.0,
+      "dwb": 0.0,
+      "equal": true
+    },
+    "az_max": {
+      "mppi": 2.0,
+      "dwb": 2.0,
+      "equal": true
+    }
+  },
+  "initialpose_equal_ignoring_stamp": true,
+  "environment_equal_except_partition": true,
+  "gazebo_process_environment_equal": true,
+  "same_resource_and_task_hashes": {
+    "world-ogre1.sdf": true,
+    "robot.sdf": true,
+    "goal.yaml": true,
+    "common_constraints.json": true,
+    "initialpose-template.yaml": true,
+    "resource-dependencies.json": true,
+    "observe.py": true,
+    "startup_scoped.py": true
+  },
+  "package_versions_equal": true,
+  "dwb_generator": "dwb_plugins::StandardTrajectoryGenerator",
+  "mppi_regenerate_noises": false,
+  "limits": "Parameter snapshots and frozen official files, not independent validation of model correctness."
+}

@@ -1,0 +1,7 @@
+{
+  "protected_file_count": 65,
+  "changed_protected_files": [],
+  "historical_evidence_file_count": 966,
+  "changed_or_missing_historical_files": [],
+  "scope": "Verifies files present in the start inventory only; does not prove nothing was ever deleted before this task."
+}

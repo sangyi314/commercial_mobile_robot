@@ -1,0 +1,5 @@
+{
+  "type": "AssertionError",
+  "message": "('manifest-check', '')",
+  "traceback": "Traceback (most recent call last):\n  File \"/tmp/cmr_p004_commission_01a16e40_v2.py\", line 175, in <module>\n    put(run/'runtime/pre-goal.json',pre);freeze_manifest()\n                                         ^^^^^^^^^^^^^^^^^\n  File \"/tmp/cmr_p004_commission_01a16e40_v2.py\", line 128, in freeze_manifest\n    short(label,['python3','-B',str(root/'tools/validate_run.py'),*args])\n  File \"/tmp/cmr_p004_commission_01a16e40_v2.py\", line 72, in short\n    emit('command_return',{'label':label,'exit':out.returncode});assert out.returncode==0,(label,out.stderr);return out.stdout\n                                                                        ^^^^^^^^^^^^^^^^^\nAssertionError: ('manifest-check', '')\n"
+}

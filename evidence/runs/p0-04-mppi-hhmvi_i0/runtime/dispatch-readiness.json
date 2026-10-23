@@ -1,0 +1,96 @@
+{
+  "states": {
+    "map_server": {
+      "id": 3,
+      "label": "active",
+      "monotonic_s": 93421.765137587,
+      "sim_s": 15.696
+    },
+    "amcl": {
+      "id": 3,
+      "label": "active",
+      "monotonic_s": 93421.767069296,
+      "sim_s": 15.702
+    },
+    "controller_server": {
+      "id": 3,
+      "label": "active",
+      "monotonic_s": 93421.849466671,
+      "sim_s": 15.789
+    },
+    "smoother_server": {
+      "id": 3,
+      "label": "active",
+      "monotonic_s": 93421.851396046,
+      "sim_s": 15.792
+    },
+    "planner_server": {
+      "id": 3,
+      "label": "active",
+      "monotonic_s": 93421.853083754,
+      "sim_s": 15.795
+    },
+    "route_server": {
+      "id": 3,
+      "label": "active",
+      "monotonic_s": 93421.854615254,
+      "sim_s": 15.795
+    },
+    "behavior_server": {
+      "id": 3,
+      "label": "active",
+      "monotonic_s": 93421.856481504,
+      "sim_s": 15.798
+    },
+    "velocity_smoother": {
+      "id": 3,
+      "label": "active",
+      "monotonic_s": 93421.938834088,
+      "sim_s": 15.879
+    },
+    "collision_monitor": {
+      "id": 3,
+      "label": "active",
+      "monotonic_s": 93421.940829921,
+      "sim_s": 15.882
+    },
+    "bt_navigator": {
+      "id": 3,
+      "label": "active",
+      "monotonic_s": 93421.942321963,
+      "sim_s": 15.882
+    },
+    "waypoint_follower": {
+      "id": 3,
+      "label": "active",
+      "monotonic_s": 93421.944181129,
+      "sim_s": 15.885
+    },
+    "docking_server": {
+      "id": 3,
+      "label": "active",
+      "monotonic_s": 93421.946042338,
+      "sim_s": 15.888
+    },
+    "local_costmap/local_costmap": {
+      "id": 3,
+      "label": "active",
+      "monotonic_s": 93421.947579796,
+      "sim_s": 15.888
+    },
+    "global_costmap/global_costmap": {
+      "id": 3,
+      "label": "active",
+      "monotonic_s": 93422.029883629,
+      "sim_s": 15.969
+    }
+  },
+  "input_receive_age_wall_s": {
+    "scan": 0.17613354200148024,
+    "odom": 0.03021283399721142,
+    "clock": 0.009545916007482447
+  },
+  "sim_s": 15.969,
+  "monotonic_s": 93422.036016921,
+  "action_ready": true
+}

@@ -1,0 +1,422 @@
+{
+  "lifecycle": {
+    "map_server": {
+      "id": 3,
+      "label": "active",
+      "monotonic_s": 92996.437721676,
+      "sim_s": 15.432
+    },
+    "amcl": {
+      "id": 3,
+      "label": "active",
+      "monotonic_s": 92996.440478135,
+      "sim_s": 15.435
+    },
+    "controller_server": {
+      "id": 3,
+      "label": "active",
+      "monotonic_s": 92996.442754968,
+      "sim_s": 15.438
+    },
+    "smoother_server": {
+      "id": 3,
+      "label": "active",
+      "monotonic_s": 92996.445108885,
+      "sim_s": 15.438
+    },
+    "planner_server": {
+      "id": 3,
+      "label": "active",
+      "monotonic_s": 92996.447167343,
+      "sim_s": 15.441
+    },
+    "route_server": {
+      "id": 3,
+      "label": "active",
+      "monotonic_s": 92996.449742426,
+      "sim_s": 15.444
+    },
+    "behavior_server": {
+      "id": 3,
+      "label": "active",
+      "monotonic_s": 92996.532690635,
+      "sim_s": 15.528
+    },
+    "velocity_smoother": {
+      "id": 3,
+      "label": "active",
+      "monotonic_s": 92996.535137343,
+      "sim_s": 15.528
+    },
+    "collision_monitor": {
+      "id": 3,
+      "label": "active",
+      "monotonic_s": 92996.537127926,
+      "sim_s": 15.531
+    },
+    "bt_navigator": {
+      "id": 3,
+      "label": "active",
+      "monotonic_s": 92996.539340176,
+      "sim_s": 15.534
+    },
+    "waypoint_follower": {
+      "id": 3,
+      "label": "active",
+      "monotonic_s": 92996.541349301,
+      "sim_s": 15.534
+    },
+    "docking_server": {
+      "id": 3,
+      "label": "active",
+      "monotonic_s": 92996.623937176,
+      "sim_s": 15.618
+    },
+    "local_costmap/local_costmap": {
+      "id": 3,
+      "label": "active",
+      "monotonic_s": 92996.626230801,
+      "sim_s": 15.621
+    },
+    "global_costmap/global_costmap": {
+      "id": 3,
+      "label": "active",
+      "monotonic_s": 92996.709182385,
+      "sim_s": 15.702
+    }
+  },
+  "actual_plugin": "nav2_mppi_controller::MPPIController",
+  "pose_estimate": {
+    "x": -1.9718152231592259,
+    "y": -0.5247666514173608,
+    "yaw": -0.011414099626618934,
+    "stamp_s": 15.696,
+    "ros_s": 15.702
+  },
+  "simulator_pose_preflight_only": [
+    -2.0005183363190366,
+    -0.5000001242461682,
+    0.01000739622089172,
+    -1.0355757871964451e-08,
+    -0.0056941648100533905,
+    -6.282256333267174e-06
+  ],
+  "swept_costs": {
+    "local": {
+      "max_swept_disk_cost": 220,
+      "stamp_s": 16.851,
+      "frame": "odom"
+    },
+    "global": {
+      "max_swept_disk_cost": 234,
+      "stamp_s": 16.878,
+      "frame": "map"
+    }
+  },
+  "endpoints": {
+    "/clock": {
+      "publishers": [
+        {
+          "node": "ros_gz_bridge",
+          "namespace": "/",
+          "type": "rosgraph_msgs/msg/Clock"
+        }
+      ],
+      "subscribers": [
+        {
+          "node": "docking_server",
+          "namespace": "/",
+          "type": "rosgraph_msgs/msg/Clock"
+        },
+        {
+          "node": "lifecycle_manager_navigation",
+          "namespace": "/",
+          "type": "rosgraph_msgs/msg/Clock"
+        },
+        {
+          "node": "cmr_p0_03_start",
+          "namespace": "/",
+          "type": "rosgraph_msgs/msg/Clock"
+        },
+        {
+          "node": "cmr_p0_03_start",
+          "namespace": "/",
+          "type": "rosgraph_msgs/msg/Clock"
+        },
+        {
+          "node": "robot_state_publisher",
+          "namespace": "/",
+          "type": "rosgraph_msgs/msg/Clock"
+        },
+        {
+          "node": "ros_gz_bridge",
+          "namespace": "/",
+          "type": "rosgraph_msgs/msg/Clock"
+        },
+        {
+          "node": "p03_observer",
+          "namespace": "/",
+          "type": "rosgraph_msgs/msg/Clock"
+        },
+        {
+          "node": "p03_observer",
+          "namespace": "/",
+          "type": "rosgraph_msgs/msg/Clock"
+        },
+        {
+          "node": "map_server",
+          "namespace": "/",
+          "type": "rosgraph_msgs/msg/Clock"
+        },
+        {
+          "node": "amcl",
+          "namespace": "/",
+          "type": "rosgraph_msgs/msg/Clock"
+        },
+        {
+          "node": "lifecycle_manager_localization",
+          "namespace": "/",
+          "type": "rosgraph_msgs/msg/Clock"
+        },
+        {
+          "node": "controller_server",
+          "namespace": "/",
+          "type": "rosgraph_msgs/msg/Clock"
+        },
+        {
+          "node": "local_costmap",
+          "namespace": "/local_costmap",
+          "type": "rosgraph_msgs/msg/Clock"
+        },
+        {
+          "node": "transform_listener_impl_b91e36ff5450",
+          "namespace": "/",
+          "type": "rosgraph_msgs/msg/Clock"
+        },
+        {
+          "node": "smoother_server",
+          "namespace": "/",
+          "type": "rosgraph_msgs/msg/Clock"
+        },
+        {
+          "node": "planner_server",
+          "namespace": "/",
+          "type": "rosgraph_msgs/msg/Clock"
+        },
+        {
+          "node": "global_costmap",
+          "namespace": "/global_costmap",
+          "type": "rosgraph_msgs/msg/Clock"
+        },
+        {
+          "node": "transform_listener_impl_ab8db0ed5660",
+          "namespace": "/",
+          "type": "rosgraph_msgs/msg/Clock"
+        },
+        {
+          "node": "route_server",
+          "namespace": "/",
+          "type": "rosgraph_msgs/msg/Clock"
+        },
+        {
+          "node": "behavior_server",
+          "namespace": "/",
+          "type": "rosgraph_msgs/msg/Clock"
+        },
+        {
+          "node": "bt_navigator",
+          "namespace": "/",
+          "type": "rosgraph_msgs/msg/Clock"
+        },
+        {
+          "node": "bt_navigator_navigate_to_pose_rclcpp_node",
+          "namespace": "/",
+          "type": "rosgraph_msgs/msg/Clock"
+        },
+        {
+          "node": "bt_navigator_navigate_through_poses_rclcpp_node",
+          "namespace": "/",
+          "type": "rosgraph_msgs/msg/Clock"
+        },
+        {
+          "node": "waypoint_follower",
+          "namespace": "/",
+          "type": "rosgraph_msgs/msg/Clock"
+        },
+        {
+          "node": "velocity_smoother",
+          "namespace": "/",
+          "type": "rosgraph_msgs/msg/Clock"
+        },
+        {
+          "node": "collision_monitor",
+          "namespace": "/",
+          "type": "rosgraph_msgs/msg/Clock"
+        }
+      ]
+    },
+    "/scan": {
+      "publishers": [
+        {
+          "node": "ros_gz_bridge",
+          "namespace": "/",
+          "type": "sensor_msgs/msg/LaserScan"
+        }
+      ],
+      "subscribers": [
+        {
+          "node": "cmr_p0_03_start",
+          "namespace": "/",
+          "type": "sensor_msgs/msg/LaserScan"
+        },
+        {
+          "node": "amcl",
+          "namespace": "/",
+          "type": "sensor_msgs/msg/LaserScan"
+        },
+        {
+          "node": "local_costmap",
+          "namespace": "/local_costmap",
+          "type": "sensor_msgs/msg/LaserScan"
+        },
+        {
+          "node": "global_costmap",
+          "namespace": "/global_costmap",
+          "type": "sensor_msgs/msg/LaserScan"
+        },
+        {
+          "node": "collision_monitor",
+          "namespace": "/",
+          "type": "sensor_msgs/msg/LaserScan"
+        }
+      ]
+    },
+    "/odom": {
+      "publishers": [
+        {
+          "node": "ros_gz_bridge",
+          "namespace": "/",
+          "type": "nav_msgs/msg/Odometry"
+        }
+      ],
+      "subscribers": [
+        {
+          "node": "cmr_p0_03_start",
+          "namespace": "/",
+          "type": "nav_msgs/msg/Odometry"
+        },
+        {
+          "node": "p03_observer",
+          "namespace": "/",
+          "type": "nav_msgs/msg/Odometry"
+        },
+        {
+          "node": "controller_server",
+          "namespace": "/",
+          "type": "nav_msgs/msg/Odometry"
+        },
+        {
+          "node": "bt_navigator",
+          "namespace": "/",
+          "type": "nav_msgs/msg/Odometry"
+        }
+      ]
+    },
+    "/cmd_vel_nav": {
+      "publishers": [
+        {
+          "node": "controller_server",
+          "namespace": "/",
+          "type": "geometry_msgs/msg/Twist"
+        },
+        {
+          "node": "behavior_server",
+          "namespace": "/",
+          "type": "geometry_msgs/msg/Twist"
+        },
+        {
+          "node": "behavior_server",
+          "namespace": "/",
+          "type": "geometry_msgs/msg/Twist"
+        },
+        {
+          "node": "behavior_server",
+          "namespace": "/",
+          "type": "geometry_msgs/msg/Twist"
+        },
+        {
+          "node": "behavior_server",
+          "namespace": "/",
+          "type": "geometry_msgs/msg/Twist"
+        },
+        {
+          "node": "behavior_server",
+          "namespace": "/",
+          "type": "geometry_msgs/msg/Twist"
+        }
+      ],
+      "subscribers": [
+        {
+          "node": "p03_observer",
+          "namespace": "/",
+          "type": "geometry_msgs/msg/Twist"
+        },
+        {
+          "node": "velocity_smoother",
+          "namespace": "/",
+          "type": "geometry_msgs/msg/Twist"
+        }
+      ]
+    },
+    "/cmd_vel_smoothed": {
+      "publishers": [
+        {
+          "node": "velocity_smoother",
+          "namespace": "/",
+          "type": "geometry_msgs/msg/Twist"
+        }
+      ],
+      "subscribers": [
+        {
+          "node": "p03_observer",
+          "namespace": "/",
+          "type": "geometry_msgs/msg/Twist"
+        },
+        {
+          "node": "collision_monitor",
+          "namespace": "/",
+          "type": "geometry_msgs/msg/Twist"
+        }
+      ]
+    },
+    "/cmd_vel": {
+      "publishers": [
+        {
+          "node": "docking_server",
+          "namespace": "/",
+          "type": "geometry_msgs/msg/Twist"
+        },
+        {
+          "node": "collision_monitor",
+          "namespace": "/",
+          "type": "geometry_msgs/msg/Twist"
+        }
+      ],
+      "subscribers": [
+        {
+          "node": "ros_gz_bridge",
+          "namespace": "/",
+          "type": "geometry_msgs/msg/Twist"
+        },
+        {
+          "node": "p03_observer",
+          "namespace": "/",
+          "type": "geometry_msgs/msg/Twist"
+        }
+      ]
+    }
+  },
+  "action_server_ready": true,
+  "monotonic_s": 92998.529800386,
+  "sim_s": 16.869
+}

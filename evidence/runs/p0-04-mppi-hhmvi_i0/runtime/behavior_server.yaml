@@ -1,0 +1,47 @@
+behavior_server:
+  ros__parameters:
+    /bond_disable_heartbeat_timeout: true
+    action_server_result_timeout: 10.0
+    assisted_teleop.plugin: nav2_behaviors::AssistedTeleop
+    autostart_node: false
+    backup.plugin: nav2_behaviors::BackUp
+    behavior_plugins:
+    - spin
+    - backup
+    - drive_on_heading
+    - assisted_teleop
+    - wait
+    bond_heartbeat_period: 0.1
+    cmd_vel_teleop: cmd_vel_teleop
+    cycle_frequency: 10.0
+    drive_on_heading.plugin: nav2_behaviors::DriveOnHeading
+    enable_stamped_cmd_vel: false
+    global_costmap_topic: global_costmap/costmap_raw
+    global_footprint_topic: global_costmap/published_footprint
+    global_frame: map
+    local_costmap_topic: local_costmap/costmap_raw
+    local_footprint_topic: local_costmap/published_footprint
+    local_frame: odom
+    max_rotational_vel: 1.0
+    min_rotational_vel: 0.4
+    projection_time: 1.0
+    qos_overrides./clock.subscription.depth: 1
+    qos_overrides./clock.subscription.durability: volatile
+    qos_overrides./clock.subscription.history: keep_last
+    qos_overrides./clock.subscription.reliability: best_effort
+    qos_overrides./tf.subscription.depth: 100
+    qos_overrides./tf.subscription.durability: volatile
+    qos_overrides./tf.subscription.history: keep_last
+    qos_overrides./tf.subscription.reliability: reliable
+    qos_overrides./tf_static.subscription.depth: 100
+    qos_overrides./tf_static.subscription.history: keep_last
+    qos_overrides./tf_static.subscription.reliability: reliable
+    robot_base_frame: base_link
+    rotational_acc_lim: 3.2
+    simulate_ahead_time: 2.0
+    simulation_time_step: 0.1
+    spin.plugin: nav2_behaviors::Spin
+    start_type_description_service: true
+    transform_tolerance: 0.1
+    use_sim_time: true
+    wait.plugin: nav2_behaviors::Wait

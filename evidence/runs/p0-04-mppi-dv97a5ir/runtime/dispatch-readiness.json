@@ -1,0 +1,96 @@
+{
+  "states": {
+    "map_server": {
+      "id": 3,
+      "label": "active",
+      "monotonic_s": 93086.541731428,
+      "sim_s": 15.585
+    },
+    "amcl": {
+      "id": 3,
+      "label": "active",
+      "monotonic_s": 93086.624383678,
+      "sim_s": 15.681000000000001
+    },
+    "controller_server": {
+      "id": 3,
+      "label": "active",
+      "monotonic_s": 93086.625858594,
+      "sim_s": 15.681000000000001
+    },
+    "smoother_server": {
+      "id": 3,
+      "label": "active",
+      "monotonic_s": 93086.708049011,
+      "sim_s": 15.765
+    },
+    "planner_server": {
+      "id": 3,
+      "label": "active",
+      "monotonic_s": 93086.709760428,
+      "sim_s": 15.765
+    },
+    "route_server": {
+      "id": 3,
+      "label": "active",
+      "monotonic_s": 93086.712258719,
+      "sim_s": 15.768
+    },
+    "behavior_server": {
+      "id": 3,
+      "label": "active",
+      "monotonic_s": 93086.714596428,
+      "sim_s": 15.771
+    },
+    "velocity_smoother": {
+      "id": 3,
+      "label": "active",
+      "monotonic_s": 93086.715925594,
+      "sim_s": 15.771
+    },
+    "collision_monitor": {
+      "id": 3,
+      "label": "active",
+      "monotonic_s": 93086.717550136,
+      "sim_s": 15.774000000000001
+    },
+    "bt_navigator": {
+      "id": 3,
+      "label": "active",
+      "monotonic_s": 93086.718959094,
+      "sim_s": 15.774000000000001
+    },
+    "waypoint_follower": {
+      "id": 3,
+      "label": "active",
+      "monotonic_s": 93086.720560886,
+      "sim_s": 15.774000000000001
+    },
+    "docking_server": {
+      "id": 3,
+      "label": "active",
+      "monotonic_s": 93086.722045761,
+      "sim_s": 15.777
+    },
+    "local_costmap/local_costmap": {
+      "id": 3,
+      "label": "active",
+      "monotonic_s": 93086.804695719,
+      "sim_s": 15.861
+    },
+    "global_costmap/global_costmap": {
+      "id": 3,
+      "label": "active",
+      "monotonic_s": 93086.806550719,
+      "sim_s": 15.861
+    }
+  },
+  "input_receive_age_wall_s": {
+    "scan": 0.06202041699725669,
+    "odom": 0.02369258299586363,
+    "clock": 0.002984833001391962
+  },
+  "sim_s": 15.861,
+  "monotonic_s": 93086.806574969,
+  "action_ready": true
+}

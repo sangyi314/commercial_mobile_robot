@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "run_id": "p0-04-mppi-hhmvi_i0",
+  "record_origin": "real",
+  "scenario": {
+    "scenario_id": "official_static",
+    "scenario_revision": "p0-04-mppi-hhmvi_i0",
+    "spec_sha256": "36d9e487702fa501fdd11de671c0da0c99daab7f6f98c749ecac495f64d7778b"
+  },
+  "source": {
+    "git_commit": "3137b0b51e761e360203fa0a9a163a48335541d2",
+    "dirty": true,
+    "snapshot_ref": "source_at_start"
+  },
+  "baseline": {
+    "method": "mppi",
+    "config_sha256": "27f34e95dca6c8ac5ed0140d6f600dfd9cab61e5d7e1efc7bd632004bbab54f2",
+    "expected_plugin": "nav2_mppi_controller::MPPIController",
+    "common_constraints_sha256": "fe17b54e792bdcd87bd221c303a7d43b0ab6375256188d57d62cfb0326b7d320"
+  },
+  "environment": {
+    "ros_distro": "jazzy",
+    "platform": "Linux-6.8.0-147-generic-aarch64-with-glibc2.39",
+    "package_versions": {
+      "nav2_bringup": "1.3.13",
+      "nav2_mppi_controller": "1.3.13",
+      "dwb_core": "1.3.13",
+      "dwb_plugins": "1.3.13",
+      "dwb_critics": "1.3.13",
+      "nav2_controller": "1.3.13",
+      "nav2_amcl": "1.3.13",
+      "nav2_costmap_2d": "1.3.13",
+      "nav2_planner": "1.3.13",
+      "nav2_navfn_planner": "1.3.13",
+      "nav2_smoother": "1.3.13",
+      "nav2_velocity_smoother": "1.3.13",
+      "nav2_collision_monitor": "1.3.13",
+      "nav2_minimal_tb3_sim": "1.0.1",
+      "ros_gz_sim": "1.0.24",
+      "ros_gz_bridge": "1.0.24",
+      "rclcpp": "28.1.22",
+      "gz_sim_vendor": "0.0.13",
+      "gz_rendering_vendor": "0.0.7"
+    },
+    "external_seed": null,
+    "seed_scope": [],
+    "controller_seed_controlled": false
+  },
+  "clock": {
+    "clock_epoch": "p0-04-mppi-hhmvi_i0:sim0",
+    "started_at_utc": "2026-10-23T08:20:47.783982Z",
+    "sim_start_s": null
+  },
+  "artifacts": [
+    {
+      "id": "commission",
+      "path": "artifacts/commission.py",
+      "sha256": "56c8f0614e0e812a775f40645537c78b5d03f93378c98fbf521e1f1300303b93",
+      "kind": "other"
+    },
+    {
+      "id": "common_constraints",
+      "path": "artifacts/common_constraints.json",
+      "sha256": "fe17b54e792bdcd87bd221c303a7d43b0ab6375256188d57d62cfb0326b7d320",
+      "kind": "common_constraints"
+    },
+    {
+      "id": "goal",
+      "path": "artifacts/goal.yaml",
+      "sha256": "ec2f5831f69823f2b94dfc13779b98d71ef8fae0f6e19f41d9c657b2232e5688",
+      "kind": "other"
+    },
+    {
+      "id": "initialpose_template",
+      "path": "artifacts/initialpose-template.yaml",
+      "sha256": "2715c536466808a3ca498d57e7a7d1b0ab1204dd466a6f0f019a517d040eae46",
+      "kind": "other"
+    },
+    {
+      "id": "nav2",
+      "path": "artifacts/nav2.yaml",
+      "sha256": "27f34e95dca6c8ac5ed0140d6f600dfd9cab61e5d7e1efc7bd632004bbab54f2",
+      "kind": "config"
+    },
+    {
+      "id": "observe",
+      "path": "artifacts/observe.py",
+      "sha256": "1d91592cd0c6d6f5add37248c19824463a9b2232d4e8b44fa5ea6205b5f7c81c",
+      "kind": "other"
+    },
+    {
+      "id": "pair_at_start",
+      "path": "artifacts/pair-at-start.json",
+      "sha256": "43de7846fea3ffcdbf07bec58bad766d9a9b25d840278320b19cc650ed29d467",
+      "kind": "other"
+    },
+    {
+      "id": "resource_dependencies",
+      "path": "artifacts/resource-dependencies.json",
+      "sha256": "b566ab2e9696579dc090d714b41703c70f7a043cb3377c8fbe78538eaef9a431",
+      "kind": "other"
+    },
+    {
+      "id": "robot",
+      "path": "artifacts/robot.sdf",
+      "sha256": "2e176104db94a82c46d9bf37b88a2b1faa62743c2e443f5dfcefead263411541",
+      "kind": "other"
+    },
+    {
+      "id": "scenario_before",
+      "path": "artifacts/scenario-before.yaml",
+      "sha256": "1201c04121676d40cf0d0a575f8b2cb57f7a441980bca069d9d5b7e8bab64f44",
+      "kind": "other"
+    },
+    {
+      "id": "scenario",
+      "path": "artifacts/scenario.yaml",
+      "sha256": "36d9e487702fa501fdd11de671c0da0c99daab7f6f98c749ecac495f64d7778b",
+      "kind": "scenario"
+    },
+    {
+      "id": "send_one_goal",
+      "path": "artifacts/send_one_goal.py",
+      "sha256": "8d2927e015a5c7901e0c83dbaa51b95e5da923b231cd48303e4e155d2e9824dc",
+      "kind": "other"
+    },
+    {
+      "id": "source_at_start",
+      "path": "artifacts/source-at-start.tgz",
+      "sha256": "3a3a300a3ec3979f4ba7d1ebe811f6d8ed40b24a3c47314e225910fa12822bb3",
+      "kind": "source_snapshot"
+    },
+    {
+      "id": "startup_scoped",
+      "path": "artifacts/startup_scoped.py",
+      "sha256": "71419a7b4657a132a451949051ce5966c82b84855519dfa44579c524aed21e25",
+      "kind": "other"
+    },
+    {
+      "id": "world_ogre1",
+      "path": "artifacts/world-ogre1.sdf",
+      "sha256": "d70fad169fc277f4430f7afb488c025dda5b49aaa36518ed33b7a624865c1bd3",
+      "kind": "other"
+    },
+    {
+      "id": "world_variant",
+      "path": "artifacts/world-variant.json",
+      "sha256": "68914d785d695a55a27fadd2c90a3fa56d3e23c04cddb8ffe91a07b24bf809c5",
+      "kind": "other"
+    },
+    {
+      "id": "runtime_parameters",
+      "path": "runtime/controller_server.yaml",
+      "sha256": "950ec619ed4a7812a478c0d17aea23428c2fdf5e0907caa598cb04b29653c24c",
+      "kind": "runtime_parameters"
+    },
+    {
+      "id": "frozen_all_parameters",
+      "path": "runtime/all-parameters.json",
+      "sha256": "02d2fd61f79de59fca8dd8605b337e0cc2210b4f225efab6793f4d7b76714a2e",
+      "kind": "other"
+    },
+    {
+      "id": "frozen_pre_goal",
+      "path": "runtime/pre-goal.json",
+      "sha256": "10db572feb628fce354bf2869fe33944516f3d52d4222c99288b5d0d94825928",
+      "kind": "other"
+    },
+    {
+      "id": "frozen_initialpose_request",
+      "path": "runtime/initialpose-request.yaml",
+      "sha256": "8bd8d8238c7bd6d79f06a3ff70824f6454c0d1858e94fc00f5f9ab4fa5e16708",
+      "kind": "other"
+    },
+    {
+      "id": "frozen_environment",
+      "path": "runtime/environment.json",
+      "sha256": "dc7f930c16700d1cfaba15b3133b724ed942ec8666d2c36b4da5ae2ae2a8405c",
+      "kind": "other"
+    },
+    {
+      "id": "frozen_repo_at_start",
+      "path": "repo-at-start.json",
+      "sha256": "ae25a58ca6beb2bd983f61650a25518c663657d67ad1040ba072aad842356b7a",
+      "kind": "other"
+    },
+    {
+      "id": "frozen_session",
+      "path": "session.bash",
+      "sha256": "c50713f7ece59338a92a9925a36aad0b2e42b2048e92dbdeb577d93c1badc952",
+      "kind": "other"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+smoother_server:
+  ros__parameters:
+    /bond_disable_heartbeat_timeout: true
+    action_server_result_timeout: 10.0
+    autostart_node: false
+    bond_heartbeat_period: 0.1
+    costmap_topic: global_costmap/costmap_raw
+    footprint_topic: global_costmap/published_footprint
+    qos_overrides./clock.subscription.depth: 1
+    qos_overrides./clock.subscription.durability: volatile
+    qos_overrides./clock.subscription.history: keep_last
+    qos_overrides./clock.subscription.reliability: best_effort
+    qos_overrides./tf.subscription.depth: 100
+    qos_overrides./tf.subscription.durability: volatile
+    qos_overrides./tf.subscription.history: keep_last
+    qos_overrides./tf.subscription.reliability: reliable
+    qos_overrides./tf_static.subscription.depth: 100
+    qos_overrides./tf_static.subscription.history: keep_last
+    qos_overrides./tf_static.subscription.reliability: reliable
+    robot_base_frame: base_link
+    simple_smoother.do_refinement: true
+    simple_smoother.max_its: 1000
+    simple_smoother.plugin: nav2_smoother::SimpleSmoother
+    simple_smoother.refinement_num: 2
+    simple_smoother.tolerance: 1.0e-10
+    simple_smoother.w_data: 0.2
+    simple_smoother.w_smooth: 0.3
+    smoother_plugins:
+    - simple_smoother
+    start_type_description_service: true
+    transform_tolerance: 0.1
+    use_sim_time: true
