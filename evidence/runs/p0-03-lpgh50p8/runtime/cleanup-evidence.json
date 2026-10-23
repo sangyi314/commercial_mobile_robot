@@ -1,0 +1,56 @@
+{
+  "cleanup_status": "SUCCEEDED",
+  "resources_released": true,
+  "remaining_robot_processes": [],
+  "node_list_exit": 0,
+  "node_list": [],
+  "abnormal_exit_lines": [],
+  "clean_exit_lines": [
+    {
+      "file": "robot-launch.log",
+      "line": 14,
+      "text": "[INFO] [xacro-1]: process has finished cleanly [pid 23963]"
+    },
+    {
+      "file": "robot-launch.log",
+      "line": 26,
+      "text": "[INFO] [create-3]: process has finished cleanly [pid 23965]"
+    },
+    {
+      "file": "robot-launch.log",
+      "line": 56,
+      "text": "[INFO] [robot_state_publisher-4]: process has finished cleanly [pid 23966]"
+    },
+    {
+      "file": "robot-launch.log",
+      "line": 61,
+      "text": "[INFO] [map_server-5]: process has finished cleanly [pid 23967]"
+    },
+    {
+      "file": "robot-launch.log",
+      "line": 66,
+      "text": "[INFO] [amcl-6]: process has finished cleanly [pid 23968]"
+    },
+    {
+      "file": "robot-launch.log",
+      "line": 70,
+      "text": "[INFO] [lifecycle_manager-7]: process has finished cleanly [pid 23973]"
+    },
+    {
+      "file": "robot-launch.log",
+      "line": 72,
+      "text": "[INFO] [parameter_bridge-2]: process has finished cleanly [pid 23964]"
+    }
+  ],
+  "lifecycle_shutdowns": [
+    {
+      "kind": "lifecycle_shutdown",
+      "monotonic_s": 22679.094468063,
+      "data": {
+        "manager": "localization",
+        "exit": 0,
+        "success": true
+      }
+    }
+  ]
+}

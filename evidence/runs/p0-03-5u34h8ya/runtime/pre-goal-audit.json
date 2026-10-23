@@ -1,0 +1,566 @@
+{
+  "lifecycle": {
+    "map_server": {
+      "id": 3,
+      "label": "active"
+    },
+    "amcl": {
+      "id": 3,
+      "label": "active"
+    },
+    "controller_server": {
+      "id": 3,
+      "label": "active"
+    },
+    "smoother_server": {
+      "id": 3,
+      "label": "active"
+    },
+    "planner_server": {
+      "id": 3,
+      "label": "active"
+    },
+    "route_server": {
+      "id": 3,
+      "label": "active"
+    },
+    "behavior_server": {
+      "id": 3,
+      "label": "active"
+    },
+    "bt_navigator": {
+      "id": 3,
+      "label": "active"
+    },
+    "waypoint_follower": {
+      "id": 3,
+      "label": "active"
+    },
+    "velocity_smoother": {
+      "id": 3,
+      "label": "active"
+    },
+    "collision_monitor": {
+      "id": 3,
+      "label": "active"
+    },
+    "docking_server": {
+      "id": 3,
+      "label": "active"
+    }
+  },
+  "parameters": {
+    "controller_server": {
+      "use_sim_time": true,
+      "controller_plugins": [
+        "FollowPath"
+      ],
+      "FollowPath.plugin": "nav2_mppi_controller::MPPIController",
+      "controller_frequency": 20.0,
+      "general_goal_checker.plugin": "nav2_controller::SimpleGoalChecker",
+      "general_goal_checker.xy_goal_tolerance": 0.25,
+      "general_goal_checker.yaw_goal_tolerance": 0.25,
+      "general_goal_checker.stateful": true,
+      "enable_stamped_cmd_vel": false
+    },
+    "velocity_smoother": {
+      "use_sim_time": true,
+      "max_velocity": [
+        0.3,
+        0.0,
+        1.0
+      ],
+      "min_velocity": [
+        -0.1,
+        0.0,
+        -1.0
+      ],
+      "max_accel": [
+        1.0,
+        0.0,
+        2.0
+      ],
+      "max_decel": [
+        -1.0,
+        0.0,
+        -2.0
+      ],
+      "enable_stamped_cmd_vel": false
+    },
+    "collision_monitor": {
+      "use_sim_time": true,
+      "enable_stamped_cmd_vel": false,
+      "polygons": [
+        "FootprintApproach"
+      ],
+      "observation_sources": [
+        "scan"
+      ]
+    },
+    "local_costmap/local_costmap": {
+      "use_sim_time": true,
+      "robot_radius": 0.22,
+      "footprint": "[]",
+      "footprint_padding": 0.009999999776482582,
+      "global_frame": "odom",
+      "robot_base_frame": "base_link"
+    },
+    "global_costmap/global_costmap": {
+      "use_sim_time": true,
+      "robot_radius": 0.22,
+      "footprint": "[]",
+      "footprint_padding": 0.009999999776482582,
+      "global_frame": "map",
+      "robot_base_frame": "base_link"
+    },
+    "amcl": {
+      "use_sim_time": true,
+      "base_frame_id": "base_footprint",
+      "global_frame_id": "map",
+      "odom_frame_id": "odom",
+      "scan_topic": "scan"
+    },
+    "bt_navigator": {
+      "use_sim_time": true,
+      "global_frame": "map",
+      "robot_base_frame": "base_link"
+    }
+  },
+  "endpoints": {
+    "/clock": {
+      "types": [
+        "rosgraph_msgs/msg/Clock"
+      ],
+      "publishers": [
+        {
+          "node_name": "ros_gz_bridge",
+          "node_namespace": "/",
+          "topic_type": "rosgraph_msgs/msg/Clock",
+          "qos": "QoSProfile(history=3, depth=0, reliability=1, durability=2, lifespan=Infinite, deadline=Infinite, liveliness=1, liveliness_lease_duration=Infinite, avoid_ros_namespace_conventions=False)"
+        }
+      ],
+      "subscriptions": [
+        {
+          "node_name": "p03_runtime_audit",
+          "node_namespace": "/",
+          "topic_type": "rosgraph_msgs/msg/Clock",
+          "qos": "QoSProfile(history=3, depth=0, reliability=2, durability=2, lifespan=Infinite, deadline=Infinite, liveliness=1, liveliness_lease_duration=Infinite, avoid_ros_namespace_conventions=False)"
+        },
+        {
+          "node_name": "ros_gz_bridge",
+          "node_namespace": "/",
+          "topic_type": "rosgraph_msgs/msg/Clock",
+          "qos": "QoSProfile(history=3, depth=0, reliability=2, durability=2, lifespan=Infinite, deadline=Infinite, liveliness=1, liveliness_lease_duration=Infinite, avoid_ros_namespace_conventions=False)"
+        },
+        {
+          "node_name": "robot_state_publisher",
+          "node_namespace": "/",
+          "topic_type": "rosgraph_msgs/msg/Clock",
+          "qos": "QoSProfile(history=3, depth=0, reliability=2, durability=2, lifespan=Infinite, deadline=Infinite, liveliness=1, liveliness_lease_duration=Infinite, avoid_ros_namespace_conventions=False)"
+        },
+        {
+          "node_name": "map_server",
+          "node_namespace": "/",
+          "topic_type": "rosgraph_msgs/msg/Clock",
+          "qos": "QoSProfile(history=3, depth=0, reliability=2, durability=2, lifespan=Infinite, deadline=Infinite, liveliness=1, liveliness_lease_duration=Infinite, avoid_ros_namespace_conventions=False)"
+        },
+        {
+          "node_name": "amcl",
+          "node_namespace": "/",
+          "topic_type": "rosgraph_msgs/msg/Clock",
+          "qos": "QoSProfile(history=3, depth=0, reliability=2, durability=2, lifespan=Infinite, deadline=Infinite, liveliness=1, liveliness_lease_duration=Infinite, avoid_ros_namespace_conventions=False)"
+        },
+        {
+          "node_name": "lifecycle_manager_localization",
+          "node_namespace": "/",
+          "topic_type": "rosgraph_msgs/msg/Clock",
+          "qos": "QoSProfile(history=3, depth=0, reliability=2, durability=2, lifespan=Infinite, deadline=Infinite, liveliness=1, liveliness_lease_duration=Infinite, avoid_ros_namespace_conventions=False)"
+        },
+        {
+          "node_name": "controller_server",
+          "node_namespace": "/",
+          "topic_type": "rosgraph_msgs/msg/Clock",
+          "qos": "QoSProfile(history=3, depth=0, reliability=2, durability=2, lifespan=Infinite, deadline=Infinite, liveliness=1, liveliness_lease_duration=Infinite, avoid_ros_namespace_conventions=False)"
+        },
+        {
+          "node_name": "local_costmap",
+          "node_namespace": "/local_costmap",
+          "topic_type": "rosgraph_msgs/msg/Clock",
+          "qos": "QoSProfile(history=3, depth=0, reliability=2, durability=2, lifespan=Infinite, deadline=Infinite, liveliness=1, liveliness_lease_duration=Infinite, avoid_ros_namespace_conventions=False)"
+        },
+        {
+          "node_name": "transform_listener_impl_aeefba000db0",
+          "node_namespace": "/",
+          "topic_type": "rosgraph_msgs/msg/Clock",
+          "qos": "QoSProfile(history=3, depth=0, reliability=2, durability=2, lifespan=Infinite, deadline=Infinite, liveliness=1, liveliness_lease_duration=Infinite, avoid_ros_namespace_conventions=False)"
+        },
+        {
+          "node_name": "smoother_server",
+          "node_namespace": "/",
+          "topic_type": "rosgraph_msgs/msg/Clock",
+          "qos": "QoSProfile(history=3, depth=0, reliability=2, durability=2, lifespan=Infinite, deadline=Infinite, liveliness=1, liveliness_lease_duration=Infinite, avoid_ros_namespace_conventions=False)"
+        },
+        {
+          "node_name": "planner_server",
+          "node_namespace": "/",
+          "topic_type": "rosgraph_msgs/msg/Clock",
+          "qos": "QoSProfile(history=3, depth=0, reliability=2, durability=2, lifespan=Infinite, deadline=Infinite, liveliness=1, liveliness_lease_duration=Infinite, avoid_ros_namespace_conventions=False)"
+        },
+        {
+          "node_name": "global_costmap",
+          "node_namespace": "/global_costmap",
+          "topic_type": "rosgraph_msgs/msg/Clock",
+          "qos": "QoSProfile(history=3, depth=0, reliability=2, durability=2, lifespan=Infinite, deadline=Infinite, liveliness=1, liveliness_lease_duration=Infinite, avoid_ros_namespace_conventions=False)"
+        },
+        {
+          "node_name": "transform_listener_impl_bfc1de7de770",
+          "node_namespace": "/",
+          "topic_type": "rosgraph_msgs/msg/Clock",
+          "qos": "QoSProfile(history=3, depth=0, reliability=2, durability=2, lifespan=Infinite, deadline=Infinite, liveliness=1, liveliness_lease_duration=Infinite, avoid_ros_namespace_conventions=False)"
+        },
+        {
+          "node_name": "route_server",
+          "node_namespace": "/",
+          "topic_type": "rosgraph_msgs/msg/Clock",
+          "qos": "QoSProfile(history=3, depth=0, reliability=2, durability=2, lifespan=Infinite, deadline=Infinite, liveliness=1, liveliness_lease_duration=Infinite, avoid_ros_namespace_conventions=False)"
+        },
+        {
+          "node_name": "behavior_server",
+          "node_namespace": "/",
+          "topic_type": "rosgraph_msgs/msg/Clock",
+          "qos": "QoSProfile(history=3, depth=0, reliability=2, durability=2, lifespan=Infinite, deadline=Infinite, liveliness=1, liveliness_lease_duration=Infinite, avoid_ros_namespace_conventions=False)"
+        },
+        {
+          "node_name": "bt_navigator",
+          "node_namespace": "/",
+          "topic_type": "rosgraph_msgs/msg/Clock",
+          "qos": "QoSProfile(history=3, depth=0, reliability=2, durability=2, lifespan=Infinite, deadline=Infinite, liveliness=1, liveliness_lease_duration=Infinite, avoid_ros_namespace_conventions=False)"
+        },
+        {
+          "node_name": "bt_navigator_navigate_to_pose_rclcpp_node",
+          "node_namespace": "/",
+          "topic_type": "rosgraph_msgs/msg/Clock",
+          "qos": "QoSProfile(history=3, depth=0, reliability=2, durability=2, lifespan=Infinite, deadline=Infinite, liveliness=1, liveliness_lease_duration=Infinite, avoid_ros_namespace_conventions=False)"
+        },
+        {
+          "node_name": "bt_navigator_navigate_through_poses_rclcpp_node",
+          "node_namespace": "/",
+          "topic_type": "rosgraph_msgs/msg/Clock",
+          "qos": "QoSProfile(history=3, depth=0, reliability=2, durability=2, lifespan=Infinite, deadline=Infinite, liveliness=1, liveliness_lease_duration=Infinite, avoid_ros_namespace_conventions=False)"
+        },
+        {
+          "node_name": "waypoint_follower",
+          "node_namespace": "/",
+          "topic_type": "rosgraph_msgs/msg/Clock",
+          "qos": "QoSProfile(history=3, depth=0, reliability=2, durability=2, lifespan=Infinite, deadline=Infinite, liveliness=1, liveliness_lease_duration=Infinite, avoid_ros_namespace_conventions=False)"
+        },
+        {
+          "node_name": "velocity_smoother",
+          "node_namespace": "/",
+          "topic_type": "rosgraph_msgs/msg/Clock",
+          "qos": "QoSProfile(history=3, depth=0, reliability=2, durability=2, lifespan=Infinite, deadline=Infinite, liveliness=1, liveliness_lease_duration=Infinite, avoid_ros_namespace_conventions=False)"
+        },
+        {
+          "node_name": "collision_monitor",
+          "node_namespace": "/",
+          "topic_type": "rosgraph_msgs/msg/Clock",
+          "qos": "QoSProfile(history=3, depth=0, reliability=2, durability=2, lifespan=Infinite, deadline=Infinite, liveliness=1, liveliness_lease_duration=Infinite, avoid_ros_namespace_conventions=False)"
+        },
+        {
+          "node_name": "docking_server",
+          "node_namespace": "/",
+          "topic_type": "rosgraph_msgs/msg/Clock",
+          "qos": "QoSProfile(history=3, depth=0, reliability=2, durability=2, lifespan=Infinite, deadline=Infinite, liveliness=1, liveliness_lease_duration=Infinite, avoid_ros_namespace_conventions=False)"
+        },
+        {
+          "node_name": "lifecycle_manager_navigation",
+          "node_namespace": "/",
+          "topic_type": "rosgraph_msgs/msg/Clock",
+          "qos": "QoSProfile(history=3, depth=0, reliability=2, durability=2, lifespan=Infinite, deadline=Infinite, liveliness=1, liveliness_lease_duration=Infinite, avoid_ros_namespace_conventions=False)"
+        }
+      ]
+    },
+    "/scan": {
+      "types": [
+        "sensor_msgs/msg/LaserScan"
+      ],
+      "publishers": [
+        {
+          "node_name": "ros_gz_bridge",
+          "node_namespace": "/",
+          "topic_type": "sensor_msgs/msg/LaserScan",
+          "qos": "QoSProfile(history=3, depth=0, reliability=1, durability=2, lifespan=Infinite, deadline=Infinite, liveliness=1, liveliness_lease_duration=Infinite, avoid_ros_namespace_conventions=False)"
+        }
+      ],
+      "subscriptions": [
+        {
+          "node_name": "amcl",
+          "node_namespace": "/",
+          "topic_type": "sensor_msgs/msg/LaserScan",
+          "qos": "QoSProfile(history=3, depth=0, reliability=2, durability=2, lifespan=Infinite, deadline=Infinite, liveliness=1, liveliness_lease_duration=Infinite, avoid_ros_namespace_conventions=False)"
+        },
+        {
+          "node_name": "local_costmap",
+          "node_namespace": "/local_costmap",
+          "topic_type": "sensor_msgs/msg/LaserScan",
+          "qos": "QoSProfile(history=3, depth=0, reliability=2, durability=2, lifespan=Infinite, deadline=Infinite, liveliness=1, liveliness_lease_duration=Infinite, avoid_ros_namespace_conventions=False)"
+        },
+        {
+          "node_name": "global_costmap",
+          "node_namespace": "/global_costmap",
+          "topic_type": "sensor_msgs/msg/LaserScan",
+          "qos": "QoSProfile(history=3, depth=0, reliability=2, durability=2, lifespan=Infinite, deadline=Infinite, liveliness=1, liveliness_lease_duration=Infinite, avoid_ros_namespace_conventions=False)"
+        },
+        {
+          "node_name": "collision_monitor",
+          "node_namespace": "/",
+          "topic_type": "sensor_msgs/msg/LaserScan",
+          "qos": "QoSProfile(history=3, depth=0, reliability=2, durability=2, lifespan=Infinite, deadline=Infinite, liveliness=1, liveliness_lease_duration=Infinite, avoid_ros_namespace_conventions=False)"
+        }
+      ]
+    },
+    "/odom": {
+      "types": [
+        "nav_msgs/msg/Odometry"
+      ],
+      "publishers": [
+        {
+          "node_name": "ros_gz_bridge",
+          "node_namespace": "/",
+          "topic_type": "nav_msgs/msg/Odometry",
+          "qos": "QoSProfile(history=3, depth=0, reliability=1, durability=2, lifespan=Infinite, deadline=Infinite, liveliness=1, liveliness_lease_duration=Infinite, avoid_ros_namespace_conventions=False)"
+        }
+      ],
+      "subscriptions": [
+        {
+          "node_name": "controller_server",
+          "node_namespace": "/",
+          "topic_type": "nav_msgs/msg/Odometry",
+          "qos": "QoSProfile(history=3, depth=0, reliability=2, durability=2, lifespan=Infinite, deadline=Infinite, liveliness=1, liveliness_lease_duration=Infinite, avoid_ros_namespace_conventions=False)"
+        },
+        {
+          "node_name": "bt_navigator",
+          "node_namespace": "/",
+          "topic_type": "nav_msgs/msg/Odometry",
+          "qos": "QoSProfile(history=3, depth=0, reliability=2, durability=2, lifespan=Infinite, deadline=Infinite, liveliness=1, liveliness_lease_duration=Infinite, avoid_ros_namespace_conventions=False)"
+        }
+      ]
+    },
+    "/initialpose": {
+      "types": [
+        "geometry_msgs/msg/PoseWithCovarianceStamped"
+      ],
+      "publishers": [],
+      "subscriptions": [
+        {
+          "node_name": "amcl",
+          "node_namespace": "/",
+          "topic_type": "geometry_msgs/msg/PoseWithCovarianceStamped",
+          "qos": "QoSProfile(history=3, depth=0, reliability=2, durability=2, lifespan=Infinite, deadline=Infinite, liveliness=1, liveliness_lease_duration=Infinite, avoid_ros_namespace_conventions=False)"
+        }
+      ]
+    },
+    "/cmd_vel_nav": {
+      "types": [
+        "geometry_msgs/msg/Twist"
+      ],
+      "publishers": [
+        {
+          "node_name": "controller_server",
+          "node_namespace": "/",
+          "topic_type": "geometry_msgs/msg/Twist",
+          "qos": "QoSProfile(history=3, depth=0, reliability=1, durability=2, lifespan=Infinite, deadline=Infinite, liveliness=1, liveliness_lease_duration=Infinite, avoid_ros_namespace_conventions=False)"
+        },
+        {
+          "node_name": "behavior_server",
+          "node_namespace": "/",
+          "topic_type": "geometry_msgs/msg/Twist",
+          "qos": "QoSProfile(history=3, depth=0, reliability=1, durability=2, lifespan=Infinite, deadline=Infinite, liveliness=1, liveliness_lease_duration=Infinite, avoid_ros_namespace_conventions=False)"
+        },
+        {
+          "node_name": "behavior_server",
+          "node_namespace": "/",
+          "topic_type": "geometry_msgs/msg/Twist",
+          "qos": "QoSProfile(history=3, depth=0, reliability=1, durability=2, lifespan=Infinite, deadline=Infinite, liveliness=1, liveliness_lease_duration=Infinite, avoid_ros_namespace_conventions=False)"
+        },
+        {
+          "node_name": "behavior_server",
+          "node_namespace": "/",
+          "topic_type": "geometry_msgs/msg/Twist",
+          "qos": "QoSProfile(history=3, depth=0, reliability=1, durability=2, lifespan=Infinite, deadline=Infinite, liveliness=1, liveliness_lease_duration=Infinite, avoid_ros_namespace_conventions=False)"
+        },
+        {
+          "node_name": "behavior_server",
+          "node_namespace": "/",
+          "topic_type": "geometry_msgs/msg/Twist",
+          "qos": "QoSProfile(history=3, depth=0, reliability=1, durability=2, lifespan=Infinite, deadline=Infinite, liveliness=1, liveliness_lease_duration=Infinite, avoid_ros_namespace_conventions=False)"
+        },
+        {
+          "node_name": "behavior_server",
+          "node_namespace": "/",
+          "topic_type": "geometry_msgs/msg/Twist",
+          "qos": "QoSProfile(history=3, depth=0, reliability=1, durability=2, lifespan=Infinite, deadline=Infinite, liveliness=1, liveliness_lease_duration=Infinite, avoid_ros_namespace_conventions=False)"
+        }
+      ],
+      "subscriptions": [
+        {
+          "node_name": "velocity_smoother",
+          "node_namespace": "/",
+          "topic_type": "geometry_msgs/msg/Twist",
+          "qos": "QoSProfile(history=3, depth=0, reliability=1, durability=2, lifespan=Infinite, deadline=Infinite, liveliness=1, liveliness_lease_duration=Infinite, avoid_ros_namespace_conventions=False)"
+        }
+      ]
+    },
+    "/cmd_vel_smoothed": {
+      "types": [
+        "geometry_msgs/msg/Twist"
+      ],
+      "publishers": [
+        {
+          "node_name": "velocity_smoother",
+          "node_namespace": "/",
+          "topic_type": "geometry_msgs/msg/Twist",
+          "qos": "QoSProfile(history=3, depth=0, reliability=1, durability=2, lifespan=Infinite, deadline=Infinite, liveliness=1, liveliness_lease_duration=Infinite, avoid_ros_namespace_conventions=False)"
+        }
+      ],
+      "subscriptions": [
+        {
+          "node_name": "collision_monitor",
+          "node_namespace": "/",
+          "topic_type": "geometry_msgs/msg/Twist",
+          "qos": "QoSProfile(history=3, depth=0, reliability=1, durability=2, lifespan=Infinite, deadline=Infinite, liveliness=1, liveliness_lease_duration=Infinite, avoid_ros_namespace_conventions=False)"
+        }
+      ]
+    },
+    "/cmd_vel": {
+      "types": [
+        "geometry_msgs/msg/Twist"
+      ],
+      "publishers": [
+        {
+          "node_name": "collision_monitor",
+          "node_namespace": "/",
+          "topic_type": "geometry_msgs/msg/Twist",
+          "qos": "QoSProfile(history=3, depth=0, reliability=1, durability=2, lifespan=Infinite, deadline=Infinite, liveliness=1, liveliness_lease_duration=Infinite, avoid_ros_namespace_conventions=False)"
+        },
+        {
+          "node_name": "docking_server",
+          "node_namespace": "/",
+          "topic_type": "geometry_msgs/msg/Twist",
+          "qos": "QoSProfile(history=3, depth=0, reliability=1, durability=2, lifespan=Infinite, deadline=Infinite, liveliness=1, liveliness_lease_duration=Infinite, avoid_ros_namespace_conventions=False)"
+        }
+      ],
+      "subscriptions": [
+        {
+          "node_name": "ros_gz_bridge",
+          "node_namespace": "/",
+          "topic_type": "geometry_msgs/msg/Twist",
+          "qos": "QoSProfile(history=3, depth=0, reliability=1, durability=2, lifespan=Infinite, deadline=Infinite, liveliness=1, liveliness_lease_duration=Infinite, avoid_ros_namespace_conventions=False)"
+        }
+      ]
+    },
+    "/navigate_to_pose/_action/status": {
+      "types": [
+        "action_msgs/msg/GoalStatusArray"
+      ],
+      "publishers": [
+        {
+          "node_name": "bt_navigator",
+          "node_namespace": "/",
+          "topic_type": "action_msgs/msg/GoalStatusArray",
+          "qos": "QoSProfile(history=3, depth=0, reliability=1, durability=1, lifespan=Infinite, deadline=Infinite, liveliness=1, liveliness_lease_duration=Infinite, avoid_ros_namespace_conventions=False)"
+        }
+      ],
+      "subscriptions": [
+        {
+          "node_name": "bt_navigator",
+          "node_namespace": "/",
+          "topic_type": "action_msgs/msg/GoalStatusArray",
+          "qos": "QoSProfile(history=3, depth=0, reliability=1, durability=1, lifespan=Infinite, deadline=Infinite, liveliness=1, liveliness_lease_duration=Infinite, avoid_ros_namespace_conventions=False)"
+        },
+        {
+          "node_name": "waypoint_follower",
+          "node_namespace": "/",
+          "topic_type": "action_msgs/msg/GoalStatusArray",
+          "qos": "QoSProfile(history=3, depth=0, reliability=1, durability=1, lifespan=Infinite, deadline=Infinite, liveliness=1, liveliness_lease_duration=Infinite, avoid_ros_namespace_conventions=False)"
+        },
+        {
+          "node_name": "docking_server",
+          "node_namespace": "/",
+          "topic_type": "action_msgs/msg/GoalStatusArray",
+          "qos": "QoSProfile(history=3, depth=0, reliability=1, durability=1, lifespan=Infinite, deadline=Infinite, liveliness=1, liveliness_lease_duration=Infinite, avoid_ros_namespace_conventions=False)"
+        }
+      ]
+    }
+  },
+  "pose": {
+    "x": -1.9699279770952307,
+    "y": -0.5097124220237358,
+    "yaw": -0.008522572283424474,
+    "stamp_s": 192.069,
+    "receive_ros_s": 192.09,
+    "quaternion_xyzw": [
+      0.0,
+      0.0,
+      -0.00426127324525423,
+      0.999990920733948
+    ]
+  },
+  "radius_including_padding_m": 0.22999999977648258,
+  "candidates": [
+    {
+      "x": -1.069960662304638,
+      "y": -0.517382644224573,
+      "yaw": -0.008522572283424474,
+      "distance_m": 0.9,
+      "max_cost_by_map": {
+        "global": 253,
+        "local": 255
+      },
+      "clear": false
+    },
+    {
+      "x": -1.9622577548943934,
+      "y": 0.3902548927668569,
+      "yaw": 1.562273754511472,
+      "distance_m": 0.9,
+      "max_cost_by_map": {
+        "global": 220,
+        "local": 255
+      },
+      "clear": false
+    },
+    {
+      "x": -1.977598199296068,
+      "y": -1.4096797368143283,
+      "yaw": -1.5793188990783211,
+      "distance_m": 0.9,
+      "max_cost_by_map": {
+        "global": 254,
+        "local": 255
+      },
+      "clear": false
+    },
+    {
+      "x": -2.8698952918858236,
+      "y": -0.5020421998228985,
+      "yaw": 3.1330700813063688,
+      "distance_m": 0.9,
+      "max_cost_by_map": {
+        "global": 255,
+        "local": 255
+      },
+      "clear": false
+    }
+  ],
+  "scan_map_local_alignment": {
+    "valid_endpoints": 360,
+    "within_0_15_m_fraction": 1.0,
+    "median_nearest_occupied_m": 0.021394865784879948,
+    "method": "latest map-scan TF; nearest occupied static-map cell within 0.30m search; local numeric consistency only, not global alignment/independent truth"
+  },
+  "costmap_stamps": {
+    "global": 188.424,
+    "local": 189.069
+  }
+}

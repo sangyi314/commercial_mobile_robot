@@ -1,0 +1,226 @@
+{
+  "schema_version": 1,
+  "run_id": "p0-03-5u34h8ya",
+  "record_origin": "real",
+  "scenario": {
+    "scenario_id": "official_static",
+    "scenario_revision": "r2+p0-03-5u34h8ya",
+    "spec_sha256": "b5e891ce5889db2ef59b1359ccdf6a453231a2693c8fed818ae59dc36fd2548d"
+  },
+  "source": {
+    "git_commit": "a978f22157296b9e0285650badd3a3cedfb4a410",
+    "dirty": true,
+    "snapshot_ref": "source_at_start"
+  },
+  "baseline": {
+    "method": "mppi",
+    "config_sha256": "27f34e95dca6c8ac5ed0140d6f600dfd9cab61e5d7e1efc7bd632004bbab54f2",
+    "expected_plugin": "nav2_mppi_controller::MPPIController",
+    "common_constraints_sha256": "59d3c6d998401ff96aa312c6589aa861e558672bfa38aa0fedb4fc725d10b629"
+  },
+  "environment": {
+    "ros_distro": "jazzy",
+    "platform": "Linux-6.8.0-147-generic-aarch64-with-glibc2.39",
+    "package_versions": {
+      "nav2_bringup": "1.3.13",
+      "nav2_mppi_controller": "1.3.13",
+      "nav2_controller": "1.3.13",
+      "nav2_costmap_2d": "1.3.13",
+      "nav2_amcl": "1.3.13",
+      "nav2_map_server": "1.3.13",
+      "nav2_bt_navigator": "1.3.13",
+      "nav2_velocity_smoother": "1.3.13",
+      "nav2_collision_monitor": "1.3.13",
+      "nav2_minimal_tb3_sim": "1.0.1",
+      "ros_gz_sim": "1.0.24",
+      "ros_gz_bridge": "1.0.24",
+      "rclcpp": "28.1.22",
+      "gz_sim_vendor": "0.0.13",
+      "gz_rendering_vendor": "0.0.7"
+    },
+    "external_seed": null,
+    "seed_scope": [],
+    "controller_seed_controlled": false
+  },
+  "clock": {
+    "clock_epoch": "p0-03-5u34h8ya:sim0",
+    "started_at_utc": "2026-10-22T12:00:38.719652Z",
+    "sim_start_s": null
+  },
+  "artifacts": [
+    {
+      "id": "scenario",
+      "path": "artifacts/scenario.yaml",
+      "sha256": "b5e891ce5889db2ef59b1359ccdf6a453231a2693c8fed818ae59dc36fd2548d",
+      "kind": "scenario"
+    },
+    {
+      "id": "config",
+      "path": "artifacts/nav2_mppi.yaml",
+      "sha256": "27f34e95dca6c8ac5ed0140d6f600dfd9cab61e5d7e1efc7bd632004bbab54f2",
+      "kind": "config"
+    },
+    {
+      "id": "common_constraints",
+      "path": "artifacts/common_constraints.json",
+      "sha256": "59d3c6d998401ff96aa312c6589aa861e558672bfa38aa0fedb4fc725d10b629",
+      "kind": "common_constraints"
+    },
+    {
+      "id": "source_at_start",
+      "path": "artifacts/source-at-start.tgz",
+      "sha256": "f1af3a92a92d51bf7f33214386e60bc7de3fcb85487109bdef2d8c29e78d26a7",
+      "kind": "source_snapshot"
+    },
+    {
+      "id": "goal_yaml",
+      "path": "artifacts/goal.yaml",
+      "sha256": "e0ada5344e6d96d0e4df0b0b0ac34f37eeeefa2e3f71c042bfabdb5f875cb004",
+      "kind": "other"
+    },
+    {
+      "id": "world-ogre1_sdf",
+      "path": "artifacts/world-ogre1.sdf",
+      "sha256": "d70fad169fc277f4430f7afb488c025dda5b49aaa36518ed33b7a624865c1bd3",
+      "kind": "other"
+    },
+    {
+      "id": "world-variant_json",
+      "path": "artifacts/world-variant.json",
+      "sha256": "68914d785d695a55a27fadd2c90a3fa56d3e23c04cddb8ffe91a07b24bf809c5",
+      "kind": "other"
+    },
+    {
+      "id": "world-original_sdf",
+      "path": "artifacts/world-original.sdf",
+      "sha256": "c07d319a0960c040618d7fcea2e9deda300642c81aacdca8d62a7e1e43117997",
+      "kind": "other"
+    },
+    {
+      "id": "observe_py",
+      "path": "artifacts/observe.py",
+      "sha256": "1d91592cd0c6d6f5add37248c19824463a9b2232d4e8b44fa5ea6205b5f7c81c",
+      "kind": "other"
+    },
+    {
+      "id": "send_one_goal_py",
+      "path": "artifacts/send_one_goal.py",
+      "sha256": "8d2927e015a5c7901e0c83dbaa51b95e5da923b231cd48303e4e155d2e9824dc",
+      "kind": "other"
+    },
+    {
+      "id": "commissioning_checks_py",
+      "path": "artifacts/commissioning_checks.py",
+      "sha256": "e9d170cbb9259286c563b3fa5746ad917fc1ce46e8981e26b5818a2c9ce90fee",
+      "kind": "other"
+    },
+    {
+      "id": "audit_runtime_py",
+      "path": "artifacts/audit_runtime.py",
+      "sha256": "b38d9bb6dc90405173d162c4c1230b202cf86464d3a39ac5ebd4f451bcb8c731",
+      "kind": "other"
+    },
+    {
+      "id": "audit_runtime_v2_py",
+      "path": "artifacts/audit_runtime_v2.py",
+      "sha256": "a4bcdeb60a65df482cdffb20648cf34c11e0c40a38a28738e5186f324bbc44bf",
+      "kind": "other"
+    },
+    {
+      "id": "tb3_simulation_launch_py",
+      "path": "artifacts/tb3_simulation.launch.py",
+      "sha256": "53adcb5a829b5300908d2d0b3bcd6ba96b92d98acb6e04d0622854909572d416",
+      "kind": "other"
+    },
+    {
+      "id": "launch-original_py",
+      "path": "artifacts/launch-original.py",
+      "sha256": "cb65906827c9897100512d64ee1ac7537fe859e3fc29fcc96aec8119bd7bebf2",
+      "kind": "other"
+    },
+    {
+      "id": "launch_patch",
+      "path": "artifacts/launch.patch",
+      "sha256": "07fe3efe15e8594c359bf545da745f640b26ea9061405d79f5c4fc13c442c6b9",
+      "kind": "other"
+    },
+    {
+      "id": "repair-rationale_json",
+      "path": "artifacts/repair-rationale.json",
+      "sha256": "8566ab1d807aea102f2ecccfa15f0ca3da00795717032013df304bccdb3c0243",
+      "kind": "other"
+    },
+    {
+      "id": "initialpose-request_yaml",
+      "path": "runtime/initialpose-request.yaml",
+      "sha256": "764d2e8da9426959d465e8e3e9e176480674691ea8c49b4376039408d52d7efa",
+      "kind": "other"
+    },
+    {
+      "id": "initialize-initialpose-echo_yaml",
+      "path": "runtime/initialize-initialpose-echo.yaml",
+      "sha256": "764d2e8da9426959d465e8e3e9e176480674691ea8c49b4376039408d52d7efa",
+      "kind": "other"
+    },
+    {
+      "id": "initialpose-dispatch_json",
+      "path": "runtime/initialpose-dispatch.json",
+      "sha256": "db222de53bf7d9a62f5c4bf607ddfb85205e14135413bc469db02e2e23be2cfb",
+      "kind": "other"
+    },
+    {
+      "id": "pre-goal-audit-v2_json",
+      "path": "runtime/pre-goal-audit-v2.json",
+      "sha256": "8698a86bcd15ec4f75b62cae98dab45a4d23baf9aa236de47380b4b5d1a03058",
+      "kind": "other"
+    },
+    {
+      "id": "package-versions_json",
+      "path": "runtime/package-versions.json",
+      "sha256": "0a98e2daacfdaffc80dbd50feb473e9955d0e253196f4ffb12ef2d885af1a46e",
+      "kind": "other"
+    },
+    {
+      "id": "resources_json",
+      "path": "runtime/resources.json",
+      "sha256": "c54641cbc83c4d18dfd736cd40e7fe9975d17621641cff4823e56b3bca9d300f",
+      "kind": "other"
+    },
+    {
+      "id": "preflight_json",
+      "path": "runtime/preflight.json",
+      "sha256": "de78dd1428347dcbe2fc488b3ae5978ab962fe56a7d8391fdf56035856e08c1b",
+      "kind": "other"
+    },
+    {
+      "id": "nav2-process_json",
+      "path": "runtime/nav2-process.json",
+      "sha256": "37daac2b4e671e97aa6815a930c5b7f2920a5abbdd31cd5934487ecbb70bd8ea",
+      "kind": "other"
+    },
+    {
+      "id": "gazebo-process_json",
+      "path": "runtime/gazebo-process.json",
+      "sha256": "d6c2778909bf6cb42bfcb58e3aeea915f9969de73efbc26598951efa84155e85",
+      "kind": "other"
+    },
+    {
+      "id": "repo_at_start",
+      "path": "repo-at-start.json",
+      "sha256": "15d6971f26fe1bb1026ccee2db9daefa7b5562a1def8d27b44762c1cad6abd41",
+      "kind": "other"
+    },
+    {
+      "id": "session",
+      "path": "session.bash",
+      "sha256": "fad2ffc7e3bf4cbe58509eaa1a1b7bb75aa826dddb6a328c94a369873434e6c0",
+      "kind": "other"
+    },
+    {
+      "id": "runtime_parameters",
+      "path": "runtime/controller_server.yaml",
+      "sha256": "1a61c1fed3664c843ce11ad0b0f8b804df88679f80633971294b2b1aae3776fb",
+      "kind": "runtime_parameters"
+    }
+  ]
+}

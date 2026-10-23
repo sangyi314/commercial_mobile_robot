@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/home/robot/commercial_mobile_robot/evidence/runs/p0-03-3hg1954j/artifacts/audit_runtime_v2.py", line 27, in <module>
+    r=call(GetState,'/'+node+'/get_state',GetState.Request());states[node]={'id':r.current_state.id,'label':r.current_state.label}
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/robot/commercial_mobile_robot/evidence/runs/p0-03-3hg1954j/artifacts/audit_runtime_v2.py", line 19, in call
+    if not c.wait_for_service(timeout_sec=timeout):raise RuntimeError('No service '+service)
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: No service /route_server/get_state

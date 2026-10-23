@@ -1,0 +1,27 @@
+[INFO] [1792670476.037358230] [route_server]: 
+	route_server lifecycle node launched. 
+	Waiting on external lifecycle transitions to activate
+	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[INFO] [1792670583.463429281] [route_server]: Configuring
+[INFO] [1792670583.485385073] [route_server]: Created GraphFileLoader GeoJsonGraphFileLoader of type nav2_route::GeoJsonGraphFileLoader
+[INFO] [1792670583.485400740] [route_server]: Configuring geojson graph file loader
+[INFO] [1792670583.485403656] [route_server]: No graph file provided to load yet.
+[INFO] [1792670583.487205031] [route_server]: Created edge cost function plugin DistanceScorer of type nav2_route::DistanceScorer
+[INFO] [1792670583.487213156] [route_server]: Configuring distance scorer.
+[INFO] [1792670583.487273865] [route_server]: Created edge cost function plugin CostmapScorer of type nav2_route::CostmapScorer
+[INFO] [1792670583.487279448] [route_server]: Configuring costmap scorer.
+[INFO] [1792670583.487830240] [route_server]: Created route operation AdjustSpeedLimit of type nav2_route::AdjustSpeedLimit
+[INFO] [1792670583.487835281] [route_server]: Configuring Adjust speed limit operation.
+[INFO] [1792670583.488112281] [route_server]: Created route operation ReroutingService of type nav2_route::ReroutingService
+[INFO] [1792670583.488119531] [route_server]: Configuring Rerouting service operation.
+[INFO] [1792670583.488540865] [route_server]: Created route operation CollisionMonitor of type nav2_route::CollisionMonitor
+[INFO] [1792670583.488558656] [route_server]: Using costmap topic: local_costmap/costmap_raw instead of server costmap topic: global_costmap/costmap_raw for CollisionMonitor.
+[INFO] [1792670585.734806324] [route_server]: Activating
+[INFO] [1792670585.735127449] [route_server]: Creating bond (route_server) to lifecycle manager.
+[INFO] [1792671045.655448127] [route_server]: Deactivating
+[INFO] [1792671045.655699877] [route_server]: Destroying bond (route_server) to lifecycle manager.
+[INFO] [1792671047.291003669] [route_server]: Cleaning up
+[INFO] [1792671047.343908169] [route_server]: Shutting down
+[INFO] [1792671050.103728045] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[INFO] [1792671050.103795337] [route_server]: Running Nav2 LifecycleNode rcl preshutdown (route_server)
+[INFO] [1792671050.103820879] [route_server]: Destroying bond (route_server) to lifecycle manager.

@@ -1,0 +1,26 @@
+[INFO] [1792671745.644579960] [map_server]: 
+	map_server lifecycle node launched. 
+	Waiting on external lifecycle transitions to activate
+	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[INFO] [1792671745.644670627] [map_server]: Creating
+[INFO] [1792671745.937203086] [map_server]: Configuring
+[INFO] [1792671745.937253044] [map_io]: Loading yaml file: /opt/ros/jazzy/share/nav2_bringup/maps/tb3_sandbox.yaml
+[INFO] [1792671745.937383586] [map_io]: resolution: 0.05
+[INFO] [1792671745.937386836] [map_io]: origin[0]: -10
+[INFO] [1792671745.937388169] [map_io]: origin[1]: -10
+[INFO] [1792671745.937389294] [map_io]: origin[2]: 0
+[INFO] [1792671745.937390502] [map_io]: free_thresh: 0.196
+[INFO] [1792671745.937391627] [map_io]: occupied_thresh: 0.65
+[INFO] [1792671745.937392961] [map_io]: mode: trinary
+[INFO] [1792671745.937394336] [map_io]: negate: 0
+[INFO] [1792671745.937566044] [map_io]: Loading image_file: /opt/ros/jazzy/share/nav2_bringup/maps/tb3_sandbox.pgm
+[INFO] [1792671745.939112961] [map_io]: Read map /opt/ros/jazzy/share/nav2_bringup/maps/tb3_sandbox.pgm: 384 X 384 map @ 0.05 m/cell
+[INFO] [1792671745.954910836] [map_server]: Activating
+[INFO] [1792671745.955183961] [map_server]: Creating bond (map_server) to lifecycle manager.
+[INFO] [1792672025.539617302] [map_server]: Deactivating
+[INFO] [1792672025.539820844] [map_server]: Destroying bond (map_server) to lifecycle manager.
+[INFO] [1792672025.674452177] [map_server]: Cleaning up
+[INFO] [1792672025.680902677] [map_server]: Shutting down
+[INFO] [1792672026.035341219] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[INFO] [1792672026.035498136] [map_server]: Running Nav2 LifecycleNode rcl preshutdown (map_server)
+[INFO] [1792672026.035555636] [map_server]: Destroying bond (map_server) to lifecycle manager.

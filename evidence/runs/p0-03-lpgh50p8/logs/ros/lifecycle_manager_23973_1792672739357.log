@@ -1,0 +1,14 @@
+[INFO] [1792672739.367047684] [lifecycle_manager_localization]: Creating
+[INFO] [1792672739.368995018] [lifecycle_manager_localization]: [34m[1mCreating and initializing lifecycle service clients[0m[0m
+[INFO] [1792672923.334250022] [lifecycle_manager_localization]: [34m[1mShutting down managed nodes...[0m[0m
+[INFO] [1792672923.334599397] [lifecycle_manager_localization]: [34m[1mDeactivate, cleanup, and shutdown nodes[0m[0m
+[INFO] [1792672923.334629230] [lifecycle_manager_localization]: [34m[1mDeactivating amcl[0m[0m
+[ERROR] [1792672923.337546855] [lifecycle_manager_localization]: Failed to change state for node: amcl
+[INFO] [1792672923.337613730] [lifecycle_manager_localization]: [34m[1mCleaning up amcl[0m[0m
+[INFO] [1792672923.338272230] [lifecycle_manager_localization]: [34m[1mCleaning up map_server[0m[0m
+[INFO] [1792672923.339918355] [lifecycle_manager_localization]: [34m[1mShutting down amcl[0m[0m
+[INFO] [1792672923.340968022] [lifecycle_manager_localization]: [34m[1mShutting down map_server[0m[0m
+[INFO] [1792672923.342082772] [lifecycle_manager_localization]: [34m[1mDestroying lifecycle service clients[0m[0m
+[INFO] [1792672923.346146564] [lifecycle_manager_localization]: [34m[1mManaged nodes have been shut down[0m[0m
+[INFO] [1792672924.109245689] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[INFO] [1792672924.109426189] [lifecycle_manager_localization]: Running Nav2 LifecycleManager rcl preshutdown (lifecycle_manager_localization)

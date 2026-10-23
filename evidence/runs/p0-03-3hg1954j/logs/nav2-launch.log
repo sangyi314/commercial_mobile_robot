@@ -1,0 +1,239 @@
+[INFO] [launch]: All log files can be found below /home/robot/commercial_mobile_robot/evidence/runs/p0-03-3hg1954j/logs/ros/2026-10-22-20-14-17-848811-cmr-ubuntu-20906
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [xacro-1]: process started with pid [20926]
+[INFO] [parameter_bridge-2]: process started with pid [20927]
+[INFO] [create-3]: process started with pid [20928]
+[INFO] [robot_state_publisher-4]: process started with pid [20929]
+[INFO] [map_server-5]: process started with pid [20930]
+[INFO] [amcl-6]: process started with pid [20931]
+[INFO] [lifecycle_manager-7]: process started with pid [20932]
+[INFO] [controller_server-8]: process started with pid [20933]
+[INFO] [smoother_server-9]: process started with pid [20934]
+[INFO] [planner_server-10]: process started with pid [20939]
+[INFO] [route_server-11]: process started with pid [20940]
+[INFO] [behavior_server-12]: process started with pid [20950]
+[INFO] [bt_navigator-13]: process started with pid [20954]
+[INFO] [waypoint_follower-14]: process started with pid [20956]
+[INFO] [velocity_smoother-15]: process started with pid [20957]
+[INFO] [collision_monitor-16]: process started with pid [20965]
+[INFO] [opennav_docking-17]: process started with pid [20966]
+[INFO] [lifecycle_manager-18]: process started with pid [20974]
+[create-3] [INFO] [1792671258.087720228] [ros_gz_sim]: Requesting list of world names.
+[robot_state_publisher-4] [INFO] [1792671258.101127686] [robot_state_publisher]: Robot initialized
+[lifecycle_manager-7] [INFO] [1792671258.102505728] [lifecycle_manager_localization]: Creating
+[lifecycle_manager-7] [INFO] [1792671258.106449020] [lifecycle_manager_localization]: [34m[1mCreating and initializing lifecycle service clients[0m[0m
+[INFO] [xacro-1]: process has finished cleanly [pid 20926]
+[amcl-6] [INFO] [1792671258.125616436] [amcl]: 
+[amcl-6] 	amcl lifecycle node launched. 
+[amcl-6] 	Waiting on external lifecycle transitions to activate
+[amcl-6] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[amcl-6] [INFO] [1792671258.125823145] [amcl]: Creating
+[planner_server-10] [INFO] [1792671258.126783186] [planner_server]: 
+[planner_server-10] 	planner_server lifecycle node launched. 
+[planner_server-10] 	Waiting on external lifecycle transitions to activate
+[planner_server-10] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[planner_server-10] [INFO] [1792671258.127301186] [planner_server]: Creating
+[planner_server-10] [INFO] [1792671258.132820103] [global_costmap.global_costmap]: 
+[planner_server-10] 	global_costmap lifecycle node launched. 
+[planner_server-10] 	Waiting on external lifecycle transitions to activate
+[planner_server-10] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[planner_server-10] [INFO] [1792671258.133005228] [global_costmap.global_costmap]: Creating Costmap
+[controller_server-8] [INFO] [1792671258.136633561] [controller_server]: 
+[controller_server-8] 	controller_server lifecycle node launched. 
+[controller_server-8] 	Waiting on external lifecycle transitions to activate
+[controller_server-8] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[controller_server-8] [INFO] [1792671258.137742936] [controller_server]: Creating controller server
+[controller_server-8] [INFO] [1792671258.143176145] [local_costmap.local_costmap]: 
+[controller_server-8] 	local_costmap lifecycle node launched. 
+[controller_server-8] 	Waiting on external lifecycle transitions to activate
+[controller_server-8] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[controller_server-8] [INFO] [1792671258.143310311] [local_costmap.local_costmap]: Creating Costmap
+[map_server-5] [INFO] [1792671258.143257811] [map_server]: 
+[map_server-5] 	map_server lifecycle node launched. 
+[map_server-5] 	Waiting on external lifecycle transitions to activate
+[map_server-5] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[map_server-5] [INFO] [1792671258.143293520] [map_server]: Creating
+[opennav_docking-17] [INFO] [1792671258.191181103] [docking_server]: 
+[opennav_docking-17] 	docking_server lifecycle node launched. 
+[opennav_docking-17] 	Waiting on external lifecycle transitions to activate
+[opennav_docking-17] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[opennav_docking-17] [INFO] [1792671258.191235770] [docking_server]: Creating docking_server
+[smoother_server-9] [INFO] [1792671258.195880978] [smoother_server]: 
+[smoother_server-9] 	smoother_server lifecycle node launched. 
+[smoother_server-9] 	Waiting on external lifecycle transitions to activate
+[smoother_server-9] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[smoother_server-9] [INFO] [1792671258.196505978] [smoother_server]: Creating smoother server
+[velocity_smoother-15] [INFO] [1792671258.198084686] [velocity_smoother]: 
+[velocity_smoother-15] 	velocity_smoother lifecycle node launched. 
+[velocity_smoother-15] 	Waiting on external lifecycle transitions to activate
+[velocity_smoother-15] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[waypoint_follower-14] [INFO] [1792671258.199882228] [waypoint_follower]: 
+[waypoint_follower-14] 	waypoint_follower lifecycle node launched. 
+[waypoint_follower-14] 	Waiting on external lifecycle transitions to activate
+[waypoint_follower-14] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[waypoint_follower-14] [INFO] [1792671258.200266186] [waypoint_follower]: Creating
+[bt_navigator-13] [INFO] [1792671258.205983770] [bt_navigator]: 
+[bt_navigator-13] 	bt_navigator lifecycle node launched. 
+[bt_navigator-13] 	Waiting on external lifecycle transitions to activate
+[bt_navigator-13] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[bt_navigator-13] [INFO] [1792671258.206524520] [bt_navigator]: Creating
+[create-3] [INFO] [1792671258.295925978] [ros_gz_sim]: Entity creation successful.
+[INFO] [create-3]: process has finished cleanly [pid 20928]
+[lifecycle_manager-7] [INFO] [1792671258.439440520] [lifecycle_manager_localization]: [34m[1mStarting managed nodes bringup...[0m[0m
+[lifecycle_manager-7] [INFO] [1792671258.439487811] [lifecycle_manager_localization]: [34m[1mConfiguring map_server[0m[0m
+[map_server-5] [INFO] [1792671258.439797645] [map_server]: Configuring
+[map_server-5] [INFO] [1792671258.439839270] [map_io]: Loading yaml file: /opt/ros/jazzy/share/nav2_bringup/maps/tb3_sandbox.yaml
+[map_server-5] [INFO] [1792671258.439973228] [map_io]: resolution: 0.05
+[map_server-5] [INFO] [1792671258.439980020] [map_io]: origin[0]: -10
+[map_server-5] [INFO] [1792671258.439981436] [map_io]: origin[1]: -10
+[map_server-5] [INFO] [1792671258.439982728] [map_io]: origin[2]: 0
+[map_server-5] [INFO] [1792671258.439983936] [map_io]: free_thresh: 0.196
+[map_server-5] [INFO] [1792671258.439985103] [map_io]: occupied_thresh: 0.65
+[map_server-5] [INFO] [1792671258.439986478] [map_io]: mode: trinary
+[map_server-5] [INFO] [1792671258.439987978] [map_io]: negate: 0
+[map_server-5] [INFO] [1792671258.440175353] [map_io]: Loading image_file: /opt/ros/jazzy/share/nav2_bringup/maps/tb3_sandbox.pgm
+[map_server-5] [INFO] [1792671258.441674020] [map_io]: Read map /opt/ros/jazzy/share/nav2_bringup/maps/tb3_sandbox.pgm: 384 X 384 map @ 0.05 m/cell
+[lifecycle_manager-7] [INFO] [1792671258.445815561] [lifecycle_manager_localization]: [34m[1mConfiguring amcl[0m[0m
+[amcl-6] [INFO] [1792671258.446132103] [amcl]: Configuring
+[amcl-6] [INFO] [1792671258.446183936] [amcl]: initTransforms
+[amcl-6] [INFO] [1792671258.450898603] [amcl]: initPubSub
+[amcl-6] [INFO] [1792671258.455255686] [amcl]: Subscribed to map topic.
+[lifecycle_manager-7] [INFO] [1792671258.458485561] [lifecycle_manager_localization]: [34m[1mActivating map_server[0m[0m
+[map_server-5] [INFO] [1792671258.458616603] [map_server]: Activating
+[map_server-5] [INFO] [1792671258.458917728] [map_server]: Creating bond (map_server) to lifecycle manager.
+[amcl-6] [INFO] [1792671258.459489686] [amcl]: Received a 384 X 384 map @ 0.050 m/pix
+[lifecycle_manager-7] [INFO] [1792671258.562727395] [lifecycle_manager_localization]: Server map_server connected with bond.
+[lifecycle_manager-7] [INFO] [1792671258.562753353] [lifecycle_manager_localization]: [34m[1mActivating amcl[0m[0m
+[amcl-6] [INFO] [1792671258.562946853] [amcl]: Activating
+[amcl-6] [INFO] [1792671258.562966186] [amcl]: Creating bond (amcl) to lifecycle manager.
+[lifecycle_manager-7] [INFO] [1792671258.666113895] [lifecycle_manager_localization]: Server amcl connected with bond.
+[lifecycle_manager-7] [INFO] [1792671258.666149103] [lifecycle_manager_localization]: [34m[1mManaged nodes are active[0m[0m
+[lifecycle_manager-7] [INFO] [1792671258.666154395] [lifecycle_manager_localization]: [34m[1mCreating bond timer...[0m[0m
+[parameter_bridge-2] [INFO] [1792671259.195242937] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/clock (gz.msgs.Clock) -> /clock (rosgraph_msgs/msg/Clock)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1792671259.197169645] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/joint_states (gz.msgs.Model) -> joint_states (sensor_msgs/msg/JointState)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1792671259.199590437] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/odom (gz.msgs.Odometry) -> odom (nav_msgs/msg/Odometry)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1792671259.201176395] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/tf (gz.msgs.Pose_V) -> tf (tf2_msgs/msg/TFMessage)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1792671259.202441520] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/imu (gz.msgs.IMU) -> imu (sensor_msgs/msg/Imu)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1792671259.203001895] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/scan (gz.msgs.LaserScan) -> scan (sensor_msgs/msg/LaserScan)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1792671259.203563603] [ros_gz_bridge]: Creating ROS->GZ Bridge: [cmd_vel (geometry_msgs/msg/Twist) -> /cmd_vel (gz.msgs.Twist)] (Lazy 0)
+[amcl-6] [INFO] [1792671259.396261729] [amcl]: createLaserObject
+[amcl-6] [WARN] [1792671260.010182187] [amcl]: AMCL cannot publish a pose or update the transform. Please set the initial pose...
+[amcl-6] [WARN] [1792671262.207899522] [amcl]: AMCL cannot publish a pose or update the transform. Please set the initial pose...
+[amcl-6] [WARN] [1792671264.403946773] [amcl]: AMCL cannot publish a pose or update the transform. Please set the initial pose...
+[amcl-6] [WARN] [1792671266.613971607] [amcl]: AMCL cannot publish a pose or update the transform. Please set the initial pose...
+[amcl-6] [WARN] [1792671268.630438525] [amcl]: AMCL cannot publish a pose or update the transform. Please set the initial pose...
+[amcl-6] [WARN] [1792671270.826607651] [amcl]: AMCL cannot publish a pose or update the transform. Please set the initial pose...
+[amcl-6] [INFO] [1792671272.067698068] [amcl]: initialPoseReceived
+[amcl-6] [WARN] [1792671272.067887735] [amcl]: Failed to transform initial pose in time (Lookup would require extrapolation into the future.  Requested time 14.070000 but the latest data is at time 14.052000, when looking up transform from frame [base_footprint] to frame [odom])
+[amcl-6] [INFO] [1792671272.067914651] [amcl]: Setting pose (14.070000): -2.000 -0.500 0.000
+[lifecycle_manager-7] [INFO] [1792671564.982725666] [lifecycle_manager_localization]: [34m[1mTerminating bond timer...[0m[0m
+[lifecycle_manager-7] [INFO] [1792671564.983113833] [lifecycle_manager_localization]: [34m[1mShutting down managed nodes...[0m[0m
+[lifecycle_manager-7] [INFO] [1792671564.983139958] [lifecycle_manager_localization]: [34m[1mDeactivate, cleanup, and shutdown nodes[0m[0m
+[lifecycle_manager-7] [INFO] [1792671564.983154624] [lifecycle_manager_localization]: [34m[1mDeactivating amcl[0m[0m
+[amcl-6] [INFO] [1792671565.135864874] [amcl]: Deactivating
+[amcl-6] [INFO] [1792671565.136353874] [amcl]: Destroying bond (amcl) to lifecycle manager.
+[lifecycle_manager-7] [INFO] [1792671565.254742041] [lifecycle_manager_localization]: [34m[1mDeactivating map_server[0m[0m
+[map_server-5] [INFO] [1792671565.254999249] [map_server]: Deactivating
+[map_server-5] [INFO] [1792671565.255132499] [map_server]: Destroying bond (map_server) to lifecycle manager.
+[lifecycle_manager-7] [INFO] [1792671565.370936416] [lifecycle_manager_localization]: [34m[1mCleaning up amcl[0m[0m
+[amcl-6] [INFO] [1792671565.371305833] [amcl]: Cleaning up
+[lifecycle_manager-7] [INFO] [1792671565.388732958] [lifecycle_manager_localization]: [34m[1mCleaning up map_server[0m[0m
+[map_server-5] [INFO] [1792671565.388864833] [map_server]: Cleaning up
+[lifecycle_manager-7] [INFO] [1792671565.391947666] [lifecycle_manager_localization]: [34m[1mShutting down amcl[0m[0m
+[amcl-6] [INFO] [1792671565.392135708] [amcl]: Shutting down
+[lifecycle_manager-7] [INFO] [1792671565.392449291] [lifecycle_manager_localization]: [34m[1mShutting down map_server[0m[0m
+[map_server-5] [INFO] [1792671565.392758666] [map_server]: Shutting down
+[lifecycle_manager-7] [INFO] [1792671565.393190083] [lifecycle_manager_localization]: [34m[1mDestroying lifecycle service clients[0m[0m
+[lifecycle_manager-7] [INFO] [1792671565.397208416] [lifecycle_manager_localization]: [34m[1mManaged nodes have been shut down[0m[0m
+[robot_state_publisher-4] [INFO] [1792671565.542911874] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[INFO] [robot_state_publisher-4]: process has finished cleanly [pid 20929]
+[map_server-5] [INFO] [1792671565.744733291] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[map_server-5] [INFO] [1792671565.744911583] [map_server]: Running Nav2 LifecycleNode rcl preshutdown (map_server)
+[map_server-5] [INFO] [1792671565.744950000] [map_server]: Destroying bond (map_server) to lifecycle manager.
+[map_server-5] [INFO] [1792671565.745838416] [map_server]: Destroying
+[INFO] [map_server-5]: process has finished cleanly [pid 20930]
+[amcl-6] [INFO] [1792671565.946456416] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[amcl-6] [INFO] [1792671565.946587125] [amcl]: Running Nav2 LifecycleNode rcl preshutdown (amcl)
+[amcl-6] [INFO] [1792671565.946624083] [amcl]: Destroying bond (amcl) to lifecycle manager.
+[amcl-6] [INFO] [1792671565.948229166] [amcl]: Destroying
+[INFO] [amcl-6]: process has finished cleanly [pid 20931]
+[lifecycle_manager-7] [INFO] [1792671566.148383958] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[lifecycle_manager-7] [INFO] [1792671566.148659583] [lifecycle_manager_localization]: Running Nav2 LifecycleManager rcl preshutdown (lifecycle_manager_localization)
+[lifecycle_manager-7] [INFO] [1792671566.150978125] [lifecycle_manager_localization]: Destroying lifecycle_manager_localization
+[INFO] [lifecycle_manager-7]: process has finished cleanly [pid 20932]
+[controller_server-8] [INFO] [1792671566.350858458] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[controller_server-8] [INFO] [1792671566.351167583] [controller_server]: Running Nav2 LifecycleNode rcl preshutdown (controller_server)
+[controller_server-8] [INFO] [1792671566.351504292] [controller_server]: Destroying bond (controller_server) to lifecycle manager.
+[controller_server-8] [INFO] [1792671566.354988167] [local_costmap.local_costmap]: Destroying
+[controller_server-8] [INFO] [1792671566.366324875] [controller_server]: Destroying
+[INFO] [controller_server-8]: process has finished cleanly [pid 20933]
+[smoother_server-9] [INFO] [1792671566.553056417] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[smoother_server-9] [INFO] [1792671566.553284875] [smoother_server]: Running Nav2 LifecycleNode rcl preshutdown (smoother_server)
+[smoother_server-9] [INFO] [1792671566.553556375] [smoother_server]: Destroying bond (smoother_server) to lifecycle manager.
+[smoother_server-9] [INFO] [1792671566.555459958] [smoother_server]: Destroying
+[INFO] [smoother_server-9]: process has finished cleanly [pid 20934]
+[planner_server-10] [INFO] [1792671566.755620583] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[planner_server-10] [INFO] [1792671566.755884000] [planner_server]: Running Nav2 LifecycleNode rcl preshutdown (planner_server)
+[planner_server-10] [INFO] [1792671566.756043500] [planner_server]: Destroying bond (planner_server) to lifecycle manager.
+[planner_server-10] [INFO] [1792671566.758153000] [global_costmap.global_costmap]: Destroying
+[planner_server-10] [INFO] [1792671566.766399208] [planner_server]: Destroying
+[INFO] [planner_server-10]: process has finished cleanly [pid 20939]
+[route_server-11] [INFO] [1792671566.958082709] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[behavior_server-12] [INFO] [1792671570.988392085] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[bt_navigator-13] [INFO] [1792671575.018891546] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[bt_navigator-13] [INFO] [1792671575.019351212] [bt_navigator]: Running Nav2 LifecycleNode rcl preshutdown (bt_navigator)
+[bt_navigator-13] [INFO] [1792671575.019689712] [bt_navigator]: Destroying bond (bt_navigator) to lifecycle manager.
+[bt_navigator-13] [INFO] [1792671575.021666129] [bt_navigator]: Destroying
+[INFO] [bt_navigator-13]: process has finished cleanly [pid 20954]
+[waypoint_follower-14] [INFO] [1792671575.221521837] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[waypoint_follower-14] [INFO] [1792671575.221707129] [waypoint_follower]: Running Nav2 LifecycleNode rcl preshutdown (waypoint_follower)
+[waypoint_follower-14] [INFO] [1792671575.221931962] [waypoint_follower]: Destroying bond (waypoint_follower) to lifecycle manager.
+[waypoint_follower-14] [INFO] [1792671575.223951337] [waypoint_follower]: Destroying
+[INFO] [waypoint_follower-14]: process has finished cleanly [pid 20956]
+[velocity_smoother-15] [INFO] [1792671575.428929421] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[velocity_smoother-15] [INFO] [1792671575.429172504] [velocity_smoother]: Running Nav2 LifecycleNode rcl preshutdown (velocity_smoother)
+[velocity_smoother-15] [INFO] [1792671575.429391796] [velocity_smoother]: Destroying bond (velocity_smoother) to lifecycle manager.
+[velocity_smoother-15] [INFO] [1792671575.432843796] [velocity_smoother]: Destroying
+[INFO] [velocity_smoother-15]: process has finished cleanly [pid 20957]
+[collision_monitor-16] [INFO] [1792671575.632585879] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[opennav_docking-17] [INFO] [1792671579.662803506] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[opennav_docking-17] [INFO] [1792671579.663237673] [docking_server]: Running Nav2 LifecycleNode rcl preshutdown (docking_server)
+[opennav_docking-17] [INFO] [1792671579.663610215] [docking_server]: Destroying bond (docking_server) to lifecycle manager.
+[opennav_docking-17] [INFO] [1792671579.667598965] [docking_server]: Destroying
+[INFO] [opennav_docking-17]: process has finished cleanly [pid 20966]
+[lifecycle_manager-18] [INFO] [1792671579.867595423] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[parameter_bridge-2] [INFO] [1792671583.898752550] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[INFO] [parameter_bridge-2]: process has finished cleanly [pid 20927]
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+[INFO] [lifecycle_manager-18]: sending signal 'SIGINT' to process[lifecycle_manager-18]
+[INFO] [collision_monitor-16]: sending signal 'SIGINT' to process[collision_monitor-16]
+[INFO] [behavior_server-12]: sending signal 'SIGINT' to process[behavior_server-12]
+[INFO] [route_server-11]: sending signal 'SIGINT' to process[route_server-11]
+[lifecycle_manager-18] [INFO] [1792671584.112883133] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[collision_monitor-16] [INFO] [1792671584.116118342] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[behavior_server-12] [INFO] [1792671584.119072925] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[route_server-11] [INFO] [1792671584.120973050] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[ERROR] [lifecycle_manager-18]: process[lifecycle_manager-18] failed to terminate '5' seconds after receiving 'SIGINT', escalating to 'SIGTERM'
+[ERROR] [collision_monitor-16]: process[collision_monitor-16] failed to terminate '5' seconds after receiving 'SIGINT', escalating to 'SIGTERM'
+[ERROR] [behavior_server-12]: process[behavior_server-12] failed to terminate '5' seconds after receiving 'SIGINT', escalating to 'SIGTERM'
+[ERROR] [route_server-11]: process[route_server-11] failed to terminate '5' seconds after receiving 'SIGINT', escalating to 'SIGTERM'
+[INFO] [lifecycle_manager-18]: sending signal 'SIGTERM' to process[lifecycle_manager-18]
+[INFO] [collision_monitor-16]: sending signal 'SIGTERM' to process[collision_monitor-16]
+[INFO] [behavior_server-12]: sending signal 'SIGTERM' to process[behavior_server-12]
+[INFO] [route_server-11]: sending signal 'SIGTERM' to process[route_server-11]
+[lifecycle_manager-18] [INFO] [1792671589.124075886] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[collision_monitor-16] [INFO] [1792671589.126627802] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[behavior_server-12] [INFO] [1792671589.129391927] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[route_server-11] [INFO] [1792671589.131548302] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[ERROR] [lifecycle_manager-18]: process[lifecycle_manager-18] failed to terminate '10.0' seconds after receiving 'SIGTERM', escalating to 'SIGKILL'
+[ERROR] [collision_monitor-16]: process[collision_monitor-16] failed to terminate '10.0' seconds after receiving 'SIGTERM', escalating to 'SIGKILL'
+[ERROR] [behavior_server-12]: process[behavior_server-12] failed to terminate '10.0' seconds after receiving 'SIGTERM', escalating to 'SIGKILL'
+[ERROR] [route_server-11]: process[route_server-11] failed to terminate '10.0' seconds after receiving 'SIGTERM', escalating to 'SIGKILL'
+[INFO] [lifecycle_manager-18]: sending signal 'SIGKILL' to process[lifecycle_manager-18]
+[INFO] [collision_monitor-16]: sending signal 'SIGKILL' to process[collision_monitor-16]
+[ERROR] [lifecycle_manager-18]: process has died [pid 20974, exit code -9, cmd '/opt/ros/jazzy/lib/nav2_lifecycle_manager/lifecycle_manager --ros-args --log-level info --ros-args -r __node:=lifecycle_manager_navigation -p use_sim_time:=True --params-file /tmp/launch_params_1kr00nvj --params-file /tmp/launch_params_jmug9p6_'].
+[INFO] [behavior_server-12]: sending signal 'SIGKILL' to process[behavior_server-12]
+[INFO] [route_server-11]: sending signal 'SIGKILL' to process[route_server-11]
+[ERROR] [collision_monitor-16]: process has died [pid 20965, exit code -9, cmd '/opt/ros/jazzy/lib/nav2_collision_monitor/collision_monitor --ros-args --log-level info --ros-args -r __node:=collision_monitor -p use_sim_time:=True --params-file /tmp/launch_params_3d04os_q -r /tf:=tf -r /tf_static:=tf_static'].
+[ERROR] [behavior_server-12]: process has died [pid 20950, exit code -9, cmd '/opt/ros/jazzy/lib/nav2_behaviors/behavior_server --ros-args --log-level info --ros-args -r __node:=behavior_server -p use_sim_time:=True --params-file /tmp/launch_params_3d04os_q -r /tf:=tf -r /tf_static:=tf_static -r cmd_vel:=cmd_vel_nav'].
+[ERROR] [route_server-11]: process has died [pid 20940, exit code -9, cmd '/opt/ros/jazzy/lib/nav2_route/route_server --ros-args --log-level info --ros-args -r __node:=route_server -p use_sim_time:=True --params-file /tmp/launch_params_3d04os_q -r /tf:=tf -r /tf_static:=tf_static'].

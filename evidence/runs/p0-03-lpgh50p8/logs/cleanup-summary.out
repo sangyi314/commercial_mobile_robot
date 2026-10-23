@@ -1,0 +1,7 @@
+{
+  "cleanup": "SUCCEEDED",
+  "resources_released": true,
+  "abnormal_count": 0,
+  "clean_exit_count": 7,
+  "nodes": []
+}

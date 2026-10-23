@@ -1,0 +1,12 @@
+{
+  "desktop_environment": {
+    "DISPLAY": ":0",
+    "XAUTHORITY": "/home/robot/.Xauthority"
+  },
+  "xdpyinfo_exit": 0,
+  "preexisting_robot_processes": [],
+  "platform": "Linux-6.8.0-147-generic-aarch64-with-glibc2.39",
+  "machine": "aarch64",
+  "FASTDDS_BUILTIN_TRANSPORTS": "UDPv4",
+  "transport_scope": "run-local compatibility isolation; no system/SHM modifications"
+}

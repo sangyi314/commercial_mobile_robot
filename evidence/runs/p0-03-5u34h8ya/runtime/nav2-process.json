@@ -1,0 +1,27 @@
+{
+  "pid": 18896,
+  "start_ticks": "2023116",
+  "argv": [
+    "ros2",
+    "launch",
+    "/home/robot/commercial_mobile_robot/evidence/runs/p0-03-5u34h8ya/artifacts/tb3_simulation.launch.py",
+    "use_simulator:=False",
+    "headless:=True",
+    "use_rviz:=False",
+    "use_sim_time:=True",
+    "autostart:=False",
+    "use_composition:=False",
+    "world:=/home/robot/commercial_mobile_robot/evidence/runs/p0-03-5u34h8ya/artifacts/world-ogre1.sdf",
+    "map:=/opt/ros/jazzy/share/nav2_bringup/maps/tb3_sandbox.yaml",
+    "robot_sdf:=/opt/ros/jazzy/share/nav2_minimal_tb3_sim/urdf/gz_waffle.sdf.xacro",
+    "params_file:=/home/robot/commercial_mobile_robot/evidence/runs/p0-03-5u34h8ya/artifacts/nav2_mppi.yaml",
+    "x_pose:=-2.0",
+    "y_pose:=-0.5",
+    "z_pose:=0.01",
+    "roll:=0.0",
+    "pitch:=0.0",
+    "yaw:=0.0"
+  ],
+  "started_monotonic_s": 20231.168021521,
+  "run": "/home/robot/commercial_mobile_robot/evidence/runs/p0-03-5u34h8ya"
+}

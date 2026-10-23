@@ -1,0 +1,4 @@
+[INFO] [1792671475.392725540] [p03_route_constructor_probe]: 
+	p03_route_constructor_probe lifecycle node launched. 
+	Waiting on external lifecycle transitions to activate
+	See https://design.ros2.org/articles/node_lifecycle.html for more information.

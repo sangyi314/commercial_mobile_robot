@@ -1,0 +1,5 @@
+/dock_robot [nav2_msgs/action/DockRobot]
+/follow_waypoints [nav2_msgs/action/FollowWaypoints]
+/navigate_through_poses [nav2_msgs/action/NavigateThroughPoses]
+/navigate_to_pose [nav2_msgs/action/NavigateToPose]
+/undock_robot [nav2_msgs/action/UndockRobot]

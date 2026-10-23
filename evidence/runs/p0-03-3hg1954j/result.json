@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "run_id": "p0-03-3hg1954j",
+  "record_origin": "real",
+  "manifest_sha256": "78d7f18b76ea33d07510bcf7c023399bb8d0fa8246a36aee74d75c1287ff7f58",
+  "status": {
+    "startup": "FAILED",
+    "action": "NOT_SENT",
+    "harness": "STARTUP_FAILED",
+    "cleanup": "FAILED",
+    "primary_reason": "route_server, behavior_server, collision_monitor and navigation manager did not finish ROS initialization; navigation startup request timed out; no goal sent."
+  },
+  "runtime": null,
+  "time": {
+    "clock_epoch": "p0-03-3hg1954j:sim0",
+    "sim_start_s": null,
+    "sim_end_s": null,
+    "elapsed_monotonic_s": 446.55700325499856,
+    "rtf": null
+  },
+  "metrics": {
+    "action_success": null,
+    "goal_position_error_m": null,
+    "goal_yaw_error_rad": null,
+    "stop_observed": null,
+    "intervention": null,
+    "delivery_success": null
+  },
+  "evaluation": {
+    "evaluator_version": null,
+    "scope_id": null,
+    "objects": [],
+    "geometry_model": null,
+    "frame_id": null,
+    "clock_epoch": null,
+    "interval_s": null,
+    "coverage": "none",
+    "evaluation_valid": false,
+    "invalid_reason": "Startup incomplete; no navigation or independent collision evaluation.",
+    "evidence_refs": [],
+    "collision": null,
+    "collision_event": null,
+    "min_signed_clearance_m": null,
+    "geometric_contact": null,
+    "contact_sensor_event": null
+  },
+  "artifacts": [
+    {
+      "id": "evidence_0",
+      "path": "runtime/discovery-recheck.json",
+      "sha256": "198f4588a0ed7a6e13c6c9098a74f9e6c4864859096657c1954d406bc38baff5",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_1",
+      "path": "runtime/initialize-summary.json",
+      "sha256": "7e00a9a476b573ef08093b9b6d0a260c6c6badd403d7537322fd3599f15be620",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_2",
+      "path": "runtime/pre-summary.json",
+      "sha256": "7ab6b2288c1d9430fbd242785c6ca10af3b8c7373d2e0a15751a0e8f9b6e8b6f",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_3",
+      "path": "runtime/cleanup-evidence.json",
+      "sha256": "5b9d605760fdb069824334d1dcb0956955f69a8e7ca6de9a3d6c3f8719c9cf7d",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_4",
+      "path": "runtime/session-ended.json",
+      "sha256": "fd46c3d1e4907df39a1c08b45ec25064e1ddbf155e6d87b2df8c9158b2d0d9bd",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_5",
+      "path": "logs/nav2-launch.log",
+      "sha256": "d1d7967f63f69b7d48c4509a5c12499eab79ff344aa78f2c88e0ec8853baaf49",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_6",
+      "path": "logs/gazebo.log",
+      "sha256": "328ada8dc85c35c86985a73e14467bb0cc447fc7000347dac5b5f7b35933f44b",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_7",
+      "path": "logs/cleanup-ordered.jsonl",
+      "sha256": "b364741a8ce6bda33f9c8e8a7756498fa06457d6715fd66cb78e28c196a62065",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_8",
+      "path": "logs/pre-goal-audit.err",
+      "sha256": "b674fb76d29cd752aacec641cdd1335635e21774d4027816b95789c7c2c3b063",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_9",
+      "path": "logs/route-startup-gdb.out",
+      "sha256": "97a8cb98fc0fe3657594d2ffe5c7f1d2bdc6bd51648945ed3008c51ae9685db6",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_10",
+      "path": "logs/route-startup-gdb.err",
+      "sha256": "ce56dcc0c85f0bba0e5d71787a38b34dbec726096bbd72e851499d248099db0d",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_11",
+      "path": "logs/route-child-probe.out",
+      "sha256": "71b13ee604ecb2609f0dac88907965d509bcf6ca8166a3448494319f01c2bf5b",
+      "kind": "other"
+    },
+    {
+      "id": "evidence_12",
+      "path": "logs/route-child-probe.err",
+      "sha256": "68249495d9c99bf923506393c18b5612280c5ae7080cd0f0ff0430d4bccaafe5",
+      "kind": "other"
+    }
+  ]
+}

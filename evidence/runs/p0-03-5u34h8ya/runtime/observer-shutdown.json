@@ -1,0 +1,14 @@
+[
+  {
+    "pid": 20033,
+    "signal": "SIGINT",
+    "monotonic_s": 20702.206318079,
+    "exited": true
+  },
+  {
+    "pid": 20241,
+    "signal": "SIGINT",
+    "monotonic_s": 20702.206439704,
+    "exited": true
+  }
+]

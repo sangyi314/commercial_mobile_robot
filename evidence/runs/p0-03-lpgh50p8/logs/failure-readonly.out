@@ -1,0 +1,90 @@
+{
+  "lifecycle": {
+    "map_server": {
+      "service_ready": true,
+      "state": {
+        "id": 1,
+        "label": "unconfigured"
+      }
+    },
+    "amcl": {
+      "service_ready": true,
+      "state": {
+        "id": 1,
+        "label": "unconfigured"
+      }
+    }
+  },
+  "nodes": [
+    [
+      "p03_failure_readonly",
+      "/"
+    ],
+    [
+      "_ros2cli_daemon_71_4d41900b85cd4fda85681c4de67ca09d",
+      "/"
+    ],
+    [
+      "ros_gz_bridge",
+      "/"
+    ],
+    [
+      "robot_state_publisher",
+      "/"
+    ],
+    [
+      "map_server",
+      "/"
+    ],
+    [
+      "amcl",
+      "/"
+    ],
+    [
+      "lifecycle_manager_localization",
+      "/"
+    ]
+  ],
+  "processes": [
+    {
+      "pid": 23803,
+      "cmdline": "gz sim -s -r -v 3 --render-engine-server ogre /home/robot/commercial_mobile_robot/evidence/runs/p0-03-lpgh50p8/artifacts/world-ogre1.sdf                        ",
+      "main_wchan": "hrtimer_nanosleep"
+    },
+    {
+      "pid": 23945,
+      "cmdline": "/usr/bin/python3 /opt/ros/jazzy/bin/ros2 launch /home/robot/commercial_mobile_robot/evidence/runs/p0-03-lpgh50p8/artifacts/tb3_simulation.launch.py use_simulato",
+      "main_wchan": "ep_poll"
+    },
+    {
+      "pid": 23964,
+      "cmdline": "/opt/ros/jazzy/lib/ros_gz_bridge/parameter_bridge --ros-args -r __ns:=/ --params-file /tmp/launch_params_37lnjqkh ",
+      "main_wchan": "futex_wait_queue"
+    },
+    {
+      "pid": 23966,
+      "cmdline": "/opt/ros/jazzy/lib/robot_state_publisher/robot_state_publisher --ros-args -r __node:=robot_state_publisher -r __ns:=/ --params-file /tmp/launch_params_g5qsl5xc ",
+      "main_wchan": "futex_wait_queue"
+    },
+    {
+      "pid": 23967,
+      "cmdline": "/opt/ros/jazzy/lib/nav2_map_server/map_server --ros-args --log-level info --ros-args -r __node:=map_server -p use_sim_time:=True --params-file /tmp/launch_param",
+      "main_wchan": "futex_wait_queue"
+    },
+    {
+      "pid": 23968,
+      "cmdline": "/opt/ros/jazzy/lib/nav2_amcl/amcl --ros-args --log-level info --ros-args -r __node:=amcl -p use_sim_time:=True --params-file /tmp/launch_params_nvge8y6u -r /tf:",
+      "main_wchan": "futex_wait_queue"
+    },
+    {
+      "pid": 23973,
+      "cmdline": "/opt/ros/jazzy/lib/nav2_lifecycle_manager/lifecycle_manager --ros-args --log-level info --ros-args -r __node:=lifecycle_manager_localization -p use_sim_time:=Tr",
+      "main_wchan": "futex_wait_queue"
+    },
+    {
+      "pid": 24324,
+      "cmdline": "python3 /home/robot/commercial_mobile_robot/evidence/runs/p0-03-lpgh50p8/artifacts/control.py capture failure-readonly 25 python3 /home/robot/commercial_mobile_",
+      "main_wchan": "hrtimer_nanosleep"
+    }
+  ]
+}

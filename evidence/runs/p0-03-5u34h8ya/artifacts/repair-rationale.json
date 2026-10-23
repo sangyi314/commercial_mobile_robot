@@ -1,0 +1,22 @@
+{
+  "reference_failed_run": "/home/robot/commercial_mobile_robot/evidence/runs/p0-03-nq1hmjaf",
+  "confirmed_causal_chain": [
+    "global_costmap activation timed out before AMCL initial pose",
+    "navigation manager aborted; navigator inactive",
+    "single goal rejected by inactive server"
+  ],
+  "minimal_changes": [
+    "autostart false; startup localization, then initial pose and map TF, then startup navigation",
+    "use_rviz false: optional visualization omitted due prior RViz abort; no visual RViz acceptance claimed",
+    "run-local launch cleanup ignores already absent temporary world"
+  ],
+  "unchanged": "MPPI parameters, Collision Monitor, core, original launch/config and prior evidence",
+  "spawn": {
+    "x": -2.0,
+    "y": -0.5,
+    "z": 0.01,
+    "roll": 0.0,
+    "pitch": 0.0,
+    "yaw": 0.0
+  }
+}

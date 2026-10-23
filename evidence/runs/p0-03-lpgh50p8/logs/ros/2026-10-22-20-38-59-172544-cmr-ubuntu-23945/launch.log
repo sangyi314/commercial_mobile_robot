@@ -1,0 +1,16 @@
+1792672739.1729980 [INFO] [launch]: All log files can be found below /home/robot/commercial_mobile_robot/evidence/runs/p0-03-lpgh50p8/logs/ros/2026-10-22-20-38-59-172544-cmr-ubuntu-23945
+1792672739.1730502 [INFO] [launch]: Default logging verbosity is set to INFO
+1792672739.3276918 [INFO] [xacro-1]: process started with pid [23963]
+1792672739.3277760 [INFO] [parameter_bridge-2]: process started with pid [23964]
+1792672739.3278067 [INFO] [create-3]: process started with pid [23965]
+1792672739.3278277 [INFO] [robot_state_publisher-4]: process started with pid [23966]
+1792672739.3278475 [INFO] [map_server-5]: process started with pid [23967]
+1792672739.3278661 [INFO] [amcl-6]: process started with pid [23968]
+1792672739.3278840 [INFO] [lifecycle_manager-7]: process started with pid [23973]
+1792672739.3696759 [INFO] [xacro-1]: process has finished cleanly [pid 23963]
+1792672739.8730059 [INFO] [create-3]: process has finished cleanly [pid 23965]
+1792672923.6171141 [INFO] [robot_state_publisher-4]: process has finished cleanly [pid 23966]
+1792672923.8332319 [INFO] [map_server-5]: process has finished cleanly [pid 23967]
+1792672924.0205755 [INFO] [amcl-6]: process has finished cleanly [pid 23968]
+1792672924.2238269 [INFO] [lifecycle_manager-7]: process has finished cleanly [pid 23973]
+1792672924.4251258 [INFO] [parameter_bridge-2]: process has finished cleanly [pid 23964]

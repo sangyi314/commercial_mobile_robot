@@ -1,0 +1,55 @@
+{
+  "cleanup_status": "FAILED",
+  "resources_released": true,
+  "abnormal_exit_lines": [
+    {
+      "line": 216,
+      "text": "[ERROR] [lifecycle_manager-18]: process[lifecycle_manager-18] failed to terminate '5' seconds after receiving 'SIGINT', escalating to 'SIGTERM'"
+    },
+    {
+      "line": 217,
+      "text": "[ERROR] [collision_monitor-16]: process[collision_monitor-16] failed to terminate '5' seconds after receiving 'SIGINT', escalating to 'SIGTERM'"
+    },
+    {
+      "line": 218,
+      "text": "[ERROR] [behavior_server-12]: process[behavior_server-12] failed to terminate '5' seconds after receiving 'SIGINT', escalating to 'SIGTERM'"
+    },
+    {
+      "line": 219,
+      "text": "[ERROR] [route_server-11]: process[route_server-11] failed to terminate '5' seconds after receiving 'SIGINT', escalating to 'SIGTERM'"
+    },
+    {
+      "line": 228,
+      "text": "[ERROR] [lifecycle_manager-18]: process[lifecycle_manager-18] failed to terminate '10.0' seconds after receiving 'SIGTERM', escalating to 'SIGKILL'"
+    },
+    {
+      "line": 229,
+      "text": "[ERROR] [collision_monitor-16]: process[collision_monitor-16] failed to terminate '10.0' seconds after receiving 'SIGTERM', escalating to 'SIGKILL'"
+    },
+    {
+      "line": 230,
+      "text": "[ERROR] [behavior_server-12]: process[behavior_server-12] failed to terminate '10.0' seconds after receiving 'SIGTERM', escalating to 'SIGKILL'"
+    },
+    {
+      "line": 231,
+      "text": "[ERROR] [route_server-11]: process[route_server-11] failed to terminate '10.0' seconds after receiving 'SIGTERM', escalating to 'SIGKILL'"
+    },
+    {
+      "line": 234,
+      "text": "[ERROR] [lifecycle_manager-18]: process has died [pid 20974, exit code -9, cmd '/opt/ros/jazzy/lib/nav2_lifecycle_manager/lifecycle_manager --ros-args --log-level info --ros-args -r __node:=lifecycle_manager_navigation -p use_sim_time:=True --params-file /tmp/launch_params_1kr00nvj --params-file /tmp/launch_params_jmug9p6_']."
+    },
+    {
+      "line": 237,
+      "text": "[ERROR] [collision_monitor-16]: process has died [pid 20965, exit code -9, cmd '/opt/ros/jazzy/lib/nav2_collision_monitor/collision_monitor --ros-args --log-level info --ros-args -r __node:=collision_monitor -p use_sim_time:=True --params-file /tmp/launch_params_3d04os_q -r /tf:=tf -r /tf_static:=tf_static']."
+    },
+    {
+      "line": 238,
+      "text": "[ERROR] [behavior_server-12]: process has died [pid 20950, exit code -9, cmd '/opt/ros/jazzy/lib/nav2_behaviors/behavior_server --ros-args --log-level info --ros-args -r __node:=behavior_server -p use_sim_time:=True --params-file /tmp/launch_params_3d04os_q -r /tf:=tf -r /tf_static:=tf_static -r cmd_vel:=cmd_vel_nav']."
+    },
+    {
+      "line": 239,
+      "text": "[ERROR] [route_server-11]: process has died [pid 20940, exit code -9, cmd '/opt/ros/jazzy/lib/nav2_route/route_server --ros-args --log-level info --ros-args -r __node:=route_server -p use_sim_time:=True --params-file /tmp/launch_params_3d04os_q -r /tf:=tf -r /tf_static:=tf_static']."
+    }
+  ],
+  "note": "Per-child single-SIGINT fixed normal-node duplicate signals, but four initialization-blocked nodes required launch SIGKILL. No goal was sent."
+}

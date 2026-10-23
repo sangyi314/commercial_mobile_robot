@@ -1,0 +1,26 @@
+{
+  "reference_failed_run": "/home/robot/commercial_mobile_robot/evidence/runs/p0-03-nq1hmjaf",
+  "prior_runs": [
+    "/home/robot/commercial_mobile_robot/evidence/runs/p0-03-5u34h8ya",
+    "/home/robot/commercial_mobile_robot/evidence/runs/p0-03-3hg1954j"
+  ],
+  "startup_fix": "localization then actual stamped initial pose, verify map TF then activate navigation",
+  "launch_fix": "run-local guard absent temporary world; optional RViz false",
+  "cleanup_fix": "one SIGINT per owned child while bridge clock remains alive, RSP before bridge, then parent only; no process group duplicate signals",
+  "transport_isolation": {
+    "env": "FASTDDS_BUILTIN_TRANSPORTS=UDPv4",
+    "scope": "this run session only",
+    "binary": "/opt/ros/jazzy/lib/libfastrtps.so.2.14.7",
+    "basis": "Four prior processes remained alive but never registered nodes/services; normal-node single-SIGINT shutdown succeeds; UDP-only isolates built-in SHM path without deleting stale files",
+    "causality": "low-level cause remains hypothesis; success would validate compatibility workaround, not prove SHM root cause"
+  },
+  "navigation_parameters_changed": false,
+  "spawn": {
+    "x": -2.0,
+    "y": -0.5,
+    "z": 0.01,
+    "roll": 0.0,
+    "pitch": 0.0,
+    "yaw": 0.0
+  }
+}

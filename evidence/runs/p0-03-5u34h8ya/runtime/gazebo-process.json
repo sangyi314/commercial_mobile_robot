@@ -1,0 +1,17 @@
+{
+  "pid": 18817,
+  "start_ticks": "2021297",
+  "argv": [
+    "gz",
+    "sim",
+    "-s",
+    "-r",
+    "-v",
+    "3",
+    "--render-engine-server",
+    "ogre",
+    "/home/robot/commercial_mobile_robot/evidence/runs/p0-03-5u34h8ya/artifacts/world-ogre1.sdf"
+  ],
+  "started_monotonic_s": 20212.979613054,
+  "run": "/home/robot/commercial_mobile_robot/evidence/runs/p0-03-5u34h8ya"
+}

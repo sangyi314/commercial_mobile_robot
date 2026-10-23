@@ -1,0 +1,47 @@
+{
+  "phase": "pre",
+  "clock_count": 1865,
+  "clock_first": {
+    "receive_monotonic_s": 20307.938795557,
+    "stamp_s": 92.277
+  },
+  "clock_last": {
+    "receive_monotonic_s": 20313.523632727,
+    "stamp_s": 98.073
+  },
+  "clock_backjumps": 0,
+  "odom_count": 162,
+  "scan_count": 29,
+  "map_count": 1,
+  "initialpose_sent": false,
+  "initialpose_echo_count": 0,
+  "amcl_pose_count": 0,
+  "scan": {
+    "stamp_s": 98.001,
+    "frame_id": "base_scan",
+    "rays": 360,
+    "valid": 360,
+    "nonfinite": 0,
+    "min_m": 0.48265039920806885,
+    "median_m": 1.1192257404327393,
+    "max_m": 4.677673816680908,
+    "range_min": 9.999999747378752e-06,
+    "range_max": 20.0
+  },
+  "map": {
+    "frame_id": "map",
+    "width": 384,
+    "height": 384,
+    "resolution": 0.05000000074505806
+  },
+  "tf_pairs": [
+    [
+      "base_link",
+      "base_scan"
+    ],
+    [
+      "odom",
+      "base_footprint"
+    ]
+  ]
+}

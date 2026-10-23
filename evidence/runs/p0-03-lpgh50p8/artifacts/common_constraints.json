@@ -1,0 +1,48 @@
+{
+  "config_source": {
+    "path": "artifacts/nav2_mppi.yaml",
+    "sha256": "27f34e95dca6c8ac5ed0140d6f600dfd9cab61e5d7e1efc7bd632004bbab54f2"
+  },
+  "velocity_smoother": {
+    "smoothing_frequency": 20.0,
+    "stamp_smoothed_velocity_with_smoothing_time": false,
+    "scale_velocities": false,
+    "feedback": "OPEN_LOOP",
+    "max_velocity": [
+      0.3,
+      0.0,
+      1.0
+    ],
+    "min_velocity": [
+      -0.1,
+      0.0,
+      -1.0
+    ],
+    "max_accel": [
+      1.0,
+      0.0,
+      2.0
+    ],
+    "max_decel": [
+      -1.0,
+      0.0,
+      -2.0
+    ],
+    "odom_topic": "odom",
+    "odom_duration": 0.1,
+    "deadband_velocity": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "velocity_timeout": 1.0
+  },
+  "controller_frequency": 20.0,
+  "general_goal_checker": {
+    "stateful": true,
+    "plugin": "nav2_controller::SimpleGoalChecker",
+    "xy_goal_tolerance": 0.25,
+    "yaw_goal_tolerance": 0.25
+  },
+  "scope": "Static configuration only; controller never activated in this run"
+}

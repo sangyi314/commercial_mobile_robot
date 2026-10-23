@@ -1,0 +1,6 @@
+waiting for service to become available...
+requester: making request: nav2_msgs.srv.ManageLifecycleNodes_Request(command=4)
+
+response:
+nav2_msgs.srv.ManageLifecycleNodes_Response(success=True)
+

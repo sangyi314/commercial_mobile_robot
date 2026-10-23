@@ -1,0 +1,9 @@
+{
+  "desktop_environment": {
+    "DISPLAY": ":0",
+    "XAUTHORITY": "/home/robot/.Xauthority"
+  },
+  "xdpyinfo_exit": 0,
+  "preexisting_robot_processes": [],
+  "note": "Current live check, not historical proof"
+}

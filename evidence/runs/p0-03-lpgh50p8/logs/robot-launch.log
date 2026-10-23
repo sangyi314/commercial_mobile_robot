@@ -1,0 +1,72 @@
+[INFO] [launch]: All log files can be found below /home/robot/commercial_mobile_robot/evidence/runs/p0-03-lpgh50p8/logs/ros/2026-10-22-20-38-59-172544-cmr-ubuntu-23945
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [xacro-1]: process started with pid [23963]
+[INFO] [parameter_bridge-2]: process started with pid [23964]
+[INFO] [create-3]: process started with pid [23965]
+[INFO] [robot_state_publisher-4]: process started with pid [23966]
+[INFO] [map_server-5]: process started with pid [23967]
+[INFO] [amcl-6]: process started with pid [23968]
+[INFO] [lifecycle_manager-7]: process started with pid [23973]
+[create-3] [INFO] [1792672739.358519184] [ros_gz_sim]: Requesting list of world names.
+[robot_state_publisher-4] [INFO] [1792672739.361404976] [robot_state_publisher]: Robot initialized
+[lifecycle_manager-7] [INFO] [1792672739.367047684] [lifecycle_manager_localization]: Creating
+[lifecycle_manager-7] [INFO] [1792672739.368995018] [lifecycle_manager_localization]: [34m[1mCreating and initializing lifecycle service clients[0m[0m
+[INFO] [xacro-1]: process has finished cleanly [pid 23963]
+[amcl-6] [INFO] [1792672739.379469351] [amcl]: 
+[amcl-6] 	amcl lifecycle node launched. 
+[amcl-6] 	Waiting on external lifecycle transitions to activate
+[amcl-6] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[amcl-6] [INFO] [1792672739.379637601] [amcl]: Creating
+[map_server-5] [INFO] [1792672739.387741934] [map_server]: 
+[map_server-5] 	map_server lifecycle node launched. 
+[map_server-5] 	Waiting on external lifecycle transitions to activate
+[map_server-5] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[map_server-5] [INFO] [1792672739.387781934] [map_server]: Creating
+[create-3] [INFO] [1792672739.561367559] [ros_gz_sim]: Entity creation successful.
+[INFO] [create-3]: process has finished cleanly [pid 23965]
+[parameter_bridge-2] [INFO] [1792672740.393644435] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/clock (gz.msgs.Clock) -> /clock (rosgraph_msgs/msg/Clock)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1792672740.405789351] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/joint_states (gz.msgs.Model) -> joint_states (sensor_msgs/msg/JointState)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1792672740.412145393] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/odom (gz.msgs.Odometry) -> odom (nav_msgs/msg/Odometry)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1792672740.416764768] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/tf (gz.msgs.Pose_V) -> tf (tf2_msgs/msg/TFMessage)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1792672740.419809768] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/imu (gz.msgs.IMU) -> imu (sensor_msgs/msg/Imu)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1792672740.421192101] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/scan (gz.msgs.LaserScan) -> scan (sensor_msgs/msg/LaserScan)] (Lazy 0)
+[parameter_bridge-2] [INFO] [1792672740.422513560] [ros_gz_bridge]: Creating ROS->GZ Bridge: [cmd_vel (geometry_msgs/msg/Twist) -> /cmd_vel (gz.msgs.Twist)] (Lazy 0)
+[lifecycle_manager-7] [INFO] [1792672923.334250022] [lifecycle_manager_localization]: [34m[1mShutting down managed nodes...[0m[0m
+[lifecycle_manager-7] [INFO] [1792672923.334599397] [lifecycle_manager_localization]: [34m[1mDeactivate, cleanup, and shutdown nodes[0m[0m
+[lifecycle_manager-7] [INFO] [1792672923.334629230] [lifecycle_manager_localization]: [34m[1mDeactivating amcl[0m[0m
+[amcl-6] [WARN] [1792672923.336253564] [rcl_lifecycle]: No transition matching 4 found for current state unconfigured
+[amcl-6] [WARN] [1792672923.336301564] [rcl_lifecycle]: No transition matching 4 found for current state unconfigured
+[amcl-6] [ERROR] [1792672923.336331314] [amcl]: Unable to start transition 4 from current state unconfigured: Transition is not registered., at ./src/rcl_lifecycle.c:355
+[lifecycle_manager-7] [ERROR] [1792672923.337546855] [lifecycle_manager_localization]: Failed to change state for node: amcl
+[lifecycle_manager-7] [INFO] [1792672923.337613730] [lifecycle_manager_localization]: [34m[1mCleaning up amcl[0m[0m
+[lifecycle_manager-7] [INFO] [1792672923.338272230] [lifecycle_manager_localization]: [34m[1mCleaning up map_server[0m[0m
+[lifecycle_manager-7] [INFO] [1792672923.339918355] [lifecycle_manager_localization]: [34m[1mShutting down amcl[0m[0m
+[lifecycle_manager-7] [INFO] [1792672923.340968022] [lifecycle_manager_localization]: [34m[1mShutting down map_server[0m[0m
+[amcl-6] [WARN] [1792672923.337814480] [rcl_lifecycle]: No transition matching 2 found for current state unconfigured
+[amcl-6] [WARN] [1792672923.337832689] [rcl_lifecycle]: No transition matching 2 found for current state unconfigured
+[amcl-6] [ERROR] [1792672923.337843147] [amcl]: Unable to start transition 2 from current state unconfigured: Transition is not registered., at ./src/rcl_lifecycle.c:355
+[amcl-6] [INFO] [1792672923.340408147] [amcl]: Shutting down
+[map_server-5] [WARN] [1792672923.338951230] [rcl_lifecycle]: No transition matching 2 found for current state unconfigured
+[map_server-5] [WARN] [1792672923.339043772] [rcl_lifecycle]: No transition matching 2 found for current state unconfigured
+[map_server-5] [ERROR] [1792672923.339069980] [map_server]: Unable to start transition 2 from current state unconfigured: Transition is not registered., at ./src/rcl_lifecycle.c:355
+[map_server-5] [INFO] [1792672923.341500897] [map_server]: Shutting down
+[lifecycle_manager-7] [INFO] [1792672923.342082772] [lifecycle_manager_localization]: [34m[1mDestroying lifecycle service clients[0m[0m
+[lifecycle_manager-7] [INFO] [1792672923.346146564] [lifecycle_manager_localization]: [34m[1mManaged nodes have been shut down[0m[0m
+[robot_state_publisher-4] [INFO] [1792672923.500870564] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[INFO] [robot_state_publisher-4]: process has finished cleanly [pid 23966]
+[map_server-5] [INFO] [1792672923.705462147] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[map_server-5] [INFO] [1792672923.705708647] [map_server]: Running Nav2 LifecycleNode rcl preshutdown (map_server)
+[map_server-5] [INFO] [1792672923.705774689] [map_server]: Destroying bond (map_server) to lifecycle manager.
+[map_server-5] [INFO] [1792672923.707444647] [map_server]: Destroying
+[INFO] [map_server-5]: process has finished cleanly [pid 23967]
+[amcl-6] [INFO] [1792672923.907386772] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[amcl-6] [INFO] [1792672923.907545522] [amcl]: Running Nav2 LifecycleNode rcl preshutdown (amcl)
+[amcl-6] [INFO] [1792672923.907617522] [amcl]: Destroying bond (amcl) to lifecycle manager.
+[amcl-6] [INFO] [1792672923.909853272] [amcl]: Destroying
+[INFO] [amcl-6]: process has finished cleanly [pid 23968]
+[lifecycle_manager-7] [INFO] [1792672924.109245689] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[lifecycle_manager-7] [INFO] [1792672924.109426189] [lifecycle_manager_localization]: Running Nav2 LifecycleManager rcl preshutdown (lifecycle_manager_localization)
+[lifecycle_manager-7] [INFO] [1792672924.110604689] [lifecycle_manager_localization]: Destroying lifecycle_manager_localization
+[INFO] [lifecycle_manager-7]: process has finished cleanly [pid 23973]
+[parameter_bridge-2] [INFO] [1792672924.311760689] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[INFO] [parameter_bridge-2]: process has finished cleanly [pid 23964]

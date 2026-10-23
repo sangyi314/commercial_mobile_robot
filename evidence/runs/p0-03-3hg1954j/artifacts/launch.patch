@@ -1,0 +1,11 @@
+--- /opt/ros/jazzy/share/nav2_bringup/launch/tb3_simulation_launch.py
++++ run/artifacts/tb3_simulation.launch.py
+@@ -222,7 +222,7 @@
+ 
+     remove_temp_sdf_file = RegisterEventHandler(event_handler=OnShutdown(
+         on_shutdown=[
+-            OpaqueFunction(function=lambda _: os.remove(world_sdf))
++            OpaqueFunction(function=lambda _: os.path.exists(world_sdf) and os.remove(world_sdf))
+         ]))
+ 
+     gazebo_client = IncludeLaunchDescription(

@@ -1,0 +1,19 @@
+{
+  "reference_runs": [
+    "p0-03-nq1hmjaf",
+    "p0-03-5u34h8ya",
+    "p0-03-3hg1954j",
+    "p0-03-chnntxl6"
+  ],
+  "direct_observation": "Navigation initialization incomplete before service activation; map TF and sensors later existed; UDPv4-only did not solve it.",
+  "hypothesis": "Creating navigation only after clock and localization readiness may avoid startup concurrency/timing dependency; low-level cause unproven.",
+  "single_navigation_change": "simulation launch includes localization only; start official navigation_launch after verified actual clock, scan, odom, initialpose and map TF",
+  "retained_cleanup_fixes": [
+    "guard missing temporary world file",
+    "one SIGINT per verified child; preserve clock until nodes stopped"
+  ],
+  "config_changed": false,
+  "retries_allowed": 0,
+  "rviz": false,
+  "visual_acceptance_claimed": false
+}

@@ -1,0 +1,25 @@
+{
+  "reference_failed_run": "/home/robot/commercial_mobile_robot/evidence/runs/p0-03-nq1hmjaf",
+  "prior_task_runs": [
+    "/home/robot/commercial_mobile_robot/evidence/runs/p0-03-5u34h8ya",
+    "/home/robot/commercial_mobile_robot/evidence/runs/p0-03-3hg1954j",
+    "/home/robot/commercial_mobile_robot/evidence/runs/p0-03-chnntxl6"
+  ],
+  "minimal_differences": [
+    "run-local simulation launch includes localization_launch instead of bringup_launch; construct navigation nodes only after actual clock, AMCL initial input and map TF checks",
+    "guard missing temporary world on cleanup",
+    "optional RViz false, no RViz visual acceptance claimed",
+    "lifecycle shutdown then one SIGINT per verified child; RSP before bridge, parent last"
+  ],
+  "transport_isolation_result": "UDPv4-only did not resolve earlier constructor blocking; no transport override used here",
+  "navigation_parameters_changed": false,
+  "low_level_blocking_cause": "unresolved; launch sequencing is a compatibility workaround to verify, not proof of a specific DDS defect",
+  "spawn": {
+    "x": -2.0,
+    "y": -0.5,
+    "z": 0.01,
+    "roll": 0.0,
+    "pitch": 0.0,
+    "yaw": 0.0
+  }
+}

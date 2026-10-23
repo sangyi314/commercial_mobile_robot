@@ -1,0 +1,2 @@
+[INFO] [1792673514.634563096] [tf2_echo]: Waiting for transform base_link ->  base_scan: Invalid frame ID "base_link" passed to canTransform argument target_frame - frame does not exist
+[INFO] [1792673522.510588058] [rclcpp]: signal_handler(SIGINT/SIGTERM)

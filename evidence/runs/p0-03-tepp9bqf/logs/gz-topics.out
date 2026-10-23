@@ -1,0 +1,7 @@
+/clock
+/gazebo/resource_paths
+/stats
+/world/default/clock
+/world/default/stats
+/world/default/light_config
+/world/default/material_color
