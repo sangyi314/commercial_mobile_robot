@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="14" time="20.888" timestamp="2026-10-23T20:50:13.323883" hostname="cmr-ubuntu"><testcase classname="tests.test_runner_ros_contract" name="test_action_acceptance_and_uuid[success-SUCCEEDED]" time="2.435" /><testcase classname="tests.test_runner_ros_contract" name="test_action_acceptance_and_uuid[reject-REJECTED]" time="0.974" /><testcase classname="tests.test_runner_ros_contract" name="test_duplicate_request_and_second_goal" time="0.983" /><testcase classname="tests.test_runner_ros_contract" name="test_cancel_and_acceptance_loss[cancel]" time="1.195" /><testcase classname="tests.test_runner_ros_contract" name="test_cancel_and_acceptance_loss[no_cancel]" time="2.131" /><testcase classname="tests.test_runner_ros_contract" name="test_cancel_and_acceptance_loss[accept_late]" time="1.682" /><testcase classname="tests.test_runner_ros_contract" name="test_manager_false_late_timeout[manager_false]" time="0.945" /><testcase classname="tests.test_runner_ros_contract" name="test_manager_false_late_timeout[manager_late]" time="1.266" /><testcase classname="tests.test_runner_ros_contract" name="test_manager_false_late_timeout[manager_never]" time="2.743" /><testcase classname="tests.test_runner_ros_contract" name="test_sensor_pause_and_clock_jump" time="0.896"><failure message="RuntimeError: sensors: FileExistsError: [Errno 17] File exists: '/tmp/pytest-of-robot/pytest-7/test_sensor_pause_and_clock_ju0/fixture_test_255efa13/runtime/.sensor-readiness.json.u59xh_do' -&gt; '/tmp/pytest-of-robot/pytest-7/test_sensor_pause_and_clock_ju0/fixture_test_255efa13/runtime/sensor-readiness.json'">session = &lt;function session.&lt;locals&gt;.create at 0xf34f47a6f380&gt;
+
+    def test_sensor_pause_and_clock_jump(session):
+&gt;    fake,run,link,s=session();link.rpc('sensors',{},DeadlineBudget.after(3));fake.paused=True;time.sleep(1.7)
+
+tests/test_runner_ros_contract.py:142: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;run_trial.WorkerLink object at 0xf34f47a67290&gt;, op = 'sensors'
+args = {}
+budget = DeadlineBudget(end=109586.972554711, clock=&lt;built-in function monotonic&gt;)
+
+    def rpc(self,op,args,budget):
+     budget.require();rid=self.send(op,args,budget.end)
+     while rid not in self.results:
+      budget.require();self.pump()
+     response=self.results.pop(rid)
+&gt;    if not response['ok']:raise RuntimeError(op+': '+response['error'])
+E    RuntimeError: sensors: FileExistsError: [Errno 17] File exists: '/tmp/pytest-of-robot/pytest-7/test_sensor_pause_and_clock_ju0/fixture_test_255efa13/runtime/.sensor-readiness.json.u59xh_do' -&gt; '/tmp/pytest-of-robot/pytest-7/test_sensor_pause_and_clock_ju0/fixture_test_255efa13/runtime/sensor-readiness.json'
+
+tools/run_trial.py:42: RuntimeError</failure></testcase><testcase classname="tests.test_runner_ros_contract" name="test_worker_bad_protocol_eof_still_owned" time="0.883" /><testcase classname="tests.test_runner_ros_contract" name="test_real_mcap_late_static_and_content[False-False]" time="1.576" /><testcase classname="tests.test_runner_ros_contract" name="test_real_mcap_late_static_and_content[True-False]" time="1.541" /><testcase classname="tests.test_runner_ros_contract" name="test_real_mcap_late_static_and_content[False-True]" time="1.539" /></testsuite></testsuites>

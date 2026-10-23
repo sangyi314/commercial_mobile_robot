@@ -1,0 +1,39 @@
+stdin is not a terminal device. Keyboard handling disabled.[INFO] [1792760700.177080586] [cmr_recorder_p0_05_mppi_20261025_04]: Press SPACE for pausing/resuming
+[INFO] [1792760700.177098419] [cmr_recorder_p0_05_mppi_20261025_04]: Event publisher thread: Started
+[INFO] [1792760700.179409752] [cmr_recorder_p0_05_mppi_20261025_04]: Starting recording to '/home/robot/commercial_mobile_robot/evidence/runs/p0-05-mppi-20261025-04/bag'
+[INFO] [1792760700.180096461] [cmr_recorder_p0_05_mppi_20261025_04]: Listening for topics...
+[INFO] [1792760700.180106211] [cmr_recorder_p0_05_mppi_20261025_04]: Recording...
+[INFO] [1792760700.180126711] [cmr_recorder_p0_05_mppi_20261025_04]: Topics discovery started.
+[INFO] [1792760700.180153627] [cmr_recorder_p0_05_mppi_20261025_04]: use_sim_time set, waiting for /clock before starting recording...
+[INFO] [1792760700.290551919] [cmr_recorder_p0_05_mppi_20261025_04]: Sim time /clock found, starting recording.
+[INFO] [1792760700.291018669] [cmr_recorder_p0_05_mppi_20261025_04]: Overriding subscription profile for /clock
+[INFO] [1792760700.291272211] [cmr_recorder_p0_05_mppi_20261025_04]: Subscribed to topic '/clock'
+[INFO] [1792760700.291590211] [cmr_recorder_p0_05_mppi_20261025_04]: Overriding subscription profile for /tf
+[INFO] [1792760700.292886836] [cmr_recorder_p0_05_mppi_20261025_04]: Subscribed to topic '/tf'
+[INFO] [1792760700.292992002] [cmr_recorder_p0_05_mppi_20261025_04]: Overriding subscription profile for /cmr_experiment/events
+[INFO] [1792760700.293263711] [cmr_recorder_p0_05_mppi_20261025_04]: Subscribed to topic '/cmr_experiment/events'
+[INFO] [1792760700.293421794] [cmr_recorder_p0_05_mppi_20261025_04]: Overriding subscription profile for /initialpose
+[INFO] [1792760700.293775627] [cmr_recorder_p0_05_mppi_20261025_04]: Subscribed to topic '/initialpose'
+[INFO] [1792760700.293943461] [cmr_recorder_p0_05_mppi_20261025_04]: Overriding subscription profile for /odom
+[INFO] [1792760700.294516794] [cmr_recorder_p0_05_mppi_20261025_04]: Subscribed to topic '/odom'
+[INFO] [1792760700.294656086] [cmr_recorder_p0_05_mppi_20261025_04]: Overriding subscription profile for /scan
+[INFO] [1792760700.295174294] [cmr_recorder_p0_05_mppi_20261025_04]: Subscribed to topic '/scan'
+[INFO] [1792760700.295247711] [cmr_recorder_p0_05_mppi_20261025_04]: Overriding subscription profile for /tf_static
+[INFO] [1792760700.295376002] [cmr_recorder_p0_05_mppi_20261025_04]: Subscribed to topic '/tf_static'
+[INFO] [1792760703.517460170] [cmr_recorder_p0_05_mppi_20261025_04]: Overriding subscription profile for /map
+[INFO] [1792760703.518332170] [cmr_recorder_p0_05_mppi_20261025_04]: Subscribed to topic '/map'
+[INFO] [1792760708.507059715] [cmr_recorder_p0_05_mppi_20261025_04]: Overriding subscription profile for /cmd_vel_nav
+[INFO] [1792760708.508812631] [cmr_recorder_p0_05_mppi_20261025_04]: Subscribed to topic '/cmd_vel_nav'
+[INFO] [1792760708.645186423] [cmr_recorder_p0_05_mppi_20261025_04]: Overriding subscription profile for /cmd_vel_smoothed
+[INFO] [1792760708.645787465] [cmr_recorder_p0_05_mppi_20261025_04]: Subscribed to topic '/cmd_vel_smoothed'
+[INFO] [1792760708.662932298] [cmr_recorder_p0_05_mppi_20261025_04]: Overriding subscription profile for /cmd_vel
+[INFO] [1792760708.663594131] [cmr_recorder_p0_05_mppi_20261025_04]: Subscribed to topic '/cmd_vel'
+[WARN] [1792760708.700091173] [rosbag2_cpp]: Message definition for topic '/navigate_to_pose/_action/status' with type 'action_msgs/msg/GoalStatusArray' not found. Message definition will be left empty in bag.
+[INFO] [1792760708.700191548] [cmr_recorder_p0_05_mppi_20261025_04]: Overriding subscription profile for /navigate_to_pose/_action/status
+[INFO] [1792760708.702784506] [cmr_recorder_p0_05_mppi_20261025_04]: Subscribed to topic '/navigate_to_pose/_action/status'
+[INFO] [1792760708.702850215] [cmr_recorder_p0_05_mppi_20261025_04]: All requested topics are subscribed. Stopping discovery...
+[INFO] [1792760708.702858423] [cmr_recorder_p0_05_mppi_20261025_04]: Topics discovery stopped.
+[INFO] [1792760715.888405135] [cmr_recorder_p0_05_mppi_20261025_04]: Pausing recording.
+[INFO] [1792760715.888448301] [rosbag2_cpp]: Writing remaining messages from cache to the bag. It may take a while
+[INFO] [1792760715.890808010] [cmr_recorder_p0_05_mppi_20261025_04]: Recording stopped
+[INFO] [1792760715.893409176] [cmr_recorder_p0_05_mppi_20261025_04]: Event publisher thread: Exited

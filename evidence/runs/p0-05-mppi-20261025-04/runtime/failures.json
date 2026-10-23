@@ -1,0 +1,1 @@
+{"first": {"code": "RuntimeError", "phase": "NAV_READY", "detail": "nav_ready: RuntimeError: map/base TF stale before READY", "monotonic_s": 110469.466956591}, "later": []}

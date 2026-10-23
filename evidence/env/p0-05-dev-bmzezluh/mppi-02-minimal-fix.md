@@ -1,0 +1,1 @@
+首因：LOCALIZE单次STARTUP服务超时；原日志无Starting managed nodes bringup，后续SHUTDOWN有实际响应。对应Nav2 1.3.13 lifecycle_manager.cpp:57-96先创建服务，后在初始化定时器中加入专用执行线程。新增只读GetState和is_active成功应答门，证明执行器可处理服务后再发唯一一次STARTUP。保留旧超时请求和结果，不重发，不改已保护文件。来源：https://raw.githubusercontent.com/ros-navigation/navigation2/1.3.13/nav2_lifecycle_manager/src/lifecycle_manager.cpp

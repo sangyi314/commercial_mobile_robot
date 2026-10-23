@@ -1,0 +1,18 @@
+{
+  "hashes": {
+    "count": 65,
+    "missing": [],
+    "changed": []
+  },
+  "historical": {
+    "count": 1454,
+    "missing": [],
+    "changed": []
+  },
+  "head_before": "def8f2fd3f09e70d0c1aa98f0b1717f482d77710",
+  "head_now": "def8f2fd3f09e70d0c1aa98f0b1717f482d77710",
+  "status_before": "?? evidence/env/p0-05-dev-yJ6gR8aZ/\n",
+  "status_now": "?? docs/runner_contract.md\n?? docs/runner_usage.md\n?? evidence/env/p0-05-dev-bmzezluh/\n?? evidence/env/p0-05-dev-yJ6gR8aZ/\n?? evidence/env/p0-05-project.lock\n?? evidence/runs/p0-05-dwb-20261025-01/\n?? evidence/runs/p0-05-mppi-20261025-01/\n?? evidence/runs/p0-05-mppi-20261025-02/\n?? evidence/runs/p0-05-mppi-20261025-03/\n?? evidence/runs/p0-05-mppi-20261025-04/\n?? evidence/runs/p0-05-mppi-20261025-05/\n?? evidence/runs/p0-05-mppi-20261025-06/\n?? evidence/runs/p0-05-noinitial-20261025-01/\n?? experiments/recording_qos.yaml\n?? experiments/runner_profile.yaml\n?? experiments/scenarios/p0_05_official_static.yaml\n?? tests/test_runner_bag_content.py\n?? tests/test_runner_lifecycle.py\n?? tests/test_runner_processes.py\n?? tests/test_runner_ros_contract.py\n?? tests/test_runner_summary.py\n?? tools/inspect_bag.py\n?? tools/nav_goal.py\n?? tools/run_trial.py\n?? tools/runner_analysis.py\n?? tools/runner_core.py\n?? tools/runner_processes.py\n?? tools/summarize_runs.py\n",
+  "tracked_diff": "",
+  "diff_check": 0
+}

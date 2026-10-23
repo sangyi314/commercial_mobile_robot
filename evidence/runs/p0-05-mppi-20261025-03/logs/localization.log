@@ -1,0 +1,56 @@
+[INFO] [launch]: All log files can be found below /home/robot/.ros/log/2026-10-23-21-00-15-616545-cmr-ubuntu-150079
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [map_server-1]: process started with pid [150082]
+[INFO] [amcl-2]: process started with pid [150083]
+[INFO] [lifecycle_manager-3]: process started with pid [150084]
+[lifecycle_manager-3] [INFO] [1792760415.700906742] [lifecycle_manager_localization]: Creating
+[amcl-2] [INFO] [1792760415.702131908] [amcl]: 
+[amcl-2] 	amcl lifecycle node launched. 
+[amcl-2] 	Waiting on external lifecycle transitions to activate
+[amcl-2] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[amcl-2] [INFO] [1792760415.702550950] [amcl]: Creating
+[lifecycle_manager-3] [INFO] [1792760415.702761283] [lifecycle_manager_localization]: [34m[1mCreating and initializing lifecycle service clients[0m[0m
+[map_server-1] [INFO] [1792760415.708447450] [map_server]: 
+[map_server-1] 	map_server lifecycle node launched. 
+[map_server-1] 	Waiting on external lifecycle transitions to activate
+[map_server-1] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[map_server-1] [INFO] [1792760415.708497325] [map_server]: Creating
+[lifecycle_manager-3] [INFO] [1792760470.688572268] [lifecycle_manager_localization]: [34m[1mShutting down managed nodes...[0m[0m
+[lifecycle_manager-3] [INFO] [1792760470.688625018] [lifecycle_manager_localization]: [34m[1mDeactivate, cleanup, and shutdown nodes[0m[0m
+[lifecycle_manager-3] [INFO] [1792760470.688636434] [lifecycle_manager_localization]: [34m[1mDeactivating amcl[0m[0m
+[amcl-2] [WARN] [1792760470.688873726] [rcl_lifecycle]: No transition matching 4 found for current state unconfigured
+[amcl-2] [WARN] [1792760470.688889601] [rcl_lifecycle]: No transition matching 4 found for current state unconfigured
+[amcl-2] [ERROR] [1792760470.688902184] [amcl]: Unable to start transition 4 from current state unconfigured: Transition is not registered., at ./src/rcl_lifecycle.c:355
+[lifecycle_manager-3] [ERROR] [1792760470.689247809] [lifecycle_manager_localization]: Failed to change state for node: amcl
+[lifecycle_manager-3] [INFO] [1792760470.689274768] [lifecycle_manager_localization]: [34m[1mCleaning up amcl[0m[0m
+[amcl-2] [WARN] [1792760470.689365726] [rcl_lifecycle]: No transition matching 2 found for current state unconfigured
+[amcl-2] [WARN] [1792760470.689370643] [rcl_lifecycle]: No transition matching 2 found for current state unconfigured
+[amcl-2] [ERROR] [1792760470.689372976] [amcl]: Unable to start transition 2 from current state unconfigured: Transition is not registered., at ./src/rcl_lifecycle.c:355
+[lifecycle_manager-3] [INFO] [1792760470.689678518] [lifecycle_manager_localization]: [34m[1mCleaning up map_server[0m[0m
+[map_server-1] [WARN] [1792760470.689849268] [rcl_lifecycle]: No transition matching 2 found for current state unconfigured
+[map_server-1] [WARN] [1792760470.689866643] [rcl_lifecycle]: No transition matching 2 found for current state unconfigured
+[map_server-1] [ERROR] [1792760470.689870976] [map_server]: Unable to start transition 2 from current state unconfigured: Transition is not registered., at ./src/rcl_lifecycle.c:355
+[lifecycle_manager-3] [INFO] [1792760470.690486101] [lifecycle_manager_localization]: [34m[1mShutting down amcl[0m[0m
+[amcl-2] [INFO] [1792760470.690922559] [amcl]: Shutting down
+[lifecycle_manager-3] [INFO] [1792760470.691173268] [lifecycle_manager_localization]: [34m[1mShutting down map_server[0m[0m
+[map_server-1] [INFO] [1792760470.691370726] [map_server]: Shutting down
+[lifecycle_manager-3] [INFO] [1792760470.691680601] [lifecycle_manager_localization]: [34m[1mDestroying lifecycle service clients[0m[0m
+[lifecycle_manager-3] [INFO] [1792760470.693014393] [lifecycle_manager_localization]: [34m[1mManaged nodes have been shut down[0m[0m
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+[INFO] [lifecycle_manager-3]: sending signal 'SIGINT' to process[lifecycle_manager-3]
+[INFO] [amcl-2]: sending signal 'SIGINT' to process[amcl-2]
+[INFO] [map_server-1]: sending signal 'SIGINT' to process[map_server-1]
+[lifecycle_manager-3] [INFO] [1792760470.697614726] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[lifecycle_manager-3] [INFO] [1792760470.697669059] [lifecycle_manager_localization]: Running Nav2 LifecycleManager rcl preshutdown (lifecycle_manager_localization)
+[amcl-2] [INFO] [1792760470.697844476] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[amcl-2] [INFO] [1792760470.697892934] [amcl]: Running Nav2 LifecycleNode rcl preshutdown (amcl)
+[amcl-2] [INFO] [1792760470.697909809] [amcl]: Destroying bond (amcl) to lifecycle manager.
+[map_server-1] [INFO] [1792760470.697956934] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[map_server-1] [INFO] [1792760470.697999351] [map_server]: Running Nav2 LifecycleNode rcl preshutdown (map_server)
+[map_server-1] [INFO] [1792760470.698016226] [map_server]: Destroying bond (map_server) to lifecycle manager.
+[map_server-1] [INFO] [1792760470.698486768] [map_server]: Destroying
+[lifecycle_manager-3] [INFO] [1792760470.698816559] [lifecycle_manager_localization]: Destroying lifecycle_manager_localization
+[amcl-2] [INFO] [1792760470.698941518] [amcl]: Destroying
+[INFO] [map_server-1]: process has finished cleanly [pid 150082]
+[INFO] [lifecycle_manager-3]: process has finished cleanly [pid 150084]
+[INFO] [amcl-2]: process has finished cleanly [pid 150083]

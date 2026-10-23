@@ -1,0 +1,29 @@
+stdin is not a terminal device. Keyboard handling disabled.[INFO] [1792761340.600101099] [cmr_recorder_p0_05_noinitial_20261025_01]: Press SPACE for pausing/resuming
+[INFO] [1792761340.600109349] [cmr_recorder_p0_05_noinitial_20261025_01]: Event publisher thread: Started
+[INFO] [1792761340.602506474] [cmr_recorder_p0_05_noinitial_20261025_01]: Starting recording to '/home/robot/commercial_mobile_robot/evidence/runs/p0-05-noinitial-20261025-01/bag'
+[INFO] [1792761340.603449891] [cmr_recorder_p0_05_noinitial_20261025_01]: Listening for topics...
+[INFO] [1792761340.603466599] [cmr_recorder_p0_05_noinitial_20261025_01]: Recording...
+[INFO] [1792761340.603487974] [cmr_recorder_p0_05_noinitial_20261025_01]: Topics discovery started.
+[INFO] [1792761340.603517016] [cmr_recorder_p0_05_noinitial_20261025_01]: use_sim_time set, waiting for /clock before starting recording...
+[INFO] [1792761340.714000558] [cmr_recorder_p0_05_noinitial_20261025_01]: Sim time /clock found, starting recording.
+[INFO] [1792761340.714413599] [cmr_recorder_p0_05_noinitial_20261025_01]: Overriding subscription profile for /clock
+[INFO] [1792761340.714723641] [cmr_recorder_p0_05_noinitial_20261025_01]: Subscribed to topic '/clock'
+[INFO] [1792761340.715070808] [cmr_recorder_p0_05_noinitial_20261025_01]: Overriding subscription profile for /tf
+[INFO] [1792761340.716427308] [cmr_recorder_p0_05_noinitial_20261025_01]: Subscribed to topic '/tf'
+[INFO] [1792761340.716553808] [cmr_recorder_p0_05_noinitial_20261025_01]: Overriding subscription profile for /cmr_experiment/events
+[INFO] [1792761340.716834766] [cmr_recorder_p0_05_noinitial_20261025_01]: Subscribed to topic '/cmr_experiment/events'
+[INFO] [1792761340.717010016] [cmr_recorder_p0_05_noinitial_20261025_01]: Overriding subscription profile for /initialpose
+[INFO] [1792761340.717356933] [cmr_recorder_p0_05_noinitial_20261025_01]: Subscribed to topic '/initialpose'
+[INFO] [1792761340.717530641] [cmr_recorder_p0_05_noinitial_20261025_01]: Overriding subscription profile for /odom
+[INFO] [1792761340.718082516] [cmr_recorder_p0_05_noinitial_20261025_01]: Subscribed to topic '/odom'
+[INFO] [1792761340.718239641] [cmr_recorder_p0_05_noinitial_20261025_01]: Overriding subscription profile for /scan
+[INFO] [1792761340.718796808] [cmr_recorder_p0_05_noinitial_20261025_01]: Subscribed to topic '/scan'
+[INFO] [1792761340.718873141] [cmr_recorder_p0_05_noinitial_20261025_01]: Overriding subscription profile for /tf_static
+[INFO] [1792761340.719004016] [cmr_recorder_p0_05_noinitial_20261025_01]: Subscribed to topic '/tf_static'
+[INFO] [1792761341.911915350] [cmr_recorder_p0_05_noinitial_20261025_01]: Overriding subscription profile for /map
+[INFO] [1792761341.912855308] [cmr_recorder_p0_05_noinitial_20261025_01]: Subscribed to topic '/map'
+[INFO] [1792761352.144431271] [cmr_recorder_p0_05_noinitial_20261025_01]: Topics discovery stopped.
+[INFO] [1792761352.144634730] [cmr_recorder_p0_05_noinitial_20261025_01]: Pausing recording.
+[INFO] [1792761352.144719646] [rosbag2_cpp]: Writing remaining messages from cache to the bag. It may take a while
+[INFO] [1792761352.154157105] [cmr_recorder_p0_05_noinitial_20261025_01]: Recording stopped
+[INFO] [1792761352.155165521] [cmr_recorder_p0_05_noinitial_20261025_01]: Event publisher thread: Exited

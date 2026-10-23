@@ -1,0 +1,29 @@
+.........F....                                                           [100%]
+=================================== FAILURES ===================================
+_______________________ test_sensor_pause_and_clock_jump _______________________
+
+session = <function session.<locals>.create at 0xf34f47a6f380>
+
+    def test_sensor_pause_and_clock_jump(session):
+>    fake,run,link,s=session();link.rpc('sensors',{},DeadlineBudget.after(3));fake.paused=True;time.sleep(1.7)
+
+tests/test_runner_ros_contract.py:142: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <run_trial.WorkerLink object at 0xf34f47a67290>, op = 'sensors'
+args = {}
+budget = DeadlineBudget(end=109586.972554711, clock=<built-in function monotonic>)
+
+    def rpc(self,op,args,budget):
+     budget.require();rid=self.send(op,args,budget.end)
+     while rid not in self.results:
+      budget.require();self.pump()
+     response=self.results.pop(rid)
+>    if not response['ok']:raise RuntimeError(op+': '+response['error'])
+E    RuntimeError: sensors: FileExistsError: [Errno 17] File exists: '/tmp/pytest-of-robot/pytest-7/test_sensor_pause_and_clock_ju0/fixture_test_255efa13/runtime/.sensor-readiness.json.u59xh_do' -> '/tmp/pytest-of-robot/pytest-7/test_sensor_pause_and_clock_ju0/fixture_test_255efa13/runtime/sensor-readiness.json'
+
+tools/run_trial.py:42: RuntimeError
+- generated xml file: /home/robot/commercial_mobile_robot/evidence/env/p0-05-dev-bmzezluh/ros-contract-final.xml -
+=========================== short test summary info ============================
+FAILED tests/test_runner_ros_contract.py::test_sensor_pause_and_clock_jump - ...
+1 failed, 13 passed in 20.89s

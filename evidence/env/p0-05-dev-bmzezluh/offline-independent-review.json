@@ -1,0 +1,142 @@
+{
+  "p0-05-mppi-20261025-06": {
+    "uuid": "d444fbf04beb42fc9d4817daff14d2dc",
+    "action_lines": [
+      1,
+      2,
+      847
+    ],
+    "terminal_ros_s": 17.709,
+    "action_elapsed_monotonic_s": 8.45249346201308,
+    "movement": {
+      "max_m": 0.7831293499757808,
+      "net_m": 0.7831293499757805,
+      "raw_lines": [
+        391,
+        1325
+      ]
+    },
+    "arrival": {
+      "position_error_m": 0.24018581655402754,
+      "normalized_yaw_error_rad": 0.12468281091844191,
+      "raw_line": 1864,
+      "stamp_s": 28.62,
+      "age_s": 0.015000000000000568,
+      "scope": "AMCL/TF estimate; not physical ground truth"
+    },
+    "stop": {
+      "start_sim_s": 19.152,
+      "end_sim_s": 24.12,
+      "span_s": 4.968,
+      "samples": 139,
+      "max_gap_s": 0.036000000000001364,
+      "max_linear_mps": 0.0,
+      "max_abs_wz_radps": 0.0,
+      "max_pairwise_drift_m": 0.0,
+      "max_stamp_age_s": 3.552713678800501e-15,
+      "raw_lines": [
+        1407,
+        1643
+      ],
+      "clock_advance_s": 4.893000000000001
+    },
+    "commands": {
+      "/cmd_vel_nav": {
+        "count": 170,
+        "last_line": 1809,
+        "last_ros_s": 27.609,
+        "last_vx": 0.0,
+        "last_wz": 0.0
+      },
+      "/cmd_vel_smoothed": {
+        "count": 188,
+        "last_line": 1381,
+        "last_ros_s": 18.639000000000003,
+        "last_vx": 0.0,
+        "last_wz": 0.0
+      },
+      "/cmd_vel": {
+        "count": 188,
+        "last_line": 1384,
+        "last_ros_s": 18.648,
+        "last_vx": 0.0,
+        "last_wz": 0.0
+      }
+    }
+  },
+  "p0-05-dwb-20261025-01": {
+    "uuid": "75dd53f55ee94b3c83423953a630e22d",
+    "action_lines": [
+      1,
+      2,
+      777
+    ],
+    "terminal_ros_s": 17.097,
+    "action_elapsed_monotonic_s": 7.752903671003878,
+    "movement": {
+      "max_m": 0.7824642581724012,
+      "net_m": 0.7820545773396611,
+      "raw_lines": [
+        393,
+        1251
+      ]
+    },
+    "arrival": {
+      "position_error_m": 0.24153437295174474,
+      "normalized_yaw_error_rad": 0.22988827581615154,
+      "raw_line": 1777,
+      "stamp_s": 27.72,
+      "age_s": 0.024000000000004462,
+      "scope": "AMCL/TF estimate; not physical ground truth"
+    },
+    "stop": {
+      "start_sim_s": 18.612,
+      "end_sim_s": 23.544,
+      "span_s": 4.932000000000002,
+      "samples": 138,
+      "max_gap_s": 0.036000000000001364,
+      "max_linear_mps": 0.0,
+      "max_abs_wz_radps": 0.0,
+      "max_pairwise_drift_m": 0.0,
+      "max_stamp_age_s": 0.0030000000000036664,
+      "raw_lines": [
+        1338,
+        1572
+      ],
+      "clock_advance_s": 4.773
+    },
+    "commands": {
+      "/cmd_vel_nav": {
+        "count": 156,
+        "last_line": 1723,
+        "last_ros_s": 26.733,
+        "last_vx": 0.0,
+        "last_wz": 0.0
+      },
+      "/cmd_vel_smoothed": {
+        "count": 174,
+        "last_line": 1310,
+        "last_ros_s": 18.066000000000003,
+        "last_vx": 0.0,
+        "last_wz": 0.0
+      },
+      "/cmd_vel": {
+        "count": 174,
+        "last_line": 1312,
+        "last_ros_s": 18.078,
+        "last_vx": 0.0,
+        "last_wz": 0.0
+      }
+    }
+  },
+  "p0-05-noinitial-20261025-01": {
+    "fault_activated_ros_s": 1.737,
+    "fault_activated_monotonic_s": 111097.738323974,
+    "failure_monotonic_s": 111107.739483062,
+    "wall_interval_s": 10.001159088002169,
+    "initialpose_count": 0,
+    "goal_dispatch_count": 0,
+    "first_reason": "CONTROLLED_INITIALPOSE_TIMEOUT"
+  },
+  "method": "Independent arithmetic in development review, does not read result.json or import runner_analysis; raw JSONL and runtime tolerances; separate actual MCAP traversal remains bag-check.json."
+}

@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="0" skipped="0" tests="1" time="4.992" timestamp="2026-10-23T21:02:48.044211" hostname="cmr-ubuntu"><testcase classname="tests.test_runner_ros_contract" name="test_installed_nav2_localization_manager_single_startup" time="4.952" /></testsuite></testsuites>

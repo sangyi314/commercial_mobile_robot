@@ -1,0 +1,66 @@
+[
+  {
+    "argv": [
+      "python3",
+      "-B",
+      "tools/run_trial.py",
+      "--scenario",
+      "/home/robot/commercial_mobile_robot/experiments/scenarios/p0_05_official_static.yaml",
+      "--method",
+      "mppi",
+      "--profile",
+      "/home/robot/commercial_mobile_robot/experiments/runner_profile.yaml",
+      "--run-id",
+      "p0-05-check-mppi-20261025-final",
+      "--check"
+    ],
+    "exit": 0
+  },
+  {
+    "argv": [
+      "python3",
+      "-B",
+      "tools/run_trial.py",
+      "--scenario",
+      "/home/robot/commercial_mobile_robot/experiments/scenarios/p0_05_official_static.yaml",
+      "--method",
+      "dwb",
+      "--profile",
+      "/home/robot/commercial_mobile_robot/experiments/runner_profile.yaml",
+      "--run-id",
+      "p0-05-check-dwb-20261025-final",
+      "--check"
+    ],
+    "exit": 0
+  },
+  {
+    "argv": [
+      "python3",
+      "-B",
+      "tools/validate_run.py",
+      "run",
+      "/home/robot/commercial_mobile_robot/evidence/runs/p0-05-mppi-20261025-06"
+    ],
+    "exit": 0
+  },
+  {
+    "argv": [
+      "python3",
+      "-B",
+      "tools/validate_run.py",
+      "run",
+      "/home/robot/commercial_mobile_robot/evidence/runs/p0-05-dwb-20261025-01"
+    ],
+    "exit": 0
+  },
+  {
+    "argv": [
+      "python3",
+      "-B",
+      "tools/validate_run.py",
+      "run",
+      "/home/robot/commercial_mobile_robot/evidence/runs/p0-05-noinitial-20261025-01"
+    ],
+    "exit": 0
+  }
+]

@@ -1,0 +1,1 @@
+第五轮真实导航、停止和full-navigation bag全部通过；localization SHUTDOWN超时，原服务端日志无Shutting down managed nodes，原cleanup FAILED保留。旧worker每次调用创建/销毁Client，修正为按(type,service)在本轮缓存，STARTUP之前创建管理Client以完成发现，SHUTDOWN复用已建立Client。写SERVICE_REQUEST/RESPONSE事件；不重复任何已有状态改变请求。以真实已安装定位组件独立三例验证后再新回合。

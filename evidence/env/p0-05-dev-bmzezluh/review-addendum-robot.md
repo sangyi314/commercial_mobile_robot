@@ -1,0 +1,1 @@
+真实首轮在输入准备门暴露profile键覆盖：robot_source覆盖了expanded robot；仅修正新增profile并加P0-04展开SDF身份检查。原xacro未修改，旧回合保持NOT_SENT。新增反例及相关离线50项通过后才重验。

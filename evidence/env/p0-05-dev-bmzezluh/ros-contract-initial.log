@@ -1,0 +1,228 @@
+FFFFFF.....FFF                                                           [100%]
+=================================== FAILURES ===================================
+______________ test_action_acceptance_and_uuid[success-SUCCEEDED] ______________
+
+session = <function session.<locals>.create at 0xe935b412f420>, mode = 'success'
+terminal = 'SUCCEEDED'
+
+    @pytest.mark.parametrize('mode,terminal',[('success','SUCCEEDED'),('reject','REJECTED')])
+    def test_action_acceptance_and_uuid(session,mode,terminal):
+>    fake,run,link,s=session(mode);uid=uuid.uuid4().hex;link.rpc('send',{'uuid':uid},DeadlineBudget.after(3));until(link,lambda:any(e['type']=='ACTION_TERMINAL' for e in link.events));t=[e for e in link.events if e['type']=='ACTION_TERMINAL'][-1]['data']['data'];assert t['uuid']==uid and t['action']==terminal and fake.count==1
+
+tests/test_runner_ros_contract.py:105: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_runner_ros_contract.py:102: in until
+    while not predicate():b.require();link.pump()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = DeadlineBudget(end=109223.394644371, clock=<built-in function monotonic>)
+
+    def require(self):
+>    if self.remaining()<=0:raise TimeoutError('deadline expired')
+E    TimeoutError: deadline expired
+
+tools/runner_core.py:52: TimeoutError
+----------------------------- Captured stderr call -----------------------------
+[WARN] [1792759462.122132412] [test_30102a16.fake]: New subscription discovered on topic 'amcl_pose', requesting incompatible QoS. No messages will be sent to it. Last incompatible policy: DURABILITY
+_______________ test_action_acceptance_and_uuid[reject-REJECTED] _______________
+
+session = <function session.<locals>.create at 0xe935b412f4c0>, mode = 'reject'
+terminal = 'REJECTED'
+
+    @pytest.mark.parametrize('mode,terminal',[('success','SUCCEEDED'),('reject','REJECTED')])
+    def test_action_acceptance_and_uuid(session,mode,terminal):
+>    fake,run,link,s=session(mode);uid=uuid.uuid4().hex;link.rpc('send',{'uuid':uid},DeadlineBudget.after(3));until(link,lambda:any(e['type']=='ACTION_TERMINAL' for e in link.events));t=[e for e in link.events if e['type']=='ACTION_TERMINAL'][-1]['data']['data'];assert t['uuid']==uid and t['action']==terminal and fake.count==1
+
+tests/test_runner_ros_contract.py:105: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tools/run_trial.py:40: in rpc
+    budget.require();self.pump()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = DeadlineBudget(end=109226.620526331, clock=<built-in function monotonic>)
+
+    def require(self):
+>    if self.remaining()<=0:raise TimeoutError('deadline expired')
+E    TimeoutError: deadline expired
+
+tools/runner_core.py:52: TimeoutError
+----------------------------- Captured stderr call -----------------------------
+[WARN] [1792759468.359649831] [test_b17625e2.fake]: New subscription discovered on topic 'amcl_pose', requesting incompatible QoS. No messages will be sent to it. Last incompatible policy: DURABILITY
+____________________ test_duplicate_request_and_second_goal ____________________
+
+session = <function session.<locals>.create at 0xe935b6dc07c0>
+
+    def test_duplicate_request_and_second_goal(session):
+>    fake,run,link,s=session();uid=uuid.uuid4().hex;deadline=time.monotonic()+4;link.send('send',{'uuid':uid},deadline,rid='same');until(link,lambda:'same' in link.results);first=link.results.pop('same');link.send('send',{'uuid':uid},deadline,rid='same');until(link,lambda:'same' in link.results);assert link.results.pop('same')==first and fake.count==1
+
+tests/test_runner_ros_contract.py:108: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_runner_ros_contract.py:102: in until
+    while not predicate():b.require();link.pump()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = DeadlineBudget(end=109229.848735457, clock=<built-in function monotonic>)
+
+    def require(self):
+>    if self.remaining()<=0:raise TimeoutError('deadline expired')
+E    TimeoutError: deadline expired
+
+tools/runner_core.py:52: TimeoutError
+----------------------------- Captured stderr call -----------------------------
+[WARN] [1792759471.612083500] [test_d57c7a8a.fake]: New subscription discovered on topic 'amcl_pose', requesting incompatible QoS. No messages will be sent to it. Last incompatible policy: DURABILITY
+___________________ test_cancel_and_acceptance_loss[cancel] ____________________
+
+session = <function session.<locals>.create at 0xe935b6dc0040>, mode = 'cancel'
+
+    @pytest.mark.parametrize('mode',['cancel','no_cancel','accept_late'])
+    def test_cancel_and_acceptance_loss(session,mode):
+     fake,run,link,s=session(mode);uid=uuid.uuid4().hex
+     reply=link.rpc('send',{'uuid':uid},DeadlineBudget.after(2 if mode!='accept_late' else .15))
+     if mode=='accept_late':assert reply['acceptance']=='UNKNOWN';until(link,lambda:fake.count==1);time.sleep(.4)
+     if mode=='no_cancel':
+      with pytest.raises((TimeoutError,RuntimeError)):link.rpc('cancel',{},DeadlineBudget.after(.15))
+      assert not any(e['type']=='ACTION_TERMINAL' for e in link.events)
+     else:
+>     link.rpc('cancel',{},DeadlineBudget.after(1));until(link,lambda:any(e['type']=='ACTION_TERMINAL' for e in link.events));assert [e for e in link.events if e['type']=='ACTION_TERMINAL'][-1]['data']['data']['action']=='CANCELED'
+
+tests/test_runner_ros_contract.py:119: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_runner_ros_contract.py:102: in until
+    while not predicate():b.require();link.pump()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = DeadlineBudget(end=109236.08540471, clock=<built-in function monotonic>)
+
+    def require(self):
+>    if self.remaining()<=0:raise TimeoutError('deadline expired')
+E    TimeoutError: deadline expired
+
+tools/runner_core.py:52: TimeoutError
+----------------------------- Captured stderr call -----------------------------
+[WARN] [1792759475.912193377] [test_371e4d96.fake]: New subscription discovered on topic 'amcl_pose', requesting incompatible QoS. No messages will be sent to it. Last incompatible policy: DURABILITY
+__________________ test_cancel_and_acceptance_loss[no_cancel] __________________
+
+session = <function session.<locals>.create at 0xe935b6dc25c0>
+mode = 'no_cancel'
+
+    @pytest.mark.parametrize('mode',['cancel','no_cancel','accept_late'])
+    def test_cancel_and_acceptance_loss(session,mode):
+     fake,run,link,s=session(mode);uid=uuid.uuid4().hex
+     reply=link.rpc('send',{'uuid':uid},DeadlineBudget.after(2 if mode!='accept_late' else .15))
+     if mode=='accept_late':assert reply['acceptance']=='UNKNOWN';until(link,lambda:fake.count==1);time.sleep(.4)
+     if mode=='no_cancel':
+>     with pytest.raises((TimeoutError,RuntimeError)):link.rpc('cancel',{},DeadlineBudget.after(.15))
+E     Failed: DID NOT RAISE (<class 'TimeoutError'>, <class 'RuntimeError'>)
+
+tests/test_runner_ros_contract.py:116: Failed
+----------------------------- Captured stderr call -----------------------------
+[WARN] [1792759481.012329629] [test_b9a2929d.fake]: New subscription discovered on topic 'amcl_pose', requesting incompatible QoS. No messages will be sent to it. Last incompatible policy: DURABILITY
+_________________ test_cancel_and_acceptance_loss[accept_late] _________________
+
+session = <function session.<locals>.create at 0xe935b6dc36a0>
+mode = 'accept_late'
+
+    @pytest.mark.parametrize('mode',['cancel','no_cancel','accept_late'])
+    def test_cancel_and_acceptance_loss(session,mode):
+     fake,run,link,s=session(mode);uid=uuid.uuid4().hex
+>    reply=link.rpc('send',{'uuid':uid},DeadlineBudget.after(2 if mode!='accept_late' else .15))
+
+tests/test_runner_ros_contract.py:113: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tools/run_trial.py:40: in rpc
+    budget.require();self.pump()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = DeadlineBudget(end=109238.66963242099, clock=<built-in function monotonic>)
+
+    def require(self):
+>    if self.remaining()<=0:raise TimeoutError('deadline expired')
+E    TimeoutError: deadline expired
+
+tools/runner_core.py:52: TimeoutError
+--------------------------- Captured stderr teardown ---------------------------
+[WARN] [1792759483.279888255] [test_8763108a.fake]: New subscription discovered on topic 'amcl_pose', requesting incompatible QoS. No messages will be sent to it. Last incompatible policy: DURABILITY
+_____________ test_real_mcap_late_static_and_content[False-False] ______________
+
+ros = (<module 'rclpy' from '/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py'>, <rclpy.executors.MultiThreadedExecutor object at 0xe935bc0d4d10>)
+tmp_path = PosixPath('/tmp/pytest-of-robot/pytest-2/test_real_mcap_late_static_and0')
+wrong_frame = False, missing_static = False
+
+    @pytest.mark.parametrize('wrong_frame,missing_static',[(False,False),(True,False),(False,True)])
+    def test_real_mcap_late_static_and_content(ros,tmp_path,wrong_frame,missing_static):
+     from inspect_bag import inspect
+     rclpy,ex=ros;ns='bag_'+uuid.uuid4().hex[:8];fake=Fake(rclpy,ex,ns,wrong_frame=wrong_frame);run=tmp_path/('fixture_'+ns)
+     for n in ['logs','runtime','artifacts']:(run/n).mkdir(parents=True)
+     root=Path(__file__).resolve().parents[1];profile=json.loads((root/'experiments/runner_profile.yaml').read_text());profile.update({'synthetic_test':True,'test_namespace':ns,'fault':'withhold-initial-pose'});write_json(run/'artifacts/profile.json',profile)
+     qos=json.loads((root/'experiments/recording_qos.yaml').read_text());write_json(run/'artifacts/qos.yaml',{'/'+ns+t:v for t,v in qos.items()})
+     supervisor=ProcessSupervisor(run);topics=['/clock','/tf','/scan','/odom','/cmr_experiment/events']+([] if missing_static else ['/tf_static'])
+     proc=supervisor.spawn('recorder',['ros2','bag','record','-s','mcap','-o',str(run/'bag'),'--use-sim-time','--node-name','fixture_rec_'+ns,'--qos-profile-overrides-path',str(run/'artifacts/qos.yaml'),'--topics',*['/'+ns+t for t in topics]],os.environ.copy(),root)
+     try:
+      deadline=time.monotonic()+5
+      while time.monotonic()<deadline:
+       if fake.n.count_subscribers('/'+ns+'/cmr_experiment/events')>=1:break
+       time.sleep(.03)
+>     else:raise AssertionError('recorder not discovered')
+E     AssertionError: recorder not discovered
+
+tests/test_runner_ros_contract.py:152: AssertionError
+______________ test_real_mcap_late_static_and_content[True-False] ______________
+
+ros = (<module 'rclpy' from '/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py'>, <rclpy.executors.MultiThreadedExecutor object at 0xe935bc0d4d10>)
+tmp_path = PosixPath('/tmp/pytest-of-robot/pytest-2/test_real_mcap_late_static_and1')
+wrong_frame = True, missing_static = False
+
+    @pytest.mark.parametrize('wrong_frame,missing_static',[(False,False),(True,False),(False,True)])
+    def test_real_mcap_late_static_and_content(ros,tmp_path,wrong_frame,missing_static):
+     from inspect_bag import inspect
+     rclpy,ex=ros;ns='bag_'+uuid.uuid4().hex[:8];fake=Fake(rclpy,ex,ns,wrong_frame=wrong_frame);run=tmp_path/('fixture_'+ns)
+     for n in ['logs','runtime','artifacts']:(run/n).mkdir(parents=True)
+     root=Path(__file__).resolve().parents[1];profile=json.loads((root/'experiments/runner_profile.yaml').read_text());profile.update({'synthetic_test':True,'test_namespace':ns,'fault':'withhold-initial-pose'});write_json(run/'artifacts/profile.json',profile)
+     qos=json.loads((root/'experiments/recording_qos.yaml').read_text());write_json(run/'artifacts/qos.yaml',{'/'+ns+t:v for t,v in qos.items()})
+     supervisor=ProcessSupervisor(run);topics=['/clock','/tf','/scan','/odom','/cmr_experiment/events']+([] if missing_static else ['/tf_static'])
+     proc=supervisor.spawn('recorder',['ros2','bag','record','-s','mcap','-o',str(run/'bag'),'--use-sim-time','--node-name','fixture_rec_'+ns,'--qos-profile-overrides-path',str(run/'artifacts/qos.yaml'),'--topics',*['/'+ns+t for t in topics]],os.environ.copy(),root)
+     try:
+      deadline=time.monotonic()+5
+      while time.monotonic()<deadline:
+       if fake.n.count_subscribers('/'+ns+'/cmr_experiment/events')>=1:break
+       time.sleep(.03)
+>     else:raise AssertionError('recorder not discovered')
+E     AssertionError: recorder not discovered
+
+tests/test_runner_ros_contract.py:152: AssertionError
+______________ test_real_mcap_late_static_and_content[False-True] ______________
+
+ros = (<module 'rclpy' from '/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py'>, <rclpy.executors.MultiThreadedExecutor object at 0xe935bc0d4d10>)
+tmp_path = PosixPath('/tmp/pytest-of-robot/pytest-2/test_real_mcap_late_static_and2')
+wrong_frame = False, missing_static = True
+
+    @pytest.mark.parametrize('wrong_frame,missing_static',[(False,False),(True,False),(False,True)])
+    def test_real_mcap_late_static_and_content(ros,tmp_path,wrong_frame,missing_static):
+     from inspect_bag import inspect
+     rclpy,ex=ros;ns='bag_'+uuid.uuid4().hex[:8];fake=Fake(rclpy,ex,ns,wrong_frame=wrong_frame);run=tmp_path/('fixture_'+ns)
+     for n in ['logs','runtime','artifacts']:(run/n).mkdir(parents=True)
+     root=Path(__file__).resolve().parents[1];profile=json.loads((root/'experiments/runner_profile.yaml').read_text());profile.update({'synthetic_test':True,'test_namespace':ns,'fault':'withhold-initial-pose'});write_json(run/'artifacts/profile.json',profile)
+     qos=json.loads((root/'experiments/recording_qos.yaml').read_text());write_json(run/'artifacts/qos.yaml',{'/'+ns+t:v for t,v in qos.items()})
+     supervisor=ProcessSupervisor(run);topics=['/clock','/tf','/scan','/odom','/cmr_experiment/events']+([] if missing_static else ['/tf_static'])
+     proc=supervisor.spawn('recorder',['ros2','bag','record','-s','mcap','-o',str(run/'bag'),'--use-sim-time','--node-name','fixture_rec_'+ns,'--qos-profile-overrides-path',str(run/'artifacts/qos.yaml'),'--topics',*['/'+ns+t for t in topics]],os.environ.copy(),root)
+     try:
+      deadline=time.monotonic()+5
+      while time.monotonic()<deadline:
+       if fake.n.count_subscribers('/'+ns+'/cmr_experiment/events')>=1:break
+       time.sleep(.03)
+>     else:raise AssertionError('recorder not discovered')
+E     AssertionError: recorder not discovered
+
+tests/test_runner_ros_contract.py:152: AssertionError
+- generated xml file: /home/robot/commercial_mobile_robot/evidence/env/p0-05-dev-bmzezluh/ros-contract-initial.xml -
+=========================== short test summary info ============================
+FAILED tests/test_runner_ros_contract.py::test_action_acceptance_and_uuid[success-SUCCEEDED]
+FAILED tests/test_runner_ros_contract.py::test_action_acceptance_and_uuid[reject-REJECTED]
+FAILED tests/test_runner_ros_contract.py::test_duplicate_request_and_second_goal
+FAILED tests/test_runner_ros_contract.py::test_cancel_and_acceptance_loss[cancel]
+FAILED tests/test_runner_ros_contract.py::test_cancel_and_acceptance_loss[no_cancel]
+FAILED tests/test_runner_ros_contract.py::test_cancel_and_acceptance_loss[accept_late]
+FAILED tests/test_runner_ros_contract.py::test_real_mcap_late_static_and_content[False-False]
+FAILED tests/test_runner_ros_contract.py::test_real_mcap_late_static_and_content[True-False]
+FAILED tests/test_runner_ros_contract.py::test_real_mcap_late_static_and_content[False-True]
+9 failed, 5 passed in 42.59s
