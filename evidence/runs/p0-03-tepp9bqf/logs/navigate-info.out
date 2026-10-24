@@ -1,5 +1,0 @@
-Action: /navigate_to_pose
-Action clients: 2
-    /rviz
-    /rviz_navigation_dialog_action_client
-Action servers: 0

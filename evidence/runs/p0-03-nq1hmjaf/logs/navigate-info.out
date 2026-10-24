@@ -1,8 +1,0 @@
-Action: /navigate_to_pose
-Action clients: 4
-    /bt_navigator
-    /waypoint_follower
-    /rviz
-    /rviz_navigation_dialog_action_client
-Action servers: 1
-    /bt_navigator

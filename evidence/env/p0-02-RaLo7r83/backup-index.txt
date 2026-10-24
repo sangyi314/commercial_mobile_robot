@@ -1,8 +1,0 @@
-experiments
-experiments/manifests
-experiments/manifests/environment.json
-experiments/manifests/ros2_doctor.txt
-experiments/manifests/tb3_launch_args.txt
-experiments/results
-experiments/scenarios
-tests

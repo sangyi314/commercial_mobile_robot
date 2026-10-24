@@ -1,1 +1,0 @@
-{"samples": [{"monotonic_s": 161304.891142248, "tf_stamp_s": 8.532, "clock_subscription_s": 9.027, "node_ros_s": 9.033000000000001, "age_s": 0.4949999999999992, "sensors_ready": true, "action_ready": true}], "threshold_s": 0.5}

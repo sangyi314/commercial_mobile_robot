@@ -1,8 +1,0 @@
-[INFO] [1792671258.191181103] [docking_server]: 
-	docking_server lifecycle node launched. 
-	Waiting on external lifecycle transitions to activate
-	See https://design.ros2.org/articles/node_lifecycle.html for more information.
-[INFO] [1792671258.191235770] [docking_server]: Creating docking_server
-[INFO] [1792671579.662803506] [rclcpp]: signal_handler(SIGINT/SIGTERM)
-[INFO] [1792671579.663237673] [docking_server]: Running Nav2 LifecycleNode rcl preshutdown (docking_server)
-[INFO] [1792671579.663610215] [docking_server]: Destroying bond (docking_server) to lifecycle manager.

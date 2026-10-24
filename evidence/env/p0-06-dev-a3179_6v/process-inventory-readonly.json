@@ -1,5 +1,0 @@
-{
-  "observed": [],
-  "signals_sent": [],
-  "scope": "read-only process inventory, not ROS graph/runtime validation"
-}

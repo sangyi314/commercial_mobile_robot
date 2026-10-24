@@ -1,1 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="0" skipped="0" tests="1" time="4.762" timestamp="2026-10-23T21:04:46.766583" hostname="cmr-ubuntu"><testcase classname="tests.test_runner_ros_contract" name="test_no_tf_prevents_any_dispatch" time="4.707" /></testsuite></testsuites>

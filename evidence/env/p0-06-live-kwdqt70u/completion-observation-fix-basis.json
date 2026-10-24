@@ -1,7 +1,0 @@
-{
-  "failed_run": "p0-06-crossing-kwdqt70u-c8",
-  "finding": "script FINISHED within13.1s, actual Action success arrives after scene30s; wait_complete checked current time before completed state",
-  "fix": "validate identity and required finish/hold source time of last actual request before accepting already FINISHED state; keep source completion<=30s; not-yet-finished still fails at30s",
-  "scope": "no goal deadline, motion tolerance, controller or profile window expansion",
-  "historical_failure_unchanged": true
-}

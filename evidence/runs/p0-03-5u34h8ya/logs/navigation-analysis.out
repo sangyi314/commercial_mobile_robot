@@ -1,4 +1,0 @@
-{"run_id": "p0-03-5u34h8ya", "uuid": "1b82b6cc1ecb467ab9f7d7c1ecd18ff3", "action": "SUCCEEDED", "status_array_codes": [2, 4], "action_wall_s": 8.653116338002292, "feedback_count": 864, "checks": {"terminal_succeeded": true, "movement": true, "arrival": true, "stop": true}}
-MOVEMENT 0.7832077488132966 0.891657013280877
-ARRIVAL {"position_m": 0.23585710201713525, "yaw_rad": 0.23083745504975162}
-STOP {"thresholds": {"min_span_sim_s": 3, "max_gap_sim_s": 0.2, "max_stamp_ros_error_s": 0.3, "max_linear_m_s": 0.01, "max_angular_rad_s": 0.02, "max_drift_m": 0.02}, "start_sim_s": 433.377, "end_sim_s": 438.345, "span_sim_s": 4.968000000000018, "count": 139, "max_gap_sim_s": 0.036000000000001364, "stamp_backjumps": 0, "max_stamp_ros_error_s": 0.002999999999985903, "max_nearest_clock_error_s": 0.10199999999997544, "max_nearest_clock_receive_gap_s": 0.10020083400013391, "max_linear_m_s": 0.0, "max_angular_rad_s": 0.0, "max_drift_m": 0.0}

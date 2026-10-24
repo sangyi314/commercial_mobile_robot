@@ -1,1 +1,0 @@
-第三轮首个is_active查询超时；STARTUP未发送。仅对无副作用GetState/is_active使用受父期限限制的2秒子窗口轮询，保存超时和迟到响应。STARTUP、SHUTDOWN、初值、目标均不自动重复。先以独立域72真实已安装Nav2 localization组件验证，再决定是否开新仿真。

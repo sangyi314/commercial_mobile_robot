@@ -1,7 +1,0 @@
-{
-  "cleanup": "FAILED",
-  "resources_released": true,
-  "abnormal_count": 9,
-  "clean_exit_count": 15,
-  "nodes": []
-}

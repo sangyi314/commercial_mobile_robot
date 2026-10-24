@@ -1,2 +1,0 @@
-ROS_DISTRO=jazzy
-AMENT_PREFIX_PATH=/opt/ros/jazzy

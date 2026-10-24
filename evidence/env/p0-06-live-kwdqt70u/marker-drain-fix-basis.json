@@ -1,7 +1,0 @@
-{
-  "failed_run": "p0-06-crossing-probe-kwdqt70u-final06-low",
-  "cause": "RECORDING_END emitted at42.084sim but recorder signal immediately after IPC ack; event missing from closed MCAP while /clock ends42.084",
-  "repair": "mark only start/end waits reliable DDS acknowledgment bounded0.5s and >=0.1sim fresh clock advancement within existing command deadline; bag content checker unchanged",
-  "scope": "necessary original worker extension under P0-06 continuation authorization; v1 result/schema/config unchanged",
-  "not_proof_of_disk_content": "closed actual MCAP validator remains mandatory"
-}

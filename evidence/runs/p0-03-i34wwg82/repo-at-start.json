@@ -1,8 +1,0 @@
-{
-  "git_commit": "a5ae76caa2781a14c8d2ab688803d35edb870633",
-  "dirty": true,
-  "status": " M .vscode/settings.json\n?? .vscode/c_cpp_properties.json\n?? evidence/runs/\n",
-  "started_at_utc": "2026-10-20T17:37:56.698224Z",
-  "start_monotonic_s": 107521.295463186,
-  "boot_id": "d0fe8490-2f77-4a55-bd30-789d2184a220"
-}

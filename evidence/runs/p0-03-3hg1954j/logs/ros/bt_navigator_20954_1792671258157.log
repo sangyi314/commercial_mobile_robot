@@ -1,8 +1,0 @@
-[INFO] [1792671258.205983770] [bt_navigator]: 
-	bt_navigator lifecycle node launched. 
-	Waiting on external lifecycle transitions to activate
-	See https://design.ros2.org/articles/node_lifecycle.html for more information.
-[INFO] [1792671258.206524520] [bt_navigator]: Creating
-[INFO] [1792671575.018891546] [rclcpp]: signal_handler(SIGINT/SIGTERM)
-[INFO] [1792671575.019351212] [bt_navigator]: Running Nav2 LifecycleNode rcl preshutdown (bt_navigator)
-[INFO] [1792671575.019689712] [bt_navigator]: Destroying bond (bt_navigator) to lifecycle manager.

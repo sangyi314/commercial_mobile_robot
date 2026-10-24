@@ -1,8 +1,0 @@
-{
-  "junit_cases": 115,
-  "failure_error_skipped_cases": [],
-  "junit_sha256": "2d48ec55b2c41e3f7d18088d7a4ef6f72ab3347b1d83ab29850684acce4a0827",
-  "static_log": "Python syntax OK: tools/validate_run.py\nPython syntax OK: tests/test_run_schema.py\nSchema syntax/meta-schema OK: experiments/schemas/scenario.schema.json\nSchema syntax/meta-schema OK: experiments/schemas/manifest.schema.json\nSchema syntax/meta-schema OK: experiments/schemas/result.schema.json\n",
-  "official_resources_path": "evidence/env/p0-02-RaLo7r83/check-scIFOQQt/official-resources.json",
-  "note": "Historical existing logs read only; not rerun or treated as P0-03 navigation evidence."
-}
