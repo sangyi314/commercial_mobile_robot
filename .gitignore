@@ -1,14 +1,91 @@
-build/
-install/
-log/
-data/bags/
-experiments/results/raw/
-__pycache__/
-*.pyc
+
+# ==================================================
+# Commercial Mobile Robot - .gitignore
+# ==================================================
+
+# 1. ROS 2 / Colcon
+/build/
+/install/
+/log/
+/logs/
+
+# 2. Python cache and testing
 .cache/
-evidence/bags/
-evidence/runs/*/bag/
-evidence/runs/*/*.log
+.pytest_cache/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.coverage
+htmlcov/
+.tox/
+.mypy_cache/
+.ruff_cache/
+
+# 3. CMake / C++
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+compile_commands.json
+*.o
+*.a
+*.so
+*.so.*
+*.out
+
+# 4. Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# 5. Python environments
+.venv/
+venv/
+.env
+.env.*
+!.env.example
+
+# 6. Evidence (generated validation outputs)
+/evidence/
+
+# 7. Experiment outputs
+/experiments/results/
+/experiments/manifests/
+/experiments/logs/
+/experiments/captures/
+/experiments/artifacts/
+/experiments/tmp/
+/experiments/temp/
+
+# 8. ROS bags and large recordings
 *.bag
 *.db3
 *.mcap
+*.mp4
+*.avi
+*.mov
+*.pcd
+
+# 9. Temporary files
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# 10. Keep reproducible experiment definitions
+# Do NOT ignore:
+# /experiments/goals/
+# /experiments/motions/
+# /experiments/profiles/
+# /experiments/scenarios/
+# /experiments/schemas/
+
+# 11. Keep project documentation and source
+# Do NOT ignore:
+# /docs/
+# /src/
+# /tools/
+# /data/
