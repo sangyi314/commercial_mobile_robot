@@ -50,6 +50,7 @@ venv/
 
 # 6. Evidence (generated validation outputs)
 /evidence/
+/evidence/runs/
 
 # 7. Experiment outputs
 /experiments/results/
