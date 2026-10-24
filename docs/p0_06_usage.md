@@ -1,69 +1,70 @@
-# P0-06 使用说明（目前只到第6步审查门）
+# P0-06 使用说明（第7～11步工程验证后）
 
-工作区 /home/robot/commercial_mobile_robot，Ubuntu ARM64。当前三份动态场景均draft，不能执行。原P0-05静态入口保留。本文件后面的真实命令仅供本人审查确认后使用，本次未执行。
+真实工程记录与边界见 docs/verification/p0-06-kwdqt70u-live.md。当前 crossing 和 observed_occlusion 已冻结为 ready_for_recording；旧 probe/draft 文件保留，不能当当前正式输入。P0-05静态入口、v1合同保留。个人目视/理解仍待确认，collision=null。
 
-## 已执行的编译和离线检查
+## 环境与唯一生命周期
 
-~~~bash
-source /opt/ros/jazzy/setup.bash
+在 Ubuntu 执行，不在Mac镜像执行ROS。原runner负责项目锁、至多一个目标、期限、归属进程、录包与清理。先完成前轮关闭检查；禁止手发第二目标和全局pkill。
+
+```bash
 cd /home/robot/commercial_mobile_robot
-colcon --log-base log/p0-06-a3179_6v-11 build --packages-select cmr_sim --build-base build/p0-06-a3179_6v --install-base install/p0-06-a3179_6v
+source /opt/ros/jazzy/setup.bash
 source /home/robot/commercial_mobile_robot/install/p0-06-a3179_6v/setup.bash
-ctest --test-dir /home/robot/commercial_mobile_robot/build/p0-06-a3179_6v/cmr_sim --output-on-failure
-~~~
+source /home/robot/commercial_mobile_robot/tools/p0_03_env.bash
+```
 
-加载ROS/本次安装环境是运行原生程序的前提；没有此环境时新增protobuf测试曾找不到libgz-utils2，失败已保留。不要改系统LD_LIBRARY_PATH或全局预加载。Gazebo仍单独使用P0-04/05验证的Boost修正。
+原生构建实际完成，当前build-04日志和两项CTest在 evidence/env/p0-06-live-kwdqt70u。修改源码或任一受审依赖后，既有probe准备指纹失效，必须新revision重新探测；不能直接套旧ready标签。
 
-~~~bash
-python3 -B tools/run_trial.py --scenario /home/robot/commercial_mobile_robot/experiments/scenarios/p0_05_official_static.yaml --method mppi --profile /home/robot/commercial_mobile_robot/experiments/runner_profile.yaml --run-id p0-06-static-check-mppi-20261026 --check
-python3 -B tools/run_trial.py --scenario /home/robot/commercial_mobile_robot/experiments/scenarios/p0_05_official_static.yaml --method dwb --profile /home/robot/commercial_mobile_robot/experiments/runner_profile.yaml --run-id p0-06-static-check-dwb-20261026 --check
-~~~
+## 已执行的只读预检
 
-以上退出0。新crossing/observed_occlusion/probe draft的--check实际退出2，未生成目录。v2 --require-ready只承认ready_for_recording，ready_for_probe不是正式导航许可。
+以下命令实际退出0，不生成回合目录。再次执行将核对当前输入：
 
-## 本人确认后，第7步的顺序与命令（本次未运行）
+```bash
+python3 -B tools/run_trial.py --scenario /home/robot/commercial_mobile_robot/experiments/scenarios/crossing.yaml --method mppi --profile /home/robot/commercial_mobile_robot/experiments/profiles/p0_06_crossing.yaml --run-id p0-06-crossing-review-kwdqt70u-c9 --check
+python3 -B tools/run_trial.py --scenario /home/robot/commercial_mobile_robot/experiments/scenarios/observed_occlusion.yaml --method mppi --profile /home/robot/commercial_mobile_robot/experiments/profiles/p0_06_observed_occlusion.yaml --run-id p0-06-occlusion-review-kwdqt70u-o5 --check
+python3 -B tools/run_trial.py --scenario /home/robot/commercial_mobile_robot/experiments/scenarios/p0_05_official_static.yaml --method mppi --profile /home/robot/commercial_mobile_robot/experiments/runner_profile.yaml --run-id p0-06-static-mppi-review-kwdqt70u --check
+python3 -B tools/run_trial.py --scenario /home/robot/commercial_mobile_robot/experiments/scenarios/p0_05_official_static.yaml --method dwb --profile /home/robot/commercial_mobile_robot/experiments/runner_profile.yaml --run-id p0-06-static-dwb-review-kwdqt70u --check
+```
 
-先审查工程报告及代码差异，尤其两派生world与原world的原生SDF检查均255且stderr相同。该继承诊断未改成通过；未完成审查不执行以下命令。主方案仍保留原静态资产，先做不发目标的真实加载/实体探测；若实际加载失败，保留新回合再评审最小修复。
+## 实际执行的单回合命令
 
-1. 只读确认无外来owner、工作区和输入指纹未变化；先加载上面的ROS/安装环境。
-2. --ack-review意味着本人已审查候选坐标、余量、协议、继承SDF诊断及代码；不是对物理/激光的签名。工具创建一个全新准备目录，结构审查和资源hash完成才生成ready_for_probe。物理与外参仍pending。
-3. 对准备目录执行--check，确认mode=probe/sends_goal=false、两个C++角色、资源/二进制、期限/清理计划。
-4. 只在本人批准后执行同一参数去掉--check。该命令启动仿真、发布定位初值、激活Nav2、录包和有限道具探测，但不生成/发送导航目标。另一轮必须等上一轮清理完毕并使用新编号。
+以下为历史执行命令，不是覆盖重跑许可。同名输出/回合已存在会拒绝。宿主包装器仅加入采样和本任务两条 nice19、最多120秒负载，调用原Ubuntu runner。low表示不另加负载；higher必须经实际CPU窗口复算达到预设差值才认可。
 
-~~~bash
-python3 -B tools/prepare_dynamic_probe.py --scenario /home/robot/commercial_mobile_robot/experiments/scenarios/p0_06_probe.yaml --profile /home/robot/commercial_mobile_robot/experiments/profiles/p0_06_probe.yaml --output-dir /home/robot/commercial_mobile_robot/evidence/env/p0-06-probe-preparation-20261026-review01 --ack-review
-python3 -B tools/run_trial.py --scenario /home/robot/commercial_mobile_robot/evidence/env/p0-06-probe-preparation-20261026-review01/probe.yaml --method mppi --profile /home/robot/commercial_mobile_robot/evidence/env/p0-06-probe-preparation-20261026-review01/profile.yaml --run-id p0-06-probe-20261026-review01 --check
-python3 -B tools/run_trial.py --scenario /home/robot/commercial_mobile_robot/evidence/env/p0-06-probe-preparation-20261026-review01/probe.yaml --method mppi --profile /home/robot/commercial_mobile_robot/evidence/env/p0-06-probe-preparation-20261026-review01/profile.yaml --run-id p0-06-probe-20261026-review01
-~~~
+在本次Mac实际执行：
 
-S3应使用它自己的不发目标probe，不能拿S1证据冒充。下面只生成S3 probe输入，不自动运行：
+```bash
+python3 -B /Users/manman/.codex/.chatgpt-projects/g-p-6a9f976d7b648191ac95a3c6d217d849/deliverables/P0-06_host_trial_kwdqt70u.py --scenario /home/robot/commercial_mobile_robot/experiments/scenarios/crossing.yaml --profile /home/robot/commercial_mobile_robot/experiments/profiles/p0_06_crossing.yaml --run-id p0-06-crossing-kwdqt70u-c11 --load low --output /Users/manman/.codex/.chatgpt-projects/g-p-6a9f976d7b648191ac95a3c6d217d849/deliverables/P0-06_host-kwdqt70u/crossing-c11
+```
 
-~~~bash
-python3 -B tools/prepare_dynamic_probe.py --scenario /home/robot/commercial_mobile_robot/experiments/scenarios/observed_occlusion.yaml --profile /home/robot/commercial_mobile_robot/experiments/profiles/p0_06_observed_occlusion.yaml --output-dir /home/robot/commercial_mobile_robot/evidence/env/p0-06-occlusion-preparation-20261026-review01 --ack-review --as-probe
-~~~
+```bash
+python3 -B /Users/manman/.codex/.chatgpt-projects/g-p-6a9f976d7b648191ac95a3c6d217d849/deliverables/P0-06_host_trial_kwdqt70u.py --scenario /home/robot/commercial_mobile_robot/experiments/scenarios/crossing.yaml --profile /home/robot/commercial_mobile_robot/experiments/profiles/p0_06_crossing.yaml --run-id p0-06-crossing-kwdqt70u-c12 --load higher --output /Users/manman/.codex/.chatgpt-projects/g-p-6a9f976d7b648191ac95a3c6d217d849/deliverables/P0-06_host-kwdqt70u/crossing-c12
+```
 
-原始资源和旧profile不改写；输出目录/文件已存在则拒绝。probe是固定完整白名单：接口和初态、机器人静止、两个位置接触正负例（第二位置的负例在旧位置）、轨迹及两次计划暂停。不是任意流程脚本。
+```bash
+python3 -B /Users/manman/.codex/.chatgpt-projects/g-p-6a9f976d7b648191ac95a3c6d217d849/deliverables/P0-06_host_trial_kwdqt70u.py --scenario /home/robot/commercial_mobile_robot/experiments/scenarios/observed_occlusion.yaml --profile /home/robot/commercial_mobile_robot/experiments/profiles/p0_06_observed_occlusion.yaml --run-id p0-06-occlusion-kwdqt70u-o5 --load low --output /Users/manman/.codex/.chatgpt-projects/g-p-6a9f976d7b648191ac95a3c6d217d849/deliverables/P0-06_host-kwdqt70u/occlusion-o5
+```
 
-## 第7步停止条件
+```bash
+python3 -B /Users/manman/.codex/.chatgpt-projects/g-p-6a9f976d7b648191ac95a3c6d217d849/deliverables/P0-06_host_trial_kwdqt70u.py --scenario /home/robot/commercial_mobile_robot/experiments/scenarios/observed_occlusion.yaml --profile /home/robot/commercial_mobile_robot/experiments/profiles/p0_06_observed_occlusion.yaml --run-id p0-06-occlusion-kwdqt70u-o6 --load higher --output /Users/manman/.codex/.chatgpt-projects/g-p-6a9f976d7b648191ac95a3c6d217d849/deliverables/P0-06_host-kwdqt70u/occlusion-o6
+```
 
-接口或类型/实体ID冲突、没有独立新鲜Pose_V、clock不能对齐、初态不符、机器人移动、录包/捕获器不就绪、服务失败、暂停时有在途请求未排空、原生加载错误，均保留该轮并停止。不要手发目标、重发STARTUP或用CLI循环驱动。
+无宿主负载包装时，Ubuntu正常入口仍是同一 run_trial.py；上述四轮包装器的 runner.log 保存了真实启动结果。每轮完整收尾，再校验bag与sidecar。新实验需使用唯一新ID及新输出目录，不能复用本页历史ID。
 
-目前laser_extrinsic、world_map_alignment、scan_timing_semantics均未冻结。首轮probe可以收集原始证据但可能因这些缺口或暂停缺少实际样本而非零；不能去掉检查获得成功。只收到相同scene缓存回复不能证明暂停位姿不变；缺少新鲜实际pose应标未核实。确认原始数据后生成新revision/新回合，不补写旧证据。
+## 已执行的关闭后检查
 
-S1候选需实际路线相交且障碍先于机器人经过交点；S3须在移动观察者下获得可见→完整遮挡→恢复，固定机位候选不能代替正式证据。当前几何分析限定已核实的平面外参，非平面truth明确无效而不静默压平。
+```bash
+python3 -B tools/validate_run.py run /home/robot/commercial_mobile_robot/evidence/runs/p0-06-crossing-kwdqt70u-c11
+python3 -B tools/inspect_bag.py --run-dir /home/robot/commercial_mobile_robot/evidence/runs/p0-06-crossing-kwdqt70u-c11 --output /home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/recomputed-bag-c11.json
+python3 -B tools/inspect_dynamic_recording.py --run-dir /home/robot/commercial_mobile_robot/evidence/runs/p0-06-crossing-kwdqt70u-c11 --output /home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/recomputed-dynamic-c11.json
+python3 -B tools/summarize_runs.py --root /home/robot/commercial_mobile_robot/evidence/runs --prefix p0-06- --output /home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/index-final.json
+```
 
-## 关闭后离线检查与汇总（未来命令）
+带output的历史命令拒绝覆盖，应为新的复查选择新的输出文件。VALID只说明记录合同；Action成功、normal_pass、动态有效、bag内容和cleanup分别判断。纯逻辑/隔离ROS合成测试不是导航基线。
 
-~~~bash
-python3 -B tools/validate_run.py run /home/robot/commercial_mobile_robot/evidence/runs/p0-06-probe-20261026-review01
-python3 -B tools/inspect_bag.py --run-dir /home/robot/commercial_mobile_robot/evidence/runs/p0-06-probe-20261026-review01 --output /home/robot/commercial_mobile_robot/evidence/env/p0-06-probe-preparation-20261026-review01/bag-review.json
-python3 -B tools/inspect_dynamic_recording.py --run-dir /home/robot/commercial_mobile_robot/evidence/runs/p0-06-probe-20261026-review01 --output /home/robot/commercial_mobile_robot/evidence/env/p0-06-probe-preparation-20261026-review01/dynamic-review.json
-~~~
+## 探测与停止条件
 
-这些路径目前没有真实回合。检查器不会replay；输出必须新建。VALID只说明记录合同；normal_pass/probe_pass/动态有效性/清理/碰撞评价分别判定。collision保持null。
+当前各自准备目录为 evidence/env/p0-06-live-kwdqt70u/crossing-r10-preparation 和 observed_occlusion-final08-preparation。probe模式固定不发导航目标，使用PROBE_ARMED，包含冷启动初态、两个位置局部接触正负例、运动、两次不同相位暂停/恢复。历史final08四probe详见报告；本页不把准备目录当正式记录。
 
-~~~bash
-python3 -B tools/summarize_runs.py --root /home/robot/commercial_mobile_robot/evidence/runs --prefix p0-06- --output /home/robot/commercial_mobile_robot/evidence/env/p0-06-dev-a3179_6v/current-run-index.json
-~~~
+资源/实体身份变化、时钟回跳、数据缺失/乱序、真值隔离失败、轨迹/间隔超限、缺扫描支持、Action未知、bag边界缺失或清理失败即保留失败并停止。不得用未知补零，不得放宽阈值重试。原官方symbol重名SDF诊断仍255，实际加载另行验证；不得改成静态检查通过。
 
-此只读汇总本次执行时分母为0。当前不执行第8～11步：宿主负载、真实暂停/冷启动验证、正式输入冻结、S1/S3各至少两轮正式记录、个人目视/理解签署均待审查确认。
+物理外参[-0.064,0,0.15]来自实际实体树及扫描，保留真实3D姿态。源时间对齐不平移轨迹。S1当前是有实际路线与先后时刻的交汇，圆柱明显先经过，不代表同时近距对抗；S3必须同一实体先见/静态遮挡/恢复，partial与unknown不计遮挡。完整碰撞评价、实车安全和个人理解不由本工具签署。

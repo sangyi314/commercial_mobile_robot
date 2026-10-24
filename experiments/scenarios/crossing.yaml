@@ -1,15 +1,15 @@
 {
   "schema_version": 2,
   "scenario_id": "crossing",
-  "scenario_revision": "p0-06-frozen-s1-final08-kwdqt70u",
+  "scenario_revision": "p0-06-frozen-s1-r10-kwdqt70u",
   "kind": "crossing",
   "master_scenario_id": "S1",
   "legacy_id": null,
   "status": "ready_for_recording",
   "resources": {
     "world": {
-      "path": "/home/robot/commercial_mobile_robot/src/cmr_sim/worlds/p0_06_crossing_r09.sdf",
-      "sha256": "4a66544b0582200d4c842bcdef069c78a82a9bbd516e824d861d27f1eadde959",
+      "path": "/home/robot/commercial_mobile_robot/src/cmr_sim/worlds/p0_06_crossing_r10.sdf",
+      "sha256": "1353f6923c340ee10b79d6da0f8a94a06bc94bb7d33595cf3ce9bfedd91a3731",
       "package": null,
       "package_version": null
     },
@@ -32,8 +32,8 @@
       "package_version": null
     },
     "dependency_lock": {
-      "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/crossing-final08-preparation/dependencies.json",
-      "sha256": "5958cf73084b438e6eac4884162706fd703f9c797776317a6077bae4c81bb79d",
+      "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/crossing-r10-preparation/dependencies.json",
+      "sha256": "4a4741ed22553ce9cc12adf5f882ce44166dc2cfe69ad992058fe420280910a7",
       "package": null,
       "package_version": null
     }
@@ -105,7 +105,7 @@
       "event_id": "motion_once",
       "actor_id": "scripted_obstacle",
       "trigger": null,
-      "motion_ref": "/home/robot/commercial_mobile_robot/experiments/motions/crossing_r09.yaml"
+      "motion_ref": "/home/robot/commercial_mobile_robot/experiments/motions/crossing_r10.yaml"
     }
   ],
   "evaluation_scope": null,
@@ -115,7 +115,7 @@
     "poses_free": "checked",
     "interfaces_observed": "checked",
     "evidence_refs": [
-      "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/ready-proof-crossing-final08.json",
+      "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/ready-proof-crossing-r10.json",
       "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/world-map-landmark-review.json",
       "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/calibration-01.json"
     ]
@@ -137,8 +137,8 @@
       "sha256": "99c7c5c65a9a869a0681caf58fc1f00b467c2e7e7e758481b5f03e412ebf4b93"
     },
     "motion": {
-      "path": "/home/robot/commercial_mobile_robot/experiments/motions/crossing_r09.yaml",
-      "sha256": "27bc967c3341091fbf4348c55f80c8855b7d175dac8a21e21945adc58934c8af"
+      "path": "/home/robot/commercial_mobile_robot/experiments/motions/crossing_r10.yaml",
+      "sha256": "be4458ed0bd529edec078fb3fb945a89c0209dcb69bbad8e7254daae757018aa"
     },
     "geometry": {
       "path": "/home/robot/commercial_mobile_robot/experiments/p0_06_geometry-r02.json",
@@ -150,12 +150,12 @@
     },
     "preparation": {
       "review": {
-        "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/crossing-final08-preparation/preparation.json",
-        "sha256": "b615ce145f8a856b7832277c35f55ea9c86a40e2557dadca83403feb0a311750"
+        "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/crossing-r10-preparation/preparation.json",
+        "sha256": "169fc35965f33d5a3a4a4f69245f79783e92b8271a638723c6e755e49177485b"
       },
       "probe": {
-        "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/ready-proof-crossing-final08.json",
-        "sha256": "47c273ab3e2b5ab7ccfbf9bdaef73bf6e8bf63de2d5de06e523afd12765f5007"
+        "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/ready-proof-crossing-r10.json",
+        "sha256": "f2f695625a10b2ac3a3e822aed0c60bec31edf5440ad2d9e85742f1435062ae8"
       }
     }
   }

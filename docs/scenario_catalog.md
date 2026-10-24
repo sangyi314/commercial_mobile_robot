@@ -1,3 +1,11 @@
+# 当前已验证场景（2026-10-27）
+
+S1使用crossing_r10：圆柱中心从(-2.3,-0.14,0.3)至(-1.4,-0.14,0.3)，6.1仿真秒匀速，8.1秒末结点后保持6秒；实际导航任务继承原短目标。S3保留实际独立准备的observed_occlusion。两场景分别有r10/final08低/较高负载probe和四轮正式原始证据。历史候选保持可追溯，旧候选描述不能覆盖当前冻结输入。S1实际交汇提前较多，只证明路线与先后关系；S3有连续扫描支持V/O/V。个人目视仍待确认。
+
+详细入口：`docs/verification/p0-06-kwdqt70u-live.md`。原设计快照如下，其中“未运行”“待确认外参”等只描述当时状态。
+
+---
+
 # 场景目录（离线候选，未实测）
 S0继续用P0-05静态入口；S1=crossing，S2=head_on不实现，S3=observed_occlusion。
 官方冻结world嵌套turtlebot3_world→include ros_symbol→link symbol均无pose，按SDF默认identity；九柱collision局部中心x/y∈{-1.1,0,1.1}，z=.25，半径.15，高.5。model.config实际版本选择仍待第7步实体树核对。mesh墙不用于本次确定遮挡标签。

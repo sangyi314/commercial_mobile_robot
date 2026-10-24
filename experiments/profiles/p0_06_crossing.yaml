@@ -6,7 +6,7 @@
   "base_scenario": "/home/robot/commercial_mobile_robot/experiments/scenarios/p0_05_official_static.yaml",
   "scenario_ref": {
     "path": "/home/robot/commercial_mobile_robot/experiments/scenarios/crossing.yaml",
-    "sha256": "e1401813063357c0f48c03518f735ab846b181e19f7c7d3bd5952f8492a32a2b"
+    "sha256": "baf77345aa2b5c1074a8f666fac1ba399e37aed3f679fb0a480c38e5de1b9c1e"
   },
   "executables": {
     "driver": {
