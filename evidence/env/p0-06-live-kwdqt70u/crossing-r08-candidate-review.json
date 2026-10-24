@@ -1,0 +1,18 @@
+{
+  "start_xy": [
+    -1.95,
+    -0.05
+  ],
+  "end_xy": [
+    -0.65,
+    0.65
+  ],
+  "duration_s": 9.9,
+  "speed_mps": 0.14913962687104443,
+  "minimum_raster_distance_m": 0.18027756377319948,
+  "conservative_required_raster_distance_m": 0.15535533905932739,
+  "minimum_stationary_robot_distance_m": 0.45276925690687087,
+  "basis_run": "p0-06-crossing-kwdqt70u-c5",
+  "basis": "c5 navigation lasted about19sim sec; actual crossing actor17.943 vsrobot30.559sim, actor12.616sec ahead but long front obstruction; all post-terminal localization estimates remain >0.25m. Preserve failure. Move initial cylinder forward/right to cross and clear earlier; do not change original goal, initialpose, goal checker or controller. This hypothesis is not yet a passing result.",
+  "crossing_and_arrival": "must be recomputed from new actual formal data"
+}

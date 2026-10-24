@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "record_origin": "real",
+  "scope": "closed_real_probe_and_load_review",
+  "input_fingerprint": "4eb8a483c945c8408e32caa78cd2b99582e039952b78fc9c9800a7b3f824bebd",
+  "checks": {
+    "visual": true,
+    "collision": true,
+    "scan": true,
+    "time_alignment": true,
+    "pause": true,
+    "cold_start": true,
+    "truth_isolation": true
+  },
+  "manifest": {
+    "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-probe-kwdqt70u-06/manifest.json",
+    "sha256": "017396bf6d26114b90df98c7872adcf9284d2359f841a8f88297b7945a16efd6"
+  },
+  "probe_runs": [
+    "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-probe-kwdqt70u-06",
+    "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-probe-kwdqt70u-07"
+  ],
+  "gazebo_pids": [
+    191858,
+    194169
+  ],
+  "clock_epochs": [
+    "p0-06-probe-kwdqt70u-06:sim0",
+    "p0-06-probe-kwdqt70u-07:sim0"
+  ],
+  "evidence": [
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-probe-kwdqt70u-06/manifest.json",
+      "sha256": "017396bf6d26114b90df98c7872adcf9284d2359f841a8f88297b7945a16efd6"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-probe-kwdqt70u-06/result.json",
+      "sha256": "87c7dff6ed8690142e9a0a7bec95853e2c416356c686179a4efdc221909c5825"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-probe-kwdqt70u-06/runtime/runner-exit.json",
+      "sha256": "97f7b1bf46c373678c3ad2699ccfc59b15e0ef55170d96973c7698889194439e"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-probe-kwdqt70u-06/runtime/dynamic-report.json",
+      "sha256": "bcc6d375571288a5f23f5c96c748d48e073fbec8f5355ea72ec07a4d6c92b312"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-probe-kwdqt70u-06/runtime/dynamic-readiness.json",
+      "sha256": "54fb7879e3bf6b12a897812d6a04ef396de266d580a140fde36f9e4fdf53aa2a"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-probe-kwdqt70u-06/runtime/cleanup.json",
+      "sha256": "a90ca771a65010b6e51281517c47dda60915e4d27831051ac3e8d95123d39bd4"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-probe-kwdqt70u-06/runtime/gazebo-raw.jsonl",
+      "sha256": "be975a64ceff29a22eae05ac5a6d8ede5be6d6ffde6d7e55c4936cfc5092354e"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-probe-kwdqt70u-06/runtime/motion-commands.jsonl",
+      "sha256": "f5c8d8e5b5946f64de92e322df8c1b7b0d91ddedb756e22bcac9f8bd265c0aee"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-probe-kwdqt70u-06/runtime/observations.jsonl",
+      "sha256": "b92db3c0c2a156db07c5291a7fc71c96d034de72dce0284784fd0b9d3a3566b7"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-probe-kwdqt70u-06/logs/events.jsonl",
+      "sha256": "3e32a69bf5067fe381560f5418bf49634989d12802d6c0dccf240ffdb466b682"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-probe-kwdqt70u-06/bag/metadata.yaml",
+      "sha256": "5c4e78cb37bd1a7fe8087ddc33a74a96d4a6cf4b14d3c7bf799ef2b1ae0e7b80"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-probe-kwdqt70u-06/bag/bag_0.mcap",
+      "sha256": "c6b0eb196aa1c3f391e9b8f1b89c709ecc15af344fab33ec25bc90363ae35327"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-probe-kwdqt70u-07/manifest.json",
+      "sha256": "c2c2b0d3b6dbd3194b95583375b51ddcc94616b7b909800df931ad0b7263c546"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-probe-kwdqt70u-07/result.json",
+      "sha256": "722a7d651737623bc8645f74daa51e90561cbda8d1c71718363d95015b9559e3"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-probe-kwdqt70u-07/runtime/runner-exit.json",
+      "sha256": "97f7b1bf46c373678c3ad2699ccfc59b15e0ef55170d96973c7698889194439e"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-probe-kwdqt70u-07/runtime/dynamic-report.json",
+      "sha256": "482078befc21c40535079af3ceb568a02dfa26d0f90dfaa0b777d2359bfbe870"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-probe-kwdqt70u-07/runtime/dynamic-readiness.json",
+      "sha256": "1e5be1442a062b40fe26a5f8cf207d37ad7de3c9d5a4bd87d7c6530c123f5f48"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-probe-kwdqt70u-07/runtime/cleanup.json",
+      "sha256": "be04f1924261b20699088eaa5bf12f70899354bacad646a002ebbfa7926ba960"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-probe-kwdqt70u-07/runtime/gazebo-raw.jsonl",
+      "sha256": "761d39513ef14190b2d17e8c4c0f070aee217c3db96bfded3e73b0ba782c25f3"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-probe-kwdqt70u-07/runtime/motion-commands.jsonl",
+      "sha256": "29caa8ae1646af7ae7c282197cc0dbb584ba0ce94ed95bfb5fac9c05fdc5fe7b"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-probe-kwdqt70u-07/runtime/observations.jsonl",
+      "sha256": "e09789145983181ba94d1047f1aec47083b8ae4eaf684ec9aa03efc7a08e09d8"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-probe-kwdqt70u-07/logs/events.jsonl",
+      "sha256": "d274ef6ecc6572c5c2ab293eefd317f09c0df43ff22008c34b30ff57ec5b0e1b"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-probe-kwdqt70u-07/bag/metadata.yaml",
+      "sha256": "32d78a83ebb8f65a92a2952b8731ec0fa7a54e618323dc2b4d70768f8841c30c"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-probe-kwdqt70u-07/bag/bag_0.mcap",
+      "sha256": "5a689d81f2d4d05142974f7e4b569a67505b6f82b0bfac041c14f42d7db00af7"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/load-s1-low.json",
+      "sha256": "1ef917605bddd29e6475c1162ec1cf48417514e09869d3a6db464c5770e2885c"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/load-s1-higher.json",
+      "sha256": "952790ece8d5867103a5194187b647a185b0b9311cf92b8f0d5d54813efb3fd0"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/probe-load-contrast.json",
+      "sha256": "57c967c571e987bdcf8cd348d87ebee5b5a53dc990254fb0fa18141ae6bbf95a"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/world-map-landmark-review.json",
+      "sha256": "ef6a6e7f6c9e73a493f302ea742c15f7f08d13226659b1521a7e4c5fb7411101"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/calibration-01.json",
+      "sha256": "bc01f8098d4a0ef98d1e4059446b3faee9bb3f78731bf9190961dcd4fbfba4db"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/load-contrast-criteria.json",
+      "sha256": "f581dfe22d8162f03a9d97d05276f8fcab478e59d8381d8140f38adcc50819c6"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/host-evidence-01/probe-06/host-load.jsonl",
+      "sha256": "811cada930f77d2401f782b4ce13c3c90919771d943ca05a4d746d2c52fffbbe"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/host-evidence-01/probe-06/metadata.json",
+      "sha256": "4ed51fecbcf04eb63567603e5e63b5f99b7121c38772fabe4ac309b3889abcb4"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/host-evidence-01/probe-06/runner.log",
+      "sha256": "a4de21fcaedc0f9d81346602c9f3e0b7c3108b7a97806189078c2e7def0a78b2"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/host-evidence-01/probe-06/sampling-errors.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/host-evidence-01/probe-07/host-load.jsonl",
+      "sha256": "4ea4745cdf868860c7f4879e5abe097cddad3bab235f53a185a90534768a1a2b"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/host-evidence-01/probe-07/load-worker-0.log",
+      "sha256": "100f5e04da3849bb3fff7a40619c1548949aac3d50fd2fa6a9b09ec7cf56de5c"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/host-evidence-01/probe-07/load-worker-1.log",
+      "sha256": "4f426413698cd12308c0df9efe9713fa229193119a63db1473296acd655a3b46"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/host-evidence-01/probe-07/metadata.json",
+      "sha256": "e6fcd2a365147fbfe3d6c8bd51191a443aaae96905c34cddaa855b2874b59e44"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/host-evidence-01/probe-07/runner.log",
+      "sha256": "21ad680ce93df053a6ad548c4ecdf63044a41f99cfebcdfc85f2d1a8f739a6b1"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/host-evidence-01/probe-07/sampling-errors.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    }
+  ],
+  "visual_scope": "actual Scene visual geometry and GPU lidar returns; personal visual observation pending",
+  "collision_scope": "two-location cylinder contact and actual ball response only; navigation collision=null",
+  "reviewer": "Codex engineering review under explicit user continuation authorization",
+  "personal_visual_confirmation": null,
+  "personal_understanding_confirmation": null,
+  "map_scope": "nominal world-map identity with measured raster landmark offsets; no AMCL-as-truth and no exact pixel equivalence"
+}

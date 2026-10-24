@@ -1,0 +1,39 @@
+stdin is not a terminal device. Keyboard handling disabled.[INFO] [1792816791.793622874] [cmr_recorder_p0_06_occlusion_probe_kwdqt70u_final07_higher]: Press SPACE for pausing/resuming
+[INFO] [1792816791.793641832] [cmr_recorder_p0_06_occlusion_probe_kwdqt70u_final07_higher]: Event publisher thread: Started
+[INFO] [1792816791.801231874] [cmr_recorder_p0_06_occlusion_probe_kwdqt70u_final07_higher]: Starting recording to '/home/robot/commercial_mobile_robot/evidence/runs/p0-06-occlusion-probe-kwdqt70u-final07-higher/bag'
+[INFO] [1792816791.803055415] [cmr_recorder_p0_06_occlusion_probe_kwdqt70u_final07_higher]: Listening for topics...
+[INFO] [1792816791.803087332] [cmr_recorder_p0_06_occlusion_probe_kwdqt70u_final07_higher]: Recording...
+[INFO] [1792816791.803124249] [cmr_recorder_p0_06_occlusion_probe_kwdqt70u_final07_higher]: Topics discovery started.
+[INFO] [1792816791.803185665] [cmr_recorder_p0_06_occlusion_probe_kwdqt70u_final07_higher]: use_sim_time set, waiting for /clock before starting recording...
+[INFO] [1792816791.903395332] [cmr_recorder_p0_06_occlusion_probe_kwdqt70u_final07_higher]: Sim time /clock found, starting recording.
+[INFO] [1792816791.904574957] [cmr_recorder_p0_06_occlusion_probe_kwdqt70u_final07_higher]: Overriding subscription profile for /clock
+[INFO] [1792816791.905304832] [cmr_recorder_p0_06_occlusion_probe_kwdqt70u_final07_higher]: Subscribed to topic '/clock'
+[INFO] [1792816791.907786999] [cmr_recorder_p0_06_occlusion_probe_kwdqt70u_final07_higher]: Overriding subscription profile for /tf
+[INFO] [1792816791.910683957] [cmr_recorder_p0_06_occlusion_probe_kwdqt70u_final07_higher]: Subscribed to topic '/tf'
+[INFO] [1792816791.910878749] [cmr_recorder_p0_06_occlusion_probe_kwdqt70u_final07_higher]: Overriding subscription profile for /cmr_experiment/events
+[INFO] [1792816791.911783874] [cmr_recorder_p0_06_occlusion_probe_kwdqt70u_final07_higher]: Subscribed to topic '/cmr_experiment/events'
+[INFO] [1792816791.912131790] [cmr_recorder_p0_06_occlusion_probe_kwdqt70u_final07_higher]: Overriding subscription profile for /initialpose
+[INFO] [1792816791.913219249] [cmr_recorder_p0_06_occlusion_probe_kwdqt70u_final07_higher]: Subscribed to topic '/initialpose'
+[INFO] [1792816791.913711290] [cmr_recorder_p0_06_occlusion_probe_kwdqt70u_final07_higher]: Overriding subscription profile for /odom
+[INFO] [1792816791.917169624] [cmr_recorder_p0_06_occlusion_probe_kwdqt70u_final07_higher]: Subscribed to topic '/odom'
+[INFO] [1792816791.917612332] [cmr_recorder_p0_06_occlusion_probe_kwdqt70u_final07_higher]: Overriding subscription profile for /scan
+[INFO] [1792816791.919576124] [cmr_recorder_p0_06_occlusion_probe_kwdqt70u_final07_higher]: Subscribed to topic '/scan'
+[INFO] [1792816791.919810165] [cmr_recorder_p0_06_occlusion_probe_kwdqt70u_final07_higher]: Overriding subscription profile for /tf_static
+[INFO] [1792816791.921051749] [cmr_recorder_p0_06_occlusion_probe_kwdqt70u_final07_higher]: Subscribed to topic '/tf_static'
+[INFO] [1792816795.400189250] [cmr_recorder_p0_06_occlusion_probe_kwdqt70u_final07_higher]: Overriding subscription profile for /map
+[INFO] [1792816795.402310750] [cmr_recorder_p0_06_occlusion_probe_kwdqt70u_final07_higher]: Subscribed to topic '/map'
+[INFO] [1792816799.634218919] [cmr_recorder_p0_06_occlusion_probe_kwdqt70u_final07_higher]: Overriding subscription profile for /cmd_vel_nav
+[INFO] [1792816799.637286211] [cmr_recorder_p0_06_occlusion_probe_kwdqt70u_final07_higher]: Subscribed to topic '/cmd_vel_nav'
+[INFO] [1792816800.025190961] [cmr_recorder_p0_06_occlusion_probe_kwdqt70u_final07_higher]: Overriding subscription profile for /cmd_vel_smoothed
+[INFO] [1792816800.038271503] [cmr_recorder_p0_06_occlusion_probe_kwdqt70u_final07_higher]: Subscribed to topic '/cmd_vel_smoothed'
+[INFO] [1792816800.097870086] [cmr_recorder_p0_06_occlusion_probe_kwdqt70u_final07_higher]: Overriding subscription profile for /cmd_vel
+[INFO] [1792816800.098804044] [cmr_recorder_p0_06_occlusion_probe_kwdqt70u_final07_higher]: Subscribed to topic '/cmd_vel'
+[WARN] [1792816800.233050919] [rosbag2_cpp]: Message definition for topic '/navigate_to_pose/_action/status' with type 'action_msgs/msg/GoalStatusArray' not found. Message definition will be left empty in bag.
+[INFO] [1792816800.233190878] [cmr_recorder_p0_06_occlusion_probe_kwdqt70u_final07_higher]: Overriding subscription profile for /navigate_to_pose/_action/status
+[INFO] [1792816800.234199753] [cmr_recorder_p0_06_occlusion_probe_kwdqt70u_final07_higher]: Subscribed to topic '/navigate_to_pose/_action/status'
+[INFO] [1792816800.238632169] [cmr_recorder_p0_06_occlusion_probe_kwdqt70u_final07_higher]: All requested topics are subscribed. Stopping discovery...
+[INFO] [1792816800.238682128] [cmr_recorder_p0_06_occlusion_probe_kwdqt70u_final07_higher]: Topics discovery stopped.
+[INFO] [1792816847.182599525] [cmr_recorder_p0_06_occlusion_probe_kwdqt70u_final07_higher]: Pausing recording.
+[INFO] [1792816847.182859942] [rosbag2_cpp]: Writing remaining messages from cache to the bag. It may take a while
+[INFO] [1792816847.189407275] [cmr_recorder_p0_06_occlusion_probe_kwdqt70u_final07_higher]: Recording stopped
+[INFO] [1792816847.191455900] [cmr_recorder_p0_06_occlusion_probe_kwdqt70u_final07_higher]: Event publisher thread: Exited

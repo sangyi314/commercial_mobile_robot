@@ -1,0 +1,65 @@
+--- tools/inspect_dynamic_recording.py before
++++ tools/inspect_dynamic_recording.py after
+@@ -1,6 +1,6 @@
+ """Offline dynamic evidence review. Never opens a ROS node or replays a bag."""
+ from pathlib import Path
+-import argparse,json,math
++import argparse,json,math,statistics
+ import validate_run as v
+ from runner_core import write_json,digest,within
+ from dynamic_geometry import interpolate,ray_circle,polyline_crossing,PoseSeries,rotate,rpy_quat,ray_cylinder_3d
+@@ -45,11 +45,17 @@
+     # The independent 25ms source discrepancy bound remains unchanged.
+     by_stamp={}
+     for g in gz:by_stamp.setdefault(g[1],[]).append(g)
+-    residuals=[];delays=[];exact_matches=0
++    residuals=[];delays=[];exact_matches=0;receipt_windows={};receipt_residuals=[]
+     source_ros=[round(x['data']['sim_s']*1e9) for x in ros]
+     if any(b<a for a,b in zip(source_ros,source_ros[1:])):raise ValueError('CLOCK_EPOCH_CHANGED')
+     for x,s in zip(ros,source_ros):
+         receive=x['receive_monotonic_s']
++        nearby=[g for g in gz if abs(g[0]-receive)<=.025]
++        if nearby:
++            anchor=min(nearby,key=lambda g:abs(g[0]-receive))
++            discrepancy=abs(anchor[1]-s);receipt_residuals.append(discrepancy)
++            window=int(receive-ros[0]['receive_monotonic_s'])
++            receipt_windows.setdefault(window,[]).append(discrepancy)
+         exact=[g for g in by_stamp.get(s,[]) if abs(g[0]-receive)<=.1]
+         if exact:
+             g=min(exact,key=lambda g:abs(g[0]-receive));exact_matches+=1
+@@ -58,8 +64,12 @@
+             if not candidates:continue
+             g=min(candidates,key=lambda g:abs(g[0]-receive))
+         residuals.append(abs(g[1]-s));delays.append(receive-g[0])
+-    if len(residuals)<3 or max(residuals)>25000000:raise ValueError('CLOCK_ALIGNMENT_FAILED')
+-    return {'samples':len(residuals),'max_difference_ns':max(residuals),'fit_or_time_shift_applied':False,'method':'bounded_equal_source_stamp_join_then_nearest_receive_fallback','exact_source_matches':exact_matches,'source_discrepancy_limit_ns':25000000,'equal_stamp_receive_association_limit_s':.1,'observed_receive_delta_s':[min(delays),max(delays)]}
++    # Equal stamps alone could hide a constant clock offset within transport
++    # latency. Keep independent, unshifted receive-proximity anchors in every
++    # one-wall-second window; sustained offsets or sustained backlog fail.
++    anchor_medians=[statistics.median(a) for a in receipt_windows.values()]
++    if len(residuals)<3 or not anchor_medians or max(anchor_medians)>25000000 or max(residuals)>25000000:raise ValueError('CLOCK_ALIGNMENT_FAILED')
++    return {'samples':len(residuals),'max_difference_ns':max(residuals),'fit_or_time_shift_applied':False,'method':'bounded_equal_source_stamp_join_then_nearest_receive_fallback','exact_source_matches':exact_matches,'source_discrepancy_limit_ns':25000000,'equal_stamp_receive_association_limit_s':.1,'observed_receive_delta_s':[min(delays),max(delays)],'unshifted_receipt_anchor_window_s':1.,'max_window_median_receipt_discrepancy_ns':max(anchor_medians),'max_raw_nearest_receipt_discrepancy_ns':max(receipt_residuals)}
+ 
+ def actual_poses(raw,run_id,epoch):
+     mapping={};samples={}
+--- tests/test_dynamic_recording.py before
++++ tests/test_dynamic_recording.py after
+@@ -263,7 +263,7 @@
+ def test_clock_equal_source_join_survives_receive_queue_jitter():
+  raw=[{'kind':'clock','receive_monotonic_s':i*.003,'protobuf':{'sim':{'sec':'0','nsec':i*3000000}}} for i in range(100)]
+  # The source clocks agree exactly; the ROS callback is queued 27ms.
+- obs=[{'kind':'clock','receive_monotonic_s':i*.003+.027,'data':{'sim_s':i*.003}} for i in [10,20,30,40]]
++ obs=[{'kind':'clock','receive_monotonic_s':i*.003+(.027 if i==30 else 0.),'data':{'sim_s':i*.003}} for i in [10,20,30,40]]
+  r=clock_alignment(raw,obs)
+  assert r['exact_source_matches']==4 and r['max_difference_ns']==0 and not r['fit_or_time_shift_applied']
+  for x in obs:x['receive_monotonic_s']+=.5
+@@ -273,3 +273,9 @@
+  raw=[{'kind':'clock','receive_monotonic_s':i*.003,'protobuf':{'sim':{'sec':'0','nsec':i*3000000}}} for i in range(100)]
+  obs=[{'kind':'clock','receive_monotonic_s':i*.003,'data':{'sim_s':i*.003+1.}} for i in [10,20,30,40]]
+  with pytest.raises(ValueError,match='ALIGNMENT_FAILED'):clock_alignment(raw,obs)
++
++@pytest.mark.parametrize('offset',[-.06,.06])
++def test_equal_source_join_cannot_hide_sustained_small_clock_offset(offset):
++ raw=[{'kind':'clock','receive_monotonic_s':i*.003,'protobuf':{'sim':{'sec':'0','nsec':i*3000000}}} for i in range(200)]
++ obs=[{'kind':'clock','receive_monotonic_s':i*.003,'data':{'sim_s':i*.003+offset}} for i in range(30,170)]
++ with pytest.raises(ValueError,match='ALIGNMENT_FAILED'):clock_alignment(raw,obs)

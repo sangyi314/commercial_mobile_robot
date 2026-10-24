@@ -1,0 +1,67 @@
+...................................................F.................... [ 87%]
+...F......                                                               [100%]
+=================================== FAILURES ===================================
+__________________ test_quiesce_drains_once_without_resending __________________
+
+    def test_quiesce_drains_once_without_resending():
+     x=DynamicSession.__new__(DynamicSession);calls=[];states=iter([{'inflight':True},{'inflight':False}])
+     x.rpc=lambda role,op,args,budget:calls.append(op)
+     x.status=lambda budget:next(states)
+     class Worker:
+      def pump(self):calls.append('pump')
+>    x.worker=Worker();x.quiesce(DeadlineBudget.after(1))
+
+tests/test_dynamic_runner.py:57: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <runner_dynamic.DynamicSession object at 0xf64401a767e0>
+budget = DeadlineBudget(end=152968.071038356, clock=<built-in function monotonic>)
+
+    def quiesce(self,budget):
+        reply=self.rpc('driver','quiesce',{},budget)
+>       if not reply['inflight']:return
+E       TypeError: 'NoneType' object is not subscriptable
+
+tools/runner_dynamic.py:50: TypeError
+____________ test_static_preparation_and_profile_gate_offline_only _____________
+
+tmp_path = PosixPath('/tmp/pytest-of-robot/pytest-41/test_static_preparation_and_pr0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0xf64401bc5820>
+capsys = <_pytest.capture.CaptureFixture object at 0xf64401a45af0>
+
+    def test_static_preparation_and_profile_gate_offline_only(tmp_path,monkeypatch,capsys):
+     from prepare_dynamic_probe import prepare
+     monkeypatch.setattr(run_trial.subprocess,'Popen',lambda *a,**k:pytest.fail('preparation cannot launch'))
+     output=tmp_path/'fixture_preparation'
+     paths=prepare(ROOT/'experiments/scenarios/p0_06_probe.yaml',ROOT/'experiments/profiles/p0_06_probe.yaml',output,True)
+     spec=v.load_strict(paths['scenario']);profile=v.load_strict(paths['profile'])
+     assert v.validate_scenario(paths['scenario'])['status']=='VALID'
+     assert v.validate_scenario(paths['scenario'],True)['status']=='NOT_READY'
+>    p,_=run_trial.load_inputs(paths['scenario'],paths['profile'],'mppi','p0-06-fixture-check')
+
+tests/test_dynamic_contract.py:68: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tools/run_trial.py:55: in load_inputs
+    return profile_inputs(s,p,method,load_inputs,identity)
+tools/dynamic_contract.py:99: in profile_inputs
+    p=resource(profile['executables'][role]).resolve()
+tools/dynamic_contract.py:19: in resource
+    if check:v.nonempty_file(p,str(p),ref['sha256'])
+tools/validate_run.py:161: in nonempty_file
+    fail("HASH_MISMATCH", location, "SHA256 does not match file bytes")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+code = 'HASH_MISMATCH'
+path = '/home/robot/commercial_mobile_robot/install/p0-06-a3179_6v/cmr_sim/lib/cmr_sim/cmr_scene_driver'
+message = 'SHA256 does not match file bytes'
+
+    def fail(code, path, message):
+>       raise InvalidRecord(code, path, message)
+E       validate_run.InvalidRecord: SHA256 does not match file bytes
+
+tools/validate_run.py:31: InvalidRecord
+- generated xml file: /home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/repair-01-regression.xml -
+=========================== short test summary info ============================
+FAILED tests/test_dynamic_runner.py::test_quiesce_drains_once_without_resending
+FAILED tests/test_dynamic_contract.py::test_static_preparation_and_profile_gate_offline_only
+2 failed, 80 passed in 2.43s

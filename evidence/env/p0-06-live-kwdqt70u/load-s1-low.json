@@ -1,0 +1,62 @@
+{
+  "run": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-probe-kwdqt70u-06",
+  "host_evidence": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/host-evidence-01/probe-06",
+  "condition": "low",
+  "mac_cpus": 10,
+  "ubuntu_cpus": [
+    4
+  ],
+  "source_motion_window_ns": [
+    25304000000,
+    41554000000
+  ],
+  "vm_monotonic_window_s": [
+    158096.351636593,
+    158119.087931063
+  ],
+  "host_to_vm_offset_s": 158064.2571584835,
+  "mapping_uncertainty_wall_s": 0.2575273874911126,
+  "mapping_method": "independent read-only SSH clock sample RTT; not a fit or shift of trajectories; Mac parent clock per trial and worker clocks have separate origins",
+  "mac_busy_fraction": {
+    "n": 21,
+    "mean": 0.423727329014538,
+    "median": 0.4185110663983903,
+    "minimum": 0.343092406221409,
+    "maximum": 0.5287009063444108,
+    "p05": 0.35,
+    "p95": 0.518918918918919
+  },
+  "ubuntu_busy_fraction": {
+    "n": 10,
+    "mean": 0.49085480513989455,
+    "median": 0.5024154998215704,
+    "minimum": 0.34846625766871164,
+    "maximum": 0.5822637106184364,
+    "p05": 0.34846625766871164,
+    "p95": 0.5822637106184364
+  },
+  "active_gazebo_rtf": {
+    "n": 161,
+    "mean": 0.9916430636379577,
+    "median": 0.9999860001959973,
+    "minimum": 0.44393750070290106,
+    "maximum": 1.248483093041954,
+    "p05": 0.9238350363205744,
+    "p95": 1.0601328558494951
+  },
+  "owned_load_workers": [],
+  "trajectory": {
+    "maximum_m": 0.0035000000000002807,
+    "rms_m": 0.0010942104366382093,
+    "p95_m": 0.0024500000000000632,
+    "max_truth_gap_ns": 24000000,
+    "sample_count": 909,
+    "max_command_step_m": 0.003849999999999909,
+    "service_latency_max_wall_s": 0.035624457988888025,
+    "skipped_schedule_points": 0,
+    "time_shift_applied": false
+  },
+  "probe_pass": true,
+  "dynamic_recording_valid": false,
+  "human_confirmation": null
+}

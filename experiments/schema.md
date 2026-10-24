@@ -102,3 +102,6 @@ python3 tools/validate_run.py run <directory> [--allow-fixtures]
 顺序：严格解析/基本身份→fixture 来源→结构/manifest 引用→缺 result→结果结构、身份、终态与评价→ready 条件。场景验证先检查文件合法性，再处理 require-ready。工具根据 __file__ 找项目内 Schema，从任意 cwd 使用；输入只读，不补默认值、不修复、不生成结果。未知字段/值类型不自动转换。
 
 四个入口为 load_strict、validate_scenario、validate_run_dir、main。其他函数为内部小 helper，不作为新增框架接口。来源见 [fixture README](../tests/fixtures/README.md)，案例位置与未执行状态见 [测试设计](../docs/run_schema_test_design.md)。
+
+## ScenarioSpec v2 (P0-06)
+版本2独立schema，仅crossing/S1、observed_occlusion/S3；draft不可运行，ready_for_probe仅probe，require-ready只放行ready_for_recording。dynamic含带hash的actor/motion/geometry、sim_ns触发与容差、real准备证据。旧scenario v1和manifest/result v1不改；归档仍只用回合内引用。准备哈希变更即失效。当前动态文件均draft，不是已验证场景。

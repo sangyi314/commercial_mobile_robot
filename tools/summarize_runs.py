@@ -24,6 +24,13 @@ def summarize(root,prefix):
      if bag.exists():row['bag_check']={'path':str(bag),'sha256':digest(bag),'value':strict_json(bag.read_text())}
      if behavior.exists():row['behavior_verified']=all(strict_json(behavior.read_text()).get('checks',{}).values()) and bool(strict_json(behavior.read_text()).get('checks'))
      if exitfile.exists():row['normal_pass']=strict_json(exitfile.read_text()).get('normal_pass') is True and row['behavior_verified'] and row.get('bag_check',{}).get('value',{}).get('valid') is True and r['status']['cleanup']=='SUCCEEDED' and r['status']['startup']=='READY' and r['status']['action']=='SUCCEEDED' and r['status']['harness']=='COMPLETED'
+     row['purpose']=strict_json(faultfile.read_text()).get('mode','navigation_recording') if faultfile.exists() else None
+     dynamic_file=path/'runtime/dynamic-report.json'
+     if dynamic_file.exists():
+      dr=strict_json(dynamic_file.read_text());row['dynamic_recording_valid']=dr.get('dynamic_recording_valid');row['probe_pass']=dr.get('probe_pass')
+      if row['purpose']=='navigation_recording':row['normal_pass']=row['normal_pass'] and dr.get('dynamic_recording_valid') is True
+     if row['purpose']=='probe':row['normal_pass']=False
+     if faultfile.exists() and strict_json(faultfile.read_text()).get('profile_version')==2 and not dynamic_file.exists():row['normal_pass']=False
      fault=strict_json(faultfile.read_text()).get('fault') if faultfile.exists() else None
      first_failure=strict_json((path/'runtime/failures.json').read_text()).get('first',{}) if (path/'runtime/failures.json').exists() else {}
      row['controlled_fault_case_pass']=bool(first_failure and first_failure.get('code')=='CONTROLLED_INITIALPOSE_TIMEOUT' and r['status']['harness']=='STARTUP_FAILED' and fault and r['status']['startup']=='FAILED' and r['status']['action']=='NOT_SENT' and r['status']['cleanup']=='SUCCEEDED' and row.get('bag_check',{}).get('value',{}).get('valid') and 'FAULT_ACTIVATED' in row['bag_check']['value'].get('events',[]))

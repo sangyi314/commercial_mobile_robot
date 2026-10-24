@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "record_origin": "real",
+  "scope": "engineering_review",
+  "reviewer": "Codex",
+  "user_authorization": "Explicit continuation request supersedes step6 stop; engineer performs code review; real simulation and evidence-supported minimum fixes authorized.",
+  "human_visual_confirmation": null,
+  "human_understanding_confirmation": null,
+  "findings": {
+    "inherited_source_hashes": "all match prior final audit",
+    "scenario_gate": "draft blocked; separate probe NOT_SENT and formal goal_accepted; separate per-scene hash-bound probe required",
+    "geometry": "actor r0.1 h0.6; S1 candidate x[-2.5,-1.5],y0 avoids static cylinders; S3 path x-0.6,y[-0.3,0.8] avoids static cylinders by >=0.6 center; actual observer visibility remains unknown",
+    "time": "integer source stamp; sim-time phase, duplicate trigger idempotent; single inflight; clock backjump fails",
+    "truth": "independent Pose_V from separate capture; service ack never actual; pose containers mandatory; bounded interpolation/no extrapolation",
+    "missing": "no raw scan/actual pose does not imply invisible or occluded; null extrinsic blocks validation",
+    "pause": "requires fresh source data; equal cached scene snapshots not enough; runtime feasibility pending",
+    "sdf": "native check255 inherited same stderr, all original diagnostics saved; not passed; finite load probe allowed by user",
+    "lifecycle": "same supervisor/lock/budgets; dynamic close before simulator; no second lifecycle",
+    "change": "prepare acknowledgement now records engineer review under user authorization; no personal signature"
+  }
+}

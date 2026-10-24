@@ -1,0 +1,11 @@
+{
+  "goal_xy": [
+    -1.9568372509483436,
+    1.8
+  ],
+  "source": "p0-06-crossing-kwdqt70u-c1/runtime/global-costmap.yaml",
+  "footprint_radius_used_m": 0.23,
+  "worst_cost": 255,
+  "sampled_cells": 88,
+  "scope": "offline candidate investigation; new runtime readiness still required"
+}

@@ -1,0 +1,58 @@
+--- tools/inspect_dynamic_recording.py before
++++ tools/inspect_dynamic_recording.py after
+@@ -39,14 +39,28 @@
+     ros=[x for x in observations if x['kind']=='clock']
+     if len(gz)<3 or len(ros)<3:raise ValueError('CLOCK_ALIGNMENT_MISSING')
+     if any(b[1]<a[1] or b[0]<a[0] for a,b in zip(gz,gz[1:])):raise ValueError('CLOCK_EPOCH_CHANGED')
+-    residuals=[]
+-    for x in ros:
+-        candidates=[g for g in gz if abs(g[0]-x['receive_monotonic_s'])<=.025]
+-        if candidates:
+-            g=min(candidates,key=lambda g:abs(g[0]-x['receive_monotonic_s']))
+-            residuals.append(abs(g[1]-round(x['data']['sim_s']*1e9)))
++    # /clock is the bridge of the recorded GZ clock. Match equal source stamps
++    # first; callback receive times are transport observations, not source time.
++    # 100ms is a bounded association window measured from real bridge delivery.
++    # The independent 25ms source discrepancy bound remains unchanged.
++    by_stamp={}
++    for g in gz:by_stamp.setdefault(g[1],[]).append(g)
++    residuals=[];delays=[];exact_matches=0
++    source_ros=[round(x['data']['sim_s']*1e9) for x in ros]
++    if any(b<a for a,b in zip(source_ros,source_ros[1:])):raise ValueError('CLOCK_EPOCH_CHANGED')
++    for x,s in zip(ros,source_ros):
++        receive=x['receive_monotonic_s']
++        exact=[g for g in by_stamp.get(s,[]) if abs(g[0]-receive)<=.1]
++        if exact:
++            g=min(exact,key=lambda g:abs(g[0]-receive));exact_matches+=1
++        else:
++            candidates=[g for g in gz if abs(g[0]-receive)<=.025]
++            if not candidates:continue
++            g=min(candidates,key=lambda g:abs(g[0]-receive))
++        residuals.append(abs(g[1]-s));delays.append(receive-g[0])
+     if len(residuals)<3 or max(residuals)>25000000:raise ValueError('CLOCK_ALIGNMENT_FAILED')
+-    return {'samples':len(residuals),'max_difference_ns':max(residuals),'fit_or_time_shift_applied':False}
++    return {'samples':len(residuals),'max_difference_ns':max(residuals),'fit_or_time_shift_applied':False,'method':'bounded_equal_source_stamp_join_then_nearest_receive_fallback','exact_source_matches':exact_matches,'source_discrepancy_limit_ns':25000000,'equal_stamp_receive_association_limit_s':.1,'observed_receive_delta_s':[min(delays),max(delays)]}
++
+ def actual_poses(raw,run_id,epoch):
+     mapping={};samples={}
+     for x in raw:
+--- tests/test_dynamic_recording.py before
++++ tests/test_dynamic_recording.py after
+@@ -259,3 +259,17 @@
+  assert sequence_valid(frames,'observed_occlusion')
+  assert not sequence_valid([dict(x,label='partial' if x['label']=='occluded' else x['label']) for x in frames],'observed_occlusion')
+  assert not sequence_valid([dict(x,label=None if x['label']=='partial' else x['label']) for x in frames],'observed_occlusion')
++
++def test_clock_equal_source_join_survives_receive_queue_jitter():
++ raw=[{'kind':'clock','receive_monotonic_s':i*.003,'protobuf':{'sim':{'sec':'0','nsec':i*3000000}}} for i in range(100)]
++ # The source clocks agree exactly; the ROS callback is queued 27ms.
++ obs=[{'kind':'clock','receive_monotonic_s':i*.003+.027,'data':{'sim_s':i*.003}} for i in [10,20,30,40]]
++ r=clock_alignment(raw,obs)
++ assert r['exact_source_matches']==4 and r['max_difference_ns']==0 and not r['fit_or_time_shift_applied']
++ for x in obs:x['receive_monotonic_s']+=.5
++ with pytest.raises(ValueError,match='ALIGNMENT_FAILED'):clock_alignment(raw,obs)
++
++def test_clock_source_join_never_repairs_clock_offset():
++ raw=[{'kind':'clock','receive_monotonic_s':i*.003,'protobuf':{'sim':{'sec':'0','nsec':i*3000000}}} for i in range(100)]
++ obs=[{'kind':'clock','receive_monotonic_s':i*.003,'data':{'sim_s':i*.003+1.}} for i in [10,20,30,40]]
++ with pytest.raises(ValueError,match='ALIGNMENT_FAILED'):clock_alignment(raw,obs)

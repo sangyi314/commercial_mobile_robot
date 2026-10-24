@@ -1,0 +1,147 @@
+{
+  "run": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-probe-kwdqt70u-01",
+  "raw_scene_line": 5515,
+  "physical_laser_pose": {
+    "orientation": {
+      "w": 1
+    },
+    "position": {
+      "x": -0.064,
+      "z": 0.15
+    }
+  },
+  "base_scan_link_pose": {
+    "orientation": {
+      "w": 1,
+      "x": 8.953762706467067e-27,
+      "y": -5.990523716514013e-23,
+      "z": 5.090453872790418e-26
+    },
+    "position": {
+      "x": 2.220446049250313e-16,
+      "y": 1.1102230246251565e-16
+    }
+  },
+  "laser_extrinsic": {
+    "xyz": [
+      -0.064,
+      0.0,
+      0.15
+    ],
+    "rpy": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "reference": "actual top-model Pose_V -> base_scan link -> gpu_lidar sensor; ROS TF label is not the physical origin"
+  },
+  "scan_frames": 148,
+  "time_increment_values": [
+    0.0
+  ],
+  "scan_time_values": [
+    0.0
+  ],
+  "source_frame_ids": [
+    "base_scan"
+  ],
+  "target_labels": {
+    "visible": 147,
+    "None": 1
+  },
+  "target_investigation_residual": {
+    "n": 2537,
+    "median": 0.0067202422179686305,
+    "p95": 0.019834683603265013,
+    "maximum": 0.04109160871698048,
+    "within_0_05_fraction": 1.0
+  },
+  "static_landmark_residual": {
+    "n": 10064,
+    "median": 0.006962404519273546,
+    "p95": 0.023380064429253222,
+    "maximum": 1.8687495846258426,
+    "within_0_05_fraction": 0.9706875993640699
+  },
+  "alignment_errors": {},
+  "map_resolution_m": 0.05,
+  "map_landmarks": [
+    {
+      "center_xy": [
+        -1.1,
+        -1.1
+      ],
+      "center_pixel_value": 205,
+      "nearest_occupied_center_m": 0.10606601717798049
+    },
+    {
+      "center_xy": [
+        -1.1,
+        0
+      ],
+      "center_pixel_value": 205,
+      "nearest_occupied_center_m": 0.07905694150420794
+    },
+    {
+      "center_xy": [
+        -1.1,
+        1.1
+      ],
+      "center_pixel_value": 205,
+      "nearest_occupied_center_m": 0.07905694150420808
+    },
+    {
+      "center_xy": [
+        0,
+        -1.1
+      ],
+      "center_pixel_value": 205,
+      "nearest_occupied_center_m": 0.07905694150420878
+    },
+    {
+      "center_xy": [
+        0,
+        0
+      ],
+      "center_pixel_value": 205,
+      "nearest_occupied_center_m": 0.07905694150420836
+    },
+    {
+      "center_xy": [
+        0,
+        1.1
+      ],
+      "center_pixel_value": 205,
+      "nearest_occupied_center_m": 0.0790569415042085
+    },
+    {
+      "center_xy": [
+        1.1,
+        -1.1
+      ],
+      "center_pixel_value": 205,
+      "nearest_occupied_center_m": 0.07905694150420892
+    },
+    {
+      "center_xy": [
+        1.1,
+        0
+      ],
+      "center_pixel_value": 205,
+      "nearest_occupied_center_m": 0.0790569415042085
+    },
+    {
+      "center_xy": [
+        1.1,
+        1.1
+      ],
+      "center_pixel_value": 205,
+      "nearest_occupied_center_m": 0.07905694150420892
+    }
+  ],
+  "semantics_sources": [
+    "https://raw.githubusercontent.com/gazebosim/gz-sensors/gz-sensors8_8.2.2/src/GpuLidarSensor.cc",
+    "https://raw.githubusercontent.com/gazebosim/ros_gz/jazzy/ros_gz_bridge/src/convert/sensor_msgs.cpp"
+  ],
+  "personal_visual_confirmation": null
+}

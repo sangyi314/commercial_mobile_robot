@@ -1,0 +1,342 @@
+{
+  "checks": [
+    {
+      "argv": [
+        "gz",
+        "sdf",
+        "-k",
+        "/home/robot/commercial_mobile_robot/evidence/env/p0-04-pair-q2MXrdh3/inputs/world-ogre1.sdf"
+      ],
+      "exit": 255,
+      "stdout": "",
+      "stderr": "\u001b[1;31mError [Utils.cc:176]\u001b[0m Error: Non-unique names detected in <link name='symbol'>\n  <collision name='one_one'>\n    <pose>-1.1000000000000001 -1.1000000000000001 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <max_contacts>10</max_contacts>\n    <surface>\n      <bounce/>\n      <friction>\n        <ode/>\n      </friction>\n      <contact>\n        <ode/>\n      </contact>\n    </surface>\n  </collision>\n  <visual name='one_one'>\n    <pose>-1.1000000000000001 -1.1000000000000001 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <material>\n      <script>\n        <uri>file://media/materials/scripts/gazebo.material</uri>\n        <name>Gazebo/White</name>\n      </script>\n    </material>\n  </visual>\n  <collision name='one_two'>\n    <pose>-1.1000000000000001 0 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <max_contacts>10</max_contacts>\n    <surface>\n      <bounce/>\n      <friction>\n        <ode/>\n      </friction>\n      <contact>\n        <ode/>\n      </contact>\n    </surface>\n  </collision>\n  <visual name='one_two'>\n    <pose>-1.1000000000000001 0 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <material>\n      <script>\n        <uri>file://media/materials/scripts/gazebo.material</uri>\n        <name>Gazebo/White</name>\n      </script>\n    </material>\n  </visual>\n  <collision name='one_three'>\n    <pose>-1.1000000000000001 1.1000000000000001 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <max_contacts>10</max_contacts>\n    <surface>\n      <bounce/>\n      <friction>\n        <ode/>\n      </friction>\n      <contact>\n        <ode/>\n      </contact>\n    </surface>\n  </collision>\n  <visual name='one_three'>\n    <pose>-1.1000000000000001 1.1000000000000001 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <material>\n      <script>\n        <uri>file://media/materials/scripts/gazebo.material</uri>\n        <name>Gazebo/White</name>\n      </script>\n    </material>\n  </visual>\n  <collision name='two_one'>\n    <pose>0 -1.1000000000000001 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <max_contacts>10</max_contacts>\n    <surface>\n      <bounce/>\n      <friction>\n        <ode/>\n      </friction>\n      <contact>\n        <ode/>\n      </contact>\n    </surface>\n  </collision>\n  <visual name='two_one'>\n    <pose>0 -1.1000000000000001 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <material>\n      <script>\n        <uri>file://media/materials/scripts/gazebo.material</uri>\n        <name>Gazebo/White</name>\n      </script>\n    </material>\n  </visual>\n  <collision name='two_two'>\n    <pose>0 0 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <max_contacts>10</max_contacts>\n    <surface>\n      <bounce/>\n      <friction>\n        <ode/>\n      </friction>\n      <contact>\n        <ode/>\n      </contact>\n    </surface>\n  </collision>\n  <visual name='two_two'>\n    <pose>0 0 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <material>\n      <script>\n        <uri>file://media/materials/scripts/gazebo.material</uri>\n        <name>Gazebo/White</name>\n      </script>\n    </material>\n  </visual>\n  <collision name='two_three'>\n    <pose>0 1.1000000000000001 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <max_contacts>10</max_contacts>\n    <surface>\n      <bounce/>\n      <friction>\n        <ode/>\n      </friction>\n      <contact>\n        <ode/>\n      </contact>\n    </surface>\n  </collision>\n  <visual name='two_three'>\n    <pose>0 1.1000000000000001 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <material>\n      <script>\n        <uri>file://media/materials/scripts/gazebo.material</uri>\n        <name>Gazebo/White</name>\n      </script>\n    </material>\n  </visual>\n  <collision name='three_one'>\n    <pose>1.1000000000000001 -1.1000000000000001 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <max_contacts>10</max_contacts>\n    <surface>\n      <bounce/>\n      <friction>\n        <ode/>\n      </friction>\n      <contact>\n        <ode/>\n      </contact>\n    </surface>\n  </collision>\n  <visual name='three_one'>\n    <pose>1.1000000000000001 -1.1000000000000001 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <material>\n      <script>\n        <uri>file://media/materials/scripts/gazebo.material</uri>\n        <name>Gazebo/White</name>\n      </script>\n    </material>\n  </visual>\n  <collision name='three_two'>\n    <pose>1.1000000000000001 0 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <max_contacts>10</max_contacts>\n    <surface>\n      <bounce/>\n      <friction>\n        <ode/>\n      </friction>\n      <contact>\n        <ode/>\n      </contact>\n    </surface>\n  </collision>\n  <visual name='three_two'>\n    <pose>1.1000000000000001 0 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <material>\n      <script>\n        <uri>file://media/materials/scripts/gazebo.material</uri>\n        <name>Gazebo/White</name>\n      </script>\n    </material>\n  </visual>\n  <collision name='three_three'>\n    <pose>1.1000000000000001 1.1000000000000001 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <max_contacts>10</max_contacts>\n    <surface>\n      <bounce/>\n      <friction>\n        <ode/>\n      </friction>\n      <contact>\n        <ode/>\n      </contact>\n    </surface>\n  </collision>\n  <visual name='three_three'>\n    <pose>1.1000000000000001 1.1000000000000001 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <material>\n      <script>\n        <uri>file://media/materials/scripts/gazebo.material</uri>\n        <name>Gazebo/White</name>\n      </script>\n    </material>\n  </visual>\n  <collision name='head'>\n    <pose>3.5 0 -0.5 0 0 0</pose>\n    <geometry>\n      <mesh>\n        <uri>model://turtlebot3_world/meshes/hexagon.dae</uri>\n        <scale>0.80000000000000004 0.80000000000000004 0.80000000000000004</scale>\n      </mesh>\n    </geometry>\n    <max_contacts>10</max_contacts>\n    <surface>\n      <bounce/>\n      <friction>\n        <ode/>\n      </friction>\n      <contact>\n        <ode/>\n      </contact>\n    </surface>\n  </collision>\n  <visual name='head'>\n    <pose>3.5 0 -0.5 0 0 0</pose>\n    <geometry>\n      <mesh>\n        <uri>model://turtlebot3_world/meshes/hexagon.dae</uri>\n        <scale>0.80000000000000004 0.80000000000000004 0.80000000000000004</scale>\n      </mesh>\n    </geometry>\n    <material>\n      <script>\n        <uri>file://media/materials/scripts/gazebo.material</uri>\n        <name>Gazebo/Green</name>\n      </script>\n    </material>\n  </visual>\n  <collision name='left_hand'>\n    <pose>1.8 2.7000000000000002 0 0 0 0</pose>\n    <geometry>\n      <mesh>\n        <uri>model://turtlebot3_world/meshes/hexagon.dae</uri>\n        <scale>0.55000000000000004 0.55000000000000004 0.55000000000000004</scale>\n      </mesh>\n    </geometry>\n    <max_contacts>10</max_contacts>\n    <surface>\n      <bounce/>\n      <friction>\n        <ode/>\n      </friction>\n      <contact>\n        <ode/>\n      </contact>\n    </surface>\n  </collision>\n  <visual name='left_hand'>\n    <pose>1.8 2.7000000000000002 0 0 0 0</pose>\n    <geometry>\n      <mesh>\n        <uri>model://turtlebot3_world/meshes/hexagon.dae</uri>\n        <scale>0.55000000000000004 0.55000000000000004 0.55000000000000004</scale>\n      </mesh>\n    </geometry>\n    <material>\n      <script>\n        <uri>file://media/materials/scripts/gazebo.material</uri>\n        <name>Gazebo/Green</name>\n      </script>\n    </material>\n  </visual>\n  <collision name='right_hand'>\n    <pose>1.8 -2.7000000000000002 0 0 0 0</pose>\n    <geometry>\n      <mesh>\n        <uri>model://turtlebot3_world/meshes/hexagon.dae</uri>\n        <scale>0.55000000000000004 0.55000000000000004 0.55000000000000004</scale>\n      </mesh>\n    </geometry>\n    <max_contacts>10</max_contacts>\n    <surface>\n      <bounce/>\n      <friction>\n        <ode/>\n      </friction>\n      <contact>\n        <ode/>\n      </contact>\n    </surface>\n  </collision>\n  <visual name='right_hand'>\n    <pose>1.8 -2.7000000000000002 0 0 0 0</pose>\n    <geometry>\n      <mesh>\n        <uri>model://turtlebot3_world/meshes/hexagon.dae</uri>\n        <scale>0.55000000000000004 0.55000000000000004 0.55000000000000004</scale>\n      </mesh>\n    </geometry>\n    <material>\n      <script>\n        <uri>file://media/materials/scripts/gazebo.material</uri>\n        <name>Gazebo/Green</name>\n      </script>\n    </material>\n  </visual>\n  <collision name='left_foot'>\n    <pose>-1.8 2.7000000000000002 0 0 0 0</pose>\n    <geometry>\n      <mesh>\n        <uri>model://turtlebot3_world/meshes/hexagon.dae</uri>\n        <scale>0.55000000000000004 0.55000000000000004 0.55000000000000004</scale>\n      </mesh>\n    </geometry>\n    <max_contacts>10</max_contacts>\n    <surface>\n      <bounce/>\n      <friction>\n        <ode/>\n      </friction>\n      <contact>\n        <ode/>\n      </contact>\n    </surface>\n  </collision>\n  <visual name='left_foot'>\n    <pose>-1.8 2.7000000000000002 0 0 0 0</pose>\n    <geometry>\n      <mesh>\n        <uri>model://turtlebot3_world/meshes/hexagon.dae</uri>\n        <scale>0.55000000000000004 0.55000000000000004 0.55000000000000004</scale>\n      </mesh>\n    </geometry>\n    <material>\n      <script>\n        <uri>file://media/materials/scripts/gazebo.material</uri>\n        <name>Gazebo/Green</name>\n      </script>\n    </material>\n  </visual>\n  <collision name='right_foot'>\n    <pose>-1.8 -2.7000000000000002 0 0 0 0</pose>\n    <geometry>\n      <mesh>\n        <uri>model://turtlebot3_world/meshes/hexagon.dae</uri>\n        <scale>0.55000000000000004 0.55000000000000004 0.55000000000000004</scale>\n      </mesh>\n    </geometry>\n    <max_contacts>10</max_contacts>\n    <surface>\n      <bounce/>\n      <friction>\n        <ode/>\n      </friction>\n      <contact>\n        <ode/>\n      </contact>\n    </surface>\n  </collision>\n  <visual name='right_foot'>\n    <pose>-1.8 -2.7000000000000002 0 0 0 0</pose>\n    <geometry>\n      <mesh>\n        <uri>model://turtlebot3_world/meshes/hexagon.dae</uri>\n        <scale>0.55000000000000004 0.55000000000000004 0.55000000000000004</scale>\n      </mesh>\n    </geometry>\n    <material>\n      <script>\n        <uri>file://media/materials/scripts/gazebo.material</uri>\n        <name>Gazebo/Green</name>\n      </script>\n    </material>\n  </visual>\n  <collision name='body'>\n    <pose>0 0 -0.29999999999999999 0 0 -1.5708</pose>\n    <geometry>\n      <mesh>\n        <uri>model://turtlebot3_world/meshes/wall.dae</uri>\n        <scale>0.25 0.25 0.25</scale>\n      </mesh>\n    </geometry>\n    <max_contacts>10</max_contacts>\n    <surface>\n      <bounce/>\n      <friction>\n        <ode/>\n      </friction>\n      <contact>\n        <ode/>\n      </contact>\n    </surface>\n  </collision>\n  <visual name='body'>\n    <pose>0 0 -0.29999999999999999 0 0 -1.5708</pose>\n    <geometry>\n      <mesh>\n        <uri>model://turtlebot3_world/meshes/wall.dae</uri>\n        <scale>0.25 0.25 0.25</scale>\n      </mesh>\n    </geometry>\n    <material>\n      <script>\n        <uri>file://media/materials/scripts/gazebo.material</uri>\n        <name>Gazebo/FlatBlack</name>\n      </script>\n    </material>\n  </visual>\n</link>\n",
+      "sha256": "d70fad169fc277f4430f7afb488c025dda5b49aaa36518ed33b7a624865c1bd3"
+    },
+    {
+      "argv": [
+        "gz",
+        "sdf",
+        "-k",
+        "/home/robot/commercial_mobile_robot/src/cmr_sim/worlds/p0_06_crossing.sdf"
+      ],
+      "exit": 255,
+      "stdout": "",
+      "stderr": "\u001b[1;31mError [Utils.cc:176]\u001b[0m Error: Non-unique names detected in <link name='symbol'>\n  <collision name='one_one'>\n    <pose>-1.1000000000000001 -1.1000000000000001 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <max_contacts>10</max_contacts>\n    <surface>\n      <bounce/>\n      <friction>\n        <ode/>\n      </friction>\n      <contact>\n        <ode/>\n      </contact>\n    </surface>\n  </collision>\n  <visual name='one_one'>\n    <pose>-1.1000000000000001 -1.1000000000000001 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <material>\n      <script>\n        <uri>file://media/materials/scripts/gazebo.material</uri>\n        <name>Gazebo/White</name>\n      </script>\n    </material>\n  </visual>\n  <collision name='one_two'>\n    <pose>-1.1000000000000001 0 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <max_contacts>10</max_contacts>\n    <surface>\n      <bounce/>\n      <friction>\n        <ode/>\n      </friction>\n      <contact>\n        <ode/>\n      </contact>\n    </surface>\n  </collision>\n  <visual name='one_two'>\n    <pose>-1.1000000000000001 0 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <material>\n      <script>\n        <uri>file://media/materials/scripts/gazebo.material</uri>\n        <name>Gazebo/White</name>\n      </script>\n    </material>\n  </visual>\n  <collision name='one_three'>\n    <pose>-1.1000000000000001 1.1000000000000001 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <max_contacts>10</max_contacts>\n    <surface>\n      <bounce/>\n      <friction>\n        <ode/>\n      </friction>\n      <contact>\n        <ode/>\n      </contact>\n    </surface>\n  </collision>\n  <visual name='one_three'>\n    <pose>-1.1000000000000001 1.1000000000000001 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <material>\n      <script>\n        <uri>file://media/materials/scripts/gazebo.material</uri>\n        <name>Gazebo/White</name>\n      </script>\n    </material>\n  </visual>\n  <collision name='two_one'>\n    <pose>0 -1.1000000000000001 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <max_contacts>10</max_contacts>\n    <surface>\n      <bounce/>\n      <friction>\n        <ode/>\n      </friction>\n      <contact>\n        <ode/>\n      </contact>\n    </surface>\n  </collision>\n  <visual name='two_one'>\n    <pose>0 -1.1000000000000001 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <material>\n      <script>\n        <uri>file://media/materials/scripts/gazebo.material</uri>\n        <name>Gazebo/White</name>\n      </script>\n    </material>\n  </visual>\n  <collision name='two_two'>\n    <pose>0 0 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <max_contacts>10</max_contacts>\n    <surface>\n      <bounce/>\n      <friction>\n        <ode/>\n      </friction>\n      <contact>\n        <ode/>\n      </contact>\n    </surface>\n  </collision>\n  <visual name='two_two'>\n    <pose>0 0 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <material>\n      <script>\n        <uri>file://media/materials/scripts/gazebo.material</uri>\n        <name>Gazebo/White</name>\n      </script>\n    </material>\n  </visual>\n  <collision name='two_three'>\n    <pose>0 1.1000000000000001 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <max_contacts>10</max_contacts>\n    <surface>\n      <bounce/>\n      <friction>\n        <ode/>\n      </friction>\n      <contact>\n        <ode/>\n      </contact>\n    </surface>\n  </collision>\n  <visual name='two_three'>\n    <pose>0 1.1000000000000001 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <material>\n      <script>\n        <uri>file://media/materials/scripts/gazebo.material</uri>\n        <name>Gazebo/White</name>\n      </script>\n    </material>\n  </visual>\n  <collision name='three_one'>\n    <pose>1.1000000000000001 -1.1000000000000001 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <max_contacts>10</max_contacts>\n    <surface>\n      <bounce/>\n      <friction>\n        <ode/>\n      </friction>\n      <contact>\n        <ode/>\n      </contact>\n    </surface>\n  </collision>\n  <visual name='three_one'>\n    <pose>1.1000000000000001 -1.1000000000000001 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <material>\n      <script>\n        <uri>file://media/materials/scripts/gazebo.material</uri>\n        <name>Gazebo/White</name>\n      </script>\n    </material>\n  </visual>\n  <collision name='three_two'>\n    <pose>1.1000000000000001 0 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <max_contacts>10</max_contacts>\n    <surface>\n      <bounce/>\n      <friction>\n        <ode/>\n      </friction>\n      <contact>\n        <ode/>\n      </contact>\n    </surface>\n  </collision>\n  <visual name='three_two'>\n    <pose>1.1000000000000001 0 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <material>\n      <script>\n        <uri>file://media/materials/scripts/gazebo.material</uri>\n        <name>Gazebo/White</name>\n      </script>\n    </material>\n  </visual>\n  <collision name='three_three'>\n    <pose>1.1000000000000001 1.1000000000000001 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <max_contacts>10</max_contacts>\n    <surface>\n      <bounce/>\n      <friction>\n        <ode/>\n      </friction>\n      <contact>\n        <ode/>\n      </contact>\n    </surface>\n  </collision>\n  <visual name='three_three'>\n    <pose>1.1000000000000001 1.1000000000000001 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <material>\n      <script>\n        <uri>file://media/materials/scripts/gazebo.material</uri>\n        <name>Gazebo/White</name>\n      </script>\n    </material>\n  </visual>\n  <collision name='head'>\n    <pose>3.5 0 -0.5 0 0 0</pose>\n    <geometry>\n      <mesh>\n        <uri>model://turtlebot3_world/meshes/hexagon.dae</uri>\n        <scale>0.80000000000000004 0.80000000000000004 0.80000000000000004</scale>\n      </mesh>\n    </geometry>\n    <max_contacts>10</max_contacts>\n    <surface>\n      <bounce/>\n      <friction>\n        <ode/>\n      </friction>\n      <contact>\n        <ode/>\n      </contact>\n    </surface>\n  </collision>\n  <visual name='head'>\n    <pose>3.5 0 -0.5 0 0 0</pose>\n    <geometry>\n      <mesh>\n        <uri>model://turtlebot3_world/meshes/hexagon.dae</uri>\n        <scale>0.80000000000000004 0.80000000000000004 0.80000000000000004</scale>\n      </mesh>\n    </geometry>\n    <material>\n      <script>\n        <uri>file://media/materials/scripts/gazebo.material</uri>\n        <name>Gazebo/Green</name>\n      </script>\n    </material>\n  </visual>\n  <collision name='left_hand'>\n    <pose>1.8 2.7000000000000002 0 0 0 0</pose>\n    <geometry>\n      <mesh>\n        <uri>model://turtlebot3_world/meshes/hexagon.dae</uri>\n        <scale>0.55000000000000004 0.55000000000000004 0.55000000000000004</scale>\n      </mesh>\n    </geometry>\n    <max_contacts>10</max_contacts>\n    <surface>\n      <bounce/>\n      <friction>\n        <ode/>\n      </friction>\n      <contact>\n        <ode/>\n      </contact>\n    </surface>\n  </collision>\n  <visual name='left_hand'>\n    <pose>1.8 2.7000000000000002 0 0 0 0</pose>\n    <geometry>\n      <mesh>\n        <uri>model://turtlebot3_world/meshes/hexagon.dae</uri>\n        <scale>0.55000000000000004 0.55000000000000004 0.55000000000000004</scale>\n      </mesh>\n    </geometry>\n    <material>\n      <script>\n        <uri>file://media/materials/scripts/gazebo.material</uri>\n        <name>Gazebo/Green</name>\n      </script>\n    </material>\n  </visual>\n  <collision name='right_hand'>\n    <pose>1.8 -2.7000000000000002 0 0 0 0</pose>\n    <geometry>\n      <mesh>\n        <uri>model://turtlebot3_world/meshes/hexagon.dae</uri>\n        <scale>0.55000000000000004 0.55000000000000004 0.55000000000000004</scale>\n      </mesh>\n    </geometry>\n    <max_contacts>10</max_contacts>\n    <surface>\n      <bounce/>\n      <friction>\n        <ode/>\n      </friction>\n      <contact>\n        <ode/>\n      </contact>\n    </surface>\n  </collision>\n  <visual name='right_hand'>\n    <pose>1.8 -2.7000000000000002 0 0 0 0</pose>\n    <geometry>\n      <mesh>\n        <uri>model://turtlebot3_world/meshes/hexagon.dae</uri>\n        <scale>0.55000000000000004 0.55000000000000004 0.55000000000000004</scale>\n      </mesh>\n    </geometry>\n    <material>\n      <script>\n        <uri>file://media/materials/scripts/gazebo.material</uri>\n        <name>Gazebo/Green</name>\n      </script>\n    </material>\n  </visual>\n  <collision name='left_foot'>\n    <pose>-1.8 2.7000000000000002 0 0 0 0</pose>\n    <geometry>\n      <mesh>\n        <uri>model://turtlebot3_world/meshes/hexagon.dae</uri>\n        <scale>0.55000000000000004 0.55000000000000004 0.55000000000000004</scale>\n      </mesh>\n    </geometry>\n    <max_contacts>10</max_contacts>\n    <surface>\n      <bounce/>\n      <friction>\n        <ode/>\n      </friction>\n      <contact>\n        <ode/>\n      </contact>\n    </surface>\n  </collision>\n  <visual name='left_foot'>\n    <pose>-1.8 2.7000000000000002 0 0 0 0</pose>\n    <geometry>\n      <mesh>\n        <uri>model://turtlebot3_world/meshes/hexagon.dae</uri>\n        <scale>0.55000000000000004 0.55000000000000004 0.55000000000000004</scale>\n      </mesh>\n    </geometry>\n    <material>\n      <script>\n        <uri>file://media/materials/scripts/gazebo.material</uri>\n        <name>Gazebo/Green</name>\n      </script>\n    </material>\n  </visual>\n  <collision name='right_foot'>\n    <pose>-1.8 -2.7000000000000002 0 0 0 0</pose>\n    <geometry>\n      <mesh>\n        <uri>model://turtlebot3_world/meshes/hexagon.dae</uri>\n        <scale>0.55000000000000004 0.55000000000000004 0.55000000000000004</scale>\n      </mesh>\n    </geometry>\n    <max_contacts>10</max_contacts>\n    <surface>\n      <bounce/>\n      <friction>\n        <ode/>\n      </friction>\n      <contact>\n        <ode/>\n      </contact>\n    </surface>\n  </collision>\n  <visual name='right_foot'>\n    <pose>-1.8 -2.7000000000000002 0 0 0 0</pose>\n    <geometry>\n      <mesh>\n        <uri>model://turtlebot3_world/meshes/hexagon.dae</uri>\n        <scale>0.55000000000000004 0.55000000000000004 0.55000000000000004</scale>\n      </mesh>\n    </geometry>\n    <material>\n      <script>\n        <uri>file://media/materials/scripts/gazebo.material</uri>\n        <name>Gazebo/Green</name>\n      </script>\n    </material>\n  </visual>\n  <collision name='body'>\n    <pose>0 0 -0.29999999999999999 0 0 -1.5708</pose>\n    <geometry>\n      <mesh>\n        <uri>model://turtlebot3_world/meshes/wall.dae</uri>\n        <scale>0.25 0.25 0.25</scale>\n      </mesh>\n    </geometry>\n    <max_contacts>10</max_contacts>\n    <surface>\n      <bounce/>\n      <friction>\n        <ode/>\n      </friction>\n      <contact>\n        <ode/>\n      </contact>\n    </surface>\n  </collision>\n  <visual name='body'>\n    <pose>0 0 -0.29999999999999999 0 0 -1.5708</pose>\n    <geometry>\n      <mesh>\n        <uri>model://turtlebot3_world/meshes/wall.dae</uri>\n        <scale>0.25 0.25 0.25</scale>\n      </mesh>\n    </geometry>\n    <material>\n      <script>\n        <uri>file://media/materials/scripts/gazebo.material</uri>\n        <name>Gazebo/FlatBlack</name>\n      </script>\n    </material>\n  </visual>\n</link>\n",
+      "sha256": "f4182b3f53e38540510f9f842cf283b5c442b3eca247cfea055d71079af40d43"
+    },
+    {
+      "argv": [
+        "gz",
+        "sdf",
+        "-k",
+        "/home/robot/commercial_mobile_robot/src/cmr_sim/worlds/p0_06_observed_occlusion.sdf"
+      ],
+      "exit": 255,
+      "stdout": "",
+      "stderr": "\u001b[1;31mError [Utils.cc:176]\u001b[0m Error: Non-unique names detected in <link name='symbol'>\n  <collision name='one_one'>\n    <pose>-1.1000000000000001 -1.1000000000000001 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <max_contacts>10</max_contacts>\n    <surface>\n      <bounce/>\n      <friction>\n        <ode/>\n      </friction>\n      <contact>\n        <ode/>\n      </contact>\n    </surface>\n  </collision>\n  <visual name='one_one'>\n    <pose>-1.1000000000000001 -1.1000000000000001 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <material>\n      <script>\n        <uri>file://media/materials/scripts/gazebo.material</uri>\n        <name>Gazebo/White</name>\n      </script>\n    </material>\n  </visual>\n  <collision name='one_two'>\n    <pose>-1.1000000000000001 0 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <max_contacts>10</max_contacts>\n    <surface>\n      <bounce/>\n      <friction>\n        <ode/>\n      </friction>\n      <contact>\n        <ode/>\n      </contact>\n    </surface>\n  </collision>\n  <visual name='one_two'>\n    <pose>-1.1000000000000001 0 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <material>\n      <script>\n        <uri>file://media/materials/scripts/gazebo.material</uri>\n        <name>Gazebo/White</name>\n      </script>\n    </material>\n  </visual>\n  <collision name='one_three'>\n    <pose>-1.1000000000000001 1.1000000000000001 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <max_contacts>10</max_contacts>\n    <surface>\n      <bounce/>\n      <friction>\n        <ode/>\n      </friction>\n      <contact>\n        <ode/>\n      </contact>\n    </surface>\n  </collision>\n  <visual name='one_three'>\n    <pose>-1.1000000000000001 1.1000000000000001 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <material>\n      <script>\n        <uri>file://media/materials/scripts/gazebo.material</uri>\n        <name>Gazebo/White</name>\n      </script>\n    </material>\n  </visual>\n  <collision name='two_one'>\n    <pose>0 -1.1000000000000001 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <max_contacts>10</max_contacts>\n    <surface>\n      <bounce/>\n      <friction>\n        <ode/>\n      </friction>\n      <contact>\n        <ode/>\n      </contact>\n    </surface>\n  </collision>\n  <visual name='two_one'>\n    <pose>0 -1.1000000000000001 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <material>\n      <script>\n        <uri>file://media/materials/scripts/gazebo.material</uri>\n        <name>Gazebo/White</name>\n      </script>\n    </material>\n  </visual>\n  <collision name='two_two'>\n    <pose>0 0 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <max_contacts>10</max_contacts>\n    <surface>\n      <bounce/>\n      <friction>\n        <ode/>\n      </friction>\n      <contact>\n        <ode/>\n      </contact>\n    </surface>\n  </collision>\n  <visual name='two_two'>\n    <pose>0 0 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <material>\n      <script>\n        <uri>file://media/materials/scripts/gazebo.material</uri>\n        <name>Gazebo/White</name>\n      </script>\n    </material>\n  </visual>\n  <collision name='two_three'>\n    <pose>0 1.1000000000000001 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <max_contacts>10</max_contacts>\n    <surface>\n      <bounce/>\n      <friction>\n        <ode/>\n      </friction>\n      <contact>\n        <ode/>\n      </contact>\n    </surface>\n  </collision>\n  <visual name='two_three'>\n    <pose>0 1.1000000000000001 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <material>\n      <script>\n        <uri>file://media/materials/scripts/gazebo.material</uri>\n        <name>Gazebo/White</name>\n      </script>\n    </material>\n  </visual>\n  <collision name='three_one'>\n    <pose>1.1000000000000001 -1.1000000000000001 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <max_contacts>10</max_contacts>\n    <surface>\n      <bounce/>\n      <friction>\n        <ode/>\n      </friction>\n      <contact>\n        <ode/>\n      </contact>\n    </surface>\n  </collision>\n  <visual name='three_one'>\n    <pose>1.1000000000000001 -1.1000000000000001 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <material>\n      <script>\n        <uri>file://media/materials/scripts/gazebo.material</uri>\n        <name>Gazebo/White</name>\n      </script>\n    </material>\n  </visual>\n  <collision name='three_two'>\n    <pose>1.1000000000000001 0 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <max_contacts>10</max_contacts>\n    <surface>\n      <bounce/>\n      <friction>\n        <ode/>\n      </friction>\n      <contact>\n        <ode/>\n      </contact>\n    </surface>\n  </collision>\n  <visual name='three_two'>\n    <pose>1.1000000000000001 0 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <material>\n      <script>\n        <uri>file://media/materials/scripts/gazebo.material</uri>\n        <name>Gazebo/White</name>\n      </script>\n    </material>\n  </visual>\n  <collision name='three_three'>\n    <pose>1.1000000000000001 1.1000000000000001 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <max_contacts>10</max_contacts>\n    <surface>\n      <bounce/>\n      <friction>\n        <ode/>\n      </friction>\n      <contact>\n        <ode/>\n      </contact>\n    </surface>\n  </collision>\n  <visual name='three_three'>\n    <pose>1.1000000000000001 1.1000000000000001 0.25 0 0 0</pose>\n    <geometry>\n      <cylinder>\n        <radius>0.14999999999999999</radius>\n        <length>0.5</length>\n      </cylinder>\n    </geometry>\n    <material>\n      <script>\n        <uri>file://media/materials/scripts/gazebo.material</uri>\n        <name>Gazebo/White</name>\n      </script>\n    </material>\n  </visual>\n  <collision name='head'>\n    <pose>3.5 0 -0.5 0 0 0</pose>\n    <geometry>\n      <mesh>\n        <uri>model://turtlebot3_world/meshes/hexagon.dae</uri>\n        <scale>0.80000000000000004 0.80000000000000004 0.80000000000000004</scale>\n      </mesh>\n    </geometry>\n    <max_contacts>10</max_contacts>\n    <surface>\n      <bounce/>\n      <friction>\n        <ode/>\n      </friction>\n      <contact>\n        <ode/>\n      </contact>\n    </surface>\n  </collision>\n  <visual name='head'>\n    <pose>3.5 0 -0.5 0 0 0</pose>\n    <geometry>\n      <mesh>\n        <uri>model://turtlebot3_world/meshes/hexagon.dae</uri>\n        <scale>0.80000000000000004 0.80000000000000004 0.80000000000000004</scale>\n      </mesh>\n    </geometry>\n    <material>\n      <script>\n        <uri>file://media/materials/scripts/gazebo.material</uri>\n        <name>Gazebo/Green</name>\n      </script>\n    </material>\n  </visual>\n  <collision name='left_hand'>\n    <pose>1.8 2.7000000000000002 0 0 0 0</pose>\n    <geometry>\n      <mesh>\n        <uri>model://turtlebot3_world/meshes/hexagon.dae</uri>\n        <scale>0.55000000000000004 0.55000000000000004 0.55000000000000004</scale>\n      </mesh>\n    </geometry>\n    <max_contacts>10</max_contacts>\n    <surface>\n      <bounce/>\n      <friction>\n        <ode/>\n      </friction>\n      <contact>\n        <ode/>\n      </contact>\n    </surface>\n  </collision>\n  <visual name='left_hand'>\n    <pose>1.8 2.7000000000000002 0 0 0 0</pose>\n    <geometry>\n      <mesh>\n        <uri>model://turtlebot3_world/meshes/hexagon.dae</uri>\n        <scale>0.55000000000000004 0.55000000000000004 0.55000000000000004</scale>\n      </mesh>\n    </geometry>\n    <material>\n      <script>\n        <uri>file://media/materials/scripts/gazebo.material</uri>\n        <name>Gazebo/Green</name>\n      </script>\n    </material>\n  </visual>\n  <collision name='right_hand'>\n    <pose>1.8 -2.7000000000000002 0 0 0 0</pose>\n    <geometry>\n      <mesh>\n        <uri>model://turtlebot3_world/meshes/hexagon.dae</uri>\n        <scale>0.55000000000000004 0.55000000000000004 0.55000000000000004</scale>\n      </mesh>\n    </geometry>\n    <max_contacts>10</max_contacts>\n    <surface>\n      <bounce/>\n      <friction>\n        <ode/>\n      </friction>\n      <contact>\n        <ode/>\n      </contact>\n    </surface>\n  </collision>\n  <visual name='right_hand'>\n    <pose>1.8 -2.7000000000000002 0 0 0 0</pose>\n    <geometry>\n      <mesh>\n        <uri>model://turtlebot3_world/meshes/hexagon.dae</uri>\n        <scale>0.55000000000000004 0.55000000000000004 0.55000000000000004</scale>\n      </mesh>\n    </geometry>\n    <material>\n      <script>\n        <uri>file://media/materials/scripts/gazebo.material</uri>\n        <name>Gazebo/Green</name>\n      </script>\n    </material>\n  </visual>\n  <collision name='left_foot'>\n    <pose>-1.8 2.7000000000000002 0 0 0 0</pose>\n    <geometry>\n      <mesh>\n        <uri>model://turtlebot3_world/meshes/hexagon.dae</uri>\n        <scale>0.55000000000000004 0.55000000000000004 0.55000000000000004</scale>\n      </mesh>\n    </geometry>\n    <max_contacts>10</max_contacts>\n    <surface>\n      <bounce/>\n      <friction>\n        <ode/>\n      </friction>\n      <contact>\n        <ode/>\n      </contact>\n    </surface>\n  </collision>\n  <visual name='left_foot'>\n    <pose>-1.8 2.7000000000000002 0 0 0 0</pose>\n    <geometry>\n      <mesh>\n        <uri>model://turtlebot3_world/meshes/hexagon.dae</uri>\n        <scale>0.55000000000000004 0.55000000000000004 0.55000000000000004</scale>\n      </mesh>\n    </geometry>\n    <material>\n      <script>\n        <uri>file://media/materials/scripts/gazebo.material</uri>\n        <name>Gazebo/Green</name>\n      </script>\n    </material>\n  </visual>\n  <collision name='right_foot'>\n    <pose>-1.8 -2.7000000000000002 0 0 0 0</pose>\n    <geometry>\n      <mesh>\n        <uri>model://turtlebot3_world/meshes/hexagon.dae</uri>\n        <scale>0.55000000000000004 0.55000000000000004 0.55000000000000004</scale>\n      </mesh>\n    </geometry>\n    <max_contacts>10</max_contacts>\n    <surface>\n      <bounce/>\n      <friction>\n        <ode/>\n      </friction>\n      <contact>\n        <ode/>\n      </contact>\n    </surface>\n  </collision>\n  <visual name='right_foot'>\n    <pose>-1.8 -2.7000000000000002 0 0 0 0</pose>\n    <geometry>\n      <mesh>\n        <uri>model://turtlebot3_world/meshes/hexagon.dae</uri>\n        <scale>0.55000000000000004 0.55000000000000004 0.55000000000000004</scale>\n      </mesh>\n    </geometry>\n    <material>\n      <script>\n        <uri>file://media/materials/scripts/gazebo.material</uri>\n        <name>Gazebo/Green</name>\n      </script>\n    </material>\n  </visual>\n  <collision name='body'>\n    <pose>0 0 -0.29999999999999999 0 0 -1.5708</pose>\n    <geometry>\n      <mesh>\n        <uri>model://turtlebot3_world/meshes/wall.dae</uri>\n        <scale>0.25 0.25 0.25</scale>\n      </mesh>\n    </geometry>\n    <max_contacts>10</max_contacts>\n    <surface>\n      <bounce/>\n      <friction>\n        <ode/>\n      </friction>\n      <contact>\n        <ode/>\n      </contact>\n    </surface>\n  </collision>\n  <visual name='body'>\n    <pose>0 0 -0.29999999999999999 0 0 -1.5708</pose>\n    <geometry>\n      <mesh>\n        <uri>model://turtlebot3_world/meshes/wall.dae</uri>\n        <scale>0.25 0.25 0.25</scale>\n      </mesh>\n    </geometry>\n    <material>\n      <script>\n        <uri>file://media/materials/scripts/gazebo.material</uri>\n        <name>Gazebo/FlatBlack</name>\n      </script>\n    </material>\n  </visual>\n</link>\n",
+      "sha256": "c122e991643719aa4f35f0dd593c5327dabf68267f546e9a4455c1e18aacbf6c"
+    },
+    {
+      "argv": [
+        "gz",
+        "sdf",
+        "-k",
+        "/home/robot/commercial_mobile_robot/src/cmr_sim/models/scripted_obstacle/model.sdf"
+      ],
+      "exit": 0,
+      "stdout": "Valid.\n",
+      "stderr": "",
+      "sha256": "99c7c5c65a9a869a0681caf58fc1f00b467c2e7e7e758481b5f03e412ebf4b93"
+    }
+  ],
+  "identical_world_stderr": true,
+  "source_models": [
+    {
+      "path": "/opt/ros/jazzy/share/nav2_minimal_tb3_sim/models/turtlebot3_world/model.sdf",
+      "link": "symbol",
+      "named_children": [
+        [
+          "collision",
+          "one_one"
+        ],
+        [
+          "visual",
+          "one_one"
+        ],
+        [
+          "collision",
+          "one_two"
+        ],
+        [
+          "visual",
+          "one_two"
+        ],
+        [
+          "collision",
+          "one_three"
+        ],
+        [
+          "visual",
+          "one_three"
+        ],
+        [
+          "collision",
+          "two_one"
+        ],
+        [
+          "visual",
+          "two_one"
+        ],
+        [
+          "collision",
+          "two_two"
+        ],
+        [
+          "visual",
+          "two_two"
+        ],
+        [
+          "collision",
+          "two_three"
+        ],
+        [
+          "visual",
+          "two_three"
+        ],
+        [
+          "collision",
+          "three_one"
+        ],
+        [
+          "visual",
+          "three_one"
+        ],
+        [
+          "collision",
+          "three_two"
+        ],
+        [
+          "visual",
+          "three_two"
+        ],
+        [
+          "collision",
+          "three_three"
+        ],
+        [
+          "visual",
+          "three_three"
+        ],
+        [
+          "collision",
+          "head"
+        ],
+        [
+          "visual",
+          "head"
+        ],
+        [
+          "collision",
+          "left_hand"
+        ],
+        [
+          "visual",
+          "left_hand"
+        ],
+        [
+          "collision",
+          "right_hand"
+        ],
+        [
+          "visual",
+          "right_hand"
+        ],
+        [
+          "collision",
+          "left_foot"
+        ],
+        [
+          "visual",
+          "left_foot"
+        ],
+        [
+          "collision",
+          "right_foot"
+        ],
+        [
+          "visual",
+          "right_foot"
+        ],
+        [
+          "collision",
+          "body"
+        ],
+        [
+          "visual",
+          "body"
+        ]
+      ],
+      "duplicates_across_types": {
+        "one_one": 2,
+        "one_two": 2,
+        "one_three": 2,
+        "two_one": 2,
+        "two_two": 2,
+        "two_three": 2,
+        "three_one": 2,
+        "three_two": 2,
+        "three_three": 2,
+        "head": 2,
+        "left_hand": 2,
+        "right_hand": 2,
+        "left_foot": 2,
+        "right_foot": 2,
+        "body": 2
+      }
+    },
+    {
+      "path": "/opt/ros/jazzy/share/nav2_minimal_tb3_sim/models/turtlebot3_world/model-1_4.sdf",
+      "link": "symbol",
+      "named_children": [
+        [
+          "collision",
+          "one_one"
+        ],
+        [
+          "visual",
+          "one_one"
+        ],
+        [
+          "collision",
+          "one_two"
+        ],
+        [
+          "visual",
+          "one_two"
+        ],
+        [
+          "collision",
+          "one_three"
+        ],
+        [
+          "visual",
+          "one_three"
+        ],
+        [
+          "collision",
+          "two_one"
+        ],
+        [
+          "visual",
+          "two_one"
+        ],
+        [
+          "collision",
+          "two_two"
+        ],
+        [
+          "visual",
+          "two_two"
+        ],
+        [
+          "collision",
+          "two_three"
+        ],
+        [
+          "visual",
+          "two_three"
+        ],
+        [
+          "collision",
+          "three_one"
+        ],
+        [
+          "visual",
+          "three_one"
+        ],
+        [
+          "collision",
+          "three_two"
+        ],
+        [
+          "visual",
+          "three_two"
+        ],
+        [
+          "collision",
+          "three_three"
+        ],
+        [
+          "visual",
+          "three_three"
+        ],
+        [
+          "collision",
+          "head"
+        ],
+        [
+          "visual",
+          "head"
+        ],
+        [
+          "collision",
+          "left_hand"
+        ],
+        [
+          "visual",
+          "left_hand"
+        ],
+        [
+          "collision",
+          "right_hand"
+        ],
+        [
+          "visual",
+          "right_hand"
+        ],
+        [
+          "collision",
+          "left_foot"
+        ],
+        [
+          "visual",
+          "left_foot"
+        ],
+        [
+          "collision",
+          "right_foot"
+        ],
+        [
+          "visual",
+          "right_foot"
+        ],
+        [
+          "collision",
+          "body"
+        ],
+        [
+          "visual",
+          "body"
+        ]
+      ],
+      "duplicates_across_types": {
+        "one_one": 2,
+        "one_two": 2,
+        "one_three": 2,
+        "two_one": 2,
+        "two_two": 2,
+        "two_three": 2,
+        "three_one": 2,
+        "three_two": 2,
+        "three_three": 2,
+        "head": 2,
+        "left_hand": 2,
+        "right_hand": 2,
+        "left_foot": 2,
+        "right_foot": 2,
+        "body": 2
+      }
+    }
+  ],
+  "official_assets_modified": false
+}

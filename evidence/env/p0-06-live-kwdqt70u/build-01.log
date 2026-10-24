@@ -1,0 +1,11 @@
+Starting >>> cmr_sim
+--- stderr: cmr_sim
+/home/robot/commercial_mobile_robot/src/cmr_sim/src/scene_client.cpp: In function ‘int main(int, char**)’:
+/home/robot/commercial_mobile_robot/src/cmr_sim/src/scene_client.cpp:48:96: warning: unused variable ‘resume_transition’ [-Wunused-variable]
+   48 |  int64_t clock=-1,pose_stamp=-1,stats_clock=-1;bool paused=false,stats_seen=false,running=true,resume_transition=false,contact_ball_present=false;
+      |                                                                                                ^~~~~~~~~~~~~~~~~
+---
+Finished <<< cmr_sim [3.30s]
+
+Summary: 1 package finished [3.39s]
+  1 package had stderr output: cmr_sim

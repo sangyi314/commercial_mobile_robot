@@ -1,0 +1,6 @@
+{
+  "not_executed_preparation": "crossing-r09-preparation-01",
+  "issue": "short9.1s total would finish before second10s pause",
+  "fix_before_real_run": "endpoint HOLD6s; total13.1s; pause4s moving andpause10sHOLD; no motion speed/position or threshold change",
+  "formal": "same endpoint hold retained, no return through route"
+}

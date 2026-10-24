@@ -1,0 +1,14 @@
+[
+  {
+    "run_id": "p0-06-crossing-probe-kwdqt70u-resume03-low",
+    "exit": 2,
+    "stdout": "",
+    "stderr": "usage: run_trial.py [-h] --scenario SCENARIO --method {mppi,dwb} --profile\n                    PROFILE --run-id RUN_ID [--check]\n                    [--fault {withhold-initial-pose}] [--ack-test-fault]\nrun_trial.py: error: argument --method: invalid choice: 'MPPI' (choose from 'mppi', 'dwb')\n"
+  },
+  {
+    "run_id": "p0-06-crossing-probe-kwdqt70u-resume03-higher",
+    "exit": 2,
+    "stdout": "",
+    "stderr": "usage: run_trial.py [-h] --scenario SCENARIO --method {mppi,dwb} --profile\n                    PROFILE --run-id RUN_ID [--check]\n                    [--fault {withhold-initial-pose}] [--ack-test-fault]\nrun_trial.py: error: argument --method: invalid choice: 'MPPI' (choose from 'mppi', 'dwb')\n"
+  }
+]

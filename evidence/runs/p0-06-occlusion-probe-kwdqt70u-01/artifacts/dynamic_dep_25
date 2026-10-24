@@ -1,0 +1,25 @@
+#include "cmr_sim/timeline.hpp"
+#include <iostream>
+#include <functional>
+using namespace cmr_sim;
+void require(bool b){if(!b)throw std::runtime_error("assertion");}
+void rejects(std::function<void()> f){bool bad=false;try{f();}catch(const std::runtime_error&){bad=true;}require(bad);}
+int main(){
+ Timeline t({{0,{0,0,.3}},{10000000000,{1,0,.3}}});
+ require(t.position(-1)[0]==0);require(std::abs(t.position(5000000000)[0]-.5)<1e-10);require(t.position(99999999999)[0]==1);
+ t.tick(0,false);t.arm("event",0,1000000000);t.arm("event",0,1000000000);
+ rejects([&]{t.arm("different",0,1000000000);});require(!t.tick(0,true));require(!t.tick(999999999,false));
+ require(t.tick(1000000000,false).has_value());require(!t.tick(1000000000,false));
+ t.quiesced=true;require(!t.tick(1020000000,false));t.quiesced=false;require(t.tick(1040000000,false).has_value());
+ rejects([&]{t.tick(1000000000,false);});
+ Timeline late({{0,{0,0,0}},{10000000000,{1,0,0}}});late.tick(2000000000,false);rejects([&]{late.arm("late",0,1000000000);});
+ Timeline fresh({{0,{0,0,0}},{10000000000,{1,0,0}}});require(fresh.phase=="WAITING"&&fresh.event.empty());
+ fresh.tick(0,false);fresh.arm("new",0,1000000000);rejects([&]{fresh.tick(1100000000,false);});
+ rejects([&]{Timeline invalid({{0,{0,0,0}},{1,{1,0,0}}});});
+ Timeline finish({{0,{0,0,0}},{1000000000,{.1,0,0}}});finish.tick(0,false);finish.arm("finish",0,1000000000);
+ for(int64_t n=1000000000;n<=3000000000;n+=20000000)finish.tick(n,false);
+ require(finish.phase=="FINISHED"&&finish.position(9000000000)[0]==.1);
+ RequestGate gate;gate.begin(0,10);rejects([&]{gate.begin(1,10.1);});rejects([&]{gate.check(10.501);});gate.reply(true);rejects([&]{gate.begin(60000000,10.6);});
+ RequestGate failed;failed.begin(0,0);rejects([&]{failed.reply(false);});
+ std::cout<<"boundaries/hold/duplicate/pause/jump/late/speed/gap/cold: PASS\n";
+}

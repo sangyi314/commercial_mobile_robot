@@ -1,0 +1,39 @@
+stdin is not a terminal device. Keyboard handling disabled.[INFO] [1792801274.789220683] [cmr_recorder_p0_06_probe_kwdqt70u_01]: Press SPACE for pausing/resuming
+[INFO] [1792801274.789226016] [cmr_recorder_p0_06_probe_kwdqt70u_01]: Event publisher thread: Started
+[INFO] [1792801274.791853891] [cmr_recorder_p0_06_probe_kwdqt70u_01]: Starting recording to '/home/robot/commercial_mobile_robot/evidence/runs/p0-06-probe-kwdqt70u-01/bag'
+[INFO] [1792801274.793124391] [cmr_recorder_p0_06_probe_kwdqt70u_01]: Listening for topics...
+[INFO] [1792801274.793137600] [cmr_recorder_p0_06_probe_kwdqt70u_01]: Recording...
+[INFO] [1792801274.793186891] [cmr_recorder_p0_06_probe_kwdqt70u_01]: Topics discovery started.
+[INFO] [1792801274.793210516] [cmr_recorder_p0_06_probe_kwdqt70u_01]: use_sim_time set, waiting for /clock before starting recording...
+[INFO] [1792801274.903526850] [cmr_recorder_p0_06_probe_kwdqt70u_01]: Sim time /clock found, starting recording.
+[INFO] [1792801274.904072183] [cmr_recorder_p0_06_probe_kwdqt70u_01]: Overriding subscription profile for /clock
+[INFO] [1792801274.904312058] [cmr_recorder_p0_06_probe_kwdqt70u_01]: Subscribed to topic '/clock'
+[INFO] [1792801274.904657016] [cmr_recorder_p0_06_probe_kwdqt70u_01]: Overriding subscription profile for /tf
+[INFO] [1792801274.906520641] [cmr_recorder_p0_06_probe_kwdqt70u_01]: Subscribed to topic '/tf'
+[INFO] [1792801274.906619100] [cmr_recorder_p0_06_probe_kwdqt70u_01]: Overriding subscription profile for /cmr_experiment/events
+[INFO] [1792801274.906881891] [cmr_recorder_p0_06_probe_kwdqt70u_01]: Subscribed to topic '/cmr_experiment/events'
+[INFO] [1792801274.907029100] [cmr_recorder_p0_06_probe_kwdqt70u_01]: Overriding subscription profile for /initialpose
+[INFO] [1792801274.907354558] [cmr_recorder_p0_06_probe_kwdqt70u_01]: Subscribed to topic '/initialpose'
+[INFO] [1792801274.907504308] [cmr_recorder_p0_06_probe_kwdqt70u_01]: Overriding subscription profile for /odom
+[INFO] [1792801274.908323100] [cmr_recorder_p0_06_probe_kwdqt70u_01]: Subscribed to topic '/odom'
+[INFO] [1792801274.908517350] [cmr_recorder_p0_06_probe_kwdqt70u_01]: Overriding subscription profile for /scan
+[INFO] [1792801274.909095391] [cmr_recorder_p0_06_probe_kwdqt70u_01]: Subscribed to topic '/scan'
+[INFO] [1792801274.909260350] [cmr_recorder_p0_06_probe_kwdqt70u_01]: Overriding subscription profile for /tf_static
+[INFO] [1792801274.909458016] [cmr_recorder_p0_06_probe_kwdqt70u_01]: Subscribed to topic '/tf_static'
+[INFO] [1792801277.538229893] [cmr_recorder_p0_06_probe_kwdqt70u_01]: Overriding subscription profile for /map
+[INFO] [1792801277.538909976] [cmr_recorder_p0_06_probe_kwdqt70u_01]: Subscribed to topic '/map'
+[INFO] [1792801283.044842187] [cmr_recorder_p0_06_probe_kwdqt70u_01]: Overriding subscription profile for /cmd_vel_nav
+[INFO] [1792801283.045620229] [cmr_recorder_p0_06_probe_kwdqt70u_01]: Subscribed to topic '/cmd_vel_nav'
+[INFO] [1792801283.361082354] [cmr_recorder_p0_06_probe_kwdqt70u_01]: Overriding subscription profile for /cmd_vel_smoothed
+[INFO] [1792801283.363109104] [cmr_recorder_p0_06_probe_kwdqt70u_01]: Subscribed to topic '/cmd_vel_smoothed'
+[INFO] [1792801283.389398562] [cmr_recorder_p0_06_probe_kwdqt70u_01]: Overriding subscription profile for /cmd_vel
+[INFO] [1792801283.390542520] [cmr_recorder_p0_06_probe_kwdqt70u_01]: Subscribed to topic '/cmd_vel'
+[WARN] [1792801283.439005145] [rosbag2_cpp]: Message definition for topic '/navigate_to_pose/_action/status' with type 'action_msgs/msg/GoalStatusArray' not found. Message definition will be left empty in bag.
+[INFO] [1792801283.439094145] [cmr_recorder_p0_06_probe_kwdqt70u_01]: Overriding subscription profile for /navigate_to_pose/_action/status
+[INFO] [1792801283.440836479] [cmr_recorder_p0_06_probe_kwdqt70u_01]: Subscribed to topic '/navigate_to_pose/_action/status'
+[INFO] [1792801283.440856270] [cmr_recorder_p0_06_probe_kwdqt70u_01]: All requested topics are subscribed. Stopping discovery...
+[INFO] [1792801283.440859812] [cmr_recorder_p0_06_probe_kwdqt70u_01]: Topics discovery stopped.
+[INFO] [1792801308.295968616] [cmr_recorder_p0_06_probe_kwdqt70u_01]: Pausing recording.
+[INFO] [1792801308.296069074] [rosbag2_cpp]: Writing remaining messages from cache to the bag. It may take a while
+[INFO] [1792801308.299559116] [cmr_recorder_p0_06_probe_kwdqt70u_01]: Recording stopped
+[INFO] [1792801308.302294324] [cmr_recorder_p0_06_probe_kwdqt70u_01]: Event publisher thread: Exited

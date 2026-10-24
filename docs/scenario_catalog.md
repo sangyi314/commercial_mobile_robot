@@ -1,0 +1,9 @@
+# 场景目录（离线候选，未实测）
+S0继续用P0-05静态入口；S1=crossing，S2=head_on不实现，S3=observed_occlusion。
+官方冻结world嵌套turtlebot3_world→include ros_symbol→link symbol均无pose，按SDF默认identity；九柱collision局部中心x/y∈{-1.1,0,1.1}，z=.25，半径.15，高.5。model.config实际版本选择仍待第7步实体树核对。mesh墙不用于本次确定遮挡标签。
+新增圆柱r=.10/h=.60，visual/collision同中心；static表示运动学道具，移位后collision是否跟随未知。
+S1候选：机器人原出生(-2,-.5)，沿原P0-04短目标；圆柱(-2.5,0,.3)向(-1.5,0,.3)横移，候选相交点(-2,0)。不得在真实路线未核实前宣布横穿成立。
+S3候选：圆柱x=-.6，y从-.3经.28到.8，柱体(-1.1,0)作遮挡；以原出生固定观察点初算中段被挡。导航中观察者会移动，因此固定机位几何不能作为正式遮挡证明。
+模型资源闭包和静态几何解析结果见experiments/p0_06_dependencies.json；完整原件和基world不修改。不新增静态柱墙、不生成新地图。
+三段各至少1秒、5帧；visible/recovered至少3束符合实际前表面，occluded要求全部目标射线先交同一静态柱且range支持前景。FOV外/掉线/消失/NaN皆unknown。
+坐标、目标、误差、激光世界高度、map↔world对应和目视理解待本人及真实probe确认；本目录不构成ready放行证据。

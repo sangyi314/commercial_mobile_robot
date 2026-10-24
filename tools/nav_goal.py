@@ -13,6 +13,7 @@ def main():
  from rclpy.qos import qos_profile_sensor_data,QoSProfile,ReliabilityPolicy,DurabilityPolicy
  from rclpy.action import ActionClient
  from rclpy.time import Time
+ from rclpy.duration import Duration
  from rclpy.signals import SignalHandlerOptions
  from tf2_ros import Buffer,TransformListener
  from sensor_msgs.msg import LaserScan
@@ -39,7 +40,7 @@ def main():
  durable=QoSProfile(depth=100,reliability=ReliabilityPolicy.RELIABLE,durability=DurabilityPolicy.TRANSIENT_LOCAL)
  observations=(run/'runtime/observations.jsonl').open('x');actionfile=(run/'logs/action-client.jsonl').open('x')
  rows=[];actions=[];latest={};lastclock=None;lastadvance=time.monotonic();clockticks=0;clock_jump=False;seq=0;lastseq=0;lastheart=0.;lasttf=0.;outbuf=bytearray();inbuf=bytearray();cache={};initial_sent=False;navigation_ready=False
- goal_future=None;handle=None;result_future=None;response_recorded=False;terminal=None;goal_uuid=None;action_request='';late_services=[];stale_emitted=False;service_clients={}
+ goal_future=None;handle=None;result_future=None;response_recorded=False;terminal=None;goal_uuid=None;action_request='';late_services=[];stale_emitted=False;service_clients={};probe_origin=None;probe_pause_deadline=None
  eventpub=node.create_publisher(String,topic('cmr_experiment/events'),100)
  initialpub=node.create_publisher(PoseWithCovarianceStamped,topic('initialpose'),10)
  ac=ActionClient(node,NavigateToPose,topic('navigate_to_pose'))
@@ -104,6 +105,7 @@ def main():
    except Exception:pass
   if navigation_ready and goal_future is not None and terminal is None and not stale_emitted and (now-lastadvance>1.5 or any(now-latest.get(k,(0,None))[0]>1.5 for k in ['scan','odom'])):
    stale_emitted=True;wire('INPUT_STALE',{'clock_last_advance_age_wall_s':now-lastadvance,'input_ages':{k:now-latest.get(k,(0,None))[0] for k in ['scan','odom']}})
+  if probe_pause_deadline is not None and now>probe_pause_deadline:raise RuntimeError('PAUSE_CHECK_DEADLINE')
   if now-lastheart>.5:wire('HEARTBEAT',{'clock_s':lastclock},mirror=False);lastheart=now
   flush()
  def wait(predicate,deadline,label):
@@ -154,7 +156,7 @@ def main():
    allp[name]=dict(zip(keys,[parameter_value_to_python(v) for v in vals]));write_json(run/'runtime'/(name.replace('/','__')+'.yaml'),{name:{'ros__parameters':allp[name]}})
   write_json(run/'runtime/all-parameters.json',allp);return allp
  def execute(op,data,deadline,rid):
-  nonlocal initial_sent,navigation_ready,goal_future,goal_uuid,action_request
+  nonlocal initial_sent,navigation_ready,goal_future,goal_uuid,action_request,probe_origin,probe_pause_deadline
   if op=='graph':
    names=node.get_node_names();foreign=[x for x in names if x!='cmr_worker' and not x.startswith('_ros2cli_daemon')]
    if foreign:raise RuntimeError('existing ROS owners '+str(foreign))
@@ -242,7 +244,40 @@ def main():
    finally:write_json(run/'runtime/nav-final-gate.json',{'samples':gate_samples[-100:],'threshold_s':.5})
    current_tf=buffer.lookup_transform('map','base_link',Time())
    navigation_ready=True;report={'map_base_tf_stamp_s':stamp(current_tf.header.stamp),'states':st,'plugin':p['controller_server']['FollowPath.plugin'],'endpoints':endpoints,'costs':costs,'sim_s':lastclock};write_json(run/'runtime/nav-readiness.json',report);return report
+  if op=='input_isolation':
+   if profile.get('profile_version')!=2:raise RuntimeError('dynamic audit only')
+   inventory={}
+   for name,namespace in node.get_node_names_and_namespaces():
+    if name in navnodes+['amcl','local_costmap','global_costmap']:
+     subscriptions=node.get_subscriber_names_and_types_by_node(name,namespace)
+     inventory[namespace+'/'+name]=subscriptions
+     if any(t.startswith('/cmr_eval/') or 'future_trajectory' in t for t,types in subscriptions):raise RuntimeError('truth input leak')
+   sources={}
+   for t in ['/scan','/odom','/tf','/clock']:
+    pubs=node.get_publishers_info_by_topic(t);sources[t]=[{'node':p.node_name,'namespace':p.node_namespace,'type':p.topic_type} for p in pubs]
+    if any('truth' in p.node_name or 'scene_driver' in p.node_name for p in pubs):raise RuntimeError('evaluation publisher in control input')
+   report={'subscriptions':inventory,'control_publishers':sources,'truth_leak_detected':False,'scope':'actual graph and original Nav2 config; no truth bridge added'}
+   if not inventory:raise RuntimeError('missing Nav2 graph evidence')
+   write_json(run/'runtime/dynamic-input-isolation.json',report);return report
+  if op=='probe_pause':
+   if profile.get('mode')!='probe' or goal_future is not None:raise RuntimeError('probe pause only before goals')
+   probe_pause_deadline=time.monotonic()+10 if data['enter'] else None
+   return {'pause_check':data['enter']}
+  if op=='probe_observe':
+   if profile.get('mode')!='probe' or goal_future is not None:raise RuntimeError('probe must not send goal')
+   if not sensor_ready():raise RuntimeError('probe sensors stale')
+   if probe_origin is None:probe_origin=list(message_to_ordereddict(latest['odom'][1])['pose']['pose']['position'].values())
+   end_sim=lastclock+data['duration_sim_s'];first=len(rows)
+   wait(lambda:lastclock>=end_sim,deadline,'probe observation')
+   observed=[r for r in rows[first:] if r['kind']=='odom']
+   if not observed:raise RuntimeError('probe missing odom')
+   for row in observed:
+    p=row['data']
+    if not all(isinstance(x,(int,float)) and math.isfinite(x) for key in ['position','linear','angular'] for x in p[key]):raise RuntimeError('probe invalid odom')
+    if math.dist(p['position'][:2],probe_origin[:2])>.02 or math.hypot(*p['linear'][:2])>.01 or abs(p['angular'][2])>.03:raise RuntimeError('probe robot moved')
+   return {'robot_stationary':True,'samples':len(observed),'sim_s':lastclock}
   if op=='send':
+   if profile.get('mode')=='probe':raise RuntimeError('probe forbids navigation goals')
    if not navigation_ready and not ns:raise RuntimeError('not navigation ready')
    if goal_future is not None:raise RuntimeError('second goal refused')
    if not ns and not sensor_ready():raise RuntimeError('send gate input freshness lost')
@@ -266,7 +301,17 @@ def main():
    goal=strict_json((run/'artifacts/goal.json').read_text());p=strict_json((run/'runtime/all-parameters.json').read_text())['controller_server'];target=lastclock+8
    wait(lambda:lastclock>=target,deadline,'post-terminal sim-time stop window')
    report=analyze(rows,actions,goal,p);write_json(run/'runtime/behavior.json',report);return report
-  if op=='mark':wire(data['name'],data.get('data',{}),rid);return {'marked':True}
+  if op=='mark':
+   wire(data['name'],data.get('data',{}),rid)
+   if data['name'] in ('RECORDING_START','RECORDING_END'):
+    if lastclock is None:raise RuntimeError('MARKER_CLOCK_MISSING')
+    marked_clock=lastclock
+    if not eventpub.wait_for_all_acked(Duration(seconds=min(.5,max(0.,deadline-time.monotonic())))):raise RuntimeError('MARKER_ACK_TIMEOUT')
+    # A DDS acknowledgement is not a disk-content claim. Allow fresh source
+    # callbacks to drain before parent closes recorder; closed MCAP is checked.
+    wait(lambda:lastclock is not None and lastclock>=marked_clock+.1,deadline,'marker transport drain')
+    return {'marked':True,'reliable_acknowledged':True,'source_clock_advance_s':lastclock-marked_clock,'disk_content_verified':False}
+   return {'marked':True}
   if op=='exit':return {'exiting':True}
   raise ValueError('unknown op '+op)
  wire('HELLO',{'boot_id':Path('/proc/sys/kernel/random/boot_id').read_text().strip(),'namespace':ns})

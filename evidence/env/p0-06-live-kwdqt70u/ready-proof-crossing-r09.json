@@ -1,0 +1,207 @@
+{
+  "schema_version": 1,
+  "record_origin": "real",
+  "scope": "closed_real_probe_and_load_review",
+  "input_fingerprint": "3945adcd79f3b76219f2b61eb70a454cf674bc665b1bbdaac49d58df0978bb51",
+  "checks": {
+    "visual": true,
+    "collision": true,
+    "scan": true,
+    "time_alignment": true,
+    "pause": true,
+    "cold_start": true,
+    "truth_isolation": true
+  },
+  "manifest": {
+    "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-crossing-probe-kwdqt70u-r09-low/manifest.json",
+    "sha256": "5f66c7b1322b44672976317d9393dab7cf692c07bc51dfb7382666c855f9dee1"
+  },
+  "probe_runs": [
+    "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-crossing-probe-kwdqt70u-r09-low",
+    "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-crossing-probe-kwdqt70u-r09-higher"
+  ],
+  "gazebo_pids": [
+    258936,
+    261088
+  ],
+  "clock_epochs": [
+    "p0-06-crossing-probe-kwdqt70u-r09-low:sim0",
+    "p0-06-crossing-probe-kwdqt70u-r09-higher:sim0"
+  ],
+  "evidence": [
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-crossing-probe-kwdqt70u-r09-low/manifest.json",
+      "sha256": "5f66c7b1322b44672976317d9393dab7cf692c07bc51dfb7382666c855f9dee1"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-crossing-probe-kwdqt70u-r09-low/result.json",
+      "sha256": "bceed1d21bb76d0cc802f18be66b2be906e17d6538ec7c758a8d0edd8b33d42a"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-crossing-probe-kwdqt70u-r09-low/runtime/runner-exit.json",
+      "sha256": "97f7b1bf46c373678c3ad2699ccfc59b15e0ef55170d96973c7698889194439e"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-crossing-probe-kwdqt70u-r09-low/runtime/dynamic-report.json",
+      "sha256": "19877d115ace2ef855ec1bacbc2b6a2525f06f1c640281e42edc31d480079ed3"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-crossing-probe-kwdqt70u-r09-low/runtime/dynamic-readiness.json",
+      "sha256": "d4c23520d8c88e44dbb8d8833c99d9f3ac8a48b89c946e6d33b284d19706817e"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-crossing-probe-kwdqt70u-r09-low/runtime/cleanup.json",
+      "sha256": "40e4beb049733735b453a6b188dcb70201d48e61cfa3295983c84d9703f314c3"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-crossing-probe-kwdqt70u-r09-low/runtime/gazebo-raw.jsonl",
+      "sha256": "eb6626f63d221682e302674f211adc387cfda876596423a63bb975f8526969f1"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-crossing-probe-kwdqt70u-r09-low/runtime/motion-commands.jsonl",
+      "sha256": "f3b10a67f45c6f318ca12acdfbff99697e38fa5faabb1cbe155c84e663fa02ad"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-crossing-probe-kwdqt70u-r09-low/runtime/observations.jsonl",
+      "sha256": "78ab44b756eb807e0233ce19b9c83cfcaa0b50159d9dc55c7cf5bc52db850d36"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-crossing-probe-kwdqt70u-r09-low/logs/events.jsonl",
+      "sha256": "8d356548913569258288d553d8a4cb01acfdf2b0e963a8a2114bd16584b1ab2e"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-crossing-probe-kwdqt70u-r09-low/bag/metadata.yaml",
+      "sha256": "c7f99616323dac9909a3958d413c8aea9275db83feda8b3b54bfd7be2f239fb0"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-crossing-probe-kwdqt70u-r09-low/bag/bag_0.mcap",
+      "sha256": "48a1d9e4d97956b2ab6b95ec2bdffed9c0d8100fa3da8c07b2d58c497e0ad43f"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-crossing-probe-kwdqt70u-r09-higher/manifest.json",
+      "sha256": "210f5bd06b984d2247b478c5088934608fa2b7d06e9cce3569475ea433151435"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-crossing-probe-kwdqt70u-r09-higher/result.json",
+      "sha256": "d8acfb332b87a0124f10d07a553a621f4f521a53fe6402e11d3b139d322f0cf4"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-crossing-probe-kwdqt70u-r09-higher/runtime/runner-exit.json",
+      "sha256": "97f7b1bf46c373678c3ad2699ccfc59b15e0ef55170d96973c7698889194439e"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-crossing-probe-kwdqt70u-r09-higher/runtime/dynamic-report.json",
+      "sha256": "00f54c7d8acd42154baf415aae17bae7bcf0c47af764dffadf63bd539ecb2e8b"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-crossing-probe-kwdqt70u-r09-higher/runtime/dynamic-readiness.json",
+      "sha256": "b2f5c11405842e21fd0c13b24cea0fb5cf9436397449f795d177e305fc8bb66b"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-crossing-probe-kwdqt70u-r09-higher/runtime/cleanup.json",
+      "sha256": "5f7721039b3d06a666e57961853f7ce672aed241735faffbb207f9d2e7538d05"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-crossing-probe-kwdqt70u-r09-higher/runtime/gazebo-raw.jsonl",
+      "sha256": "44d801a3609d1ce6f4d3285f15e5ae2da5e629e7338a2e3e91d538c303590bd8"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-crossing-probe-kwdqt70u-r09-higher/runtime/motion-commands.jsonl",
+      "sha256": "39ae16691e2e3b192a20e047056762497ac7506e24e46ab0090d3da34ac37636"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-crossing-probe-kwdqt70u-r09-higher/runtime/observations.jsonl",
+      "sha256": "21bf4d1a2228f30a1dac319cf9af83eb9474bf19d1f824574b8c37d794791f1f"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-crossing-probe-kwdqt70u-r09-higher/logs/events.jsonl",
+      "sha256": "c7e165b73c8cae3b4f38ccbf34c83282aad946e3c542593540c8290bb928f1e9"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-crossing-probe-kwdqt70u-r09-higher/bag/metadata.yaml",
+      "sha256": "d7020f451cc1a5ce4244bdb6fb8aa6479a427fe5c68798c826dd71de7c31b7df"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-crossing-probe-kwdqt70u-r09-higher/bag/bag_0.mcap",
+      "sha256": "c7c7201cc42371ab5abacab1122ef23d873a6ae6d0495be0f4d772c65c585aeb"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/independent-reviews/p0-06-crossing-probe-kwdqt70u-r09-low.json",
+      "sha256": "3563b0c82477c9e54f42b2c344cd6c8f4fba049352eee6cf82fbadb24a33a97b"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/independent-reviews/p0-06-crossing-probe-kwdqt70u-r09-higher.json",
+      "sha256": "a45bbe98adf22ee4e7991f1f77df2555e8131db5a1556a1334cf0d3b4f2dd28b"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/load-s1-r09-low.json",
+      "sha256": "065b2dbcaa6f154e58e659a076fd21d569cd58df566dc2f152864461252a6095"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/load-s1-r09-higher.json",
+      "sha256": "b806eb42f08daff280d0a621322402d081cf62c220c5c4d4a17ce7e71d7b85c1"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/probe-load-contrast-r09.json",
+      "sha256": "6092db9998d5401db603abfbb4da0f657dfcee88ca6d6f94c140626b437bf394"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/world-map-landmark-review.json",
+      "sha256": "ef6a6e7f6c9e73a493f302ea742c15f7f08d13226659b1521a7e4c5fb7411101"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/calibration-01.json",
+      "sha256": "bc01f8098d4a0ef98d1e4059446b3faee9bb3f78731bf9190961dcd4fbfba4db"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/load-contrast-criteria.json",
+      "sha256": "f581dfe22d8162f03a9d97d05276f8fcab478e59d8381d8140f38adcc50819c6"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/host-evidence-08/crossing-r09-probe-low/host-load.jsonl",
+      "sha256": "61515e5cfbdd243001fb3d9ee21e2e402be205861e1be1134f8fdce891996c84"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/host-evidence-08/crossing-r09-probe-low/metadata.json",
+      "sha256": "057a9c7e670a43b6439445cbd37c996a9bf149c5772586bab90ef3e841baab1f"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/host-evidence-08/crossing-r09-probe-low/runner.log",
+      "sha256": "01f87cb82113ffe82dcdfef13d89ecbf9685c444617e41a036d9811f34e3bdf1"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/host-evidence-08/crossing-r09-probe-low/sampling-errors.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/host-evidence-08/crossing-r09-probe-higher/host-load.jsonl",
+      "sha256": "f499f28d862e7d1e615226f210c8cc2a04db045d0905cec100710c35d6b1a35c"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/host-evidence-08/crossing-r09-probe-higher/load-worker-0.log",
+      "sha256": "40927762122d39563c16383ed9001443d257e5d1bae49da5b9bb140afaba116e"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/host-evidence-08/crossing-r09-probe-higher/load-worker-1.log",
+      "sha256": "cd7beb4abcc7db05d2688112428bcc9ffd96211e581f6ef1c7531aef75945ccb"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/host-evidence-08/crossing-r09-probe-higher/metadata.json",
+      "sha256": "58104748de51de5499754b6f6ceaaf5d4eb87d3662e04fd7e06a6a7bc4b3818c"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/host-evidence-08/crossing-r09-probe-higher/runner.log",
+      "sha256": "29a1405528d51df21cc250cf862b351794d0a697aa858bbe7f05155a7718cd92"
+    },
+    {
+      "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/host-evidence-08/crossing-r09-probe-higher/sampling-errors.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    }
+  ],
+  "visual_scope": "actual Scene visual geometry and GPU lidar returns; personal visual observation pending",
+  "collision_scope": "two-location cylinder contact and actual ball response only; navigation collision=null",
+  "reviewer": "Codex engineering review under explicit user continuation authorization",
+  "personal_visual_confirmation": null,
+  "personal_understanding_confirmation": null,
+  "map_scope": "nominal world-map identity with measured raster landmark offsets; no AMCL-as-truth and no exact pixel equivalence"
+}

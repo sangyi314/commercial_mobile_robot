@@ -1,0 +1,12 @@
+{
+  "pairs": [
+    {
+      "kind": "s1-r06",
+      "low": 0.3005302545191666,
+      "higher": 0.5209812431836961,
+      "increase": 0.2204509886645295,
+      "differentiated": true
+    }
+  ],
+  "thresholds_unchanged": true
+}

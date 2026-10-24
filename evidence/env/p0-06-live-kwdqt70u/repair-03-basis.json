@@ -1,0 +1,6 @@
+{
+  "run": "p0-06-probe-kwdqt70u-02",
+  "findings": "All six physical probe facilities, motion, time and observation checks true; checker erroneously required truth for shutdown scans after capture closed.",
+  "fix": "Explicit frozen motion+hold analysis window, preserve outside counts and bag; require continuous scan coverage within window. No extrapolation or missing-value fill.",
+  "threshold_changes": null
+}

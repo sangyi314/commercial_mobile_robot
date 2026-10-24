@@ -1,0 +1,217 @@
+// Ordinary Transport client. Only the parent runner owns process lifecycle.
+#include "cmr_sim/timeline.hpp"
+#include <gz/transport/Node.hh>
+#include <gz/msgs/clock.pb.h>
+#include <gz/msgs/world_stats.pb.h>
+#include <gz/msgs/pose_v.pb.h>
+#include <gz/msgs/scene.pb.h>
+#include <gz/msgs/empty.pb.h>
+#include <gz/msgs/boolean.pb.h>
+#include <gz/msgs/world_control.pb.h>
+#include <gz/msgs/entity_factory.pb.h>
+#include <gz/msgs/entity.pb.h>
+#include <gz/msgs/contacts.pb.h>
+#include <google/protobuf/util/json_util.h>
+#include <nlohmann/json.hpp>
+#include <fstream>
+#include <iostream>
+#include <mutex>
+#include <deque>
+#include <chrono>
+#include <filesystem>
+#include <poll.h>
+#include <unistd.h>
+#include <fcntl.h>
+using J=nlohmann::json;
+using namespace cmr_sim;
+double mono(){return std::chrono::duration<double>(std::chrono::steady_clock::now().time_since_epoch()).count();}
+template<class T> J proto(const T &m){std::string s;google::protobuf::util::JsonPrintOptions o;o.preserve_proto_field_names=true;auto result=google::protobuf::util::MessageToJsonString(m,&s,o);if(!result.ok())throw std::runtime_error("PROTOBUF_JSON");return J::parse(s);}
+J readfile(const std::filesystem::path &p){std::ifstream f(p);if(!f)throw std::runtime_error("INPUT_MISSING");J j;f>>j;return j;}
+int64_t stamp(const J &t){return std::stoll(t.value("sec",std::string("0")))*1000000000LL+t.value("nsec",0);}
+int main(int argc,char **argv){
+ uint64_t seq=0;std::string failure_run=argc==3?std::filesystem::path(argv[2]).filename().string():"unknown";
+ try {
+ if(argc!=3||std::string(argv[1])!="--run-dir"||!std::getenv("GZ_PARTITION"))throw std::runtime_error("explicit run and partition required");
+ std::filesystem::path run=argv[2];std::string id=run.filename(),epoch=id+":sim0";
+ const J profile=readfile(run/"artifacts/profile.json");[[maybe_unused]] const auto &ds=profile.at("dynamic_spec").at("dynamic");
+ J motion=readfile(run/"artifacts/dynamic_motion.json");std::vector<Knot> knots;
+ for(auto &k:motion.at("knots"))knots.push_back({k.at("t_ns"),k.at("xyz").get<Vec>()});
+ Timeline timeline(knots);timeline.hold=motion.at("hold_ns");
+#ifdef CMR_CAPTURE
+ auto path=run/"runtime/gazebo-raw.jsonl";
+#else
+ auto path=run/"runtime/motion-commands.jsonl";
+#endif
+ int fd=open(path.c_str(),O_CREAT|O_EXCL|O_WRONLY,0600);if(fd<0)throw std::runtime_error("OUTPUT_EXISTS");close(fd);
+ std::ofstream raw(path);
+ std::mutex mutex;std::deque<J> queue;std::map<std::string,size_t> counts;uint64_t rawseq=0,lastseq=0;
+ int64_t clock=-1,pose_stamp=-1,stats_clock=-1;bool paused=false,stats_seen=false,running=true;
+ RequestGate gate;double lastheart=0;std::optional<uint64_t> entity;std::optional<Vec> actual;
+ std::string input;std::map<std::string,std::pair<J,J>> cache;
+ // Node is destroyed before its callback state.
+ auto emit=[&](std::string type,J data,std::string rid=""){
+  J e={{"protocol_version",1},{"run_id",id},{"clock_epoch",epoch},{"seq",++seq},{"request_id",rid},{"type",type},{"source_monotonic_s",mono()},{"data",data}};
+  e["ros_s"]=nullptr;e["gazebo_sim_ns"]=clock>=0?J(clock):J(nullptr);std::cout<<e.dump()<<std::endl;
+ };
+ auto receive=[&](std::string kind,const auto &msg){
+  J row={{"format_version",1},{"run_id",id},{"clock_epoch",epoch},{"kind",kind},{"receive_monotonic_s",mono()},{"protobuf",proto(msg)}};
+  std::lock_guard<std::mutex> guard(mutex);
+#ifdef CMR_CAPTURE
+  row["seq"]=++rawseq;raw<<row.dump()<<'\n';raw.flush();
+#endif
+  if(queue.size()>=10000)throw std::runtime_error("INPUT_QUEUE_OVERFLOW");
+  queue.push_back(row);++counts[kind];
+ };
+ gz::transport::Node node;
+ node.Subscribe<gz::msgs::Clock>("/world/default/clock",[&](const gz::msgs::Clock &m){receive("clock",m);});
+ node.Subscribe<gz::msgs::WorldStatistics>("/world/default/stats",[&](const gz::msgs::WorldStatistics &m){receive("stats",m);});
+ node.Subscribe<gz::msgs::Pose_V>("/world/default/pose/info",[&](const gz::msgs::Pose_V &m){receive("pose",m);});
+ node.Subscribe<gz::msgs::Scene>("/world/default/scene/info",[&](const gz::msgs::Scene &m){receive("scene",m);});
+#ifdef CMR_CAPTURE
+ node.Subscribe<gz::msgs::Contacts>("/cmr_probe/contacts",[&](const gz::msgs::Contacts &m){receive("contacts",m);});
+#endif
+ auto save=[&](J row){row["run_id"]=id;row["clock_epoch"]=epoch;row["seq"]=++rawseq;row["receive_monotonic_s"]=mono();raw<<row.dump()<<'\n';raw.flush();if(!raw)throw std::runtime_error("RAW_WRITE");};
+ auto pump=[&](){
+  std::deque<J> pending;{std::lock_guard<std::mutex> guard(mutex);pending.swap(queue);}
+  bool clock_updated=false;
+  for(const auto &r:pending){
+   const auto &p=r.at("protobuf");const std::string kind=r.at("kind");
+   if(kind=="stats"){paused=p.value("paused",false);stats_seen=true;if(p.contains("sim_time"))stats_clock=stamp(p.at("sim_time"));}
+   if(kind=="pose"){
+    const int64_t ts=stamp(p.at("header").at("stamp"));
+    if(p.contains("pose"))for(const auto &x:p.at("pose"))if(x.value("name",std::string())=="scripted_obstacle"){
+     uint64_t found=x.at("id").is_string()?std::stoull(x.at("id").get<std::string>()):x.at("id").get<uint64_t>();
+     if(entity&&*entity!=found)throw std::runtime_error("ENTITY_MISMATCH");
+     if(!x.contains("position")||!x.contains("orientation"))throw std::runtime_error("TRUTH_POSE_FIELDS_MISSING");
+     entity=found;auto xyz=x.at("position");actual=Vec{xyz.value("x",0.),xyz.value("y",0.),xyz.value("z",0.)};pose_stamp=ts;
+    }
+   }
+   if(kind=="reply"){gate.reply(p.at("ok").get<bool>());save({{"kind","response"},{"sim_ns",clock},{"response",p}});}
+   if(kind=="clock"){
+    const auto observed=stamp(p.at("sim"));
+    if(observed<clock)throw std::runtime_error("CLOCK_EPOCH_CHANGED");
+    clock=observed;clock_updated=true;
+   }
+  }
+  if(clock_updated){
+#ifndef CMR_CAPTURE
+    if(paused&&gate.pending)throw std::runtime_error("UNPLANNED_PAUSE_INFLIGHT");
+    const auto scheduled=timeline.next;std::optional<Vec> target;
+    if(gate.pending){
+     bool original=timeline.quiesced;timeline.quiesced=true;timeline.tick(clock,paused);timeline.quiesced=original;
+     if(clock-gate.previous>50000000LL)throw std::runtime_error("MOTION_REQUEST_GAP");
+    }else if(paused&&timeline.quiesced){
+     if(stats_clock<0||clock>stats_clock)throw std::runtime_error("PAUSED_CLOCK_ADVANCED");
+     // Drain final clock publications up to the authoritative paused stats stamp.
+     // Quiesced tick never issues a pose or advances the trajectory phase.
+     target=timeline.tick(clock,false);
+    }else target=timeline.tick(clock,paused);
+    if(target){
+     if(!stats_seen||!entity||!actual||std::abs(clock-pose_stamp)>50000000LL)throw std::runtime_error("TRUTH_GAP");
+     if(gate.pending)throw std::runtime_error("MOTION_REQUEST_BACKLOG");
+     gz::msgs::Pose req;req.set_id(*entity);req.set_name("scripted_obstacle");
+     req.mutable_position()->set_x((*target)[0]);req.mutable_position()->set_y((*target)[1]);req.mutable_position()->set_z((*target)[2]);req.mutable_orientation()->set_w(1);
+     save({{"kind","request"},{"sim_ns",clock},{"planned_ns",scheduled},{"skipped_schedule_points",std::max(int64_t(0),(clock-scheduled)/timeline.period)},{"entity_id",*entity},{"entity_name","scripted_obstacle"},{"desired_xyz",*target},{"request",proto(req)}});
+     gate.begin(clock,mono());
+     std::function<void(const gz::msgs::Boolean&,bool)> cb=[&](const gz::msgs::Boolean &res,bool ok){std::lock_guard<std::mutex> guard(mutex);queue.push_back({{"kind","reply"},{"protobuf",{{"ok",ok&&res.data()},{"receive_monotonic_s",mono()}}}});};
+     if(!node.Request<gz::msgs::Pose,gz::msgs::Boolean>("/world/default/set_pose",req,cb))throw std::runtime_error("MOTION_SERVICE_UNAVAILABLE");
+    }
+#else
+    if(timeline.last>clock)throw std::runtime_error("CLOCK_EPOCH_CHANGED");
+    timeline.last=clock;
+#endif
+  }
+  gate.check(mono());
+ };
+ [[maybe_unused]] auto service=[&](const std::string &name,const auto &req){gz::msgs::Boolean res;bool ok=false;if(!node.Request(name,req,500u,res,ok)||!ok||!res.data())throw std::runtime_error("SERVICE_REJECTED_OR_TIMEOUT");};
+ auto execute=[&](std::string op,const J &a)->J{
+  (void)a;
+  if(op=="interfaces"){
+   J j={{"services",J::object()},{"topics",J::object()}};
+   for(const auto &entry:std::vector<std::array<std::string,3>>{{"/world/default/set_pose","gz.msgs.Pose","gz.msgs.Boolean"},{"/world/default/scene/info","gz.msgs.Empty","gz.msgs.Scene"},{"/world/default/control","gz.msgs.WorldControl","gz.msgs.Boolean"}}){
+    std::vector<gz::transport::ServicePublisher> pubs;
+    if(!node.ServiceInfo(entry[0],pubs)||pubs.size()!=1||pubs[0].ReqTypeName()!=entry[1]||pubs[0].RepTypeName()!=entry[2])throw std::runtime_error("SERVICE_DISCOVERY_TYPE_MISMATCH");
+    j["services"][entry[0]]={{"request_type",pubs[0].ReqTypeName()},{"response_type",pubs[0].RepTypeName()},{"providers",pubs.size()}};
+   }
+   for(const auto &entry:std::vector<std::array<std::string,2>>{{"/world/default/pose/info","gz.msgs.Pose_V"},{"/world/default/clock","gz.msgs.Clock"},{"/world/default/stats","gz.msgs.WorldStatistics"}}){
+    std::vector<gz::transport::MessagePublisher> pubs,subs;
+    if(!node.TopicInfo(entry[0],pubs,subs)||pubs.size()!=1||pubs[0].MsgTypeName()!=entry[1])throw std::runtime_error("TOPIC_DISCOVERY_TYPE_MISMATCH");
+    j["topics"][entry[0]]={{"type",pubs[0].MsgTypeName()},{"publishers",pubs.size()}};
+   }
+   return j;
+  }
+  if(op=="status"){
+   J j={{"sim_ns",clock},{"phase",timeline.phase},{"inflight",gate.pending},{"stats_seen",stats_seen},{"paused",paused},{"pose_stamp_ns",pose_stamp},{"stats_sim_ns",stats_clock}};
+   {std::lock_guard<std::mutex> guard(mutex);j["counts"]=counts;}
+   j["entity_id"]=entity?J(*entity):J(nullptr);j["actual_xyz"]=actual?J(*actual):J(nullptr);return j;
+  }
+  if(op=="snapshot"){
+   gz::msgs::Empty req;gz::msgs::Scene res;bool ok=false;
+   if(!node.Request("/world/default/scene/info",req,500u,res,ok)||!ok)throw std::runtime_error("SCENE_SNAPSHOT_TIMEOUT");
+   receive("scene_snapshot",res);return {{"captured",true}};
+  }
+#ifndef CMR_CAPTURE
+  if(op=="arm"){
+   if(!entity||a.at("entity_id").get<uint64_t>()!=*entity)throw std::runtime_error("ENTITY_MISMATCH");
+   if(a.at("clock_epoch")!=epoch||a.at("trigger")!=ds.at("trigger"))throw std::runtime_error("TRIGGER_EPOCH");
+   if(a.at("trigger")=="goal_accepted"&&(!a.contains("uuid")||a.at("uuid").get<std::string>().size()!=32))throw std::runtime_error("GOAL_BINDING");
+   timeline.arm(a.at("event_id"),a.at("trigger_ns"),ds.at("delay_ns"));
+   save({{"kind","arm"},{"event",a},{"release_ns",timeline.release}});return {{"release_ns",timeline.release}};
+  }
+  if(op=="quiesce"){timeline.quiesced=true;return {{"quiesced",true},{"inflight",gate.pending}};}
+  if(op=="resume_requests"){if(paused)throw std::runtime_error("WORLD_STILL_PAUSED");timeline.quiesced=false;return {{"resumed",true}};}
+  if(op=="pause"||op=="unpause"){
+   if(profile.at("mode")!="probe"||!timeline.quiesced||gate.pending)throw std::runtime_error("PROBE_PAUSE_ONLY");
+   gz::msgs::WorldControl req;req.set_pause(op=="pause");service("/world/default/control",req);return {{"requested_pause",op=="pause"}};
+  }
+  if(op=="probe_place"){
+   if(profile.at("mode")!="probe"||!timeline.quiesced||!entity)throw std::runtime_error("PROBE_PLACE_ONLY");
+   auto xyz=a.at("xyz").get<Vec>();
+   for(double v:xyz)if(!std::isfinite(v))throw std::runtime_error("NONFINITE_PLACE");
+   gz::msgs::Pose req;req.set_id(*entity);req.set_name("scripted_obstacle");req.mutable_position()->set_x(xyz[0]);req.mutable_position()->set_y(xyz[1]);req.mutable_position()->set_z(xyz[2]);req.mutable_orientation()->set_w(1);
+   save({{"kind","probe_place_request"},{"sim_ns",clock},{"entity_id",*entity},{"desired_xyz",xyz},{"request",proto(req)}});service("/world/default/set_pose",req);
+   save({{"kind","probe_place"},{"sim_ns",clock},{"entity_id",*entity},{"desired_xyz",xyz},{"request",proto(req)}});return {{"service_ack",true}};
+  }
+  if(op=="contact"){
+   if(profile.at("mode")!="probe"||!timeline.quiesced||!actual)throw std::runtime_error("CONTACT_PROBE_ONLY");
+   const bool positive=a.at("positive");Vec p=*actual;
+   if(!positive){auto xy=a.at("test_xy").get<std::array<double,2>>();p[0]=xy[0];p[1]=xy[1];if(std::hypot(p[0]-(*actual)[0],p[1]-(*actual)[1])<.3)throw std::runtime_error("NEGATIVE_PROBE_OVERLAPS");}
+   std::string sdf="<sdf version='1.9'><model name='cmr_probe_ball'><pose>"+std::to_string(p[0])+" "+std::to_string(p[1])+" 1.0 0 0 0</pose><link name='body'><inertial><mass>0.1</mass><inertia><ixx>0.00004</ixx><iyy>0.00004</iyy><izz>0.00004</izz></inertia></inertial><collision name='ball'><geometry><sphere><radius>0.03</radius></sphere></geometry></collision><visual name='visual'><geometry><sphere><radius>0.03</radius></sphere></geometry></visual><sensor name='contact' type='contact'><contact><collision>ball</collision></contact><topic>/cmr_probe/contacts</topic><always_on>true</always_on><update_rate>100</update_rate></sensor></link></model></sdf>";
+   gz::msgs::EntityFactory req;req.set_sdf(sdf);service("/world/default/create",req);
+   save({{"kind","contact_create"},{"positive",positive},{"test_xy",std::array<double,2>{p[0],p[1]}},{"actual_actor_xyz",*actual},{"request",proto(req)},{"sim_ns",clock}});return {{"created",true}};
+  }
+  if(op=="remove_contact"){gz::msgs::Entity req;req.set_name("cmr_probe_ball");req.set_type(gz::msgs::Entity::MODEL);service("/world/default/remove",req);return {{"removed",true}};}
+#endif
+  if(op=="exit"){if(gate.pending)throw std::runtime_error("REQUEST_INFLIGHT_AT_EXIT");running=false;return {{"exiting",true}};}
+  throw std::runtime_error("UNKNOWN_COMMAND");
+ };
+ emit("HELLO",{{"purpose","experimental_sidecar"},{"partition",std::getenv("GZ_PARTITION")}});
+ fcntl(STDIN_FILENO,F_SETFL,fcntl(STDIN_FILENO,F_GETFL)|O_NONBLOCK);
+ while(running){
+  pump();if(mono()-lastheart>.5){emit("HEARTBEAT",{{"phase",timeline.phase}});lastheart=mono();}
+  pollfd pfd{STDIN_FILENO,POLLIN,0};poll(&pfd,1,10);
+  if(pfd.revents&POLLIN){
+   char b[4096];ssize_t n=::read(STDIN_FILENO,b,sizeof b);if(n<=0)break;input.append(b,n);if(input.size()>65536)throw std::runtime_error("IPC_TOO_LARGE");
+   size_t pos;
+   while((pos=input.find('\n'))!=std::string::npos){
+    auto cmd=J::parse(input.substr(0,pos));input.erase(0,pos+1);
+    if(cmd.at("protocol_version")!=1||cmd.at("run_id")!=id||cmd.at("seq").get<uint64_t>()<=lastseq||cmd.at("type")!="COMMAND")throw std::runtime_error("IPC_IDENTITY");
+    lastseq=cmd.at("seq");auto rid=cmd.at("request_id").get<std::string>();auto body=cmd.at("data");J result;
+    if(cache.count(rid)){if(cache[rid].first!=body)throw std::runtime_error("IPC_CONFLICT");result=cache[rid].second;}
+    else{
+     try{if(body.at("deadline").get<double>()<=mono())throw std::runtime_error("COMMAND_EXPIRED");result={{"ok",true},{"value",execute(body.at("op"),body.at("args"))}};}
+     catch(const std::exception &e){result={{"ok",false},{"error",e.what()}};}
+     cache[rid]={body,result};
+    }
+    emit("RESULT",result,rid);
+   }
+  }
+  if(pfd.revents&POLLHUP)break;
+ }
+ raw.flush();return raw?0:3;
+ }catch(const std::exception &e){
+  std::cerr<<e.what()<<std::endl;
+  std::cout<<J({{"protocol_version",1},{"run_id",failure_run},{"clock_epoch",failure_run+":sim0"},{"seq",++seq},{"request_id",""},{"type","FAILURE"},{"source_monotonic_s",mono()},{"ros_s",nullptr},{"data",{{"code",e.what()}}}}).dump()<<std::endl;
+  return 3;
+ }
+}

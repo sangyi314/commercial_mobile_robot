@@ -1,0 +1,28 @@
+{
+  "run": "evidence/runs/p0-06-occlusion-probe-kwdqt70u-resume04-low",
+  "clock_samples": 557,
+  "exact_source_matches": 525,
+  "delay_min_max_s": [
+    -0.003154709003865719,
+    0.06785758299520239
+  ],
+  "bad_nearest_receive": [
+    {
+      "observation_line": 1211,
+      "source_ns": 27525000000,
+      "recv": 165513.484082672,
+      "nearest_gz": [
+        165513.483313797,
+        27552000000,
+        13266
+      ],
+      "exact_source_match": [
+        165513.456768713,
+        27525000000,
+        13255
+      ],
+      "difference_ns": 27000000,
+      "exact_receive_delta_s": 0.027313958999002352
+    }
+  ]
+}

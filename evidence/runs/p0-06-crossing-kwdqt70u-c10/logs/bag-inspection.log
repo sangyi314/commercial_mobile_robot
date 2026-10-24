@@ -1,0 +1,1 @@
+{"valid": false, "coverage": "full-navigation", "errors": ["bag behavior checks {'action': True, 'movement': True, 'arrival': False, 'commands': True, 'stop': True}"]}

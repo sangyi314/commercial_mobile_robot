@@ -1,0 +1,231 @@
+........................................................................ [ 34%]
+........................................................................ [ 69%]
+................FFF...........FF.....................FFF.......          [100%]
+=================================== FAILURES ===================================
+_______________ test_new_drafts_valid_but_not_ready[p0_06_probe] _______________
+
+name = 'p0_06_probe'
+
+    @pytest.mark.parametrize('name',['p0_06_probe','crossing','observed_occlusion'])
+    def test_new_drafts_valid_but_not_ready(name):
+     p=ROOT/('experiments/scenarios/'+name+'.yaml')
+>    assert v.validate_scenario(p)['status']=='VALID'
+E    AssertionError: assert 'INVALID' == 'VALID'
+E      - VALID
+E      + INVALID
+E      ? ++
+
+tests/test_dynamic_contract.py:15: AssertionError
+________________ test_new_drafts_valid_but_not_ready[crossing] _________________
+
+name = 'crossing'
+
+    @pytest.mark.parametrize('name',['p0_06_probe','crossing','observed_occlusion'])
+    def test_new_drafts_valid_but_not_ready(name):
+     p=ROOT/('experiments/scenarios/'+name+'.yaml')
+>    assert v.validate_scenario(p)['status']=='VALID'
+E    AssertionError: assert 'INVALID' == 'VALID'
+E      - VALID
+E      + INVALID
+E      ? ++
+
+tests/test_dynamic_contract.py:15: AssertionError
+___________ test_new_drafts_valid_but_not_ready[observed_occlusion] ____________
+
+name = 'observed_occlusion'
+
+    @pytest.mark.parametrize('name',['p0_06_probe','crossing','observed_occlusion'])
+    def test_new_drafts_valid_but_not_ready(name):
+     p=ROOT/('experiments/scenarios/'+name+'.yaml')
+>    assert v.validate_scenario(p)['status']=='VALID'
+E    AssertionError: assert 'INVALID' == 'VALID'
+E      - VALID
+E      + INVALID
+E      ? ++
+
+tests/test_dynamic_contract.py:15: AssertionError
+_____________ test_archived_v2_draft_does_not_depend_on_host_paths _____________
+
+spec = {'dynamic': {'actor': {'path': '/home/robot/commercial_mobile_robot/src/cmr_sim/models/scripted_obstacle/model.sdf', '... 'interfaces': [{'frame_id': 'base_scan', 'role': 'laser_scan', 'time_domain': 'ros_sim', 'topic': '/scan', ...}], ...}
+
+    def test_archived_v2_draft_does_not_depend_on_host_paths(spec):
+     for ref in spec['resources'].values():
+      if ref:ref['path']='/absent/archive/source'
+>    v.validate_structure(spec,'scenario','archive');v.scenario_rules(spec,'archive',False)
+
+tests/test_dynamic_contract.py:39: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tools/validate_run.py:145: in validate_structure
+    fail("SCHEMA_ERROR", f"{path}:$." + ".".join(map(str, parts)), error.message)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+code = 'SCHEMA_ERROR', path = 'archive:$.resources.world'
+message = "{'path': '/absent/archive/source', 'sha256': 'f4182b3f53e38540510f9f842cf283b5c442b3eca247cfea055d71079af40d43'} is not valid under any of the given schemas"
+
+    def fail(code, path, message):
+>       raise InvalidRecord(code, path, message)
+E       validate_run.InvalidRecord: {'path': '/absent/archive/source', 'sha256': 'f4182b3f53e38540510f9f842cf283b5c442b3eca247cfea055d71079af40d43'} is not valid under any of the given schemas
+
+tools/validate_run.py:27: InvalidRecord
+___________ test_preparation_fingerprint_changes_with_motion_or_goal ___________
+
+spec = {'dynamic': {'actor': {'path': '/home/robot/commercial_mobile_robot/src/cmr_sim/models/scripted_obstacle/model.sdf', '... 'interfaces': [{'frame_id': 'base_scan', 'role': 'laser_scan', 'time_domain': 'ros_sim', 'topic': '/scan', ...}], ...}
+
+    def test_preparation_fingerprint_changes_with_motion_or_goal(spec):
+     first=fingerprint(spec);spec['dynamic']['motion']['sha256']='a'*64;assert fingerprint(spec)!=first
+>    spec['task']['goal_pose']['x']+=.01;assert fingerprint(spec)!=first
+E    KeyError: 'x'
+
+tests/test_dynamic_contract.py:42: KeyError
+________ test_dynamic_drafts_rejected_without_spawn_or_directory[probe] ________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0xfd3740e3b830>
+name = 'probe'
+
+    @pytest.mark.parametrize('name',['probe','crossing','observed_occlusion'])
+    def test_dynamic_drafts_rejected_without_spawn_or_directory(monkeypatch,name):
+     before=set((ROOT/'evidence/runs').iterdir())
+     monkeypatch.setattr(run_trial.subprocess,'Popen',lambda *a,**k:pytest.fail('must not spawn'))
+     scenario='p0_06_probe' if name=='probe' else name
+     with pytest.raises(ValueError,match='draft|prepared'):
+>     run_trial.load_inputs(ROOT/('experiments/scenarios/'+scenario+'.yaml'),ROOT/('experiments/profiles/p0_06_'+name+'.yaml'),'mppi','p0-06-unit-draft')
+
+tests/test_dynamic_runner.py:16: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tools/run_trial.py:52: in load_inputs
+    s=validate_run.load_strict(Path(scenario));validate_run.validate_structure(s,'scenario',scenario);validate_run.scenario_rules(s,Path(scenario))
+tools/validate_run.py:145: in validate_structure
+    fail("SCHEMA_ERROR", f"{path}:$." + ".".join(map(str, parts)), error.message)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+code = 'SCHEMA_ERROR'
+path = '/home/robot/commercial_mobile_robot/experiments/scenarios/p0_06_probe.yaml:$.resources.world'
+message = "{'path': '/home/robot/commercial_mobile_robot/src/cmr_sim/worlds/p0_06_crossing.sdf', 'sha256': 'f4182b3f53e38540510f9f842cf283b5c442b3eca247cfea055d71079af40d43'} is not valid under any of the given schemas"
+
+    def fail(code, path, message):
+>       raise InvalidRecord(code, path, message)
+E       validate_run.InvalidRecord: {'path': '/home/robot/commercial_mobile_robot/src/cmr_sim/worlds/p0_06_crossing.sdf', 'sha256': 'f4182b3f53e38540510f9f842cf283b5c442b3eca247cfea055d71079af40d43'} is not valid under any of the given schemas
+
+tools/validate_run.py:27: InvalidRecord
+
+During handling of the above exception, another exception occurred:
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0xfd3740e3b830>
+name = 'probe'
+
+    @pytest.mark.parametrize('name',['probe','crossing','observed_occlusion'])
+    def test_dynamic_drafts_rejected_without_spawn_or_directory(monkeypatch,name):
+     before=set((ROOT/'evidence/runs').iterdir())
+     monkeypatch.setattr(run_trial.subprocess,'Popen',lambda *a,**k:pytest.fail('must not spawn'))
+     scenario='p0_06_probe' if name=='probe' else name
+>    with pytest.raises(ValueError,match='draft|prepared'):
+E    AssertionError: Regex pattern did not match.
+E     Regex: 'draft|prepared'
+E     Input: "{'path': '/home/robot/commercial_mobile_robot/src/cmr_sim/worlds/p0_06_crossing.sdf', 'sha256': 'f4182b3f53e38540510f9f842cf283b5c442b3eca247cfea055d71079af40d43'} is not valid under any of the given schemas"
+
+tests/test_dynamic_runner.py:15: AssertionError
+______ test_dynamic_drafts_rejected_without_spawn_or_directory[crossing] _______
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0xfd3740e2d0a0>
+name = 'crossing'
+
+    @pytest.mark.parametrize('name',['probe','crossing','observed_occlusion'])
+    def test_dynamic_drafts_rejected_without_spawn_or_directory(monkeypatch,name):
+     before=set((ROOT/'evidence/runs').iterdir())
+     monkeypatch.setattr(run_trial.subprocess,'Popen',lambda *a,**k:pytest.fail('must not spawn'))
+     scenario='p0_06_probe' if name=='probe' else name
+     with pytest.raises(ValueError,match='draft|prepared'):
+>     run_trial.load_inputs(ROOT/('experiments/scenarios/'+scenario+'.yaml'),ROOT/('experiments/profiles/p0_06_'+name+'.yaml'),'mppi','p0-06-unit-draft')
+
+tests/test_dynamic_runner.py:16: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tools/run_trial.py:52: in load_inputs
+    s=validate_run.load_strict(Path(scenario));validate_run.validate_structure(s,'scenario',scenario);validate_run.scenario_rules(s,Path(scenario))
+tools/validate_run.py:145: in validate_structure
+    fail("SCHEMA_ERROR", f"{path}:$." + ".".join(map(str, parts)), error.message)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+code = 'SCHEMA_ERROR'
+path = '/home/robot/commercial_mobile_robot/experiments/scenarios/crossing.yaml:$.resources.world'
+message = "{'path': '/home/robot/commercial_mobile_robot/src/cmr_sim/worlds/p0_06_crossing.sdf', 'sha256': 'f4182b3f53e38540510f9f842cf283b5c442b3eca247cfea055d71079af40d43'} is not valid under any of the given schemas"
+
+    def fail(code, path, message):
+>       raise InvalidRecord(code, path, message)
+E       validate_run.InvalidRecord: {'path': '/home/robot/commercial_mobile_robot/src/cmr_sim/worlds/p0_06_crossing.sdf', 'sha256': 'f4182b3f53e38540510f9f842cf283b5c442b3eca247cfea055d71079af40d43'} is not valid under any of the given schemas
+
+tools/validate_run.py:27: InvalidRecord
+
+During handling of the above exception, another exception occurred:
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0xfd3740e2d0a0>
+name = 'crossing'
+
+    @pytest.mark.parametrize('name',['probe','crossing','observed_occlusion'])
+    def test_dynamic_drafts_rejected_without_spawn_or_directory(monkeypatch,name):
+     before=set((ROOT/'evidence/runs').iterdir())
+     monkeypatch.setattr(run_trial.subprocess,'Popen',lambda *a,**k:pytest.fail('must not spawn'))
+     scenario='p0_06_probe' if name=='probe' else name
+>    with pytest.raises(ValueError,match='draft|prepared'):
+E    AssertionError: Regex pattern did not match.
+E     Regex: 'draft|prepared'
+E     Input: "{'path': '/home/robot/commercial_mobile_robot/src/cmr_sim/worlds/p0_06_crossing.sdf', 'sha256': 'f4182b3f53e38540510f9f842cf283b5c442b3eca247cfea055d71079af40d43'} is not valid under any of the given schemas"
+
+tests/test_dynamic_runner.py:15: AssertionError
+_ test_dynamic_drafts_rejected_without_spawn_or_directory[observed_occlusion] __
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0xfd3740e2c200>
+name = 'observed_occlusion'
+
+    @pytest.mark.parametrize('name',['probe','crossing','observed_occlusion'])
+    def test_dynamic_drafts_rejected_without_spawn_or_directory(monkeypatch,name):
+     before=set((ROOT/'evidence/runs').iterdir())
+     monkeypatch.setattr(run_trial.subprocess,'Popen',lambda *a,**k:pytest.fail('must not spawn'))
+     scenario='p0_06_probe' if name=='probe' else name
+     with pytest.raises(ValueError,match='draft|prepared'):
+>     run_trial.load_inputs(ROOT/('experiments/scenarios/'+scenario+'.yaml'),ROOT/('experiments/profiles/p0_06_'+name+'.yaml'),'mppi','p0-06-unit-draft')
+
+tests/test_dynamic_runner.py:16: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tools/run_trial.py:52: in load_inputs
+    s=validate_run.load_strict(Path(scenario));validate_run.validate_structure(s,'scenario',scenario);validate_run.scenario_rules(s,Path(scenario))
+tools/validate_run.py:145: in validate_structure
+    fail("SCHEMA_ERROR", f"{path}:$." + ".".join(map(str, parts)), error.message)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+code = 'SCHEMA_ERROR'
+path = '/home/robot/commercial_mobile_robot/experiments/scenarios/observed_occlusion.yaml:$.resources.world'
+message = "{'path': '/home/robot/commercial_mobile_robot/src/cmr_sim/worlds/p0_06_observed_occlusion.sdf', 'sha256': 'c122e991643719aa4f35f0dd593c5327dabf68267f546e9a4455c1e18aacbf6c'} is not valid under any of the given schemas"
+
+    def fail(code, path, message):
+>       raise InvalidRecord(code, path, message)
+E       validate_run.InvalidRecord: {'path': '/home/robot/commercial_mobile_robot/src/cmr_sim/worlds/p0_06_observed_occlusion.sdf', 'sha256': 'c122e991643719aa4f35f0dd593c5327dabf68267f546e9a4455c1e18aacbf6c'} is not valid under any of the given schemas
+
+tools/validate_run.py:27: InvalidRecord
+
+During handling of the above exception, another exception occurred:
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0xfd3740e2c200>
+name = 'observed_occlusion'
+
+    @pytest.mark.parametrize('name',['probe','crossing','observed_occlusion'])
+    def test_dynamic_drafts_rejected_without_spawn_or_directory(monkeypatch,name):
+     before=set((ROOT/'evidence/runs').iterdir())
+     monkeypatch.setattr(run_trial.subprocess,'Popen',lambda *a,**k:pytest.fail('must not spawn'))
+     scenario='p0_06_probe' if name=='probe' else name
+>    with pytest.raises(ValueError,match='draft|prepared'):
+E    AssertionError: Regex pattern did not match.
+E     Regex: 'draft|prepared'
+E     Input: "{'path': '/home/robot/commercial_mobile_robot/src/cmr_sim/worlds/p0_06_observed_occlusion.sdf', 'sha256': 'c122e991643719aa4f35f0dd593c5327dabf68267f546e9a4455c1e18aacbf6c'} is not valid under any of the given schemas"
+
+tests/test_dynamic_runner.py:15: AssertionError
+- generated xml file: /home/robot/commercial_mobile_robot/evidence/env/p0-06-dev-a3179_6v/offline-01.xml -
+=========================== short test summary info ============================
+FAILED tests/test_dynamic_contract.py::test_new_drafts_valid_but_not_ready[p0_06_probe]
+FAILED tests/test_dynamic_contract.py::test_new_drafts_valid_but_not_ready[crossing]
+FAILED tests/test_dynamic_contract.py::test_new_drafts_valid_but_not_ready[observed_occlusion]
+FAILED tests/test_dynamic_contract.py::test_archived_v2_draft_does_not_depend_on_host_paths
+FAILED tests/test_dynamic_contract.py::test_preparation_fingerprint_changes_with_motion_or_goal
+FAILED tests/test_dynamic_runner.py::test_dynamic_drafts_rejected_without_spawn_or_directory[probe]
+FAILED tests/test_dynamic_runner.py::test_dynamic_drafts_rejected_without_spawn_or_directory[crossing]
+FAILED tests/test_dynamic_runner.py::test_dynamic_drafts_rejected_without_spawn_or_directory[observed_occlusion]
+8 failed, 199 passed in 1.36s

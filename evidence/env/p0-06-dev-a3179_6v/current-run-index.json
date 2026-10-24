@@ -1,0 +1,1 @@
+{"total": 0, "classes": {"real": 0, "fixture": 0, "incomplete_or_missing": 0, "invalid": 0, "validator_error": 0}, "successful_actions_real": 0, "complete_normal_runs_real": 0, "controlled_failure_cases_passed_real": 0, "runs": [], "note": "VALID alone does not establish navigation behavior. No performance ranking or collision inference."}

@@ -1,0 +1,10 @@
+PHASE SNAPSHOT
+PHASE START_SIM
+PHASE SENSOR_READY
+PHASE START_RECORDER
+PHASE LOCALIZE
+PHASE NAV_READY
+PHASE SHUTDOWN
+PHASE INSPECT_BAG
+PHASE FINALIZE
+{"run": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-crossing-probe-kwdqt70u-final05-low", "exit": 0, "status": {"startup": "READY", "action": "NOT_SENT", "harness": "COMPLETED", "cleanup": "SUCCEEDED"}}

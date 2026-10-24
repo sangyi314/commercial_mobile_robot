@@ -1,0 +1,1641 @@
+[
+  {
+    "run": "/home/robot/commercial_mobile_robot/evidence/runs/p0-04-mppi-hhmvi_i0",
+    "action_evidence": [
+      {
+        "line": 2,
+        "record": {
+          "kind": "response",
+          "monotonic_s": 93422.528138796,
+          "ros_s": 0.0,
+          "data": {
+            "accepted": true,
+            "uuid": "b95904295fb345dfa735767608d7848a"
+          }
+        }
+      },
+      {
+        "line": 864,
+        "record": {
+          "kind": "terminal",
+          "monotonic_s": 93431.149252425,
+          "ros_s": 25.062,
+          "data": {
+            "action": "SUCCEEDED",
+            "status": 4,
+            "uuid": "b95904295fb345dfa735767608d7848a",
+            "result": {
+              "error_code": 0,
+              "error_msg": ""
+            }
+          }
+        }
+      }
+    ],
+    "plugin_loading": [
+      {
+        "file": "logs/navigation.log",
+        "line": 88,
+        "text": "[controller_server-1] [INFO] [1792743656.583700500] [controller_server]: Created controller : FollowPath of type nav2_mppi_controller::MPPIController"
+      }
+    ],
+    "cleanup_files": [
+      {
+        "path": "runtime/cleanup-evidence.json",
+        "sha256": "a08ba1092d36bcecba2e8dbeea1702ec3586adf5d54a7289baa5bd8f75c75396",
+        "record": {
+          "processes": [
+            {
+              "label": "navigation",
+              "pid": 117799,
+              "forced": false,
+              "shutdown_service": true,
+              "exit": 0
+            },
+            {
+              "label": "localization",
+              "pid": 117754,
+              "forced": false,
+              "shutdown_service": true,
+              "exit": 0
+            },
+            {
+              "label": "bridge",
+              "pid": 117725,
+              "forced": false,
+              "shutdown_service": null,
+              "exit": 0
+            },
+            {
+              "label": "robot_state_publisher",
+              "pid": 117724,
+              "forced": false,
+              "shutdown_service": null,
+              "exit": 0
+            },
+            {
+              "label": "gazebo",
+              "pid": 117653,
+              "forced": false,
+              "stop_service_exit": 0,
+              "stop_service_response": "data: true\n\n",
+              "exit": 0
+            }
+          ],
+          "remaining_owned_groups": [],
+          "nodes_after": [
+            "cmr_p0_03_start",
+            "_ros2cli_daemon_71_f64f4f9018c145eea9ae256c527a8786"
+          ],
+          "monotonic_s": 93443.245172431,
+          "scope": "Owned navigation then localization, bridge/RSP, then Gazebo. No global kill."
+        }
+      }
+    ],
+    "action_log_bytes": 559262,
+    "action_log_sha256": "0357f77ff8f8b5362999256c273867481592497127ba3f7f02a1c1cff7af9514"
+  },
+  {
+    "run": "/home/robot/commercial_mobile_robot/evidence/runs/p0-04-dwb-76fqnpi5",
+    "action_evidence": [
+      {
+        "line": 2,
+        "record": {
+          "kind": "response",
+          "monotonic_s": 93484.241694034,
+          "ros_s": 17.715,
+          "data": {
+            "accepted": true,
+            "uuid": "392920a92f94406ea2b867643bba9363"
+          }
+        }
+      },
+      {
+        "line": 737,
+        "record": {
+          "kind": "terminal",
+          "monotonic_s": 93491.592606579,
+          "ros_s": 25.062,
+          "data": {
+            "action": "SUCCEEDED",
+            "status": 4,
+            "uuid": "392920a92f94406ea2b867643bba9363",
+            "result": {
+              "error_code": 0,
+              "error_msg": ""
+            }
+          }
+        }
+      }
+    ],
+    "plugin_loading": [
+      {
+        "file": "logs/navigation.log",
+        "line": 88,
+        "text": "[controller_server-1] [INFO] [1792743717.128730571] [controller_server]: Created controller : FollowPath of type dwb_core::DWBLocalPlanner"
+      }
+    ],
+    "cleanup_files": [
+      {
+        "path": "runtime/cleanup-evidence.json",
+        "sha256": "534c69aa9d323ae1f93222935b0e3bb514642aacec982d13f124ebd2bdf30ddc",
+        "record": {
+          "processes": [
+            {
+              "label": "navigation",
+              "pid": 118463,
+              "forced": false,
+              "shutdown_service": true,
+              "exit": 0
+            },
+            {
+              "label": "localization",
+              "pid": 118397,
+              "forced": false,
+              "shutdown_service": true,
+              "exit": 0
+            },
+            {
+              "label": "bridge",
+              "pid": 118311,
+              "forced": false,
+              "shutdown_service": null,
+              "exit": 0
+            },
+            {
+              "label": "robot_state_publisher",
+              "pid": 118310,
+              "forced": false,
+              "shutdown_service": null,
+              "exit": 0
+            },
+            {
+              "label": "gazebo",
+              "pid": 118240,
+              "forced": false,
+              "stop_service_exit": 0,
+              "stop_service_response": "data: true\n\n",
+              "exit": 0
+            }
+          ],
+          "remaining_owned_groups": [],
+          "nodes_after": [
+            "cmr_p0_03_start",
+            "_ros2cli_daemon_71_f64f4f9018c145eea9ae256c527a8786"
+          ],
+          "monotonic_s": 93503.590757335,
+          "scope": "Owned navigation then localization, bridge/RSP, then Gazebo. No global kill."
+        }
+      }
+    ],
+    "action_log_bytes": 479540,
+    "action_log_sha256": "dc507dfa695aa7c43289f2b380344856a4b5ef76fd96ca7dc0b6fbcc36aa687b"
+  },
+  {
+    "run": "/home/robot/commercial_mobile_robot/evidence/runs/p0-05-mppi-20261025-06",
+    "action_evidence": [
+      {
+        "line": 2,
+        "record": {
+          "kind": "response",
+          "monotonic_s": 111014.582065268,
+          "ros_s": 9.261000000000001,
+          "data": {
+            "uuid": "d444fbf04beb42fc9d4817daff14d2dc",
+            "accepted": true
+          },
+          "line": 2
+        }
+      },
+      {
+        "line": 847,
+        "record": {
+          "kind": "terminal",
+          "monotonic_s": 111023.033090897,
+          "ros_s": 17.709,
+          "data": {
+            "uuid": "d444fbf04beb42fc9d4817daff14d2dc",
+            "action": "SUCCEEDED",
+            "status": 4,
+            "result": {
+              "error_code": 0,
+              "error_msg": ""
+            }
+          },
+          "line": 847
+        }
+      }
+    ],
+    "plugin_loading": [
+      {
+        "file": "logs/navigation.log",
+        "line": 88,
+        "text": "[controller_server-1] [INFO] [1792761254.356171808] [controller_server]: Created controller : FollowPath of type nav2_mppi_controller::MPPIController"
+      }
+    ],
+    "cleanup_files": [
+      {
+        "path": "runtime/cleanup.json",
+        "sha256": "639a670463bb1308379825b9833cb4c43c40893ebf7113d593307d3dfe67e463",
+        "record": {
+          "ok": true,
+          "operations": [
+            {
+              "operation": "navigation_shutdown",
+              "ok": true,
+              "value": {
+                "success": true,
+                "states": {
+                  "controller_server": {
+                    "id": 4,
+                    "label": "finalized"
+                  },
+                  "smoother_server": {
+                    "id": 4,
+                    "label": "finalized"
+                  },
+                  "planner_server": {
+                    "id": 4,
+                    "label": "finalized"
+                  },
+                  "route_server": {
+                    "id": 4,
+                    "label": "finalized"
+                  },
+                  "behavior_server": {
+                    "id": 4,
+                    "label": "finalized"
+                  },
+                  "velocity_smoother": {
+                    "id": 4,
+                    "label": "finalized"
+                  },
+                  "collision_monitor": {
+                    "id": 4,
+                    "label": "finalized"
+                  },
+                  "bt_navigator": {
+                    "id": 4,
+                    "label": "finalized"
+                  },
+                  "waypoint_follower": {
+                    "id": 4,
+                    "label": "finalized"
+                  },
+                  "docking_server": {
+                    "id": 4,
+                    "label": "finalized"
+                  }
+                }
+              }
+            },
+            {
+              "operation": "navigation_exit",
+              "ok": true,
+              "value": {
+                "role": "navigation",
+                "identity": {
+                  "pid": 154338,
+                  "state": "R",
+                  "ppid": 154149,
+                  "pgid": 154338,
+                  "sid": 154338,
+                  "start_ticks": 11100812,
+                  "ownership_token": "97e13c8a89fc44db960452e87c0ecbd3:navigation"
+                },
+                "forced": false,
+                "signals": [
+                  {
+                    "pid": 154338,
+                    "signal": "SIGINT_LEADER"
+                  }
+                ],
+                "errors": [],
+                "remaining": [],
+                "exit": 0,
+                "ok": true
+              }
+            },
+            {
+              "operation": "recording_end_marker",
+              "ok": true,
+              "value": {
+                "marked": true
+              }
+            },
+            {
+              "operation": "recorder_exit",
+              "ok": true,
+              "value": {
+                "role": "recorder",
+                "identity": {
+                  "pid": 154278,
+                  "state": "R",
+                  "ppid": 154149,
+                  "pgid": 154278,
+                  "sid": 154278,
+                  "start_ticks": 11100536,
+                  "ownership_token": "97e13c8a89fc44db960452e87c0ecbd3:recorder"
+                },
+                "forced": false,
+                "signals": [
+                  {
+                    "pid": 154278,
+                    "signal": "SIGINT_LEADER"
+                  }
+                ],
+                "errors": [],
+                "remaining": [],
+                "exit": 0,
+                "ok": true
+              }
+            },
+            {
+              "operation": "localization_shutdown",
+              "ok": true,
+              "value": {
+                "success": true,
+                "states": {
+                  "map_server": {
+                    "id": 4,
+                    "label": "finalized"
+                  },
+                  "amcl": {
+                    "id": 4,
+                    "label": "finalized"
+                  }
+                }
+              }
+            },
+            {
+              "operation": "localization_exit",
+              "ok": true,
+              "value": {
+                "role": "localization",
+                "identity": {
+                  "pid": 154294,
+                  "state": "R",
+                  "ppid": 154149,
+                  "pgid": 154294,
+                  "sid": 154294,
+                  "start_ticks": 11100563,
+                  "ownership_token": "97e13c8a89fc44db960452e87c0ecbd3:localization"
+                },
+                "forced": false,
+                "signals": [
+                  {
+                    "pid": 154294,
+                    "signal": "SIGINT_LEADER"
+                  }
+                ],
+                "errors": [],
+                "remaining": [],
+                "exit": 0,
+                "ok": true
+              }
+            },
+            {
+              "operation": "bridge_exit",
+              "ok": true,
+              "value": {
+                "role": "bridge",
+                "identity": {
+                  "pid": 154205,
+                  "state": "R",
+                  "ppid": 154149,
+                  "pgid": 154205,
+                  "sid": 154205,
+                  "start_ticks": 11100371,
+                  "ownership_token": "97e13c8a89fc44db960452e87c0ecbd3:bridge"
+                },
+                "forced": false,
+                "signals": [
+                  {
+                    "pid": 154205,
+                    "signal": "SIGINT_LEADER"
+                  }
+                ],
+                "errors": [],
+                "remaining": [],
+                "exit": 0,
+                "ok": true
+              }
+            },
+            {
+              "operation": "robot_exit",
+              "ok": true,
+              "value": {
+                "role": "robot",
+                "identity": {
+                  "pid": 154204,
+                  "state": "R",
+                  "ppid": 154149,
+                  "pgid": 154204,
+                  "sid": 154204,
+                  "start_ticks": 11100371,
+                  "ownership_token": "97e13c8a89fc44db960452e87c0ecbd3:robot"
+                },
+                "forced": false,
+                "signals": [
+                  {
+                    "pid": 154204,
+                    "signal": "SIGINT_LEADER"
+                  }
+                ],
+                "errors": [],
+                "remaining": [],
+                "exit": 0,
+                "ok": true
+              }
+            },
+            {
+              "operation": "gazebo_stop_service",
+              "ok": true,
+              "value": null
+            },
+            {
+              "operation": "gazebo_exit",
+              "ok": true,
+              "value": {
+                "role": "gazebo",
+                "identity": {
+                  "pid": 154176,
+                  "state": "R",
+                  "ppid": 154149,
+                  "pgid": 154176,
+                  "sid": 154176,
+                  "start_ticks": 11100309,
+                  "ownership_token": "97e13c8a89fc44db960452e87c0ecbd3:gazebo"
+                },
+                "forced": false,
+                "signals": [],
+                "errors": [],
+                "remaining": [],
+                "exit": 0,
+                "ok": true
+              }
+            },
+            {
+              "operation": "worker_exit_request",
+              "ok": true,
+              "value": {
+                "exiting": true
+              }
+            },
+            {
+              "operation": "worker_exit",
+              "ok": true,
+              "value": {
+                "role": "worker",
+                "identity": {
+                  "pid": 154158,
+                  "state": "R",
+                  "ppid": 154149,
+                  "pgid": 154158,
+                  "sid": 154158,
+                  "start_ticks": 11100276,
+                  "ownership_token": "97e13c8a89fc44db960452e87c0ecbd3:worker"
+                },
+                "forced": false,
+                "signals": [],
+                "errors": [],
+                "remaining": [],
+                "exit": 0,
+                "ok": true
+              }
+            }
+          ],
+          "processes": [
+            {
+              "role": "display-check",
+              "identity": {
+                "pid": 154157,
+                "state": "R",
+                "ppid": 154149,
+                "pgid": 154157,
+                "sid": 154157,
+                "start_ticks": 11100274,
+                "ownership_token": "97e13c8a89fc44db960452e87c0ecbd3:display-check"
+              },
+              "forced": false,
+              "signals": [],
+              "errors": [],
+              "remaining": [],
+              "exit": 0,
+              "ok": true
+            },
+            {
+              "role": "worker",
+              "identity": {
+                "pid": 154158,
+                "state": "R",
+                "ppid": 154149,
+                "pgid": 154158,
+                "sid": 154158,
+                "start_ticks": 11100276,
+                "ownership_token": "97e13c8a89fc44db960452e87c0ecbd3:worker"
+              },
+              "forced": false,
+              "signals": [],
+              "errors": [],
+              "remaining": [],
+              "exit": 0,
+              "ok": true
+            },
+            {
+              "role": "gazebo",
+              "identity": {
+                "pid": 154176,
+                "state": "R",
+                "ppid": 154149,
+                "pgid": 154176,
+                "sid": 154176,
+                "start_ticks": 11100309,
+                "ownership_token": "97e13c8a89fc44db960452e87c0ecbd3:gazebo"
+              },
+              "forced": false,
+              "signals": [],
+              "errors": [],
+              "remaining": [],
+              "exit": 0,
+              "ok": true
+            },
+            {
+              "role": "robot-spawn",
+              "identity": {
+                "pid": 154177,
+                "state": "R",
+                "ppid": 154149,
+                "pgid": 154177,
+                "sid": 154177,
+                "start_ticks": 11100309,
+                "ownership_token": "97e13c8a89fc44db960452e87c0ecbd3:robot-spawn"
+              },
+              "forced": false,
+              "signals": [],
+              "errors": [],
+              "remaining": [],
+              "exit": 0,
+              "ok": true
+            },
+            {
+              "role": "robot",
+              "identity": {
+                "pid": 154204,
+                "state": "R",
+                "ppid": 154149,
+                "pgid": 154204,
+                "sid": 154204,
+                "start_ticks": 11100371,
+                "ownership_token": "97e13c8a89fc44db960452e87c0ecbd3:robot"
+              },
+              "forced": false,
+              "signals": [
+                {
+                  "pid": 154204,
+                  "signal": "SIGINT_LEADER"
+                }
+              ],
+              "errors": [],
+              "remaining": [],
+              "exit": 0,
+              "ok": true
+            },
+            {
+              "role": "bridge",
+              "identity": {
+                "pid": 154205,
+                "state": "R",
+                "ppid": 154149,
+                "pgid": 154205,
+                "sid": 154205,
+                "start_ticks": 11100371,
+                "ownership_token": "97e13c8a89fc44db960452e87c0ecbd3:bridge"
+              },
+              "forced": false,
+              "signals": [
+                {
+                  "pid": 154205,
+                  "signal": "SIGINT_LEADER"
+                }
+              ],
+              "errors": [],
+              "remaining": [],
+              "exit": 0,
+              "ok": true
+            },
+            {
+              "role": "recorder",
+              "identity": {
+                "pid": 154278,
+                "state": "R",
+                "ppid": 154149,
+                "pgid": 154278,
+                "sid": 154278,
+                "start_ticks": 11100536,
+                "ownership_token": "97e13c8a89fc44db960452e87c0ecbd3:recorder"
+              },
+              "forced": false,
+              "signals": [
+                {
+                  "pid": 154278,
+                  "signal": "SIGINT_LEADER"
+                }
+              ],
+              "errors": [],
+              "remaining": [],
+              "exit": 0,
+              "ok": true
+            },
+            {
+              "role": "localization",
+              "identity": {
+                "pid": 154294,
+                "state": "R",
+                "ppid": 154149,
+                "pgid": 154294,
+                "sid": 154294,
+                "start_ticks": 11100563,
+                "ownership_token": "97e13c8a89fc44db960452e87c0ecbd3:localization"
+              },
+              "forced": false,
+              "signals": [
+                {
+                  "pid": 154294,
+                  "signal": "SIGINT_LEADER"
+                }
+              ],
+              "errors": [],
+              "remaining": [],
+              "exit": 0,
+              "ok": true
+            },
+            {
+              "role": "navigation",
+              "identity": {
+                "pid": 154338,
+                "state": "R",
+                "ppid": 154149,
+                "pgid": 154338,
+                "sid": 154338,
+                "start_ticks": 11100812,
+                "ownership_token": "97e13c8a89fc44db960452e87c0ecbd3:navigation"
+              },
+              "forced": false,
+              "signals": [
+                {
+                  "pid": 154338,
+                  "signal": "SIGINT_LEADER"
+                }
+              ],
+              "errors": [],
+              "remaining": [],
+              "exit": 0,
+              "ok": true
+            },
+            {
+              "role": "gazebo-stop",
+              "identity": {
+                "pid": 154743,
+                "state": "R",
+                "ppid": 154149,
+                "pgid": 154743,
+                "sid": 154743,
+                "start_ticks": 11103425,
+                "ownership_token": "97e13c8a89fc44db960452e87c0ecbd3:gazebo-stop"
+              },
+              "forced": false,
+              "signals": [],
+              "errors": [],
+              "remaining": [],
+              "exit": 0,
+              "ok": true
+            }
+          ],
+          "remaining": []
+        }
+      }
+    ],
+    "action_log_bytes": 567980,
+    "action_log_sha256": "4a6f37b7dbbef38e1581b00c2acec6329564003119f5543af5f83e218ce6eb5f"
+  },
+  {
+    "run": "/home/robot/commercial_mobile_robot/evidence/runs/p0-05-dwb-20261025-01",
+    "action_evidence": [
+      {
+        "line": 2,
+        "record": {
+          "kind": "response",
+          "monotonic_s": 111057.07076758,
+          "ros_s": 9.357000000000001,
+          "data": {
+            "uuid": "75dd53f55ee94b3c83423953a630e22d",
+            "accepted": true
+          },
+          "line": 2
+        }
+      },
+      {
+        "line": 777,
+        "record": {
+          "kind": "terminal",
+          "monotonic_s": 111064.821488459,
+          "ros_s": 17.097,
+          "data": {
+            "uuid": "75dd53f55ee94b3c83423953a630e22d",
+            "action": "SUCCEEDED",
+            "status": 4,
+            "result": {
+              "error_code": 0,
+              "error_msg": ""
+            }
+          },
+          "line": 777
+        }
+      }
+    ],
+    "plugin_loading": [
+      {
+        "file": "logs/navigation.log",
+        "line": 88,
+        "text": "[controller_server-1] [INFO] [1792761296.829596787] [controller_server]: Created controller : FollowPath of type dwb_core::DWBLocalPlanner"
+      }
+    ],
+    "cleanup_files": [
+      {
+        "path": "runtime/cleanup.json",
+        "sha256": "fe8ad18837696ebcbb156134769ef9135fc81a46f772dab8bcad82f1736d578b",
+        "record": {
+          "ok": true,
+          "operations": [
+            {
+              "operation": "navigation_shutdown",
+              "ok": true,
+              "value": {
+                "success": true,
+                "states": {
+                  "controller_server": {
+                    "id": 4,
+                    "label": "finalized"
+                  },
+                  "smoother_server": {
+                    "id": 4,
+                    "label": "finalized"
+                  },
+                  "planner_server": {
+                    "id": 4,
+                    "label": "finalized"
+                  },
+                  "route_server": {
+                    "id": 4,
+                    "label": "finalized"
+                  },
+                  "behavior_server": {
+                    "id": 4,
+                    "label": "finalized"
+                  },
+                  "velocity_smoother": {
+                    "id": 4,
+                    "label": "finalized"
+                  },
+                  "collision_monitor": {
+                    "id": 4,
+                    "label": "finalized"
+                  },
+                  "bt_navigator": {
+                    "id": 4,
+                    "label": "finalized"
+                  },
+                  "waypoint_follower": {
+                    "id": 4,
+                    "label": "finalized"
+                  },
+                  "docking_server": {
+                    "id": 4,
+                    "label": "finalized"
+                  }
+                }
+              }
+            },
+            {
+              "operation": "navigation_exit",
+              "ok": true,
+              "value": {
+                "role": "navigation",
+                "identity": {
+                  "pid": 155096,
+                  "state": "R",
+                  "ppid": 154913,
+                  "pgid": 155096,
+                  "sid": 155096,
+                  "start_ticks": 11105091,
+                  "ownership_token": "f4653eb7e6034a4884e3012a0d015735:navigation"
+                },
+                "forced": false,
+                "signals": [
+                  {
+                    "pid": 155096,
+                    "signal": "SIGINT_LEADER"
+                  }
+                ],
+                "errors": [],
+                "remaining": [],
+                "exit": 0,
+                "ok": true
+              }
+            },
+            {
+              "operation": "recording_end_marker",
+              "ok": true,
+              "value": {
+                "marked": true
+              }
+            },
+            {
+              "operation": "recorder_exit",
+              "ok": true,
+              "value": {
+                "role": "recorder",
+                "identity": {
+                  "pid": 155035,
+                  "state": "R",
+                  "ppid": 154913,
+                  "pgid": 155035,
+                  "sid": 155035,
+                  "start_ticks": 11104774,
+                  "ownership_token": "f4653eb7e6034a4884e3012a0d015735:recorder"
+                },
+                "forced": false,
+                "signals": [
+                  {
+                    "pid": 155035,
+                    "signal": "SIGINT_LEADER"
+                  }
+                ],
+                "errors": [],
+                "remaining": [],
+                "exit": 0,
+                "ok": true
+              }
+            },
+            {
+              "operation": "localization_shutdown",
+              "ok": true,
+              "value": {
+                "success": true,
+                "states": {
+                  "map_server": {
+                    "id": 4,
+                    "label": "finalized"
+                  },
+                  "amcl": {
+                    "id": 4,
+                    "label": "finalized"
+                  }
+                }
+              }
+            },
+            {
+              "operation": "localization_exit",
+              "ok": true,
+              "value": {
+                "role": "localization",
+                "identity": {
+                  "pid": 155051,
+                  "state": "R",
+                  "ppid": 154913,
+                  "pgid": 155051,
+                  "sid": 155051,
+                  "start_ticks": 11104810,
+                  "ownership_token": "f4653eb7e6034a4884e3012a0d015735:localization"
+                },
+                "forced": false,
+                "signals": [
+                  {
+                    "pid": 155051,
+                    "signal": "SIGINT_LEADER"
+                  }
+                ],
+                "errors": [],
+                "remaining": [],
+                "exit": 0,
+                "ok": true
+              }
+            },
+            {
+              "operation": "bridge_exit",
+              "ok": true,
+              "value": {
+                "role": "bridge",
+                "identity": {
+                  "pid": 154962,
+                  "state": "R",
+                  "ppid": 154913,
+                  "pgid": 154962,
+                  "sid": 154962,
+                  "start_ticks": 11104605,
+                  "ownership_token": "f4653eb7e6034a4884e3012a0d015735:bridge"
+                },
+                "forced": false,
+                "signals": [
+                  {
+                    "pid": 154962,
+                    "signal": "SIGINT_LEADER"
+                  }
+                ],
+                "errors": [],
+                "remaining": [],
+                "exit": 0,
+                "ok": true
+              }
+            },
+            {
+              "operation": "robot_exit",
+              "ok": true,
+              "value": {
+                "role": "robot",
+                "identity": {
+                  "pid": 154961,
+                  "state": "R",
+                  "ppid": 154913,
+                  "pgid": 154961,
+                  "sid": 154961,
+                  "start_ticks": 11104605,
+                  "ownership_token": "f4653eb7e6034a4884e3012a0d015735:robot"
+                },
+                "forced": false,
+                "signals": [
+                  {
+                    "pid": 154961,
+                    "signal": "SIGINT_LEADER"
+                  }
+                ],
+                "errors": [],
+                "remaining": [],
+                "exit": 0,
+                "ok": true
+              }
+            },
+            {
+              "operation": "gazebo_stop_service",
+              "ok": true,
+              "value": null
+            },
+            {
+              "operation": "gazebo_exit",
+              "ok": true,
+              "value": {
+                "role": "gazebo",
+                "identity": {
+                  "pid": 154933,
+                  "state": "R",
+                  "ppid": 154913,
+                  "pgid": 154933,
+                  "sid": 154933,
+                  "start_ticks": 11104547,
+                  "ownership_token": "f4653eb7e6034a4884e3012a0d015735:gazebo"
+                },
+                "forced": false,
+                "signals": [],
+                "errors": [],
+                "remaining": [],
+                "exit": 0,
+                "ok": true
+              }
+            },
+            {
+              "operation": "worker_exit_request",
+              "ok": true,
+              "value": {
+                "exiting": true
+              }
+            },
+            {
+              "operation": "worker_exit",
+              "ok": true,
+              "value": {
+                "role": "worker",
+                "identity": {
+                  "pid": 154922,
+                  "state": "R",
+                  "ppid": 154913,
+                  "pgid": 154922,
+                  "sid": 154922,
+                  "start_ticks": 11104515,
+                  "ownership_token": "f4653eb7e6034a4884e3012a0d015735:worker"
+                },
+                "forced": false,
+                "signals": [],
+                "errors": [],
+                "remaining": [],
+                "exit": 0,
+                "ok": true
+              }
+            }
+          ],
+          "processes": [
+            {
+              "role": "display-check",
+              "identity": {
+                "pid": 154921,
+                "state": "R",
+                "ppid": 154913,
+                "pgid": 154921,
+                "sid": 154921,
+                "start_ticks": 11104513,
+                "ownership_token": "f4653eb7e6034a4884e3012a0d015735:display-check"
+              },
+              "forced": false,
+              "signals": [],
+              "errors": [],
+              "remaining": [],
+              "exit": 0,
+              "ok": true
+            },
+            {
+              "role": "worker",
+              "identity": {
+                "pid": 154922,
+                "state": "R",
+                "ppid": 154913,
+                "pgid": 154922,
+                "sid": 154922,
+                "start_ticks": 11104515,
+                "ownership_token": "f4653eb7e6034a4884e3012a0d015735:worker"
+              },
+              "forced": false,
+              "signals": [],
+              "errors": [],
+              "remaining": [],
+              "exit": 0,
+              "ok": true
+            },
+            {
+              "role": "gazebo",
+              "identity": {
+                "pid": 154933,
+                "state": "R",
+                "ppid": 154913,
+                "pgid": 154933,
+                "sid": 154933,
+                "start_ticks": 11104547,
+                "ownership_token": "f4653eb7e6034a4884e3012a0d015735:gazebo"
+              },
+              "forced": false,
+              "signals": [],
+              "errors": [],
+              "remaining": [],
+              "exit": 0,
+              "ok": true
+            },
+            {
+              "role": "robot-spawn",
+              "identity": {
+                "pid": 154934,
+                "state": "R",
+                "ppid": 154913,
+                "pgid": 154934,
+                "sid": 154934,
+                "start_ticks": 11104547,
+                "ownership_token": "f4653eb7e6034a4884e3012a0d015735:robot-spawn"
+              },
+              "forced": false,
+              "signals": [],
+              "errors": [],
+              "remaining": [],
+              "exit": 0,
+              "ok": true
+            },
+            {
+              "role": "robot",
+              "identity": {
+                "pid": 154961,
+                "state": "R",
+                "ppid": 154913,
+                "pgid": 154961,
+                "sid": 154961,
+                "start_ticks": 11104605,
+                "ownership_token": "f4653eb7e6034a4884e3012a0d015735:robot"
+              },
+              "forced": false,
+              "signals": [
+                {
+                  "pid": 154961,
+                  "signal": "SIGINT_LEADER"
+                }
+              ],
+              "errors": [],
+              "remaining": [],
+              "exit": 0,
+              "ok": true
+            },
+            {
+              "role": "bridge",
+              "identity": {
+                "pid": 154962,
+                "state": "R",
+                "ppid": 154913,
+                "pgid": 154962,
+                "sid": 154962,
+                "start_ticks": 11104605,
+                "ownership_token": "f4653eb7e6034a4884e3012a0d015735:bridge"
+              },
+              "forced": false,
+              "signals": [
+                {
+                  "pid": 154962,
+                  "signal": "SIGINT_LEADER"
+                }
+              ],
+              "errors": [],
+              "remaining": [],
+              "exit": 0,
+              "ok": true
+            },
+            {
+              "role": "recorder",
+              "identity": {
+                "pid": 155035,
+                "state": "R",
+                "ppid": 154913,
+                "pgid": 155035,
+                "sid": 155035,
+                "start_ticks": 11104774,
+                "ownership_token": "f4653eb7e6034a4884e3012a0d015735:recorder"
+              },
+              "forced": false,
+              "signals": [
+                {
+                  "pid": 155035,
+                  "signal": "SIGINT_LEADER"
+                }
+              ],
+              "errors": [],
+              "remaining": [],
+              "exit": 0,
+              "ok": true
+            },
+            {
+              "role": "localization",
+              "identity": {
+                "pid": 155051,
+                "state": "R",
+                "ppid": 154913,
+                "pgid": 155051,
+                "sid": 155051,
+                "start_ticks": 11104810,
+                "ownership_token": "f4653eb7e6034a4884e3012a0d015735:localization"
+              },
+              "forced": false,
+              "signals": [
+                {
+                  "pid": 155051,
+                  "signal": "SIGINT_LEADER"
+                }
+              ],
+              "errors": [],
+              "remaining": [],
+              "exit": 0,
+              "ok": true
+            },
+            {
+              "role": "navigation",
+              "identity": {
+                "pid": 155096,
+                "state": "R",
+                "ppid": 154913,
+                "pgid": 155096,
+                "sid": 155096,
+                "start_ticks": 11105091,
+                "ownership_token": "f4653eb7e6034a4884e3012a0d015735:navigation"
+              },
+              "forced": false,
+              "signals": [
+                {
+                  "pid": 155096,
+                  "signal": "SIGINT_LEADER"
+                }
+              ],
+              "errors": [],
+              "remaining": [],
+              "exit": 0,
+              "ok": true
+            },
+            {
+              "role": "gazebo-stop",
+              "identity": {
+                "pid": 155511,
+                "state": "R",
+                "ppid": 154913,
+                "pgid": 155511,
+                "sid": 155511,
+                "start_ticks": 11107574,
+                "ownership_token": "f4653eb7e6034a4884e3012a0d015735:gazebo-stop"
+              },
+              "forced": false,
+              "signals": [],
+              "errors": [],
+              "remaining": [],
+              "exit": 0,
+              "ok": true
+            }
+          ],
+          "remaining": []
+        }
+      }
+    ],
+    "action_log_bytes": 515010,
+    "action_log_sha256": "c775f0b5b2a45a269fd91011f410c8c3698d1bb79bdac4953d41fe9793bbfa6f"
+  },
+  {
+    "run": "/home/robot/commercial_mobile_robot/evidence/runs/p0-05-noinitial-20261025-01",
+    "action_evidence": [],
+    "plugin_loading": [],
+    "cleanup_files": [
+      {
+        "path": "runtime/cleanup.json",
+        "sha256": "09350b633e9aa9b6142f80742cd2c40a5edd7570b1bb8ff9cf66f8b1847c1c21",
+        "record": {
+          "ok": true,
+          "operations": [
+            {
+              "operation": "recording_end_marker",
+              "ok": true,
+              "value": {
+                "marked": true
+              }
+            },
+            {
+              "operation": "recorder_exit",
+              "ok": true,
+              "value": {
+                "role": "recorder",
+                "identity": {
+                  "pid": 155812,
+                  "state": "R",
+                  "ppid": 155685,
+                  "pgid": 155812,
+                  "sid": 155812,
+                  "start_ticks": 11109604,
+                  "ownership_token": "368b5cb8d169403fa99ba6b697a3ff8c:recorder"
+                },
+                "forced": false,
+                "signals": [
+                  {
+                    "pid": 155812,
+                    "signal": "SIGINT_LEADER"
+                  }
+                ],
+                "errors": [],
+                "remaining": [],
+                "exit": 0,
+                "ok": true
+              }
+            },
+            {
+              "operation": "localization_shutdown",
+              "ok": true,
+              "value": {
+                "success": true,
+                "states": {
+                  "map_server": {
+                    "id": 4,
+                    "label": "finalized"
+                  },
+                  "amcl": {
+                    "id": 4,
+                    "label": "finalized"
+                  }
+                }
+              }
+            },
+            {
+              "operation": "localization_exit",
+              "ok": true,
+              "value": {
+                "role": "localization",
+                "identity": {
+                  "pid": 155828,
+                  "state": "R",
+                  "ppid": 155685,
+                  "pgid": 155828,
+                  "sid": 155828,
+                  "start_ticks": 11109632,
+                  "ownership_token": "368b5cb8d169403fa99ba6b697a3ff8c:localization"
+                },
+                "forced": false,
+                "signals": [
+                  {
+                    "pid": 155828,
+                    "signal": "SIGINT_LEADER"
+                  }
+                ],
+                "errors": [],
+                "remaining": [],
+                "exit": 0,
+                "ok": true
+              }
+            },
+            {
+              "operation": "bridge_exit",
+              "ok": true,
+              "value": {
+                "role": "bridge",
+                "identity": {
+                  "pid": 155739,
+                  "state": "R",
+                  "ppid": 155685,
+                  "pgid": 155739,
+                  "sid": 155739,
+                  "start_ticks": 11109435,
+                  "ownership_token": "368b5cb8d169403fa99ba6b697a3ff8c:bridge"
+                },
+                "forced": false,
+                "signals": [
+                  {
+                    "pid": 155739,
+                    "signal": "SIGINT_LEADER"
+                  }
+                ],
+                "errors": [],
+                "remaining": [],
+                "exit": 0,
+                "ok": true
+              }
+            },
+            {
+              "operation": "robot_exit",
+              "ok": true,
+              "value": {
+                "role": "robot",
+                "identity": {
+                  "pid": 155738,
+                  "state": "R",
+                  "ppid": 155685,
+                  "pgid": 155738,
+                  "sid": 155738,
+                  "start_ticks": 11109435,
+                  "ownership_token": "368b5cb8d169403fa99ba6b697a3ff8c:robot"
+                },
+                "forced": false,
+                "signals": [
+                  {
+                    "pid": 155738,
+                    "signal": "SIGINT_LEADER"
+                  }
+                ],
+                "errors": [],
+                "remaining": [],
+                "exit": 0,
+                "ok": true
+              }
+            },
+            {
+              "operation": "gazebo_stop_service",
+              "ok": true,
+              "value": null
+            },
+            {
+              "operation": "gazebo_exit",
+              "ok": true,
+              "value": {
+                "role": "gazebo",
+                "identity": {
+                  "pid": 155710,
+                  "state": "R",
+                  "ppid": 155685,
+                  "pgid": 155710,
+                  "sid": 155710,
+                  "start_ticks": 11109377,
+                  "ownership_token": "368b5cb8d169403fa99ba6b697a3ff8c:gazebo"
+                },
+                "forced": false,
+                "signals": [],
+                "errors": [],
+                "remaining": [],
+                "exit": 0,
+                "ok": true
+              }
+            },
+            {
+              "operation": "worker_exit_request",
+              "ok": true,
+              "value": {
+                "exiting": true
+              }
+            },
+            {
+              "operation": "worker_exit",
+              "ok": true,
+              "value": {
+                "role": "worker",
+                "identity": {
+                  "pid": 155694,
+                  "state": "R",
+                  "ppid": 155685,
+                  "pgid": 155694,
+                  "sid": 155694,
+                  "start_ticks": 11109345,
+                  "ownership_token": "368b5cb8d169403fa99ba6b697a3ff8c:worker"
+                },
+                "forced": false,
+                "signals": [],
+                "errors": [],
+                "remaining": [],
+                "exit": 0,
+                "ok": true
+              }
+            }
+          ],
+          "processes": [
+            {
+              "role": "display-check",
+              "identity": {
+                "pid": 155693,
+                "state": "R",
+                "ppid": 155685,
+                "pgid": 155693,
+                "sid": 155693,
+                "start_ticks": 11109342,
+                "ownership_token": "368b5cb8d169403fa99ba6b697a3ff8c:display-check"
+              },
+              "forced": false,
+              "signals": [],
+              "errors": [],
+              "remaining": [],
+              "exit": 0,
+              "ok": true
+            },
+            {
+              "role": "worker",
+              "identity": {
+                "pid": 155694,
+                "state": "R",
+                "ppid": 155685,
+                "pgid": 155694,
+                "sid": 155694,
+                "start_ticks": 11109345,
+                "ownership_token": "368b5cb8d169403fa99ba6b697a3ff8c:worker"
+              },
+              "forced": false,
+              "signals": [],
+              "errors": [],
+              "remaining": [],
+              "exit": 0,
+              "ok": true
+            },
+            {
+              "role": "gazebo",
+              "identity": {
+                "pid": 155710,
+                "state": "R",
+                "ppid": 155685,
+                "pgid": 155710,
+                "sid": 155710,
+                "start_ticks": 11109377,
+                "ownership_token": "368b5cb8d169403fa99ba6b697a3ff8c:gazebo"
+              },
+              "forced": false,
+              "signals": [],
+              "errors": [],
+              "remaining": [],
+              "exit": 0,
+              "ok": true
+            },
+            {
+              "role": "robot-spawn",
+              "identity": {
+                "pid": 155711,
+                "state": "R",
+                "ppid": 155685,
+                "pgid": 155711,
+                "sid": 155711,
+                "start_ticks": 11109377,
+                "ownership_token": "368b5cb8d169403fa99ba6b697a3ff8c:robot-spawn"
+              },
+              "forced": false,
+              "signals": [],
+              "errors": [],
+              "remaining": [],
+              "exit": 0,
+              "ok": true
+            },
+            {
+              "role": "robot",
+              "identity": {
+                "pid": 155738,
+                "state": "R",
+                "ppid": 155685,
+                "pgid": 155738,
+                "sid": 155738,
+                "start_ticks": 11109435,
+                "ownership_token": "368b5cb8d169403fa99ba6b697a3ff8c:robot"
+              },
+              "forced": false,
+              "signals": [
+                {
+                  "pid": 155738,
+                  "signal": "SIGINT_LEADER"
+                }
+              ],
+              "errors": [],
+              "remaining": [],
+              "exit": 0,
+              "ok": true
+            },
+            {
+              "role": "bridge",
+              "identity": {
+                "pid": 155739,
+                "state": "R",
+                "ppid": 155685,
+                "pgid": 155739,
+                "sid": 155739,
+                "start_ticks": 11109435,
+                "ownership_token": "368b5cb8d169403fa99ba6b697a3ff8c:bridge"
+              },
+              "forced": false,
+              "signals": [
+                {
+                  "pid": 155739,
+                  "signal": "SIGINT_LEADER"
+                }
+              ],
+              "errors": [],
+              "remaining": [],
+              "exit": 0,
+              "ok": true
+            },
+            {
+              "role": "recorder",
+              "identity": {
+                "pid": 155812,
+                "state": "R",
+                "ppid": 155685,
+                "pgid": 155812,
+                "sid": 155812,
+                "start_ticks": 11109604,
+                "ownership_token": "368b5cb8d169403fa99ba6b697a3ff8c:recorder"
+              },
+              "forced": false,
+              "signals": [
+                {
+                  "pid": 155812,
+                  "signal": "SIGINT_LEADER"
+                }
+              ],
+              "errors": [],
+              "remaining": [],
+              "exit": 0,
+              "ok": true
+            },
+            {
+              "role": "localization",
+              "identity": {
+                "pid": 155828,
+                "state": "R",
+                "ppid": 155685,
+                "pgid": 155828,
+                "sid": 155828,
+                "start_ticks": 11109632,
+                "ownership_token": "368b5cb8d169403fa99ba6b697a3ff8c:localization"
+              },
+              "forced": false,
+              "signals": [
+                {
+                  "pid": 155828,
+                  "signal": "SIGINT_LEADER"
+                }
+              ],
+              "errors": [],
+              "remaining": [],
+              "exit": 0,
+              "ok": true
+            },
+            {
+              "role": "gazebo-stop",
+              "identity": {
+                "pid": 155970,
+                "state": "R",
+                "ppid": 155685,
+                "pgid": 155970,
+                "sid": 155970,
+                "start_ticks": 11110858,
+                "ownership_token": "368b5cb8d169403fa99ba6b697a3ff8c:gazebo-stop"
+              },
+              "forced": false,
+              "signals": [],
+              "errors": [],
+              "remaining": [],
+              "exit": 0,
+              "ok": true
+            }
+          ],
+          "remaining": []
+        }
+      }
+    ],
+    "action_log_bytes": 0,
+    "action_log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+]

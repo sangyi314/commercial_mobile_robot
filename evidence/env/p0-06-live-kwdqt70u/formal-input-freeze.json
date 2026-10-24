@@ -1,0 +1,56 @@
+{
+  "scenarios": [
+    {
+      "kind": "crossing",
+      "scenario": {
+        "path": "/home/robot/commercial_mobile_robot/experiments/scenarios/crossing.yaml",
+        "sha256": "be32a9d521ba400bf354b9aed869544fa179237d14f182f8f06be5f7c31a010b"
+      },
+      "profile": {
+        "path": "/home/robot/commercial_mobile_robot/experiments/profiles/p0_06_crossing.yaml",
+        "sha256": "3c465084dcc100ad4c168c82e9573fce19d11f07052d81711bda71db064c9ccb"
+      },
+      "preparation_proof": {
+        "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/ready-proof-crossing.json",
+        "sha256": "895d2940b4a4828ed34a50bd31ad8bebfac6db46ccd8141b45dea75e99a461e6"
+      },
+      "input_fingerprint": "4eb8a483c945c8408e32caa78cd2b99582e039952b78fc9c9800a7b3f824bebd",
+      "validator": {
+        "status": "VALID",
+        "validation_scope": "record_contract",
+        "record_origin": null,
+        "errors": [],
+        "warnings": [
+          "Record references do not prove physical or runtime validity."
+        ]
+      }
+    },
+    {
+      "kind": "observed_occlusion",
+      "scenario": {
+        "path": "/home/robot/commercial_mobile_robot/experiments/scenarios/observed_occlusion.yaml",
+        "sha256": "62a530aa6017c5d35428285df9a1bdebb82f83a77b254b484869a5a9c4c820fd"
+      },
+      "profile": {
+        "path": "/home/robot/commercial_mobile_robot/experiments/profiles/p0_06_observed_occlusion.yaml",
+        "sha256": "a65f35f4a32c607953dfcbb210de21002e326cb454d83ec2d4eb7caeb569218e"
+      },
+      "preparation_proof": {
+        "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/ready-proof-observed_occlusion.json",
+        "sha256": "a9710cde37c716a1de765da86b4820b8a3c0b3b213c9b503da399388dd879778"
+      },
+      "input_fingerprint": "3a81ce11fa4ed235029690ddce34bea78d5fb8c4a2d4f2f74af7a5c092c21769",
+      "validator": {
+        "status": "VALID",
+        "validation_scope": "record_contract",
+        "record_origin": null,
+        "errors": [],
+        "warnings": [
+          "Record references do not prove physical or runtime validity."
+        ]
+      }
+    }
+  ],
+  "personal_confirmation": null,
+  "navigation_collision": null
+}

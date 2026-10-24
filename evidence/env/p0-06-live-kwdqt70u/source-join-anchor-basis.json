@@ -1,0 +1,7 @@
+{
+  "basis": "source-join-adversarial-review.json",
+  "finding": "equal source join alone accepted sustained +/-60ms offset",
+  "repair": "additional unshifted nearest-receipt median anchor within each1wallsec window <=25ms; sustained source offset/backlog rejected; no timestamp fitting or shifting",
+  "real_failing_sample": "single27ms queued callback among otherwise aligned frames",
+  "requalification": "all final inputs newly prepared"
+}

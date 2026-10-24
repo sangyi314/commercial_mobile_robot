@@ -13,7 +13,7 @@ def safe_print(*args,**kwargs):
 
 class WorkerLink:
  def __init__(self,item,identity,log,supervisor,on_event=lambda *a:None):
-  self.item=item;self.identity=identity;self.log=log;self.supervisor=supervisor;self.on_event=on_event;self.seq=0;self.lastseq=0;self.input=bytearray();self.output=bytearray();self.results={};self.last_heartbeat=time.monotonic();self.events=[]
+  self.item=item;self.identity=identity;self.log=log;self.supervisor=supervisor;self.on_event=on_event;self.seq=0;self.lastseq=0;self.input=bytearray();self.output=bytearray();self.results={};self.last_heartbeat=time.monotonic();self.events=[];self.sidecars=[]
   os.set_blocking(item.process.stdout.fileno(),False);os.set_blocking(item.process.stdin.fileno(),False)
  def send(self,op,args,deadline,rid=None):
   self.seq+=1;rid=rid or str(self.seq);value={'protocol_version':1,'run_id':self.identity,'seq':self.seq,'request_id':rid,'type':'COMMAND','data':{'op':op,'args':args,'deadline':deadline}}
@@ -36,6 +36,7 @@ class WorkerLink:
     if e['type']=='RESULT':self.results[e['request_id']]=e['data']
     self.on_event(e,time.monotonic())
   if time.monotonic()-self.last_heartbeat>3:raise TimeoutError('worker heartbeat timeout')
+  for sidecar in self.sidecars:sidecar.pump(monitor=False)
   if monitor:self.supervisor.assert_critical()
  def rpc(self,op,args,budget):
   budget.require();rid=self.send(op,args,budget.end)
@@ -49,6 +50,9 @@ def load_inputs(scenario,profile,method,identity):
  run_id(identity);p=yaml.safe_load(Path(profile).read_text());
  if 'synthetic_test' in p or 'test_namespace' in p:raise ValueError('synthetic profile cannot execute production runner')
  s=validate_run.load_strict(Path(scenario));validate_run.validate_structure(s,'scenario',scenario);validate_run.scenario_rules(s,Path(scenario))
+ if p.get('profile_version')==2:
+  from dynamic_contract import profile_inputs
+  return profile_inputs(s,p,method,load_inputs,identity)
  if p.get('scope')!='simulation_only' or p.get('profile_version')!=1 or s['kind']!='static_smoke' or s['dynamic_events']:raise ValueError('only reviewed static simulation profile supported')
  if p.get('launch')!={'package':'nav2_bringup','localization':'localization_launch.py','navigation':'navigation_launch.py','autostart':False,'use_composition':False,'use_respawn':False,'rviz':False}:raise ValueError('unreviewed launch profile')
  m=p['methods'][method]
@@ -84,12 +88,19 @@ def main():
   p,scenario=load_inputs(args.scenario,args.profile,args.method,args.run_id)
   run=ROOT/'evidence/runs'/args.run_id
   if run.exists():raise FileExistsError('run directory already exists')
-  plan={'run_id':args.run_id,'method':args.method,'scope':'simulation_only','run_directory':str(run),'processes':['worker','gazebo','robot_spawn','robot_state_publisher','bridge','recorder','localization','navigation'],'budgets':p['budgets'],'topics':p['recording']['topics'],'fault':args.fault,'plugin':p['methods'][args.method]['plugin'],'check_has_no_side_effects':True}
+  plan={'run_id':args.run_id,'method':args.method,'scope':'simulation_only','run_directory':str(run),'processes':['worker','gazebo','robot_spawn','robot_state_publisher','bridge','recorder','localization','navigation'],'budgets':p['budgets'],'topics':p['recording']['topics'],'fault':args.fault,'plugin':p['methods'][args.method]['plugin'],'check_has_no_side_effects':True,'mode':p.get('mode','navigation_recording'),'sends_goal':p.get('mode')!='probe','raw_capture':'Gazebo sidecars; no truth ROS publication'}
+  if p.get('profile_version')==2:
+   plan['processes']+=['scene-driver','scene-capture','dynamic-inspection']
+   plan['executables']=p['dynamic_profile']['executables']
+   plan['resources']=p['files']
+   plan['motion_timing']={k:p['dynamic_spec']['dynamic'][k] for k in ['trigger','delay_ns','period_ns','max_gap_ns','truth_gap_ns']}
+   plan['snapshots']={'inputs':str(run/'artifacts'),'raw_gazebo':str(run/'runtime/gazebo-raw.jsonl'),'motion_commands':str(run/'runtime/motion-commands.jsonl')}
+   plan['cleanup_order']=['quiesce/drain scene driver','close raw capture','navigation shutdown','recorder flush','localization/bridge/robot','gazebo stop','worker exit']
   if args.check:print(json.dumps(plan,ensure_ascii=False));return 0
  except Exception as exc:print(json.dumps({'preflight_rejected':str(exc)},ensure_ascii=False),file=sys.stderr);return 2
  try:lock=ProjectLock(ROOT/'evidence/env/p0-05-project.lock');lock.__enter__()
  except Exception as exc:print(str(exc),file=sys.stderr);return 2
- state=TrialState();manifest=None;link=None;supervisor=None;behavior=None;bagcheck=None;interrupted=False;manager_started=[];objects={};goal_deadline=None;eventfile=None;cleanup_evidence=[]
+ state=TrialState();manifest=None;link=None;supervisor=None;behavior=None;bagcheck=None;interrupted=False;manager_started=[];objects={};goal_deadline=None;eventfile=None;cleanup_evidence=[];dynamic=None;dynamic_report=None
  def log(kind,data):
   if eventfile and not eventfile.closed:eventfile.write(encode({'type':kind,'parent_monotonic_s':time.monotonic(),'run_id':args.run_id,'data':data}).decode());eventfile.flush()
   if kind=='PHASE':safe_print(kind,data,flush=True)
@@ -127,8 +138,19 @@ def main():
   for key,name in [('world','world.sdf'),('robot','robot.sdf'),('goal','goal.json'),('initialpose','initialpose.json'),('constraints','constraints.json')]:atomic_write_new(run/'artifacts'/name,Path(p['files'][key]['path']).read_bytes())
   atomic_write_new(run/'artifacts/config.yaml',Path(p['methods'][args.method]['config']).read_bytes());atomic_write_new(run/'artifacts/recording_qos.yaml',Path(p['recording']['qos']).read_bytes())
   for name in ['runner_core.py','runner_processes.py','runner_analysis.py','nav_goal.py','inspect_bag.py','run_trial.py']:atomic_write_new(run/'artifacts'/name,(ROOT/'tools'/name).read_bytes())
+  if p.get('profile_version')==2:
+   for key in ['actor','motion','geometry']:
+    atomic_write_new(run/'artifacts'/('dynamic_'+key+('.sdf' if key=='actor' else '.json')),Path(p['files']['dynamic_'+key]['path']).read_bytes())
+   for name in ['runner_dynamic.py','dynamic_contract.py','dynamic_geometry.py','inspect_dynamic_recording.py']:
+    atomic_write_new(run/'artifacts'/name,(ROOT/'tools'/name).read_bytes())
+   for role,ref in p['dynamic_profile']['executables'].items():
+    atomic_write_new(run/'artifacts'/('cmr_'+role+'.binary'),Path(ref['path']).read_bytes())
   frozen=copy.deepcopy(p);frozen.update({'selected_method':args.method,'fault':args.fault,'ack_test_fault':args.ack_test_fault});write_json(run/'artifacts/profile.json',frozen)
-  scene=copy.deepcopy(scenario);scene['scenario_revision']=args.run_id;scene['resources']['world']['path']=str(run/'artifacts/world.sdf');scene['task']['common_constraints_ref']['path']=str(run/'artifacts/constraints.json');write_json(run/'artifacts/scenario.yaml',scene)
+  scene=copy.deepcopy(scenario);scene['scenario_revision']=args.run_id;scene['resources']['world']['path']=str(run/'artifacts/world.sdf');scene['task']['common_constraints_ref']['path']=str(run/'artifacts/constraints.json')
+  if p.get('profile_version')==2:
+   from dynamic_contract import freeze_inputs
+   scene=freeze_inputs(run,scenario);scene['scenario_revision']=args.run_id
+  write_json(run/'artifacts/scenario.yaml',scene)
   head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True,timeout=5).strip();status=subprocess.check_output(['git','status','--porcelain=v1'],cwd=ROOT,text=True,timeout=5)
   if status:
    names=subprocess.check_output(['git','ls-files','--cached','--others','--exclude-standard','-z'],cwd=ROOT,timeout=5).decode().split('\0')
@@ -151,6 +173,9 @@ def main():
   sim=Path('/opt/ros/jazzy/share/nav2_minimal_tb3_sim')
   objects['robot']=supervisor.spawn('robot',['/opt/ros/jazzy/lib/robot_state_publisher/robot_state_publisher','--ros-args','-p','use_sim_time:=true','-p','robot_description:='+(sim/'urdf/turtlebot3_waffle.urdf').read_text()],env,ROOT)
   objects['bridge']=supervisor.spawn('bridge',['/opt/ros/jazzy/lib/ros_gz_bridge/parameter_bridge','--ros-args','-p','use_sim_time:=true','-p','expand_gz_topic_names:=true','-p','config_file:='+str(sim/'configs/turtlebot3_waffle_bridge.yaml')],env,ROOT)
+  if p.get('profile_version')==2:
+   from runner_dynamic import DynamicSession
+   dynamic=DynamicSession(supervisor,run,p,env,log,link,WorkerLink)
   phase('SENSOR_READY');rpc('sensors',{},startup.child(35));phase('START_RECORDER')
   recorder_name='cmr_recorder_'+args.run_id.replace('-','_')
   objects['recorder']=supervisor.spawn('recorder',['ros2','bag','record','--storage','mcap','--output',str(run/'bag'),'--use-sim-time','--node-name',recorder_name,'--qos-profile-overrides-path',str(run/'artifacts/recording_qos.yaml'),'--include-hidden-topics','--topics',*p['recording']['topics']],env,ROOT)
@@ -162,28 +187,36 @@ def main():
   rpc('localize',{},startup.child(30))
   objects['navigation']=supervisor.spawn('navigation',['ros2','launch','--noninteractive','nav2_bringup','navigation_launch.py',*common],env,ROOT);manager_started.append('navigation')
   rpc('manager',{'phase':'navigation','command':'STARTUP'},startup.child(60));phase('NAV_READY');rpc('nav_ready',{},startup.child(30));rpc('recorder',{'name':recorder_name,'topics':p['recording']['topics']},startup.child(15));update({'type':'READY'})
-  phase('SEND_ONCE');uid=uuid.uuid4().hex;write_json(run/'runtime/dispatch-intent.json',{'uuid':uid,'monotonic_s':time.monotonic()});update({'type':'DISPATCH','uuid':uid});goalbudget=work.child(p['budgets']['goal']);goal_deadline=goalbudget.end
-  
-  try:accepted=rpc('send',{'uuid':uid},goalbudget.child(p['budgets']['accept']))
-  except TimeoutError:
-   update({'type':'FAIL','code':'ACCEPTANCE_TIMEOUT','detail':'No acceptance before parent deadline','harness':'NAV_TIMEOUT'});update({'type':'TIMEOUT'});accepted={'acceptance':'UNKNOWN'}
-  phase('WAIT_RESULT')
-  if accepted['acceptance']=='UNKNOWN':
-   update({'type':'FAIL','code':'ACCEPTANCE_TIMEOUT','detail':'response not received before acceptance deadline','harness':'NAV_TIMEOUT'});update({'type':'TIMEOUT'})
-  while state.action=='UNKNOWN' and not state.timeout_decided and goalbudget.remaining()>0:link.pump()
-  if state.action=='UNKNOWN':
-   if not state.timeout_decided:update({'type':'TIMEOUT'})
-   cancel=work.child(p['budgets']['cancel']);rpc('cancel',{},cancel)
-   while state.action=='UNKNOWN' and cancel.remaining()>0:link.pump()
-  phase('OBSERVE_STOP')
-  if state.action=='SUCCEEDED':
-   behavior=rpc('stop',{},work.child(p['budgets']['stop']))
-   if not all(behavior['checks'].values()):raise RuntimeError('behavioral gate failed '+str(behavior['checks']))
-  elif state.ledger.first is None:update({'type':'FAIL','code':'ACTION_'+state.action,'detail':'Navigation did not succeed','harness':'COMPLETED'})
+  if dynamic:dynamic.prepare(startup.child(15))
+  if p.get('mode')=='probe':
+   dynamic.probe(work)
+  else:
+   phase('SEND_ONCE');uid=uuid.uuid4().hex;write_json(run/'runtime/dispatch-intent.json',{'uuid':uid,'monotonic_s':time.monotonic()});update({'type':'DISPATCH','uuid':uid});goalbudget=work.child(p['budgets']['goal']);goal_deadline=goalbudget.end
+
+   try:accepted=rpc('send',{'uuid':uid},goalbudget.child(p['budgets']['accept']))
+   except TimeoutError:
+    update({'type':'FAIL','code':'ACCEPTANCE_TIMEOUT','detail':'No acceptance before parent deadline','harness':'NAV_TIMEOUT'});update({'type':'TIMEOUT'});accepted={'acceptance':'UNKNOWN'}
+   if dynamic and accepted['acceptance']=='ACCEPTED':
+    response=[e['data'] for e in link.events if e['type']=='ACTION_RESPONSE'][-1]
+    dynamic.arm(work,response)
+   phase('WAIT_RESULT')
+   if accepted['acceptance']=='UNKNOWN':
+    update({'type':'FAIL','code':'ACCEPTANCE_TIMEOUT','detail':'response not received before acceptance deadline','harness':'NAV_TIMEOUT'});update({'type':'TIMEOUT'})
+   while state.action=='UNKNOWN' and not state.timeout_decided and goalbudget.remaining()>0:link.pump()
+   if state.action=='UNKNOWN':
+    if not state.timeout_decided:update({'type':'TIMEOUT'})
+    cancel=work.child(p['budgets']['cancel']);rpc('cancel',{},cancel)
+    while state.action=='UNKNOWN' and cancel.remaining()>0:link.pump()
+   if dynamic and state.action=='SUCCEEDED':dynamic.wait_complete(work)
+   phase('OBSERVE_STOP')
+   if state.action=='SUCCEEDED':
+    behavior=rpc('stop',{},work.child(p['budgets']['stop']))
+    if not all(behavior['checks'].values()):raise RuntimeError('behavioral gate failed '+str(behavior['checks']))
+   elif state.ledger.first is None:update({'type':'FAIL','code':'ACTION_'+state.action,'detail':'Navigation did not succeed','harness':'COMPLETED'})
  except KeyboardInterrupt:
   interrupted=True;update({'type':'INTERRUPT'})
  except BaseException as exc:
-  code='CONTROLLED_INITIALPOSE_TIMEOUT' if 'CONTROLLED_INITIALPOSE_TIMEOUT' in str(exc) else type(exc).__name__
+  code='CONTROLLED_INITIALPOSE_TIMEOUT' if 'CONTROLLED_INITIALPOSE_TIMEOUT' in str(exc) else getattr(exc,'code',type(exc).__name__)
   update({'type':'FAIL','code':code,'detail':str(exc)})
  finally:
   if supervisor:
@@ -198,6 +231,7 @@ def main():
     attempt('cancel',lambda:rpc('cancel',{},cleanup.child(5)))
     emergency=objects.get('gazebo')
     if emergency:attempt('emergency_physics',lambda:supervisor.close(emergency,cleanup,grace=3));cleanup_ok=False
+   if dynamic:attempt('dynamic_close',lambda:dynamic.close(cleanup))
    if 'navigation' in manager_started and link:attempt('navigation_shutdown',lambda:rpc('manager',{'phase':'navigation','command':'SHUTDOWN'},cleanup.child(12)))
    if 'navigation' in objects:attempt('navigation_exit',lambda:supervisor.close(objects['navigation'],cleanup,grace=5))
    if 'recorder' in objects:
@@ -228,6 +262,13 @@ def main():
      if not bagcheck['valid']:raise RuntimeError(str(bagcheck['errors']))
     except BaseException as exc:update({'type':'FAIL','code':'BAG_INVALID','detail':str(exc),'harness':'RECORDER_FAILED'});supervisor.close(inspect_item,final,grace=.1)
    elif 'recorder' in objects:update({'type':'FAIL','code':'BAG_MISSING','detail':'no closed metadata','harness':'RECORDER_FAILED'})
+   if dynamic:
+    inspector=supervisor.spawn('dynamic-inspection',[sys.executable,'-B',str(ROOT/'tools/inspect_dynamic_recording.py'),'--run-dir',str(run),'--output',str(run/'runtime/dynamic-report.json')],env,ROOT,critical=False)
+    try:
+     inspector.process.wait(timeout=final.require());supervisor.close(inspector,final,initial_signal=False,grace=.1);dynamic_report=json.loads((run/'runtime/dynamic-report.json').read_text())
+     if not (dynamic_report['dynamic_recording_valid'] or dynamic_report['probe_pass']):update({'type':'FAIL','code':'DYNAMIC_RECORDING_INVALID','detail':str(dynamic_report['errors'])})
+    except BaseException as exc:
+     update({'type':'FAIL','code':'DYNAMIC_INSPECTION_FAILED','detail':str(exc)});supervisor.close(inspector,final,grace=.1)
    phase('FINALIZE');write_json(run/'runtime/failures.json',{'first':state.ledger.first,'later':state.ledger.later});write_json(run/'runtime/timing.json',{'entry_monotonic_s':entry,'end_monotonic_s':time.monotonic(),'elapsed_monotonic_s':time.monotonic()-entry,'scope':'Whole supervisor session; not controller performance','clock_epoch':args.run_id+':sim0'})
    log('FINAL_STATE',{'startup':state.startup,'action':state.action,'harness':state.harness,'cleanup':state.cleanup});eventfile.close()
    if manifest:
@@ -243,8 +284,10 @@ def main():
     except BaseException as exc:diagnostic={'status':'INVALID','error':str(exc)};write_json(run/'runtime/finalization-error.json',diagnostic)
    else:diagnostic={'status':'INCOMPLETE','error':'manifest snapshot failed before publication'}
    passed=state.startup=='READY' and state.action=='SUCCEEDED' and state.harness=='COMPLETED' and state.cleanup=='SUCCEEDED' and behavior and all(behavior['checks'].values()) and bagcheck and bagcheck['valid'] and diagnostic['status']=='VALID'
-   exitcode=130 if interrupted else (0 if passed else 3)
-   write_json(run/'runtime/runner-exit.json',{'exit':exitcode,'normal_pass':bool(passed),'record_contract':diagnostic['status'],'bag_valid':bool(bagcheck and bagcheck['valid'])});safe_print(json.dumps({'run':str(run),'exit':exitcode,'status':{'startup':state.startup,'action':state.action,'harness':state.harness,'cleanup':state.cleanup}},ensure_ascii=False),flush=True)
+   if dynamic:passed=passed and dynamic_report and dynamic_report.get('dynamic_recording_valid')
+   probe_pass=bool(p.get('mode')=='probe' and state.startup=='READY' and state.action=='NOT_SENT' and state.harness=='COMPLETED' and state.cleanup=='SUCCEEDED' and bagcheck and bagcheck['valid'] and dynamic_report and dynamic_report.get('probe_pass') and diagnostic['status']=='VALID')
+   exitcode=130 if interrupted else (0 if passed or probe_pass else 3)
+   write_json(run/'runtime/runner-exit.json',{'exit':exitcode,'normal_pass':bool(passed),'purpose':p.get('mode','navigation_recording'),'probe_pass':probe_pass,'dynamic_recording_valid':dynamic_report.get('dynamic_recording_valid') if dynamic_report else None,'record_contract':diagnostic['status'],'bag_valid':bool(bagcheck and bagcheck['valid'])});safe_print(json.dumps({'run':str(run),'exit':exitcode,'status':{'startup':state.startup,'action':state.action,'harness':state.harness,'cleanup':state.cleanup}},ensure_ascii=False),flush=True)
   else:exitcode=3
   lock.__exit__(None,None,None)
  return exitcode

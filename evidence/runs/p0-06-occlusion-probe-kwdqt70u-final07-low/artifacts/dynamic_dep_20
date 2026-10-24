@@ -1,0 +1,68 @@
+#pragma once
+#include <array>
+#include <vector>
+#include <optional>
+#include <string>
+#include <stdexcept>
+#include <cmath>
+#include <cstdint>
+namespace cmr_sim {
+using Vec=std::array<double,3>;
+struct Knot {int64_t ns;Vec xyz;};
+class RequestGate {
+ public:
+ bool pending=false;int64_t previous=-1;double sent=0;
+ void begin(int64_t t,double wall) {
+  if(pending)throw std::runtime_error("MOTION_REQUEST_BACKLOG");
+  if(previous>=0&&(t<=previous||t-previous>50000000))throw std::runtime_error("MOTION_REQUEST_GAP");
+  previous=t;sent=wall;pending=true;
+ }
+ void reply(bool ok) {pending=false;if(!ok)throw std::runtime_error("MOTION_SERVICE_FAILED");}
+ void check(double wall) const {if(pending&&wall-sent>.5)throw std::runtime_error("MOTION_SERVICE_TIMEOUT");}
+};
+class Timeline {
+ public:
+ std::vector<Knot> knots;
+ int64_t period=20000000,gap=50000000,hold=1000000000,last=-1,release=-1,next=-1;
+ std::string event,phase="WAITING"; bool quiesced=false;
+ explicit Timeline(std::vector<Knot> k):knots(std::move(k)) {
+  if(knots.size()<2||knots.front().ns!=0)throw std::runtime_error("MOTION_INVALID");
+  for(size_t i=0;i<knots.size();++i) {
+   for(double x:knots[i].xyz)if(!std::isfinite(x))throw std::runtime_error("MOTION_NONFINITE");
+   if(i) {const auto &a=knots[i-1],&b=knots[i];double d=0;
+    for(int j=0;j<3;++j)d+=std::pow(b.xyz[j]-a.xyz[j],2);
+    if(b.ns<=a.ns||std::sqrt(d)/((b.ns-a.ns)*1e-9)>.1500000001)throw std::runtime_error("MOTION_SPEED");
+   }
+  }
+ }
+ Vec position(int64_t t)const {
+  if(t<=0)return knots.front().xyz;
+  for(size_t i=1;i<knots.size();++i)if(t<=knots[i].ns) {
+   double u=double(t-knots[i-1].ns)/double(knots[i].ns-knots[i-1].ns);Vec p;
+   for(int j=0;j<3;++j)p[j]=knots[i-1].xyz[j]+u*(knots[i].xyz[j]-knots[i-1].xyz[j]);
+   return p;
+  }
+  return knots.back().xyz;
+ }
+ void arm(const std::string &id,int64_t trigger,int64_t delay) {
+  if(!event.empty()) {if(event!=id||release!=trigger+delay)throw std::runtime_error("TRIGGER_CONFLICT");return;}
+  if(last<0||trigger<0||delay<1000000000||trigger+delay<=last)throw std::runtime_error("TRIGGER_LATE");
+  event=id;release=trigger+delay;next=release;phase="ARMED";
+ }
+ // Called only for an explicitly requested unpause with an advancing source time.
+ void resume_after_unpause(int64_t observed,int64_t origin) {
+  if(observed>origin)quiesced=false;
+ }
+ std::optional<Vec> tick(int64_t ns,bool paused) {
+  if(ns<0||ns<last) {phase="FAILED";throw std::runtime_error("CLOCK_EPOCH_CHANGED");}
+  if(paused&&ns!=last&&last>=0)throw std::runtime_error("PAUSED_CLOCK_ADVANCED");
+  const auto old=last;last=ns;
+  if(quiesced||paused||ns==old||release<0||ns<release||phase=="FINISHED")return {};
+  if(next>=0&&ns-next>gap) {phase="FAILED";throw std::runtime_error("MOTION_GAP");}
+  if(ns<next)return {};
+  phase=ns>=release+knots.back().ns?"HOLD":"MOVING";
+  if(ns>=release+knots.back().ns+hold)phase="FINISHED";
+  next=release+((ns-release)/period+1)*period;return position(ns-release);
+ }
+};
+}

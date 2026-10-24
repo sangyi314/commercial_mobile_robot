@@ -1,0 +1,777 @@
+{
+  "run": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-occlusion-kwdqt70u-o2",
+  "record_contract": {
+    "status": "VALID",
+    "validation_scope": "record_contract",
+    "record_origin": "real",
+    "errors": [],
+    "warnings": [
+      "Reference/hash consistency does not verify log, bag or evaluation content semantics."
+    ]
+  },
+  "purpose": "navigation_recording",
+  "result_status": {
+    "startup": "READY",
+    "action": "SUCCEEDED",
+    "harness": "COMPLETED",
+    "cleanup": "SUCCEEDED",
+    "primary_reason": null
+  },
+  "runner_exit": {
+    "exit": 0,
+    "normal_pass": true,
+    "purpose": "navigation_recording",
+    "probe_pass": false,
+    "dynamic_recording_valid": true,
+    "record_contract": "VALID",
+    "bag_valid": true
+  },
+  "actual_plugin": "nav2_mppi_controller::MPPIController",
+  "dynamic_valid": true,
+  "probe_pass": false,
+  "bag_valid": true,
+  "cleanup_ok": true,
+  "remaining": [],
+  "forced_processes": [],
+  "input_fingerprint": "3a81ce11fa4ed235029690ddce34bea78d5fb8c4a2d4f2f74af7a5c092c21769",
+  "source_goal": {
+    "pose": {
+      "header": {
+        "frame_id": "map",
+        "stamp": {
+          "sec": 0,
+          "nanosec": 0
+        }
+      },
+      "pose": {
+        "position": {
+          "x": -1.9568372509483436,
+          "y": 0.40347409679604745,
+          "z": 0.0
+        },
+        "orientation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.7024746319078363,
+          "w": 0.7117087828079331
+        }
+      }
+    },
+    "behavior_tree": ""
+  },
+  "actual_entity_mapping": {
+    "scripted_obstacle": 41,
+    "turtlebot3_waffle": 47
+  },
+  "clock_alignment": {
+    "samples": 418,
+    "max_difference_ns": 15000000,
+    "fit_or_time_shift_applied": false
+  },
+  "collision": null,
+  "truth_leak_detected": false,
+  "raw_sources": {
+    "logs/action-client.jsonl": {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-occlusion-kwdqt70u-o2/logs/action-client.jsonl",
+      "sha256": "1c11fa85c0d836aceaa2a945527523da1b66b6544311216347ceb9aa8c4f2609"
+    },
+    "logs/events.jsonl": {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-occlusion-kwdqt70u-o2/logs/events.jsonl",
+      "sha256": "dcecee4c855c9ad7d43d62b5ae455a91c049b04ea42c9c3885cdbd572141a787"
+    },
+    "runtime/observations.jsonl": {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-occlusion-kwdqt70u-o2/runtime/observations.jsonl",
+      "sha256": "8ab89c4677e46da439d7770e033b64504687930116eef84ecf32f6698149fc3f"
+    },
+    "runtime/gazebo-raw.jsonl": {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-occlusion-kwdqt70u-o2/runtime/gazebo-raw.jsonl",
+      "sha256": "b86b07db309c04bebc36ff71d7978bceb42d841a3acdd8e3534d267c851db8f7"
+    },
+    "runtime/motion-commands.jsonl": {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-occlusion-kwdqt70u-o2/runtime/motion-commands.jsonl",
+      "sha256": "2ab66bb3e238d00f9db1c93c7c150b40398f5351344f768b31079c1d70f8dbb1"
+    },
+    "bag/metadata.yaml": {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-occlusion-kwdqt70u-o2/bag/metadata.yaml",
+      "sha256": "46e8fe399222d23afde4cd20c852eff6626cda4cebc036f99d957bfb1a731d76"
+    }
+  },
+  "human_visual_confirmation": null,
+  "human_understanding_confirmation": null,
+  "independent_trajectory": {
+    "method": "NumPy piecewise interpolation of desired knots at actual source times; no shift of time axis",
+    "maximum_m": 0.0029000000000000137,
+    "p95_m": 0.0020299999999999763,
+    "rms_m": 0.0009636240813742041,
+    "sample_count": 1115,
+    "first_last_raw_lines": [
+      5803,
+      13782
+    ],
+    "motion_source_window_ns": [
+      14498000000,
+      34498000000
+    ]
+  },
+  "first_actual_actor_motion": {
+    "source_ns": 16518000000,
+    "raw_line": 6608,
+    "after_release_s": 2.02
+  },
+  "trigger": {
+    "raw_command_line": 1,
+    "event": {
+      "clock_epoch": "p0-06-occlusion-kwdqt70u-o2:sim0",
+      "entity_id": 41,
+      "event_id": "p0-06-occlusion-kwdqt70u-o2:motion-once",
+      "trigger": "goal_accepted",
+      "trigger_ns": 12498000000,
+      "uuid": "38f14035cf5e45398b16a5984ecff0cd"
+    },
+    "release_ns": 14498000000
+  },
+  "actor_yaw_evidence": "raw upright quaternion; trajectory is translational, desired yaw zero",
+  "independent_behavior": {
+    "uuid": "38f14035cf5e45398b16a5984ecff0cd",
+    "checks": {
+      "action": true,
+      "movement": true,
+      "arrival": true,
+      "commands": true,
+      "stop": true
+    },
+    "max_displacement_m": 0.720059025895764,
+    "net_displacement_m": 0.7200590258957639,
+    "movement_lines": [
+      526,
+      1392
+    ],
+    "arrival": {
+      "position_m": 0.22706339395142225,
+      "yaw_rad": 0.2338150233464682,
+      "line": 2617,
+      "stamp_s": 45.252,
+      "scope": "AMCL/TF estimate, not independent physical truth"
+    },
+    "stop": {
+      "start_sim_s": 21.672,
+      "end_sim_s": 26.64,
+      "span_s": 4.968,
+      "samples": 139,
+      "max_gap_s": 0.036000000000001364,
+      "min_gap_s": 0.03599999999999781,
+      "max_linear": 0.0,
+      "max_wz": 0.0,
+      "max_drift_m": 0.0,
+      "max_age_s": 0.0030000000000036664,
+      "line_range": [
+        1485,
+        1721
+      ]
+    },
+    "commands": {
+      "/cmd_vel_nav": {
+        "last": {
+          "kind": "/cmd_vel_nav",
+          "receive_monotonic_s": 162446.271616043,
+          "ros_now_s": 44.073,
+          "data": {
+            "linear": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "angular": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "line": 2553,
+          "_line": 2553
+        },
+        "ok": true,
+        "samples": 159
+      },
+      "/cmd_vel_smoothed": {
+        "last": {
+          "kind": "/cmd_vel_smoothed",
+          "receive_monotonic_s": 162422.973867573,
+          "ros_now_s": 21.129,
+          "data": {
+            "linear": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "angular": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "line": 1458,
+          "_line": 1458
+        },
+        "ok": true,
+        "samples": 179
+      },
+      "/cmd_vel": {
+        "last": {
+          "kind": "/cmd_vel",
+          "receive_monotonic_s": 162423.006487948,
+          "ros_now_s": 21.147000000000002,
+          "data": {
+            "linear": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "angular": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "line": 1460,
+          "_line": 1460
+        },
+        "ok": true,
+        "samples": 178
+      }
+    }
+  },
+  "action_evidence": {
+    "accepted_line": 2,
+    "accepted_sim_s": 12.498000000000001,
+    "terminal_line": 787,
+    "terminal_sim_s": 20.166,
+    "uuid": "38f14035cf5e45398b16a5984ecff0cd",
+    "terminal": "SUCCEEDED"
+  },
+  "actual_robot_world_motion": {
+    "maximum_displacement_m": 0.6971654784194206,
+    "raw_line_range": [
+      5008,
+      8059
+    ],
+    "scope": "independent Gazebo top-model state, separate from wheel odom and AMCL"
+  },
+  "goal_checker": {
+    "general_goal_checker.xy_goal_tolerance": 0.25,
+    "general_goal_checker.yaw_goal_tolerance": 0.25
+  },
+  "commands_nonzero_during_or_after_stop_window": {
+    "/cmd_vel_nav": 0,
+    "/cmd_vel_smoothed": 0,
+    "/cmd_vel": 0
+  },
+  "observation_stages": [
+    {
+      "label": null,
+      "frames": 1,
+      "start_ns": 14601000000,
+      "end_ns": 14601000000,
+      "span_s": 0.0,
+      "qualified": false,
+      "bag_message_index_range": [
+        6146,
+        6146
+      ]
+    },
+    {
+      "label": "visible",
+      "frames": 15,
+      "start_ns": 14802000000,
+      "end_ns": 17601000000,
+      "span_s": 2.7990000000000004,
+      "qualified": true,
+      "bag_message_index_range": [
+        6241,
+        7564
+      ]
+    },
+    {
+      "label": "partial",
+      "frames": 4,
+      "start_ns": 17802000000,
+      "end_ns": 18402000000,
+      "span_s": 0.6000000000000001,
+      "qualified": false,
+      "bag_message_index_range": [
+        7661,
+        7945
+      ]
+    },
+    {
+      "label": "occluded",
+      "frames": 10,
+      "start_ns": 18600000000,
+      "end_ns": 20400000000,
+      "span_s": 1.8,
+      "qualified": true,
+      "bag_message_index_range": [
+        8038,
+        8886
+      ]
+    },
+    {
+      "label": "partial",
+      "frames": 9,
+      "start_ns": 20601000000,
+      "end_ns": 22200000000,
+      "span_s": 1.5990000000000002,
+      "qualified": true,
+      "bag_message_index_range": [
+        8978,
+        9663
+      ]
+    },
+    {
+      "label": "visible",
+      "frames": 61,
+      "start_ns": 22401000000,
+      "end_ns": 34401000000,
+      "span_s": 12.0,
+      "qualified": true,
+      "bag_message_index_range": [
+        9747,
+        14699
+      ]
+    }
+  ],
+  "example_frames": [
+    {
+      "t_ns": 16200000000,
+      "bag_message_index": 6904,
+      "bag_receive_ros_ns": 16200000000,
+      "label": "visible",
+      "beams": [
+        {
+          "beam": 285,
+          "source_ns": 16200000000,
+          "range": 1.2903231382369995,
+          "target_surface": 1.2882640577215072,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 286,
+          "source_ns": 16200000000,
+          "range": 1.2640247344970703,
+          "target_surface": 1.2566368395163736,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 287,
+          "source_ns": 16200000000,
+          "range": 1.244189977645874,
+          "target_surface": 1.2413140497044963,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 288,
+          "source_ns": 16200000000,
+          "range": 1.220240592956543,
+          "target_surface": 1.2335342207054723,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 289,
+          "source_ns": 16200000000,
+          "range": 1.2392231225967407,
+          "target_surface": 1.2312908437804206,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 290,
+          "source_ns": 16200000000,
+          "range": 1.2331125736236572,
+          "target_surface": 1.2341399942555795,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 291,
+          "source_ns": 16200000000,
+          "range": 1.237316370010376,
+          "target_surface": 1.242654023684925,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 292,
+          "source_ns": 16200000000,
+          "range": 1.2654905319213867,
+          "target_surface": 1.2591532574481736,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 293,
+          "source_ns": 16200000000,
+          "range": 1.27773118019104,
+          "target_surface": 1.2950375341078157,
+          "foreground": null,
+          "match": true
+        }
+      ],
+      "source_pose_brackets": {
+        "scripted_obstacle": [
+          {
+            "line": 6479,
+            "source_ns": 16194000000,
+            "xyz": [
+              -0.6,
+              -0.3,
+              0.3
+            ],
+            "quaternion_xyzw": [
+              0.0,
+              0.0,
+              0.0,
+              1
+            ]
+          },
+          {
+            "line": 6486,
+            "source_ns": 16212000000,
+            "xyz": [
+              -0.6,
+              -0.3,
+              0.3
+            ],
+            "quaternion_xyzw": [
+              0.0,
+              0.0,
+              0.0,
+              1
+            ]
+          }
+        ],
+        "turtlebot3_waffle": [
+          {
+            "line": 6479,
+            "source_ns": 16194000000,
+            "xyz": [
+              -1.9081965234291522,
+              -0.3879181244997984,
+              0.010007490224077152
+            ],
+            "quaternion_xyzw": [
+              0.00176603343137712,
+              -0.002232078046289811,
+              0.6204796419298599,
+              0.7842173888049839
+            ]
+          },
+          {
+            "line": 6486,
+            "source_ns": 16212000000,
+            "xyz": [
+              -1.9077162025257761,
+              -0.38624124207864935,
+              0.010007490221220357
+            ],
+            "quaternion_xyzw": [
+              0.00177713057338566,
+              -0.002223252871995092,
+              0.624378509790558,
+              0.7811167489340595
+            ]
+          }
+        ]
+      },
+      "laser_world_origin": [
+        -1.9227431306817813,
+        -0.4505224606337523,
+        0.15964074346711965
+      ],
+      "actual_robot_xyyaw": [
+        -1.9080364164613601,
+        -0.3873591636927487,
+        1.342035752653954
+      ],
+      "actual_actor_xyz": [
+        -0.6,
+        -0.3,
+        0.3
+      ]
+    },
+    {
+      "t_ns": 19602000000,
+      "bag_message_index": 8512,
+      "bag_receive_ros_ns": 19602000000,
+      "label": "occluded",
+      "beams": [
+        {
+          "beam": 241,
+          "source_ns": 19602000000,
+          "range": 0.8063477873802185,
+          "target_surface": 1.4289604388507808,
+          "foreground": 0.8209786972333208,
+          "match": true
+        },
+        {
+          "beam": 242,
+          "source_ns": 19602000000,
+          "range": 0.8053677678108215,
+          "target_surface": 1.3905078963404565,
+          "foreground": 0.8173004195352829,
+          "match": true
+        },
+        {
+          "beam": 243,
+          "source_ns": 19602000000,
+          "range": 0.8180358409881592,
+          "target_surface": 1.3737848563749298,
+          "foreground": 0.8153407099246248,
+          "match": true
+        },
+        {
+          "beam": 244,
+          "source_ns": 19602000000,
+          "range": 0.8065387010574341,
+          "target_surface": 1.3660081699443505,
+          "foreground": 0.8150089219115151,
+          "match": true
+        },
+        {
+          "beam": 245,
+          "source_ns": 19602000000,
+          "range": 0.8235859274864197,
+          "target_surface": 1.3648095352615535,
+          "foreground": 0.8162902579834715,
+          "match": true
+        },
+        {
+          "beam": 246,
+          "source_ns": 19602000000,
+          "range": 0.8092216849327087,
+          "target_surface": 1.3699026526884908,
+          "foreground": 0.8192427507085734,
+          "match": true
+        },
+        {
+          "beam": 247,
+          "source_ns": 19602000000,
+          "range": 0.8104183077812195,
+          "target_surface": 1.3826350813131696,
+          "foreground": 0.8240094322859228,
+          "match": true
+        },
+        {
+          "beam": 248,
+          "source_ns": 19602000000,
+          "range": 0.8241236209869385,
+          "target_surface": 1.4088321532600032,
+          "foreground": 0.8308522135496842,
+          "match": true
+        }
+      ],
+      "source_pose_brackets": {
+        "scripted_obstacle": [
+          {
+            "line": 7836,
+            "source_ns": 19599000000,
+            "xyz": [
+              -0.6,
+              -0.002266666666666639,
+              0.3
+            ],
+            "quaternion_xyzw": [
+              0.0,
+              0.0,
+              0.0,
+              1
+            ]
+          },
+          {
+            "line": 7843,
+            "source_ns": 19617000000,
+            "xyz": [
+              -0.6,
+              -0.0002366666666666073,
+              0.3
+            ],
+            "quaternion_xyzw": [
+              0.0,
+              0.0,
+              0.0,
+              1
+            ]
+          }
+        ],
+        "turtlebot3_waffle": [
+          {
+            "line": 7836,
+            "source_ns": 19599000000,
+            "xyz": [
+              -2.0882619179582163,
+              0.11199455068396261,
+              0.010007490084202781
+            ],
+            "quaternion_xyzw": [
+              0.0023687665342870547,
+              -0.0015779694649136714,
+              0.8322438319340013,
+              0.554402473989144
+            ]
+          },
+          {
+            "line": 7843,
+            "source_ns": 19617000000,
+            "xyz": [
+              -2.0893642568658293,
+              0.11449912298534332,
+              0.010007490085340371
+            ],
+            "quaternion_xyzw": [
+              0.0023651438040348033,
+              -0.0015833942608777319,
+              0.8309710219293586,
+              0.5563084213555267
+            ]
+          }
+        ]
+      },
+      "laser_world_origin": [
+        -2.0635054677687314,
+        0.05254648641355487,
+        0.15964074341773454
+      ],
+      "actual_robot_xyyaw": [
+        -2.088445641109485,
+        0.1124119794008594,
+        1.9655336390071312
+      ],
+      "actual_actor_xyz": [
+        -0.6,
+        -0.0019283333333333006,
+        0.3
+      ]
+    },
+    {
+      "t_ns": 28401000000,
+      "bag_message_index": 12225,
+      "bag_receive_ros_ns": 28404000000,
+      "label": "visible",
+      "beams": [
+        {
+          "beam": 271,
+          "source_ns": 28401000000,
+          "range": 1.5311977863311768,
+          "target_surface": 1.5263998146378652,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 272,
+          "source_ns": 28401000000,
+          "range": 1.4823272228240967,
+          "target_surface": 1.4982177531905563,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 273,
+          "source_ns": 28401000000,
+          "range": 1.4815633296966553,
+          "target_surface": 1.485322294854764,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 274,
+          "source_ns": 28401000000,
+          "range": 1.5119128227233887,
+          "target_surface": 1.4810404938576551,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 275,
+          "source_ns": 28401000000,
+          "range": 1.4830785989761353,
+          "target_surface": 1.4840816247020878,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 276,
+          "source_ns": 28401000000,
+          "range": 1.5140101909637451,
+          "target_surface": 1.4953321658498622,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 277,
+          "source_ns": 28401000000,
+          "range": 1.52783203125,
+          "target_surface": 1.5198197982941681,
+          "foreground": null,
+          "match": true
+        }
+      ],
+      "source_pose_brackets": {
+        "scripted_obstacle": [
+          {
+            "line": 11346,
+            "source_ns": 28401000000,
+            "xyz": [
+              -0.6,
+              0.6164400000000001,
+              0.3
+            ],
+            "quaternion_xyzw": [
+              0.0,
+              0.0,
+              0.0,
+              1
+            ]
+          }
+        ],
+        "turtlebot3_waffle": [
+          {
+            "line": 11346,
+            "source_ns": 28401000000,
+            "xyz": [
+              -2.121291097641401,
+              0.2009139568650786,
+              0.010007490081274393
+            ],
+            "quaternion_xyzw": [
+              0.002226229712314388,
+              -0.001773398994235151,
+              0.782165016446754,
+              0.623064832905954
+            ]
+          }
+        ]
+      },
+      "laser_world_origin": [
+        -2.1067916836951084,
+        0.13770275142359722,
+        0.1596407434103686
+      ],
+      "actual_robot_xyyaw": [
+        -2.121291097641401,
+        0.2009139568650786,
+        1.796276224791126
+      ],
+      "actual_actor_xyz": [
+        -0.6,
+        0.6164400000000001,
+        0.3
+      ]
+    }
+  ],
+  "crossing": null,
+  "unknown_frames": 1,
+  "partial_frames": 13
+}

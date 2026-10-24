@@ -64,3 +64,7 @@ python3 -B tools/summarize_runs.py --root /home/robot/commercial_mobile_robot/ev
 ~~~
 
 原仓库没有CI workflow；分层测试实际在此Ubuntu运行，不能声称远程CI已执行。既有run_id拒绝重用，不删除历史目录绕过保护。
+
+## P0-06 增量（第6步审查门）
+
+原静态入口保持。新动态输入目前均draft，生产--check应拒绝。v2 probe/正式准备、代码差异、已执行测试和下一阶段停点见 [P0-06使用说明](p0_06_usage.md) 与 [第1～6步报告](verification/p0-06-a3179_6v-step1-6.md)。本次没有启动任何P0-06真实回合，未放行第7步。

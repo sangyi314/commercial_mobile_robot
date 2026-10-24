@@ -9,6 +9,10 @@ from pathlib import Path, PurePosixPath, PureWindowsPath
 import re
 import sys
 
+# Keep one exception/type identity when invoked as a CLI and importing v2 rules.
+if __name__ == "__main__":
+    sys.modules.setdefault("validate_run", sys.modules[__name__])
+
 from jsonschema import Draft202012Validator, validators
 import yaml
 
@@ -118,7 +122,9 @@ RecordValidator = validators.extend(Draft202012Validator, type_checker=TYPE_CHEC
 
 
 def validate_structure(value, kind, path):
-    schema = load_strict(PROJECT_ROOT / "experiments" / "schemas" / f"{kind}.schema.json")
+    version = value.get("schema_version") if isinstance(value, dict) else None
+    filename = "scenario.v2.schema.json" if kind == "scenario" and type(version) is int and version == 2 else f"{kind}.schema.json"
+    schema = load_strict(PROJECT_ROOT / "experiments" / "schemas" / filename)
 
     def local_refs_only(node):
         if isinstance(node, dict):
@@ -174,6 +180,10 @@ def check_resource(resource, location, check_host=True):
 
 
 def scenario_rules(spec, path, check_host_resources=True):
+    if spec["schema_version"] == 2:
+        from dynamic_contract import rules
+        rules(spec, path, check_host_resources)
+        return
     where = f"{path}:$"
     mapping = {"static_smoke": "S0", "crossing": "S1", "head_on": "S2", "observed_occlusion": "S3"}
     if spec["master_scenario_id"] != mapping[spec["kind"]]:
@@ -277,6 +287,9 @@ def manifest_rules(manifest, directory, path):
             spec = load_strict(target)
             validate_structure(spec, "scenario", target)
             scenario_rules(spec, target, check_host_resources=False)
+            if spec["schema_version"] == 2:
+                from dynamic_contract import archive_rules
+                archive_rules(spec, refs, directory, target)
             for field in ("scenario_id", "scenario_revision"):
                 if spec[field] != manifest["scenario"][field]:
                     fail("IDENTITY_MISMATCH", where + ".scenario." + field, "Scenario snapshot identity differs")
@@ -399,6 +412,8 @@ def validate_scenario(path, require_ready=False):
         spec = load_strict(path)
         validate_structure(spec, "scenario", path)
         scenario_rules(spec, path)
+        if require_ready and spec.get("schema_version") == 2 and spec["status"] != "ready_for_recording":
+            return diagnostic("NOT_READY", errors=[{"code":"SCENARIO_NOT_READY","path":str(path),"message":"v2 require-ready needs ready_for_recording"}], warnings=warnings)
         if spec["status"] == "draft":
             warnings.append("Draft scenario; runtime readiness is not confirmed.")
             if require_ready:

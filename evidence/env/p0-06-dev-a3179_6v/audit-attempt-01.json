@@ -1,0 +1,6 @@
+{
+  "step": "git diff --check",
+  "exit": 2,
+  "diagnostic": "tools/run_trial.py:195: trailing whitespace",
+  "resolution": "Remove trailing spaces from the single blank line; no logic change."
+}

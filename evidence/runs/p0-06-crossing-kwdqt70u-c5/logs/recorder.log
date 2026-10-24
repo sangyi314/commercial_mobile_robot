@@ -1,0 +1,39 @@
+stdin is not a terminal device. Keyboard handling disabled.[INFO] [1792816980.615250089] [cmr_recorder_p0_06_crossing_kwdqt70u_c5]: Press SPACE for pausing/resuming
+[INFO] [1792816980.615262130] [cmr_recorder_p0_06_crossing_kwdqt70u_c5]: Event publisher thread: Started
+[INFO] [1792816980.618305464] [cmr_recorder_p0_06_crossing_kwdqt70u_c5]: Starting recording to '/home/robot/commercial_mobile_robot/evidence/runs/p0-06-crossing-kwdqt70u-c5/bag'
+[INFO] [1792816980.619225130] [cmr_recorder_p0_06_crossing_kwdqt70u_c5]: Listening for topics...
+[INFO] [1792816980.619234255] [cmr_recorder_p0_06_crossing_kwdqt70u_c5]: Recording...
+[INFO] [1792816980.619249214] [cmr_recorder_p0_06_crossing_kwdqt70u_c5]: Topics discovery started.
+[INFO] [1792816980.619269547] [cmr_recorder_p0_06_crossing_kwdqt70u_c5]: use_sim_time set, waiting for /clock before starting recording...
+[INFO] [1792816980.729510256] [cmr_recorder_p0_06_crossing_kwdqt70u_c5]: Sim time /clock found, starting recording.
+[INFO] [1792816980.730044464] [cmr_recorder_p0_06_crossing_kwdqt70u_c5]: Overriding subscription profile for /clock
+[INFO] [1792816980.730376256] [cmr_recorder_p0_06_crossing_kwdqt70u_c5]: Subscribed to topic '/clock'
+[INFO] [1792816980.730733922] [cmr_recorder_p0_06_crossing_kwdqt70u_c5]: Overriding subscription profile for /tf
+[INFO] [1792816980.732120797] [cmr_recorder_p0_06_crossing_kwdqt70u_c5]: Subscribed to topic '/tf'
+[INFO] [1792816980.732232797] [cmr_recorder_p0_06_crossing_kwdqt70u_c5]: Overriding subscription profile for /cmr_experiment/events
+[INFO] [1792816980.732527672] [cmr_recorder_p0_06_crossing_kwdqt70u_c5]: Subscribed to topic '/cmr_experiment/events'
+[INFO] [1792816980.732721672] [cmr_recorder_p0_06_crossing_kwdqt70u_c5]: Overriding subscription profile for /initialpose
+[INFO] [1792816980.733172172] [cmr_recorder_p0_06_crossing_kwdqt70u_c5]: Subscribed to topic '/initialpose'
+[INFO] [1792816980.733381547] [cmr_recorder_p0_06_crossing_kwdqt70u_c5]: Overriding subscription profile for /odom
+[INFO] [1792816980.734096714] [cmr_recorder_p0_06_crossing_kwdqt70u_c5]: Subscribed to topic '/odom'
+[INFO] [1792816980.734253839] [cmr_recorder_p0_06_crossing_kwdqt70u_c5]: Overriding subscription profile for /scan
+[INFO] [1792816980.734879756] [cmr_recorder_p0_06_crossing_kwdqt70u_c5]: Subscribed to topic '/scan'
+[INFO] [1792816980.734956881] [cmr_recorder_p0_06_crossing_kwdqt70u_c5]: Overriding subscription profile for /tf_static
+[INFO] [1792816980.735102214] [cmr_recorder_p0_06_crossing_kwdqt70u_c5]: Subscribed to topic '/tf_static'
+[INFO] [1792816983.428440382] [cmr_recorder_p0_06_crossing_kwdqt70u_c5]: Overriding subscription profile for /map
+[INFO] [1792816983.429181132] [cmr_recorder_p0_06_crossing_kwdqt70u_c5]: Subscribed to topic '/map'
+[INFO] [1792816986.841928883] [cmr_recorder_p0_06_crossing_kwdqt70u_c5]: Overriding subscription profile for /cmd_vel_nav
+[INFO] [1792816986.847004425] [cmr_recorder_p0_06_crossing_kwdqt70u_c5]: Subscribed to topic '/cmd_vel_nav'
+[INFO] [1792816987.033975175] [cmr_recorder_p0_06_crossing_kwdqt70u_c5]: Overriding subscription profile for /cmd_vel_smoothed
+[INFO] [1792816987.034885550] [cmr_recorder_p0_06_crossing_kwdqt70u_c5]: Subscribed to topic '/cmd_vel_smoothed'
+[INFO] [1792816987.057366550] [cmr_recorder_p0_06_crossing_kwdqt70u_c5]: Overriding subscription profile for /cmd_vel
+[INFO] [1792816987.058685050] [cmr_recorder_p0_06_crossing_kwdqt70u_c5]: Subscribed to topic '/cmd_vel'
+[WARN] [1792816987.122173592] [rosbag2_cpp]: Message definition for topic '/navigate_to_pose/_action/status' with type 'action_msgs/msg/GoalStatusArray' not found. Message definition will be left empty in bag.
+[INFO] [1792816987.122262634] [cmr_recorder_p0_06_crossing_kwdqt70u_c5]: Overriding subscription profile for /navigate_to_pose/_action/status
+[INFO] [1792816987.123674134] [cmr_recorder_p0_06_crossing_kwdqt70u_c5]: Subscribed to topic '/navigate_to_pose/_action/status'
+[INFO] [1792816987.123688634] [cmr_recorder_p0_06_crossing_kwdqt70u_c5]: All requested topics are subscribed. Stopping discovery...
+[INFO] [1792816987.123691425] [cmr_recorder_p0_06_crossing_kwdqt70u_c5]: Topics discovery stopped.
+[INFO] [1792817022.271928567] [cmr_recorder_p0_06_crossing_kwdqt70u_c5]: Pausing recording.
+[INFO] [1792817022.273951609] [rosbag2_cpp]: Writing remaining messages from cache to the bag. It may take a while
+[INFO] [1792817022.278589775] [cmr_recorder_p0_06_crossing_kwdqt70u_c5]: Recording stopped
+[INFO] [1792817022.281498525] [cmr_recorder_p0_06_crossing_kwdqt70u_c5]: Event publisher thread: Exited

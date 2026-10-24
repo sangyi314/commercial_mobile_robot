@@ -1,0 +1,152 @@
+{
+  "schema_version": 2,
+  "scenario_id": "observed_occlusion-probe",
+  "scenario_revision": "p0-06-runtime-r04-20261026-reviewed-final05",
+  "kind": "observed_occlusion",
+  "master_scenario_id": "S3",
+  "legacy_id": null,
+  "status": "draft",
+  "resources": {
+    "world": {
+      "path": "/home/robot/commercial_mobile_robot/src/cmr_sim/worlds/p0_06_observed_occlusion.sdf",
+      "sha256": "c122e991643719aa4f35f0dd593c5327dabf68267f546e9a4455c1e18aacbf6c",
+      "package": null,
+      "package_version": null
+    },
+    "map_yaml": {
+      "path": "/opt/ros/jazzy/share/nav2_bringup/maps/tb3_sandbox.yaml",
+      "sha256": "2a284eba0a3aa4a904bce71734c56a543e979899f1cf34daad6e8215e608b438",
+      "package": "nav2_bringup",
+      "package_version": "1.3.13"
+    },
+    "map_image": {
+      "path": "/opt/ros/jazzy/share/nav2_bringup/maps/tb3_sandbox.pgm",
+      "sha256": "0103b9dfaa3b79592af71cc35d64f69cfbd3565d173160820ad8ef56cd27b3fc",
+      "package": "nav2_bringup",
+      "package_version": "1.3.13"
+    },
+    "robot": {
+      "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-04-pair-q2MXrdh3/inputs/robot.sdf",
+      "sha256": "2e176104db94a82c46d9bf37b88a2b1faa62743c2e443f5dfcefead263411541",
+      "package": null,
+      "package_version": null
+    },
+    "dependency_lock": {
+      "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/final05-drafts/observed_occlusion-dependencies.json",
+      "sha256": "e8e80ea2f66f4a05cf4e9a552c1142ea75268c8aa101ed62e43b82329fe7f857",
+      "package": null,
+      "package_version": null
+    }
+  },
+  "task": {
+    "initial_pose": {
+      "frame_id": "map",
+      "x_m": -2.0,
+      "y_m": -0.5,
+      "yaw_rad": 0.0
+    },
+    "goal_pose": {
+      "frame_id": "map",
+      "x_m": -1.9568372509483436,
+      "y_m": 0.40347409679604745,
+      "yaw_rad": 1.557737172558183
+    },
+    "common_constraints_ref": {
+      "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-04-pair-q2MXrdh3/inputs/common_constraints.json",
+      "sha256": "fe17b54e792bdcd87bd221c303a7d43b0ab6375256188d57d62cfb0326b7d320",
+      "package": null,
+      "package_version": null
+    }
+  },
+  "interfaces": [
+    {
+      "role": "laser_scan",
+      "topic": "/scan",
+      "type": "sensor_msgs/msg/LaserScan",
+      "frame_id": "base_scan",
+      "time_domain": "ros_sim",
+      "usage": "algorithm_input"
+    },
+    {
+      "role": "raw_pose",
+      "topic": "/world/default/pose/info",
+      "type": "gz.msgs.Pose_V",
+      "frame_id": "world",
+      "time_domain": "gz_sim",
+      "usage": "evaluation_only"
+    },
+    {
+      "role": "raw_clock",
+      "topic": "/world/default/clock",
+      "type": "gz.msgs.Clock",
+      "frame_id": "world",
+      "time_domain": "gz_sim",
+      "usage": "evaluation_only"
+    },
+    {
+      "role": "raw_stats",
+      "topic": "/world/default/stats",
+      "type": "gz.msgs.WorldStatistics",
+      "frame_id": "world",
+      "time_domain": "gz_sim",
+      "usage": "evaluation_only"
+    },
+    {
+      "role": "entity_tree",
+      "topic": "/world/default/scene/info",
+      "type": "gz.msgs.Scene",
+      "frame_id": "world",
+      "time_domain": "gz_sim",
+      "usage": "evaluation_only"
+    }
+  ],
+  "dynamic_events": [
+    {
+      "event_id": "motion_once",
+      "actor_id": "scripted_obstacle",
+      "trigger": null,
+      "motion_ref": "/home/robot/commercial_mobile_robot/experiments/motions/observed_occlusion.yaml"
+    }
+  ],
+  "evaluation_scope": null,
+  "verification": {
+    "resource_dependencies": "pending",
+    "world_map_alignment": "pending",
+    "poses_free": "pending",
+    "interfaces_observed": "pending",
+    "evidence_refs": []
+  },
+  "dynamic": {
+    "entity_name": "scripted_obstacle",
+    "frame": "world",
+    "time_domain": "sim_ns",
+    "purpose": "probe",
+    "trigger": "probe_armed",
+    "delay_ns": 2000000000,
+    "period_ns": 20000000,
+    "max_gap_ns": 50000000,
+    "truth_gap_ns": 50000000,
+    "position_tolerance_m": 0.02,
+    "range_tolerance_m": 0.05,
+    "actor": {
+      "path": "/home/robot/commercial_mobile_robot/src/cmr_sim/models/scripted_obstacle/model.sdf",
+      "sha256": "99c7c5c65a9a869a0681caf58fc1f00b467c2e7e7e758481b5f03e412ebf4b93"
+    },
+    "motion": {
+      "path": "/home/robot/commercial_mobile_robot/experiments/motions/observed_occlusion.yaml",
+      "sha256": "cd5154316ba62a6ca71ee15952930e7934e36734e38c1ca8e95f7ddf72f60a38"
+    },
+    "geometry": {
+      "path": "/home/robot/commercial_mobile_robot/experiments/p0_06_geometry-r02.json",
+      "sha256": "69e580656b35ff6027b95696f425f9d79486c2122d2c88f01baaf35ce8bbfdf6"
+    },
+    "goal_request": {
+      "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-04-pair-q2MXrdh3/inputs/goal.yaml",
+      "sha256": "ec2f5831f69823f2b94dfc13779b98d71ef8fae0f6e19f41d9c657b2232e5688"
+    },
+    "preparation": {
+      "review": null,
+      "probe": null
+    }
+  }
+}

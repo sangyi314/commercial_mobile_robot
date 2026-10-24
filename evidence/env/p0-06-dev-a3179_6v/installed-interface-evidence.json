@@ -1,0 +1,36 @@
+{
+  "gz-sim8": {
+    "cmake": "/opt/ros/jazzy/opt/gz_sim_vendor/lib/cmake/gz-sim8/gz-sim8-config-version.cmake",
+    "library_version": "8.15.0",
+    "sha256": "dd1276c47f904854af244fd6f1f9944c070c3f1d96fa1325e1b44c4f4c35c07a"
+  },
+  "gz-transport13": {
+    "cmake": "/opt/ros/jazzy/opt/gz_transport_vendor/lib/cmake/gz-transport13/gz-transport13-config-version.cmake",
+    "library_version": "13.6.0",
+    "sha256": "5839c8f81754589b3c86ddadcb8b90e748dcb695467fa261adb3aaf6b6ad02c7"
+  },
+  "gz-msgs10": {
+    "cmake": "/opt/ros/jazzy/opt/gz_msgs_vendor/lib/cmake/gz-msgs10/gz-msgs10-config-version.cmake",
+    "library_version": "10.4.0",
+    "sha256": "7bd04585f36f13858a29f728b637e581256fdb81e0ed404389fad8f45a61d917"
+  },
+  "headers": [
+    {
+      "path": "/opt/ros/jazzy/opt/gz_transport_vendor/include/gz/transport13/gz/transport/Node.hh",
+      "sha256": "01d21dc4dc64c6d5cb011da00539c3fb9b4d1785d582b70eba0d29cc129c5545"
+    },
+    {
+      "path": "/opt/ros/jazzy/opt/gz_transport_vendor/include/gz/transport13/gz/transport/Publisher.hh",
+      "sha256": "07ec67ba38cfd7caabf46da5b1fa07a6bf13be722799cb4d15a8e7d191bd89dc"
+    }
+  ],
+  "compiled_api": [
+    "Node::Subscribe<T>",
+    "Node::Request<Pose,Boolean> async",
+    "Node::Request<Empty,Scene> bounded",
+    "Node::Request<WorldControl,Boolean> bounded",
+    "Node::Request<EntityFactory,Boolean> bounded",
+    "Node::ServiceInfo/TopicInfo"
+  ],
+  "runtime_discovery": "not executed: step 7 pending review"
+}

@@ -1,0 +1,13 @@
+{
+  "frozen_before_higher_load": true,
+  "host": "Mac, actual Darwin host_statistics CPU deltas",
+  "higher_owned_workers": 2,
+  "priority_nice": 19,
+  "per_worker_max_wall_s": 120,
+  "minimum_host_busy_fraction_increase": 0.1,
+  "minimum_observed_owned_worker_cpu_fraction": 0.8,
+  "vm_allocation_changes": false,
+  "trajectory_max_error_m": 0.02,
+  "request_and_truth_max_gap_ns": 50000000,
+  "scope": "condition differentiation, not performance or safety ranking"
+}

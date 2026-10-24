@@ -1,0 +1,806 @@
+{
+  "run": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-crossing-probe-kwdqt70u-final08-higher",
+  "record_contract": {
+    "status": "VALID",
+    "validation_scope": "record_contract",
+    "record_origin": "real",
+    "errors": [],
+    "warnings": [
+      "Reference/hash consistency does not verify log, bag or evaluation content semantics."
+    ]
+  },
+  "purpose": "probe",
+  "result_status": {
+    "startup": "READY",
+    "action": "NOT_SENT",
+    "harness": "COMPLETED",
+    "cleanup": "SUCCEEDED",
+    "primary_reason": null
+  },
+  "runner_exit": {
+    "exit": 0,
+    "normal_pass": false,
+    "purpose": "probe",
+    "probe_pass": true,
+    "dynamic_recording_valid": false,
+    "record_contract": "VALID",
+    "bag_valid": true
+  },
+  "actual_plugin": "nav2_mppi_controller::MPPIController",
+  "dynamic_valid": false,
+  "probe_pass": true,
+  "bag_valid": true,
+  "cleanup_ok": true,
+  "remaining": [],
+  "forced_processes": [],
+  "input_fingerprint": "692eb8008bff67e799dc5e6f7c0a3887514a0ce32bbd7fb188cbc042ad54d1bc",
+  "source_goal": {
+    "pose": {
+      "header": {
+        "frame_id": "map",
+        "stamp": {
+          "sec": 0,
+          "nanosec": 0
+        }
+      },
+      "pose": {
+        "position": {
+          "x": -1.9568372509483436,
+          "y": 0.40347409679604745,
+          "z": 0.0
+        },
+        "orientation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.7024746319078363,
+          "w": 0.7117087828079331
+        }
+      }
+    },
+    "behavior_tree": ""
+  },
+  "actual_entity_mapping": {
+    "scripted_obstacle": 41,
+    "turtlebot3_waffle": 47
+  },
+  "clock_alignment": {
+    "samples": 390,
+    "max_difference_ns": 0,
+    "fit_or_time_shift_applied": false,
+    "method": "bounded_equal_source_stamp_join_then_nearest_receive_fallback",
+    "exact_source_matches": 390,
+    "source_discrepancy_limit_ns": 25000000,
+    "equal_stamp_receive_association_limit_s": 0.1,
+    "observed_receive_delta_s": [
+      -0.008162374986568466,
+      0.06795579200843349
+    ],
+    "unshifted_receipt_anchor_window_s": 1.0,
+    "max_window_median_receipt_discrepancy_ns": 3000000,
+    "max_raw_nearest_receipt_discrepancy_ns": 15000000
+  },
+  "collision": null,
+  "truth_leak_detected": false,
+  "raw_sources": {
+    "logs/action-client.jsonl": {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-crossing-probe-kwdqt70u-final08-higher/logs/action-client.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "logs/events.jsonl": {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-crossing-probe-kwdqt70u-final08-higher/logs/events.jsonl",
+      "sha256": "90cb0be8a14d84042e41ba6003f26075925ecadc8558fba422cd4fbd65e74176"
+    },
+    "runtime/observations.jsonl": {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-crossing-probe-kwdqt70u-final08-higher/runtime/observations.jsonl",
+      "sha256": "4d04af61ab3d06cbfc045f96365302cebe9e499e3bf79c3d6aa97eb520f624da"
+    },
+    "runtime/gazebo-raw.jsonl": {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-crossing-probe-kwdqt70u-final08-higher/runtime/gazebo-raw.jsonl",
+      "sha256": "87c6a1dd312c4e0561aa715fceaa24d850917e217868c7bc080da8f7d7a00ae7"
+    },
+    "runtime/motion-commands.jsonl": {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-crossing-probe-kwdqt70u-final08-higher/runtime/motion-commands.jsonl",
+      "sha256": "b93faaeeec2c003855546078d5927f3ecc236c4abbbeac45782707d5908d01d3"
+    },
+    "bag/metadata.yaml": {
+      "path": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-crossing-probe-kwdqt70u-final08-higher/bag/metadata.yaml",
+      "sha256": "6fcf061b6bf8389e60165e971b03abddcaefd716848dd2babaf51f0b92395a4d"
+    }
+  },
+  "human_visual_confirmation": null,
+  "human_understanding_confirmation": null,
+  "independent_trajectory": {
+    "method": "NumPy piecewise interpolation of desired knots at actual source times; no shift of time axis",
+    "maximum_m": 0.003970588235294059,
+    "p95_m": 0.003088235294117503,
+    "rms_m": 0.0012718767511994912,
+    "sample_count": 739,
+    "first_last_raw_lines": [
+      10207,
+      20065
+    ],
+    "motion_source_window_ns": [
+      19849000000,
+      32949000000
+    ]
+  },
+  "first_actual_actor_motion": {
+    "source_ns": 19860000000,
+    "raw_line": 10207,
+    "after_release_s": 0.011000000000000001
+  },
+  "trigger": {
+    "raw_command_line": 11,
+    "event": {
+      "clock_epoch": "p0-06-crossing-probe-kwdqt70u-final08-higher:sim0",
+      "entity_id": 41,
+      "event_id": "p0-06-crossing-probe-kwdqt70u-final08-higher:motion-once",
+      "trigger": "probe_armed",
+      "trigger_ns": 18849000000
+    },
+    "release_ns": 19849000000
+  },
+  "actor_yaw_evidence": "raw upright quaternion; trajectory is translational, desired yaw zero",
+  "actual_stationary_robot_xy_drift_m": 0.0005187371366692725,
+  "observation_stages": [
+    {
+      "label": "visible",
+      "frames": 14,
+      "start_ns": 20001000000,
+      "end_ns": 22602000000,
+      "span_s": 2.601,
+      "qualified": true,
+      "bag_message_index_range": [
+        8253,
+        9334
+      ]
+    },
+    {
+      "label": null,
+      "frames": 1,
+      "start_ns": 22800000000,
+      "end_ns": 22800000000,
+      "span_s": 0.0,
+      "qualified": false,
+      "bag_message_index_range": [
+        9418,
+        9418
+      ]
+    },
+    {
+      "label": "visible",
+      "frames": 4,
+      "start_ns": 23001000000,
+      "end_ns": 23601000000,
+      "span_s": 0.6000000000000001,
+      "qualified": false,
+      "bag_message_index_range": [
+        9500,
+        9751
+      ]
+    },
+    {
+      "label": null,
+      "frames": 1,
+      "start_ns": 23802000000,
+      "end_ns": 23802000000,
+      "span_s": 0.0,
+      "qualified": false,
+      "bag_message_index_range": [
+        9835,
+        9835
+      ]
+    },
+    {
+      "label": "visible",
+      "frames": 45,
+      "start_ns": 24000000000,
+      "end_ns": 32802000000,
+      "span_s": 8.802000000000001,
+      "qualified": true,
+      "bag_message_index_range": [
+        9918,
+        17789
+      ]
+    }
+  ],
+  "example_frames": [
+    {
+      "t_ns": 21402000000,
+      "bag_message_index": 8836,
+      "bag_receive_ros_ns": 21402000000,
+      "label": "visible",
+      "beams": [
+        {
+          "beam": 39,
+          "source_ns": 21402000000,
+          "range": 0.41604724526405334,
+          "target_surface": 0.42645425257181424,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 40,
+          "source_ns": 21402000000,
+          "range": 0.41546016931533813,
+          "target_surface": 0.40752276334651366,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 41,
+          "source_ns": 21402000000,
+          "range": 0.40406984090805054,
+          "target_surface": 0.3961535537727016,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 42,
+          "source_ns": 21402000000,
+          "range": 0.38285645842552185,
+          "target_surface": 0.3878766965351856,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 43,
+          "source_ns": 21402000000,
+          "range": 0.3752700388431549,
+          "target_surface": 0.38146611525894825,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 44,
+          "source_ns": 21402000000,
+          "range": 0.3672769367694855,
+          "target_surface": 0.37637070866194483,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 45,
+          "source_ns": 21402000000,
+          "range": 0.38994094729423523,
+          "target_surface": 0.37228831703024384,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 46,
+          "source_ns": 21402000000,
+          "range": 0.374394029378891,
+          "target_surface": 0.36903443047337475,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 47,
+          "source_ns": 21402000000,
+          "range": 0.3706195652484894,
+          "target_surface": 0.366489174823829,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 48,
+          "source_ns": 21402000000,
+          "range": 0.36968642473220825,
+          "target_surface": 0.36457222415746987,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 49,
+          "source_ns": 21402000000,
+          "range": 0.37680932879447937,
+          "target_surface": 0.36322967252381916,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 50,
+          "source_ns": 21402000000,
+          "range": 0.3561892807483673,
+          "target_surface": 0.3624267521239532,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 51,
+          "source_ns": 21402000000,
+          "range": 0.379822313785553,
+          "target_surface": 0.36214375155892037,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 52,
+          "source_ns": 21402000000,
+          "range": 0.37311482429504395,
+          "target_surface": 0.36237390768413597,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 53,
+          "source_ns": 21402000000,
+          "range": 0.3484216630458832,
+          "target_surface": 0.3631227158748006,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 54,
+          "source_ns": 21402000000,
+          "range": 0.36738690733909607,
+          "target_surface": 0.36440848923617264,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 55,
+          "source_ns": 21402000000,
+          "range": 0.3725276589393616,
+          "target_surface": 0.366264303691494,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 56,
+          "source_ns": 21402000000,
+          "range": 0.37625911831855774,
+          "target_surface": 0.36874183607869143,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 57,
+          "source_ns": 21402000000,
+          "range": 0.390167236328125,
+          "target_surface": 0.37191822992506673,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 58,
+          "source_ns": 21402000000,
+          "range": 0.3738081455230713,
+          "target_surface": 0.3759084295329929,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 59,
+          "source_ns": 21402000000,
+          "range": 0.3819429576396942,
+          "target_surface": 0.3808885658938537,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 60,
+          "source_ns": 21402000000,
+          "range": 0.36565616726875305,
+          "target_surface": 0.3871447599207496,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 61,
+          "source_ns": 21402000000,
+          "range": 0.3900594413280487,
+          "target_surface": 0.3951915963187938,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 62,
+          "source_ns": 21402000000,
+          "range": 0.39347976446151733,
+          "target_surface": 0.4061428628291221,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 63,
+          "source_ns": 21402000000,
+          "range": 0.42206642031669617,
+          "target_surface": 0.42372472946692047,
+          "foreground": null,
+          "match": true
+        }
+      ],
+      "source_pose_brackets": {
+        "scripted_obstacle": [
+          {
+            "line": 10818,
+            "source_ns": 21390000000,
+            "xyz": [
+              -1.7735294117647058,
+              -0.14,
+              0.3
+            ],
+            "quaternion_xyzw": [
+              0.0,
+              0.0,
+              0.0,
+              1
+            ]
+          },
+          {
+            "line": 10825,
+            "source_ns": 21408000000,
+            "xyz": [
+              -1.7766176470588235,
+              -0.14,
+              0.3
+            ],
+            "quaternion_xyzw": [
+              0.0,
+              0.0,
+              0.0,
+              1
+            ]
+          }
+        ],
+        "turtlebot3_waffle": [
+          {
+            "line": 10818,
+            "source_ns": 21390000000,
+            "xyz": [
+              -2.0005183363190366,
+              -0.5000001242461682,
+              0.01000739622089172
+            ],
+            "quaternion_xyzw": [
+              -1.412089660360921e-08,
+              -0.0028470785586474,
+              -3.141130177663921e-06,
+              0.9999959470586939
+            ]
+          },
+          {
+            "line": 10825,
+            "source_ns": 21408000000,
+            "xyz": [
+              -2.0005183363190366,
+              -0.5000001242461682,
+              0.01000739622089172
+            ],
+            "quaternion_xyzw": [
+              -1.412089660360921e-08,
+              -0.0028470785586474,
+              -3.141130177663921e-06,
+              0.9999959470586939
+            ]
+          }
+        ]
+      },
+      "laser_world_origin": [
+        -2.065371418874033,
+        -0.49999971526911596,
+        0.15964053988548077
+      ],
+      "actual_robot_xyyaw": [
+        -2.0005183363190366,
+        -0.5000001242461682,
+        -6.282256333267174e-06
+      ],
+      "actual_actor_xyz": [
+        -1.7755882352941177,
+        -0.14,
+        0.3
+      ]
+    },
+    {
+      "t_ns": 28401000000,
+      "bag_message_index": 13719,
+      "bag_receive_ros_ns": 28407000000,
+      "label": "visible",
+      "beams": [
+        {
+          "beam": 110,
+          "source_ns": 28401000000,
+          "range": 0.41032299399375916,
+          "target_surface": 0.3893814523539272,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 111,
+          "source_ns": 28401000000,
+          "range": 0.37703314423561096,
+          "target_surface": 0.37340831176931016,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 112,
+          "source_ns": 28401000000,
+          "range": 0.37317129969596863,
+          "target_surface": 0.36314285472744595,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 113,
+          "source_ns": 28401000000,
+          "range": 0.351553350687027,
+          "target_surface": 0.3554971453975982,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 114,
+          "source_ns": 28401000000,
+          "range": 0.35412442684173584,
+          "target_surface": 0.34948623849805416,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 115,
+          "source_ns": 28401000000,
+          "range": 0.3544642925262451,
+          "target_surface": 0.3446440822565307,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 116,
+          "source_ns": 28401000000,
+          "range": 0.34185919165611267,
+          "target_surface": 0.34070766765814403,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 117,
+          "source_ns": 28401000000,
+          "range": 0.3224462568759918,
+          "target_surface": 0.33751300308638255,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 118,
+          "source_ns": 28401000000,
+          "range": 0.332820326089859,
+          "target_surface": 0.33495149019174353,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 119,
+          "source_ns": 28401000000,
+          "range": 0.3468608260154724,
+          "target_surface": 0.3329487279835457,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 120,
+          "source_ns": 28401000000,
+          "range": 0.3187505006790161,
+          "target_surface": 0.3314531650984527,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 121,
+          "source_ns": 28401000000,
+          "range": 0.34482595324516296,
+          "target_surface": 0.33042963435006517,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 122,
+          "source_ns": 28401000000,
+          "range": 0.324847549200058,
+          "target_surface": 0.32985556069839406,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 123,
+          "source_ns": 28401000000,
+          "range": 0.31836411356925964,
+          "target_surface": 0.3297187803600875,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 124,
+          "source_ns": 28401000000,
+          "range": 0.32852646708488464,
+          "target_surface": 0.33001644551573994,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 125,
+          "source_ns": 28401000000,
+          "range": 0.3326400816440582,
+          "target_surface": 0.3307547758082127,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 126,
+          "source_ns": 28401000000,
+          "range": 0.32286348938941956,
+          "target_surface": 0.33194960488236663,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 127,
+          "source_ns": 28401000000,
+          "range": 0.33484968543052673,
+          "target_surface": 0.33362783697349896,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 128,
+          "source_ns": 28401000000,
+          "range": 0.3308534622192383,
+          "target_surface": 0.3358301410710201,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 129,
+          "source_ns": 28401000000,
+          "range": 0.34026625752449036,
+          "target_surface": 0.33861556512759683,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 130,
+          "source_ns": 28401000000,
+          "range": 0.34484705328941345,
+          "target_surface": 0.3420694535883551,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 131,
+          "source_ns": 28401000000,
+          "range": 0.346429705619812,
+          "target_surface": 0.34631761467287825,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 132,
+          "source_ns": 28401000000,
+          "range": 0.3357400596141815,
+          "target_surface": 0.35155362484165853,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 133,
+          "source_ns": 28401000000,
+          "range": 0.3535301983356476,
+          "target_surface": 0.35809773690735314,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 134,
+          "source_ns": 28401000000,
+          "range": 0.3522907495498657,
+          "target_surface": 0.3665481655408497,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 135,
+          "source_ns": 28401000000,
+          "range": 0.36539000272750854,
+          "target_surface": 0.3783072423974737,
+          "foreground": null,
+          "match": true
+        },
+        {
+          "beam": 136,
+          "source_ns": 28401000000,
+          "range": 0.40341100096702576,
+          "target_surface": 0.3996122868149893,
+          "foreground": null,
+          "match": true
+        }
+      ],
+      "source_pose_brackets": {
+        "scripted_obstacle": [
+          {
+            "line": 15798,
+            "source_ns": 28398000000,
+            "xyz": [
+              -2.3,
+              -0.14,
+              0.3
+            ],
+            "quaternion_xyzw": [
+              0.0,
+              0.0,
+              0.0,
+              1
+            ]
+          },
+          {
+            "line": 15805,
+            "source_ns": 28416000000,
+            "xyz": [
+              -2.3,
+              -0.14,
+              0.3
+            ],
+            "quaternion_xyzw": [
+              0.0,
+              0.0,
+              0.0,
+              1
+            ]
+          }
+        ],
+        "turtlebot3_waffle": [
+          {
+            "line": 15798,
+            "source_ns": 28398000000,
+            "xyz": [
+              -2.0005183194000042,
+              -0.5000001241926262,
+              0.010007490102873471
+            ],
+            "quaternion_xyzw": [
+              -1.4123461587433896e-08,
+              -0.0028462332463794226,
+              -3.1411301752851123e-06,
+              0.9999959494650168
+            ]
+          },
+          {
+            "line": 15805,
+            "source_ns": 28416000000,
+            "xyz": [
+              -2.0005183194000042,
+              -0.5000001241926262,
+              0.010007490102873471
+            ],
+            "quaternion_xyzw": [
+              -1.4123461587433896e-08,
+              -0.0028462332463794226,
+              -3.1411301752851123e-06,
+              0.9999959494650168
+            ]
+          }
+        ]
+      },
+      "laser_world_origin": [
+        -2.065371148980419,
+        -0.4999997152155997,
+        0.15964074340990553
+      ],
+      "actual_robot_xyyaw": [
+        -2.0005183194000042,
+        -0.5000001241926262,
+        -6.282256292429807e-06
+      ],
+      "actual_actor_xyz": [
+        -2.3,
+        -0.14,
+        0.3
+      ]
+    }
+  ],
+  "crossing": null,
+  "unknown_frames": 2,
+  "partial_frames": 0
+}

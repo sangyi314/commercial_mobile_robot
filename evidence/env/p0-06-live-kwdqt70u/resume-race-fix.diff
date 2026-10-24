@@ -1,0 +1,59 @@
+--- src/cmr_sim/include/cmr_sim/timeline.hpp before
++++ src/cmr_sim/include/cmr_sim/timeline.hpp after
+@@ -49,6 +49,10 @@
+   if(last<0||trigger<0||delay<1000000000||trigger+delay<=last)throw std::runtime_error("TRIGGER_LATE");
+   event=id;release=trigger+delay;next=release;phase="ARMED";
+  }
++ // Called only for an explicitly requested unpause with an advancing source time.
++ void resume_after_unpause(int64_t observed,int64_t origin) {
++  if(observed>origin)quiesced=false;
++ }
+  std::optional<Vec> tick(int64_t ns,bool paused) {
+   if(ns<0||ns<last) {phase="FAILED";throw std::runtime_error("CLOCK_EPOCH_CHANGED");}
+   if(paused&&ns!=last&&last>=0)throw std::runtime_error("PAUSED_CLOCK_ADVANCED");
+--- src/cmr_sim/src/scene_client.cpp before
++++ src/cmr_sim/src/scene_client.cpp after
+@@ -76,7 +76,7 @@
+   bool clock_updated=false;
+   for(const auto &r:pending){
+    const auto &p=r.at("protobuf");const std::string kind=r.at("kind");
+-   if(kind=="stats"){paused=p.value("paused",false);stats_seen=true;if(p.contains("sim_time"))stats_clock=stamp(p.at("sim_time"));if(resume_transition&&!paused&&stats_clock>resume_origin)resume_transition=false;}
++   if(kind=="stats"){paused=p.value("paused",false);stats_seen=true;if(p.contains("sim_time"))stats_clock=stamp(p.at("sim_time"));if(resume_transition&&!paused&&stats_clock>resume_origin){timeline.resume_after_unpause(stats_clock,resume_origin);resume_transition=false;}}
+    if(kind=="pose"){
+     const int64_t ts=stamp(p.at("header").at("stamp"));
+     contact_ball_present=false;
+@@ -99,7 +99,7 @@
+ #ifndef CMR_CAPTURE
+     // A requested unpause may publish clock before its slower stats update.
+     // Only this explicit transition can release the quiesced scheduler.
+-    if(resume_transition&&clock>resume_origin){paused=false;timeline.quiesced=false;}
++    if(resume_transition&&clock>resume_origin){paused=false;timeline.resume_after_unpause(clock,resume_origin);}
+ 
+     if(paused&&gate.pending)throw std::runtime_error("UNPLANNED_PAUSE_INFLIGHT");
+     const auto scheduled=timeline.next;std::optional<Vec> target;
+--- src/cmr_sim/test/scene_timing_test.cpp before
++++ src/cmr_sim/test/scene_timing_test.cpp after
+@@ -19,6 +19,23 @@
+  Timeline finish({{0,{0,0,0}},{1000000000,{.1,0,0}}});finish.tick(0,false);finish.arm("finish",0,1000000000);
+  for(int64_t n=1000000000;n<=3000000000;n+=20000000)finish.tick(n,false);
+  require(finish.phase=="FINISHED"&&finish.position(9000000000)[0]==.1);
++ // Reproduce both callback batch orders: fresh unpaused stats before clock,
++ // and advancing clock before fresh stats. Neither waits for a parent RPC.
++ for(bool stats_first:{true,false}) {
++  Timeline resumed({{0,{0,0,0}},{10000000000,{1,0,0}}});
++  resumed.tick(0,false);resumed.arm("pause",0,1000000000);
++  require(resumed.tick(1000000000,false).has_value());
++  resumed.quiesced=true;resumed.tick(1010000000,false);
++  resumed.resume_after_unpause(1010000000,1010000000);
++  require(resumed.quiesced); // repeated paused source time cannot release.
++  if(stats_first)resumed.resume_after_unpause(1016000000,1010000000);
++  else resumed.resume_after_unpause(1013000000,1010000000);
++  require(!resumed.quiesced);
++  require(resumed.tick(1020000000,false).has_value());
++  require(resumed.tick(1040000000,false).has_value());
++  require(resumed.tick(1060000000,false).has_value());
++  rejects([&]{resumed.tick(1140000000,false);}); // genuine gaps still fail.
++ }
+  RequestGate gate;gate.begin(0,10);rejects([&]{gate.begin(1,10.1);});rejects([&]{gate.check(10.501);});gate.reply(true);rejects([&]{gate.begin(60000000,10.6);});
+  RequestGate failed;failed.begin(0,0);rejects([&]{failed.reply(false);});
+  std::cout<<"boundaries/hold/duplicate/pause/jump/late/speed/gap/cold: PASS\n";

@@ -1,0 +1,74 @@
+{
+  "/clock": {
+    "reliability": "best_effort",
+    "durability": "volatile",
+    "history": "keep_last",
+    "depth": 100
+  },
+  "/tf": {
+    "reliability": "best_effort",
+    "durability": "volatile",
+    "history": "keep_last",
+    "depth": 100
+  },
+  "/tf_static": {
+    "reliability": "reliable",
+    "durability": "transient_local",
+    "history": "keep_last",
+    "depth": 100
+  },
+  "/scan": {
+    "reliability": "best_effort",
+    "durability": "volatile",
+    "history": "keep_last",
+    "depth": 100
+  },
+  "/odom": {
+    "reliability": "best_effort",
+    "durability": "volatile",
+    "history": "keep_last",
+    "depth": 100
+  },
+  "/map": {
+    "reliability": "reliable",
+    "durability": "transient_local",
+    "history": "keep_last",
+    "depth": 100
+  },
+  "/initialpose": {
+    "reliability": "reliable",
+    "durability": "volatile",
+    "history": "keep_last",
+    "depth": 100
+  },
+  "/cmd_vel_nav": {
+    "reliability": "reliable",
+    "durability": "volatile",
+    "history": "keep_last",
+    "depth": 100
+  },
+  "/cmd_vel_smoothed": {
+    "reliability": "reliable",
+    "durability": "volatile",
+    "history": "keep_last",
+    "depth": 100
+  },
+  "/cmd_vel": {
+    "reliability": "reliable",
+    "durability": "volatile",
+    "history": "keep_last",
+    "depth": 100
+  },
+  "/navigate_to_pose/_action/status": {
+    "reliability": "reliable",
+    "durability": "transient_local",
+    "history": "keep_last",
+    "depth": 100
+  },
+  "/cmr_experiment/events": {
+    "reliability": "reliable",
+    "durability": "volatile",
+    "history": "keep_last",
+    "depth": 100
+  }
+}

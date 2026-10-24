@@ -1,0 +1,46 @@
+--- tools/nav_goal.py before
++++ tools/nav_goal.py after
+@@ -13,6 +13,7 @@
+  from rclpy.qos import qos_profile_sensor_data,QoSProfile,ReliabilityPolicy,DurabilityPolicy
+  from rclpy.action import ActionClient
+  from rclpy.time import Time
++ from rclpy.duration import Duration
+  from rclpy.signals import SignalHandlerOptions
+  from tf2_ros import Buffer,TransformListener
+  from sensor_msgs.msg import LaserScan
+@@ -300,7 +301,17 @@
+    goal=strict_json((run/'artifacts/goal.json').read_text());p=strict_json((run/'runtime/all-parameters.json').read_text())['controller_server'];target=lastclock+8
+    wait(lambda:lastclock>=target,deadline,'post-terminal sim-time stop window')
+    report=analyze(rows,actions,goal,p);write_json(run/'runtime/behavior.json',report);return report
+-  if op=='mark':wire(data['name'],data.get('data',{}),rid);return {'marked':True}
++  if op=='mark':
++   wire(data['name'],data.get('data',{}),rid)
++   if data['name'] in ('RECORDING_START','RECORDING_END'):
++    if lastclock is None:raise RuntimeError('MARKER_CLOCK_MISSING')
++    marked_clock=lastclock
++    if not eventpub.wait_for_all_acked(Duration(seconds=min(.5,max(0.,deadline-time.monotonic())))):raise RuntimeError('MARKER_ACK_TIMEOUT')
++    # A DDS acknowledgement is not a disk-content claim. Allow fresh source
++    # callbacks to drain before parent closes recorder; closed MCAP is checked.
++    wait(lambda:lastclock is not None and lastclock>=marked_clock+.1,deadline,'marker transport drain')
++    return {'marked':True,'reliable_acknowledged':True,'source_clock_advance_s':lastclock-marked_clock,'disk_content_verified':False}
++   return {'marked':True}
+   if op=='exit':return {'exiting':True}
+   raise ValueError('unknown op '+op)
+  wire('HELLO',{'boot_id':Path('/proc/sys/kernel/random/boot_id').read_text().strip(),'namespace':ns})
+--- tests/test_dynamic_ros_contract.py before
++++ tests/test_dynamic_ros_contract.py after
+@@ -36,3 +36,14 @@
+  assert link.rpc('probe_pause',{'enter':True},DeadlineBudget.after(1))['pause_check']
+  assert not link.rpc('probe_pause',{'enter':False},DeadlineBudget.after(1))['pause_check']
+  assert fake.count==0
++
++def test_recording_marker_has_bounded_reliable_drain(probe_worker):
++ fake,run,link=probe_worker
++ from std_msgs.msg import String
++ seen=[]
++ sub=fake.n.create_subscription(String,'cmr_experiment/events',lambda msg:seen.append(json.loads(msg.data)),100)
++ value=link.rpc('mark',{'name':'RECORDING_END'},DeadlineBudget.after(2))
++ assert value['marked'] and value['reliable_acknowledged'] and value['source_clock_advance_s']>=.1
++ assert value['disk_content_verified'] is False and fake.count==0
++ assert any(x['type']=='RECORDING_END' for x in seen)
++ fake.n.destroy_subscription(sub)

@@ -1,0 +1,15 @@
+{
+  "start_xy": [
+    -2.4,
+    -0.15
+  ],
+  "end_xy": [
+    -0.65,
+    0.65
+  ],
+  "duration_s": 12.9,
+  "speed_mps": 0.14916187135576633,
+  "minimum_raster_distance_m": 0.23455076742573164,
+  "minimum_stationary_robot_distance_m": 0.4846293042109608,
+  "reason": "More initial robot clearance and goal clearance than preceding offline candidate; restore exact P0-05 task. End fully leaves original route. No controller or readiness changes."
+}

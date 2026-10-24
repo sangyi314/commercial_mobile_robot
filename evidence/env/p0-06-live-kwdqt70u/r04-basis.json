@@ -1,0 +1,7 @@
+{
+  "failed_run": "p0-06-probe-kwdqt70u-03",
+  "first_cause": "Goal footprint cost253 before any prop arm",
+  "fix": "Restore actual demonstrated x-2.5 initial and x-1.5 endpoint; earlier first segment0.116667m/s, later0.05m/s, same max0.15 and20ms/50ms bounds. No relaxation of footprint check or original controller config.",
+  "geometry_change": "only actor initial restored; all static geometry identical",
+  "next_attempt_reason": "evidence-supported correction, not blind retry"
+}

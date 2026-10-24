@@ -1,0 +1,19 @@
+{
+  "pairs": [
+    {
+      "kind": "s1",
+      "low": 0.40725862460850437,
+      "higher": 0.7339349756779021,
+      "increase": 0.32667635106939774,
+      "differentiated": true
+    },
+    {
+      "kind": "s3",
+      "low": 0.4294292276312378,
+      "higher": 0.6447584863978977,
+      "increase": 0.21532925876665987,
+      "differentiated": true
+    }
+  ],
+  "thresholds_unchanged": true
+}

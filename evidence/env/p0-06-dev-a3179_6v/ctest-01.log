@@ -1,0 +1,8 @@
+Internal ctest changing into directory: /home/robot/commercial_mobile_robot/build/p0-06-a3179_6v/cmr_sim
+Test project /home/robot/commercial_mobile_robot/build/p0-06-a3179_6v/cmr_sim
+    Start 1: scene_timing
+1/1 Test #1: scene_timing .....................   Passed    0.00 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.00 sec

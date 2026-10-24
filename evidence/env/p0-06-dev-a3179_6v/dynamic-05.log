@@ -1,0 +1,48 @@
+......................F..........................................        [100%]
+=================================== FAILURES ===================================
+____________ test_static_preparation_and_profile_gate_offline_only _____________
+
+tmp_path = PosixPath('/tmp/pytest-of-robot/pytest-25/test_static_preparation_and_pr0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0xf9b5d0bb6de0>
+
+    def test_static_preparation_and_profile_gate_offline_only(tmp_path,monkeypatch):
+     from prepare_dynamic_probe import prepare
+     monkeypatch.setattr(run_trial.subprocess,'Popen',lambda *a,**k:pytest.fail('preparation cannot launch'))
+     output=tmp_path/'fixture_preparation'
+     paths=prepare(ROOT/'experiments/scenarios/p0_06_probe.yaml',ROOT/'experiments/profiles/p0_06_probe.yaml',output,True)
+     spec=v.load_strict(paths['scenario']);profile=v.load_strict(paths['profile'])
+     assert v.validate_scenario(paths['scenario'])['status']=='VALID'
+     assert v.validate_scenario(paths['scenario'],True)['status']=='NOT_READY'
+>    p,_=run_trial.load_inputs(paths['scenario'],paths['profile'],'mppi','p0-06-fixture-check')
+
+tests/test_dynamic_contract.py:68: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tools/run_trial.py:55: in load_inputs
+    return profile_inputs(s,p,method,load_inputs,identity)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+spec = {'dynamic': {'actor': {'path': '/home/robot/commercial_mobile_robot/src/cmr_sim/models/scripted_obstacle/model.sdf', '...{'frame_id': 'world', 'role': 'entity_tree', 'time_domain': 'gz_sim', 'topic': '/world/default/scene/info', ...}], ...}
+profile = {'base_profile': '/home/robot/commercial_mobile_robot/experiments/runner_profile.yaml', 'base_scenario': '/home/robot/...mr_scene_driver', 'sha256': 'e499f33de11d6366a8200f05beb3d0cbe69695d8eed992bc18ac7bf19c20115d'}}, 'mode': 'probe', ...}
+method = 'mppi', legacy_loader = <function load_inputs at 0xf9b5d0c5e2a0>
+identity = 'p0-06-fixture-check'
+
+    def profile_inputs(spec,profile,method,legacy_loader,identity):
+        if set(profile)-{'profile_version','scope','mode','base_profile','base_scenario','scenario_ref','executables','probe_sequence','window_s','pause_wall_s'}:raise ValueError('unknown dynamic profile field')
+        if type(profile['profile_version']) is not int or profile['profile_version']!=2 or profile['scope']!='simulation_only' or method!='mppi':raise ValueError('dynamic mode/method')
+        mode=profile['mode']
+        if mode not in ('probe','navigation_recording') or spec['dynamic']['purpose']!=mode:raise ValueError('purpose mismatch')
+        if spec['status']!=('ready_for_probe' if mode=='probe' else 'ready_for_recording'):raise ValueError('dynamic draft/not prepared')
+        resource(profile['scenario_ref'])
+        if v.load_strict(resource(profile['scenario_ref']))!=spec:raise ValueError('scenario/profile mismatch')
+        if Path(profile['base_profile']).resolve()!=v.PROJECT_ROOT/'experiments/runner_profile.yaml' or Path(profile['base_scenario']).resolve()!=v.PROJECT_ROOT/'experiments/scenarios/p0_05_official_static.yaml':raise ValueError('unreviewed base profile')
+        base,base_spec=legacy_loader(profile['base_scenario'],profile['base_profile'],method,identity)
+        if spec['task']['initial_pose']!=base_spec['task']['initial_pose'] or spec['task']['common_constraints_ref']['sha256']!=base['files']['constraints']['sha256']:raise ValueError('unreviewed initial pose/common constraints')
+        for name in ['robot','map_yaml','map_image']:
+>           if spec['resources'][name]['sha256']!=base['files'][name]['sha256']:raise ValueError('unreviewed baseline resource')
+E           ValueError: unreviewed baseline resource
+
+tools/dynamic_contract.py:94: ValueError
+- generated xml file: /home/robot/commercial_mobile_robot/evidence/env/p0-06-dev-a3179_6v/dynamic-05.xml -
+=========================== short test summary info ============================
+FAILED tests/test_dynamic_contract.py::test_static_preparation_and_profile_gate_offline_only
+1 failed, 64 passed in 0.84s

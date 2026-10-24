@@ -1,0 +1,81 @@
+{
+  "run": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-crossing-probe-kwdqt70u-r09-higher",
+  "host_evidence": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/host-evidence-08/crossing-r09-probe-higher",
+  "condition": "higher",
+  "mac_cpus": 10,
+  "ubuntu_cpus": [
+    4
+  ],
+  "source_motion_window_ns": [
+    23479000000,
+    36579000000
+  ],
+  "vm_monotonic_window_s": [
+    167587.596442702,
+    167607.011778337
+  ],
+  "host_to_vm_offset_s": 167554.96297805628,
+  "mapping_uncertainty_wall_s": 0.23943238171067116,
+  "mapping_method": "independent read-only SSH clock sample RTT; not a fit or shift of trajectories; Mac parent clock per trial and worker clocks have separate origins",
+  "mac_busy_fraction": {
+    "n": 18,
+    "mean": 0.511221257890816,
+    "median": 0.4958493034399885,
+    "minimum": 0.41165587419056426,
+    "maximum": 0.8227848101265822,
+    "p05": 0.41165587419056426,
+    "p95": 0.8227848101265822
+  },
+  "ubuntu_busy_fraction": {
+    "n": 9,
+    "mean": 0.491215126015645,
+    "median": 0.4595588235294118,
+    "minimum": 0.3772378516624041,
+    "maximum": 0.7054631828978623,
+    "p05": 0.3772378516624041,
+    "p95": 0.7054631828978623
+  },
+  "active_gazebo_rtf": {
+    "n": 129,
+    "mean": 0.9903320183401428,
+    "median": 0.999722077262521,
+    "minimum": 0.24995486231777977,
+    "maximum": 1.1580592625247004,
+    "p05": 0.9191998794009758,
+    "p95": 1.046983379138856
+  },
+  "owned_load_workers": [
+    {
+      "pid": 11154,
+      "start_monotonic_s": 0.018520791,
+      "end_monotonic_s": 57.358315208,
+      "cpu_s": 56.984162999999995,
+      "iterations": 35169,
+      "nice": 19,
+      "own_cpu_fraction": 0.9937978253913208
+    },
+    {
+      "pid": 11155,
+      "start_monotonic_s": 0.017780375,
+      "end_monotonic_s": 57.361390833,
+      "cpu_s": 56.994975000000004,
+      "iterations": 39072,
+      "nice": 19,
+      "own_cpu_fraction": 0.9939202387987874
+    }
+  ],
+  "trajectory": {
+    "maximum_m": 0.004411764705882337,
+    "rms_m": 0.001257130246766164,
+    "p95_m": 0.003088235294117503,
+    "max_truth_gap_ns": 21000000,
+    "sample_count": 731,
+    "max_command_step_m": 0.004411764705882337,
+    "service_latency_max_wall_s": 0.005198500002734363,
+    "skipped_schedule_points": 0,
+    "time_shift_applied": false
+  },
+  "probe_pass": true,
+  "dynamic_recording_valid": false,
+  "human_confirmation": null
+}

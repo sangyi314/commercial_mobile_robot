@@ -1,0 +1,678 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ScenarioSpec v2: bounded dynamic recording",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 2
+    },
+    "scenario_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "scenario_revision": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "kind": {
+      "enum": [
+        "crossing",
+        "observed_occlusion"
+      ]
+    },
+    "master_scenario_id": {
+      "enum": [
+        "S0",
+        "S1",
+        "S2",
+        "S3"
+      ]
+    },
+    "legacy_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "status": {
+      "enum": [
+        "draft",
+        "ready_for_probe",
+        "ready_for_recording"
+      ]
+    },
+    "resources": {
+      "type": "object",
+      "properties": {
+        "world": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/resource"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "map_yaml": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/resource"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "map_image": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/resource"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "robot": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/resource"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "dependency_lock": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/resource"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "world",
+        "map_yaml",
+        "map_image",
+        "robot",
+        "dependency_lock"
+      ],
+      "additionalProperties": false
+    },
+    "task": {
+      "type": "object",
+      "properties": {
+        "initial_pose": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/pose"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "goal_pose": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/pose"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "common_constraints_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/resource"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "initial_pose",
+        "goal_pose",
+        "common_constraints_ref"
+      ],
+      "additionalProperties": false
+    },
+    "interfaces": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "role": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "topic": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "type": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "frame_id": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "time_domain": {
+            "enum": [
+              "ros_sim",
+              "monotonic",
+              "gz_sim"
+            ]
+          },
+          "usage": {
+            "enum": [
+              "algorithm_input",
+              "evaluation_only"
+            ]
+          }
+        },
+        "required": [
+          "role",
+          "topic",
+          "type",
+          "frame_id",
+          "time_domain",
+          "usage"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "dynamic_events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "event_id": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "actor_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "trigger": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "time_domain": {
+                    "const": "ros_sim",
+                    "type": "string"
+                  },
+                  "at_s": {
+                    "type": "number",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "time_domain",
+                  "at_s"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "motion_ref": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "event_id",
+          "actor_id",
+          "trigger",
+          "motion_ref"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "evaluation_scope": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "scope_id": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "objects": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "uniqueItems": true
+            },
+            "geometry_model": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "truth_source_ref": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "scope_id",
+            "objects",
+            "geometry_model",
+            "truth_source_ref"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "verification": {
+      "type": "object",
+      "properties": {
+        "resource_dependencies": {
+          "enum": [
+            "pending",
+            "checked"
+          ]
+        },
+        "world_map_alignment": {
+          "enum": [
+            "pending",
+            "checked"
+          ]
+        },
+        "poses_free": {
+          "enum": [
+            "pending",
+            "checked"
+          ]
+        },
+        "interfaces_observed": {
+          "enum": [
+            "pending",
+            "checked"
+          ]
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "resource_dependencies",
+        "world_map_alignment",
+        "poses_free",
+        "interfaces_observed",
+        "evidence_refs"
+      ],
+      "additionalProperties": false
+    },
+    "dynamic": {
+      "type": "object",
+      "properties": {
+        "entity_name": {
+          "const": "scripted_obstacle"
+        },
+        "frame": {
+          "const": "world"
+        },
+        "time_domain": {
+          "const": "sim_ns"
+        },
+        "purpose": {
+          "enum": [
+            "probe",
+            "navigation_recording"
+          ]
+        },
+        "trigger": {
+          "enum": [
+            "probe_armed",
+            "goal_accepted"
+          ]
+        },
+        "actor": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          },
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "additionalProperties": false
+        },
+        "motion": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          },
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "additionalProperties": false
+        },
+        "geometry": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          },
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "additionalProperties": false
+        },
+        "goal_request": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          },
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "additionalProperties": false
+        },
+        "delay_ns": {
+          "type": "integer",
+          "minimum": 1000000000
+        },
+        "period_ns": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_gap_ns": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "truth_gap_ns": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "position_tolerance_m": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "range_tolerance_m": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "preparation": {
+          "type": "object",
+          "properties": {
+            "review": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "path": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "sha256": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{64}$"
+                    }
+                  },
+                  "required": [
+                    "path",
+                    "sha256"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "probe": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "path": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "sha256": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{64}$"
+                    }
+                  },
+                  "required": [
+                    "path",
+                    "sha256"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "review",
+            "probe"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "entity_name",
+        "frame",
+        "time_domain",
+        "purpose",
+        "trigger",
+        "actor",
+        "motion",
+        "geometry",
+        "goal_request",
+        "delay_ns",
+        "period_ns",
+        "max_gap_ns",
+        "truth_gap_ns",
+        "position_tolerance_m",
+        "range_tolerance_m",
+        "preparation"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "scenario_id",
+    "scenario_revision",
+    "kind",
+    "master_scenario_id",
+    "legacy_id",
+    "status",
+    "resources",
+    "task",
+    "interfaces",
+    "dynamic_events",
+    "evaluation_scope",
+    "verification",
+    "dynamic"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "resource": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "sha256": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[0-9a-fA-F]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "package": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "package_version": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "path",
+        "sha256",
+        "package",
+        "package_version"
+      ],
+      "additionalProperties": false
+    },
+    "pose": {
+      "type": "object",
+      "properties": {
+        "frame_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "x_m": {
+          "type": "number"
+        },
+        "y_m": {
+          "type": "number"
+        },
+        "yaw_rad": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "frame_id",
+        "x_m",
+        "y_m",
+        "yaw_rad"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

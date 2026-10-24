@@ -67,7 +67,11 @@ def inspect(run):
   behavior=None;actions=[]
   sidecar=run/'logs/action-client.jsonl'
   if sidecar.exists():actions=[strict_json(l) for l in sidecar.read_text().splitlines()]
-  if fault:
+  if profile.get('mode')=='probe':
+   coverage='probe-no-navigation'
+   if any(x['kind']=='dispatch' for x in actions) or any(r['data'] for r in rows if r['kind']=='action_status'):errors.append('probe goal forbidden')
+   if counts.get('/initialpose',0)!=1 or 'PROBE_ARMED' not in eventtypes:errors.append('probe preparation/arm absent')
+  elif fault:
    if 'FAULT_ACTIVATED' not in eventtypes:errors.append('fault stage not reached')
    if counts.get('/initialpose',0)>0 or any(x['kind']=='dispatch' for x in actions):errors.append('fault emitted pose/goal')
    coverage='partial-localization-fault'

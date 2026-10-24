@@ -1,0 +1,10 @@
+{
+  "run": "p0-06-probe-kwdqt70u-04",
+  "raw_diagnostic": "duplicate-pose-diagnosis-04.json",
+  "actual_robot_position_difference_m": 9.539435540714406e-08,
+  "actual_actor_difference_m": 0.0,
+  "interpretation": "Same paused sim stamp may straddle final robot settling update; raw source is retained and spread reported. Robot source grouping bound 1e-6m/1e-5rad against first sample, actor exact; no motion/range threshold changed.",
+  "offline_reanalysis": "probe-04-reanalysis.json",
+  "old_result_unchanged": true,
+  "tests": "duplicate-regression.xml"
+}

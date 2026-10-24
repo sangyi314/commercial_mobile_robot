@@ -1,0 +1,47 @@
+--- src/cmr_sim/src/scene_client.cpp before
++++ src/cmr_sim/src/scene_client.cpp after
+@@ -167,7 +167,13 @@
+   if(op=="quiesce"){timeline.quiesced=true;return {{"quiesced",true},{"inflight",gate.pending}};}
+   if(op=="resume_requests"){if(paused)throw std::runtime_error("WORLD_STILL_PAUSED");timeline.quiesced=false;return {{"resumed",true}};}
+   if(op=="pause"||op=="unpause"){
+-   if(profile.at("mode")!="probe"||!timeline.quiesced||gate.pending)throw std::runtime_error("PROBE_PAUSE_ONLY");
++   if(profile.at("mode")!="probe"||(op=="unpause"&&(!timeline.quiesced||gate.pending)))throw std::runtime_error("PROBE_PAUSE_ONLY");
++   if(op=="pause"){
++    // Quiesce, drain and request pause inside one resident-client operation.
++    // Parent IPC must not create a simulation-time hole between these steps.
++    timeline.quiesced=true;const double drain_deadline=mono()+.5;
++    while(gate.pending){pump();if(mono()>drain_deadline)throw std::runtime_error("PAUSE_DRAIN_TIMEOUT");poll(nullptr,0,1);}
++   }
+    gz::msgs::WorldControl req;req.set_pause(op=="pause");service("/world/default/control",req);resume_transition=(op=="unpause");if(resume_transition)resume_origin=clock;save({{"kind","world_control"},{"op",op},{"sim_ns",clock},{"inflight",gate.pending}});return {{"requested_pause",op=="pause"}};
+   }
+   if(op=="probe_place"){
+--- tools/runner_dynamic.py before
++++ tools/runner_dynamic.py after
+@@ -52,7 +52,7 @@
+         while self.status(drain)['inflight']:self.worker.pump()
+     def pause_check(self,budget):
+         if self.profile['mode']!='probe':raise ValueError('PAUSE_CHECK_PROBE_ONLY')
+-        self.worker.rpc('probe_pause',{'enter':True},budget.child(2));self.quiesce(budget);self.rpc('driver','pause',{},budget)
++        self.worker.rpc('probe_pause',{'enter':True},budget.child(2));self.rpc('driver','pause',{},budget)
+         until=budget.child(3)
+         while True:
+             s=self.status(until)
+--- tests/test_dynamic_runner.py before
++++ tests/test_dynamic_runner.py after
+@@ -66,3 +66,16 @@
+   def rpc(self,*args):raise RuntimeError('robot moved')
+  x.worker=Worker()
+  with pytest.raises(RuntimeError,match='robot moved'):x.probe(DeadlineBudget.after(1))
++
++def test_pause_has_no_parent_quiesce_round_trip():
++ x=DynamicSession.__new__(DynamicSession);x.profile={'mode':'probe'};calls=[]
++ class Worker:
++  def rpc(self,op,args,budget):calls.append(op)
++ x.worker=Worker()
++ x.quiesce=lambda budget:pytest.fail('quiesce/pause must be atomic in driver')
++ def rpc(role,op,args,budget):
++  calls.append(op)
++  if op=='pause':raise RuntimeError('stop at pause dispatch')
++ x.rpc=rpc
++ with pytest.raises(RuntimeError,match='stop at pause dispatch'):x.pause_check(DeadlineBudget.after(1))
++ assert calls==['probe_pause','pause']

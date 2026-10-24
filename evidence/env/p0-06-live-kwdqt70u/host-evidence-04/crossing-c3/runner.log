@@ -1,0 +1,13 @@
+PHASE SNAPSHOT
+PHASE START_SIM
+PHASE SENSOR_READY
+PHASE START_RECORDER
+PHASE LOCALIZE
+PHASE NAV_READY
+PHASE SEND_ONCE
+PHASE WAIT_RESULT
+PHASE OBSERVE_STOP
+PHASE SHUTDOWN
+PHASE INSPECT_BAG
+PHASE FINALIZE
+{"run": "/home/robot/commercial_mobile_robot/evidence/runs/p0-06-crossing-kwdqt70u-c3", "exit": 3, "status": {"startup": "READY", "action": "ABORTED", "harness": "INTERNAL_ERROR", "cleanup": "FAILED"}}
