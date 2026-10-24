@@ -1,0 +1,18 @@
+{
+  "catalog_version": 1,
+  "scene": "crossing",
+  "scope_rule": "accepted_to_max_terminal_plus_5s_or_frozen_motion_end",
+  "meaning": "Index only; pass one listed concrete JSON spec to the CLI. No default latest-run selection.",
+  "specs": [
+    {
+      "run_id": "p0-06-crossing-kwdqt70u-c11",
+      "path": "/home/robot/commercial_mobile_robot/experiments/evaluations/p0-06-crossing-kwdqt70u-c11.json",
+      "sha256": "bd5409ba4a3dfee1d7aff824b71babffc68d9357e111852740a5bbc00ebf1716"
+    },
+    {
+      "run_id": "p0-06-crossing-kwdqt70u-c12",
+      "path": "/home/robot/commercial_mobile_robot/experiments/evaluations/p0-06-crossing-kwdqt70u-c12.json",
+      "sha256": "e55e4ca6c1419ef2c575f2aca6bb56fa394f900bc4466654dbc46a1d0bfe61d8"
+    }
+  ]
+}

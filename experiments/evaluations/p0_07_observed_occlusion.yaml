@@ -1,0 +1,18 @@
+{
+  "catalog_version": 1,
+  "scene": "observed_occlusion",
+  "scope_rule": "accepted_to_max_terminal_plus_5s_or_frozen_motion_end",
+  "meaning": "Index only; pass one listed concrete JSON spec to the CLI. No default latest-run selection.",
+  "specs": [
+    {
+      "run_id": "p0-06-occlusion-kwdqt70u-o5",
+      "path": "/home/robot/commercial_mobile_robot/experiments/evaluations/p0-06-occlusion-kwdqt70u-o5.json",
+      "sha256": "0ff539f2aea19b5c1077e0d6b1cdc3f6c65c24d1ad9a8a9ba811070ca2e83c14"
+    },
+    {
+      "run_id": "p0-06-occlusion-kwdqt70u-o6",
+      "path": "/home/robot/commercial_mobile_robot/experiments/evaluations/p0-06-occlusion-kwdqt70u-o6.json",
+      "sha256": "c8a6bd4dd51b4fcdad39c44a38df8cf50393cfa88a1b58e6d36ce0371aa6c5e6"
+    }
+  ]
+}

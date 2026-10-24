@@ -1,0 +1,158 @@
+{
+  "schema_version": 1,
+  "record_origin": "fixture",
+  "run_id": "fixture",
+  "frame": "world",
+  "epoch": "fixture:0",
+  "interval_ns": [
+    0,
+    10
+  ],
+  "max_gap_ns": 10,
+  "numeric_epsilon_m": 1e-12,
+  "objects": [
+    {
+      "name": "robot",
+      "entity_id": 1,
+      "radius_m": 0.5,
+      "center_offset_xyz": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "samples": [
+        {
+          "t_ns": 0,
+          "entity_id": 1,
+          "frame": "world",
+          "epoch": "fixture:other",
+          "xyz": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "center_xyz": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "quaternion_xyzw": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "source": {
+            "file": "synthetic.jsonl",
+            "line": 1,
+            "seq": 1,
+            "pose_index": 0
+          }
+        },
+        {
+          "t_ns": 10,
+          "entity_id": 1,
+          "frame": "world",
+          "epoch": "fixture:0",
+          "xyz": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "center_xyz": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "quaternion_xyzw": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "source": {
+            "file": "synthetic.jsonl",
+            "line": 2,
+            "seq": 2,
+            "pose_index": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "actor",
+      "entity_id": 2,
+      "radius_m": 0.5,
+      "center_offset_xyz": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "samples": [
+        {
+          "t_ns": 0,
+          "entity_id": 2,
+          "frame": "world",
+          "epoch": "fixture:0",
+          "xyz": [
+            -2.0,
+            0.0,
+            0.0
+          ],
+          "center_xyz": [
+            -2.0,
+            0.0,
+            0.0
+          ],
+          "quaternion_xyzw": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "source": {
+            "file": "synthetic.jsonl",
+            "line": 1,
+            "seq": 1,
+            "pose_index": 1
+          }
+        },
+        {
+          "t_ns": 10,
+          "entity_id": 2,
+          "frame": "world",
+          "epoch": "fixture:0",
+          "xyz": [
+            2.0,
+            0.0,
+            0.0
+          ],
+          "center_xyz": [
+            2.0,
+            0.0,
+            0.0
+          ],
+          "quaternion_xyzw": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "source": {
+            "file": "synthetic.jsonl",
+            "line": 2,
+            "seq": 2,
+            "pose_index": 1
+          }
+        }
+      ]
+    }
+  ],
+  "pairs": [
+    [
+      "robot",
+      "actor"
+    ]
+  ],
+  "physical_error_bound_m": null
+}
