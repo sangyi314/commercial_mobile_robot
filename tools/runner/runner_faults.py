@@ -1,7 +1,7 @@
 """P0-08 additions hosted by the existing trial parent, not a second runner."""
 import json,math,queue,time,os
 from pathlib import Path
-from runner_core import write_json,encode
+from tools.runner.runner_core import write_json, encode
 
 FAULTS=('controller-deactivate','short-deadline','pause-gazebo')
 POLICY={'qualification_wall_s':20.,'minimum_motion_m':.05,'minimum_samples':3,'natural_response_wall_s':2.,'short_deadline_wall_s':.5,'pause_wall_s':4.,'detect_wall_s':3.,'service_wall_s':1.5,'recovery_wall_s':8.,'stop_wall_s':30.}

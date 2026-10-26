@@ -33,7 +33,7 @@
 
 | 类别 | 本阶段证据 | 后续执行证据 |
 |---|---|---|
-| P01–P07 / straight | [测试设计 ID 索引](../core_test_design.md)，测试源代码与完整差异 | 待新增 Release/sanitizer 逐 ID 日志 |
+| P01–P07 / straight | [测试设计 ID 索引](../design/core-test-design.md)，测试源代码与完整差异 | 待新增 Release/sanitizer 逐 ID 日志 |
 | A01–A06 / arc | 手算正负四分之一圆、纯转、跨 π、正 dt 逆运动 | 待运行 |
 | N01–N02 / near_zero | 独立几何误差界、正负转向、分支两侧连续性 | 待运行 |
 | W01–W07 / wheels | 手算轮速、精确边界、非法参数、溢出 fail-closed | 待运行 |

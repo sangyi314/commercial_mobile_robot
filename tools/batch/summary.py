@@ -1,8 +1,9 @@
 """Read-only index of every matching run directory; never repairs records."""
+from tools import PROJECT_ROOT
 from pathlib import Path
 import argparse,json,sys
-from runner_core import write_json,digest,strict_json
-import validate_run
+from tools.runner.runner_core import write_json, digest, strict_json
+import tools.contracts.validation as validate_run
 
 def summarize(root,prefix):
  rows=[];classes={'real':0,'fixture':0,'incomplete_or_missing':0,'invalid':0,'validator_error':0};successes=0;normal=0;controlled=0
@@ -44,15 +45,14 @@ def main():
  p=argparse.ArgumentParser(description=__doc__);p.add_argument('--root');p.add_argument('--prefix');p.add_argument('--output');p.add_argument('--batch-dir');p.add_argument('--output-dir');a=p.parse_args()
  if a.batch_dir:
   if not a.output_dir or any([a.root,a.prefix,a.output]):p.error('batch-dir requires exclusive output-dir mode')
-  from batch_core import batch_summary
+  from tools.batch.batch_core import batch_summary
   import csv,io
-  r=batch_summary(a.batch_dir,Path(__file__).resolve().parents[1]);out=Path(a.output_dir);out.mkdir()
+  r=batch_summary(a.batch_dir,PROJECT_ROOT);out=Path(a.output_dir);out.mkdir()
   write_json(out/'p0_summary.json',r)
-  from runner_core import atomic_write_new
+  from tools.runner.runner_core import atomic_write_new
   buf=io.StringIO();writer=csv.writer(buf);writer.writerow(['attempt_id','slot_id','run_id','method','called','finished','actual_start','cold_start','ready','action','pass','first_reason'])
   for row in r['runs']:writer.writerow([row[k] for k in ['attempt_id','slot_id','run_id','method','called','finished']]+[row['outcome'].get(k) for k in ['actual_start','cold_start','ready','action','pass','first_reason']])
   atomic_write_new(out/'p0_summary.csv',buf.getvalue().encode());atomic_write_new(out/'p0_summary.md',('# '+r['batch_id']+'\n\n```json\n'+json.dumps(r['counts'],ensure_ascii=False,indent=2)+'\n```\n\nIssues: '+str(r['issues'])+'\ncollision=null; scope-limited engineering evidence.\n').encode())
   print(json.dumps({'counts':r['counts'],'issues':r['issues']},ensure_ascii=False));return 0 if not r['issues'] else 3
  if not all([a.root,a.prefix,a.output]) or a.output_dir:p.error('legacy root/prefix/output required')
  r=summarize(a.root,a.prefix);write_json(a.output,r);print(json.dumps({k:v for k,v in r.items() if k!='runs'}));return 0
-if __name__=='__main__':sys.exit(main())

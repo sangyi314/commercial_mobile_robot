@@ -1,8 +1,7 @@
 import sys
 from pathlib import Path
 import pytest
-sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
-from batch_core import *
+from tools.batch.batch_core import *
 def test_prestart_rejection_not_real_start(tmp_path):
  o=audit_run(tmp_path,{'run_id':'never-created','method':'mppi','purpose':'normal'},2)
  assert o['safe_to_resume'] and not o['pass'] and not o['actual_start'] and not o['cold_start']

@@ -1,10 +1,14 @@
 """Offline dynamic evidence review. Never opens a ROS node or replays a bag."""
+if __package__ in (None, ''):
+    from pathlib import Path
+    from runpy import run_path
+    run_path(str(Path(__file__).resolve().parents[1] / '__init__.py'))['bootstrap']()
 from pathlib import Path
 import argparse,json,math,statistics
-import validate_run as v
-from runner_core import write_json,digest,within
-from dynamic_geometry import interpolate,ray_circle,polyline_crossing,PoseSeries,rotate,rpy_quat,ray_cylinder_3d
-from dynamic_contract import motion_rules
+import tools.contracts.validation as v
+from tools.runner.runner_core import write_json, digest, within
+from tools.dynamic.dynamic_geometry import interpolate, ray_circle, polyline_crossing, PoseSeries, rotate, rpy_quat, ray_cylinder_3d
+from tools.contracts.dynamic_contract import motion_rules
 
 def ns(t):return int(t.get('sec',0))*1000000000+int(t.get('nsec',0))
 def raw_rows(path,live=False):

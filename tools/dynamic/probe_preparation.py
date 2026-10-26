@@ -1,10 +1,10 @@
 """After step-6 approval: create a new, static-reviewed probe input. No ROS."""
 from pathlib import Path
 import argparse,copy,json,xml.etree.ElementTree as ET
-import validate_run as v
-from dynamic_contract import fingerprint
-from runner_core import write_json,digest
-ROOT=Path(__file__).resolve().parents[1]
+import tools.contracts.validation as v
+from tools.contracts.dynamic_contract import fingerprint
+from tools.runner.runner_core import write_json, digest
+from tools import PROJECT_ROOT as ROOT
 def structural(e):
     return (e.tag,sorted(e.attrib.items()),(e.text or '').strip(),[structural(c) for c in e])
 def static_review(spec):
@@ -43,7 +43,7 @@ def prepare(scenario,profile,output,ack,as_probe=False):
     files += [Path(base['environment']['FASTRTPS_DEFAULT_PROFILES_FILE'])]
     files += [Path(base['files']['robot_source']['path'])]
     if base.get('task_inputs'):files += [Path(base['task_inputs']['path'])]
-    files += list((ROOT/'tools').glob('*.py'))+list((ROOT/'experiments/schemas').glob('*.json'))
+    files += list((ROOT/'tools').rglob('*.py'))+list((ROOT/'experiments/schemas').glob('*.json'))
     files += list((ROOT/'src/cmr_sim').rglob('*.cpp'))+list((ROOT/'src/cmr_sim').rglob('*.hpp'))
     closure={'resources':[{'path':str(f),'sha256':digest(f)} for f in sorted(set(files))],'unresolved':[]}
     write_json(output/'dependencies.json',closure)
@@ -62,4 +62,3 @@ def prepare(scenario,profile,output,ack,as_probe=False):
 def main():
     ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--scenario',required=True);ap.add_argument('--profile',required=True);ap.add_argument('--output-dir',required=True);ap.add_argument('--ack-review',action='store_true');ap.add_argument('--as-probe',action='store_true');a=ap.parse_args()
     print(json.dumps(prepare(a.scenario,a.profile,a.output_dir,a.ack_review,a.as_probe),ensure_ascii=False))
-if __name__=='__main__':main()

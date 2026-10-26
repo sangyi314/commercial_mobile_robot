@@ -2,7 +2,7 @@
 
 日期：2026-10-21（Asia/Shanghai）。依据顺序执行版第 5.8 节；本表保留全部 26 个案例 ID。此时只有源码与 fixture 草稿，**没有运行语法/Schema 元校验、pytest 收集/执行或 CLI 集成，不填写通过结论**。
 
-生产代码为 tools/validate_run.py，测试为 tests/test_run_schema.py，三份 Schema 与字段语义见 [schema.md](../experiments/schema.md)。位置是本草稿文本行号，运行证据待负责人审查后按第 7–11 步填写；表内预期不是工具计算所得。
+生产代码为 tools/validate_run.py，测试为 tests/test_run_schema.py，三份 Schema 与字段语义见 [schema.md](../../experiments/schema.md)。位置是本草稿文本行号，运行证据待负责人审查后按第 7–11 步填写；表内预期不是工具计算所得。
 
 | ID | 独立预期 / 单项变更 | 测试源码锚点 | 实现入口 | 执行证据 |
 |---|---|---|---|---|

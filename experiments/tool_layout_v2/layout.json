@@ -1,0 +1,529 @@
+{
+  "layout_version": 2,
+  "task_scope": "structure migration only",
+  "source_head": "76c822ebbe16e9d1c46a7ac50dfefc13539d8aa4",
+  "runtime_integrated": false,
+  "historical_inputs_unchanged": true,
+  "provenance": [
+    {
+      "scene": "p0_06_probe",
+      "old_path": "/home/robot/commercial_mobile_robot/install/p0-06-a3179_6v/cmr_sim/lib/cmr_sim/cmr_scene_driver",
+      "old_sha256": "711f7c862696d041217328336cea4c055a9e1ef4ba4e6d63ab33db2ab7a8c5a7",
+      "new_path": "/home/robot/commercial_mobile_robot/install/p0-06-a3179_6v/cmr_sim/lib/cmr_sim/cmr_scene_driver",
+      "new_sha256": "a8ed5ab9394e7980b82f49d039d5586f0a3b110415fd06a1633cfa5bcfdfe87d",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "p0_06_probe",
+      "old_path": "/home/robot/commercial_mobile_robot/install/p0-06-a3179_6v/cmr_sim/lib/cmr_sim/cmr_truth_capture",
+      "old_sha256": "e87705ece0b941e01076f2555e1f65acfcd5ade6e3ea47a8548181ffc9b6624f",
+      "new_path": "/home/robot/commercial_mobile_robot/install/p0-06-a3179_6v/cmr_sim/lib/cmr_sim/cmr_truth_capture",
+      "new_sha256": "c3fe5b064deb98a4db91da65e89f589b9693ae3de774761558336f4b7505da5b",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "p0_06_probe",
+      "old_scenario": "/home/robot/commercial_mobile_robot/experiments/scenarios/p0_06_probe.yaml",
+      "old_scenario_sha256": "a1b92abaf5021d24c210b66dac9d2c5ff5235d16f288b36bebf6f5e4a22487a6",
+      "new_scenario": "/home/robot/commercial_mobile_robot/experiments/tool_layout_v2/scenarios/p0_06_probe.yaml",
+      "new_scenario_sha256": "4a9cf59091840cdedde0df7a2dcd44f633477cbf74c676895b54bfa0844bd54e",
+      "old_profile": "/home/robot/commercial_mobile_robot/experiments/profiles/p0_06_probe.yaml",
+      "old_profile_sha256": "1b1e34cb6502c640e2440da6e95a12b0bb139d10a1c9e597be4e252ba96d564c",
+      "new_profile": "/home/robot/commercial_mobile_robot/experiments/tool_layout_v2/profiles/p0_06_probe.yaml",
+      "new_profile_sha256": "d20470ffd6261aa27bde7c71172597b58979182d5e77ce68b4e2b5f0065ef4c4",
+      "status": "draft: new actual runtime probe NOT performed"
+    },
+    {
+      "scene": "crossing",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/batch_core.py",
+      "old_sha256": "57e746dc16e0e06fac7326b084243cce3fd12ce1a9470f526c9391b37510d5b1",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/batch/batch_core.py",
+      "new_sha256": "68343c03a6def81daa030f7ec5c63d22c4e04b392eb5292fe3966e7a5c35fb68",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "crossing",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/dynamic_contract.py",
+      "old_sha256": "b62a89630d80afef36d223c39b29fa110e3862b066eb1ca4daf63141fb39cf6d",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/contracts/dynamic_contract.py",
+      "new_sha256": "79e1098eb32bf4f4cc3afc285007ba304c9693f3d6c62d9ca9e74d977fde6df6",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "crossing",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/dynamic_geometry.py",
+      "old_sha256": "2984fa9fa9d01e8494755df1afc03a304276e7e41913f150458f5624f82808be",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/dynamic/dynamic_geometry.py",
+      "new_sha256": "2984fa9fa9d01e8494755df1afc03a304276e7e41913f150458f5624f82808be",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "crossing",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/evaluate_geometry.py",
+      "old_sha256": "d5faf056fd9716a06d640ec594fdcf802dfc10e711f656cd9593a23d3c5408e1",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/evaluate_geometry.py",
+      "new_sha256": "e13f1462882d9fd7d0ab9022029f8794e27e3ddb46f84da00cbc8c67474ff571",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "crossing",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/failure_stop.py",
+      "old_sha256": "d1f33c163e0864bef8f65278fe7e407a2e8690f77389b000669043a7a3b306f9",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/runner/failure_stop.py",
+      "new_sha256": "ecb07af7e477741f79302dbfa65285760da9d7f0e4c73eb0981db0bc6107a0c1",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "crossing",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/geometry_inputs.py",
+      "old_sha256": "090641a6eec74d3a594f8521599b4cbf57c91f81010d19575c32848ce77fa185",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/geometry/geometry_inputs.py",
+      "new_sha256": "86a2b6df8049daff7eb02167b5b67023b0ce723726e1e20401a1d423879758b2",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "crossing",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/geometry_metrics.py",
+      "old_sha256": "9a858bf043debbd7d1dac35e0285260e3e184beedd0dfaddd4293a2e883cd056",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/geometry/geometry_metrics.py",
+      "new_sha256": "9a858bf043debbd7d1dac35e0285260e3e184beedd0dfaddd4293a2e883cd056",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "crossing",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/inspect_bag.py",
+      "old_sha256": "ecfce43719c7ee8502e4e61c37c2b36a776d8a454f9c04264df63feee052fd21",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/runner/inspect_bag.py",
+      "new_sha256": "4846522eb93a1316663d040d604916d3ce7cb456d99833a0f7839f674abba091",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "crossing",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/inspect_dynamic_recording.py",
+      "old_sha256": "09e37e3afc84b8f649855f66158b272bf88e049e655e2ca046dac36ebe06e4c9",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/dynamic/inspect_dynamic_recording.py",
+      "new_sha256": "3852966567c5fc0c66584bc4e183a2b396acd77f4339d71c4d7ab37205a80b6d",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "crossing",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/make_baselines.py",
+      "old_sha256": "4bedbe2cd5ee8a04e0f9814edd1be810860effe2423eabc1136d73c9ad51031e",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/stages/make_baselines.py",
+      "new_sha256": "618356482106ba7ee5c60e50d475503085777a2822743af3d5a07d64a785a0bb",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "crossing",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/nav_goal.py",
+      "old_sha256": "96ac2e1b947a04b454cbca0c2f30ec36475fbf01eee84ad7acde09482cde141b",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/navigation/nav_goal.py",
+      "new_sha256": "a599fcc26f2cce05200b85db844ce51936367dc6a9918af2e5f95a5ca11b7f3a",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "crossing",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/p0_03_navigation.py",
+      "old_sha256": "0b0ae646c238e4d5cb0e012c63ec5cd3814adfac3f3afa2fb4e21ac5d53e646e",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/stages/p0_03_navigation.py",
+      "new_sha256": "c7a7df2ff6a4b5fa5e0062579c7573be9bbc96290a87c2dfc77bda515aaaa6c2",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "crossing",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/p0_06_host_trial.py",
+      "old_sha256": "5395b1d9c1be7ea229666fbf2f40da8565ecc5a2789ec46a51508222aad65f74",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/stages/p0_06_host_trial.py",
+      "new_sha256": "2013cf167fa07352893dd19edf3a225fc32a5a3c4d8b8b57415ba7c44ec3836a",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "crossing",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/plot_geometry.py",
+      "old_sha256": "851c8633687e49994503be970d82bbd2c29052f0cecfa65630749b48a59a5e70",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/plot_geometry.py",
+      "new_sha256": "ca6f7f90e1574f91c365a09fa0305023bcbba40bb2d82718e02d4cb22b7bf980",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "crossing",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/prepare_dynamic_probe.py",
+      "old_sha256": "6d19ee5e954ea4e6ae036c1b0d11063258c3466e6325084d6a1591055afc6a2c",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/stages/prepare_dynamic_probe.py",
+      "new_sha256": "ac046fcbfe7ca470929310c9a4f49145701d1af9548a9a54c1eb25b76886465d",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "crossing",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/prepare_geometry_spec.py",
+      "old_sha256": "79a1a9ed311241d4e87e460f852a31a830f0256aeb7deb7d51606f467c640312",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/prepare_geometry_spec.py",
+      "new_sha256": "55c8e3a9072fcdf182b68ef22bcaa62f57b8db0a1f89035d14f0296b7c969c6b",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "crossing",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/run_smoke_matrix.py",
+      "old_sha256": "9e57b7198238fde3292a9aa2045b080f880a5c3d598292029824f4cc63c24a12",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/run_smoke_matrix.py",
+      "new_sha256": "ef117c7aa40f0515440f8b02028f7c5f9397e23505a671c1051ead39d1f5b799",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "crossing",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/run_trial.py",
+      "old_sha256": "0a0e8d5bdef66f64873de6655f2431e621ee97307badc0596a9f07c04b32a672",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/run_trial.py",
+      "new_sha256": "6b69bd8f74145a8faf2257579c6b16894248cd5d8c482ebe0cc8cfbeaa077929",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "crossing",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/runner_analysis.py",
+      "old_sha256": "43b9d4d080b58fa27c09414f220609ee5f47b795839cd3eb5f2672a631a4c95f",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/runner/runner_analysis.py",
+      "new_sha256": "43b9d4d080b58fa27c09414f220609ee5f47b795839cd3eb5f2672a631a4c95f",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "crossing",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/runner_core.py",
+      "old_sha256": "425625eb5db68d2b3a296a8cc1151d5e2daafb012bd0900e11e02ea44e7b08f4",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/runner/runner_core.py",
+      "new_sha256": "425625eb5db68d2b3a296a8cc1151d5e2daafb012bd0900e11e02ea44e7b08f4",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "crossing",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/runner_dynamic.py",
+      "old_sha256": "d7fbc08d0347a1eab208e0d32ba2b2bc7d2660fe16310fde90d960134b0a504d",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/dynamic/runner_dynamic.py",
+      "new_sha256": "ee2d2fda3560ca2d6b007b712d5af8ea3f8aaddfce96bc53cdeacfcb0368e136",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "crossing",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/runner_faults.py",
+      "old_sha256": "914a82958991c393ff19dbf420467ed2987a6b3aade0e238f84bae905862a2b2",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/runner/runner_faults.py",
+      "new_sha256": "dfa1f79d27d6298588e45c7fbd7600f82aa8c1759526007a8ab1cc97e4edf738",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "crossing",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/runner_processes.py",
+      "old_sha256": "4048cdba4d1eb05d144626df21627da60d77596060dbef3ca0d3702f3ea222ac",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/runner/runner_processes.py",
+      "new_sha256": "487245c0468823f545d7907fc0e7a00d87741431b96ef8068061cfd3a24cfff1",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "crossing",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/summarize_runs.py",
+      "old_sha256": "24a8cbbd46cf5ce78b8415fd3233a4e01eb64d16a9e65acbfab0070bb35efc6b",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/summarize_runs.py",
+      "new_sha256": "c8fec42e5541a339546af60f683e292697676c66b3d002f712b7d26fa0810916",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "crossing",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/task_contract.py",
+      "old_sha256": "5418feb84ea640e6d362530a3b713eda82e71081c0710c6f502b89f3270e735e",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/contracts/task_contract.py",
+      "new_sha256": "01bce42aaffebe3095c6977722f76c8017192e3feb973864a86acffd7cf7bc37",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "crossing",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/validate_run.py",
+      "old_sha256": "4155c182f9dd725cb3889fdb9ed4786798e42b6c84742730e0eeebeb86ceb328",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/validate_run.py",
+      "new_sha256": "05936effd915e46da45fda8b5a5508711ccfba2a903d7b33d1da168f3239028b",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "crossing",
+      "old_scenario": "/home/robot/commercial_mobile_robot/experiments/scenarios/crossing.yaml",
+      "old_scenario_sha256": "17155eab5326ea7660a072348f0e3e73e837689ba4d33d94a9baa763eadc5d3e",
+      "new_scenario": "/home/robot/commercial_mobile_robot/experiments/tool_layout_v2/scenarios/crossing.yaml",
+      "new_scenario_sha256": "c9aa43feb072a4295aa2c7bdbdbc49bc10c84a7a5b56947faf649f04dae1f3a4",
+      "old_profile": "/home/robot/commercial_mobile_robot/experiments/profiles/p0_06_crossing.yaml",
+      "old_profile_sha256": "52e8a38de0fb56a0aca963d79d42bfba3af703be400cf249448bedb7d264ece4",
+      "new_profile": "/home/robot/commercial_mobile_robot/experiments/tool_layout_v2/profiles/p0_06_crossing.yaml",
+      "new_profile_sha256": "cf92e1ba38b519b4c356c641fa63794118113b7b4b53da8e0d76bbfb26fe37af",
+      "status": "draft: new actual runtime probe NOT performed"
+    },
+    {
+      "scene": "observed_occlusion",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/batch_core.py",
+      "old_sha256": "57e746dc16e0e06fac7326b084243cce3fd12ce1a9470f526c9391b37510d5b1",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/batch/batch_core.py",
+      "new_sha256": "68343c03a6def81daa030f7ec5c63d22c4e04b392eb5292fe3966e7a5c35fb68",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "observed_occlusion",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/dynamic_contract.py",
+      "old_sha256": "b62a89630d80afef36d223c39b29fa110e3862b066eb1ca4daf63141fb39cf6d",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/contracts/dynamic_contract.py",
+      "new_sha256": "79e1098eb32bf4f4cc3afc285007ba304c9693f3d6c62d9ca9e74d977fde6df6",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "observed_occlusion",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/dynamic_geometry.py",
+      "old_sha256": "2984fa9fa9d01e8494755df1afc03a304276e7e41913f150458f5624f82808be",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/dynamic/dynamic_geometry.py",
+      "new_sha256": "2984fa9fa9d01e8494755df1afc03a304276e7e41913f150458f5624f82808be",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "observed_occlusion",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/evaluate_geometry.py",
+      "old_sha256": "d5faf056fd9716a06d640ec594fdcf802dfc10e711f656cd9593a23d3c5408e1",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/evaluate_geometry.py",
+      "new_sha256": "e13f1462882d9fd7d0ab9022029f8794e27e3ddb46f84da00cbc8c67474ff571",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "observed_occlusion",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/failure_stop.py",
+      "old_sha256": "d1f33c163e0864bef8f65278fe7e407a2e8690f77389b000669043a7a3b306f9",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/runner/failure_stop.py",
+      "new_sha256": "ecb07af7e477741f79302dbfa65285760da9d7f0e4c73eb0981db0bc6107a0c1",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "observed_occlusion",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/geometry_inputs.py",
+      "old_sha256": "090641a6eec74d3a594f8521599b4cbf57c91f81010d19575c32848ce77fa185",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/geometry/geometry_inputs.py",
+      "new_sha256": "86a2b6df8049daff7eb02167b5b67023b0ce723726e1e20401a1d423879758b2",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "observed_occlusion",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/geometry_metrics.py",
+      "old_sha256": "9a858bf043debbd7d1dac35e0285260e3e184beedd0dfaddd4293a2e883cd056",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/geometry/geometry_metrics.py",
+      "new_sha256": "9a858bf043debbd7d1dac35e0285260e3e184beedd0dfaddd4293a2e883cd056",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "observed_occlusion",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/inspect_bag.py",
+      "old_sha256": "ecfce43719c7ee8502e4e61c37c2b36a776d8a454f9c04264df63feee052fd21",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/runner/inspect_bag.py",
+      "new_sha256": "4846522eb93a1316663d040d604916d3ce7cb456d99833a0f7839f674abba091",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "observed_occlusion",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/inspect_dynamic_recording.py",
+      "old_sha256": "09e37e3afc84b8f649855f66158b272bf88e049e655e2ca046dac36ebe06e4c9",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/dynamic/inspect_dynamic_recording.py",
+      "new_sha256": "3852966567c5fc0c66584bc4e183a2b396acd77f4339d71c4d7ab37205a80b6d",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "observed_occlusion",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/make_baselines.py",
+      "old_sha256": "4bedbe2cd5ee8a04e0f9814edd1be810860effe2423eabc1136d73c9ad51031e",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/stages/make_baselines.py",
+      "new_sha256": "618356482106ba7ee5c60e50d475503085777a2822743af3d5a07d64a785a0bb",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "observed_occlusion",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/nav_goal.py",
+      "old_sha256": "96ac2e1b947a04b454cbca0c2f30ec36475fbf01eee84ad7acde09482cde141b",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/navigation/nav_goal.py",
+      "new_sha256": "a599fcc26f2cce05200b85db844ce51936367dc6a9918af2e5f95a5ca11b7f3a",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "observed_occlusion",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/p0_03_navigation.py",
+      "old_sha256": "0b0ae646c238e4d5cb0e012c63ec5cd3814adfac3f3afa2fb4e21ac5d53e646e",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/stages/p0_03_navigation.py",
+      "new_sha256": "c7a7df2ff6a4b5fa5e0062579c7573be9bbc96290a87c2dfc77bda515aaaa6c2",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "observed_occlusion",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/p0_06_host_trial.py",
+      "old_sha256": "5395b1d9c1be7ea229666fbf2f40da8565ecc5a2789ec46a51508222aad65f74",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/stages/p0_06_host_trial.py",
+      "new_sha256": "2013cf167fa07352893dd19edf3a225fc32a5a3c4d8b8b57415ba7c44ec3836a",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "observed_occlusion",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/plot_geometry.py",
+      "old_sha256": "851c8633687e49994503be970d82bbd2c29052f0cecfa65630749b48a59a5e70",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/plot_geometry.py",
+      "new_sha256": "ca6f7f90e1574f91c365a09fa0305023bcbba40bb2d82718e02d4cb22b7bf980",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "observed_occlusion",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/prepare_dynamic_probe.py",
+      "old_sha256": "6d19ee5e954ea4e6ae036c1b0d11063258c3466e6325084d6a1591055afc6a2c",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/stages/prepare_dynamic_probe.py",
+      "new_sha256": "ac046fcbfe7ca470929310c9a4f49145701d1af9548a9a54c1eb25b76886465d",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "observed_occlusion",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/prepare_geometry_spec.py",
+      "old_sha256": "79a1a9ed311241d4e87e460f852a31a830f0256aeb7deb7d51606f467c640312",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/prepare_geometry_spec.py",
+      "new_sha256": "55c8e3a9072fcdf182b68ef22bcaa62f57b8db0a1f89035d14f0296b7c969c6b",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "observed_occlusion",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/run_smoke_matrix.py",
+      "old_sha256": "9e57b7198238fde3292a9aa2045b080f880a5c3d598292029824f4cc63c24a12",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/run_smoke_matrix.py",
+      "new_sha256": "ef117c7aa40f0515440f8b02028f7c5f9397e23505a671c1051ead39d1f5b799",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "observed_occlusion",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/run_trial.py",
+      "old_sha256": "0a0e8d5bdef66f64873de6655f2431e621ee97307badc0596a9f07c04b32a672",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/run_trial.py",
+      "new_sha256": "6b69bd8f74145a8faf2257579c6b16894248cd5d8c482ebe0cc8cfbeaa077929",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "observed_occlusion",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/runner_analysis.py",
+      "old_sha256": "43b9d4d080b58fa27c09414f220609ee5f47b795839cd3eb5f2672a631a4c95f",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/runner/runner_analysis.py",
+      "new_sha256": "43b9d4d080b58fa27c09414f220609ee5f47b795839cd3eb5f2672a631a4c95f",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "observed_occlusion",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/runner_core.py",
+      "old_sha256": "425625eb5db68d2b3a296a8cc1151d5e2daafb012bd0900e11e02ea44e7b08f4",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/runner/runner_core.py",
+      "new_sha256": "425625eb5db68d2b3a296a8cc1151d5e2daafb012bd0900e11e02ea44e7b08f4",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "observed_occlusion",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/runner_dynamic.py",
+      "old_sha256": "d7fbc08d0347a1eab208e0d32ba2b2bc7d2660fe16310fde90d960134b0a504d",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/dynamic/runner_dynamic.py",
+      "new_sha256": "ee2d2fda3560ca2d6b007b712d5af8ea3f8aaddfce96bc53cdeacfcb0368e136",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "observed_occlusion",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/runner_faults.py",
+      "old_sha256": "914a82958991c393ff19dbf420467ed2987a6b3aade0e238f84bae905862a2b2",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/runner/runner_faults.py",
+      "new_sha256": "dfa1f79d27d6298588e45c7fbd7600f82aa8c1759526007a8ab1cc97e4edf738",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "observed_occlusion",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/runner_processes.py",
+      "old_sha256": "4048cdba4d1eb05d144626df21627da60d77596060dbef3ca0d3702f3ea222ac",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/runner/runner_processes.py",
+      "new_sha256": "487245c0468823f545d7907fc0e7a00d87741431b96ef8068061cfd3a24cfff1",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "observed_occlusion",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/summarize_runs.py",
+      "old_sha256": "24a8cbbd46cf5ce78b8415fd3233a4e01eb64d16a9e65acbfab0070bb35efc6b",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/summarize_runs.py",
+      "new_sha256": "c8fec42e5541a339546af60f683e292697676c66b3d002f712b7d26fa0810916",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "observed_occlusion",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/task_contract.py",
+      "old_sha256": "5418feb84ea640e6d362530a3b713eda82e71081c0710c6f502b89f3270e735e",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/contracts/task_contract.py",
+      "new_sha256": "01bce42aaffebe3095c6977722f76c8017192e3feb973864a86acffd7cf7bc37",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "observed_occlusion",
+      "old_path": "/home/robot/commercial_mobile_robot/tools/validate_run.py",
+      "old_sha256": "4155c182f9dd725cb3889fdb9ed4786798e42b6c84742730e0eeebeb86ceb328",
+      "new_path": "/home/robot/commercial_mobile_robot/tools/validate_run.py",
+      "new_sha256": "05936effd915e46da45fda8b5a5508711ccfba2a903d7b33d1da168f3239028b",
+      "meaning": "new version only; existing input bytes not rewritten; review pending"
+    },
+    {
+      "scene": "observed_occlusion",
+      "old_scenario": "/home/robot/commercial_mobile_robot/experiments/scenarios/observed_occlusion.yaml",
+      "old_scenario_sha256": "3de6b18605d21d0fe580613c278a136595db7f13d8d758f389c0368db12aa518",
+      "new_scenario": "/home/robot/commercial_mobile_robot/experiments/tool_layout_v2/scenarios/observed_occlusion.yaml",
+      "new_scenario_sha256": "92d9b827171cafb59d3518f6e40c6638f45fc1cc2c843f7f8e760ae4a5db9e3e",
+      "old_profile": "/home/robot/commercial_mobile_robot/experiments/profiles/p0_06_observed_occlusion.yaml",
+      "old_profile_sha256": "b4f374ad91e035186d690cbdfe3817ca4111f3515ffb00f6473f420eb3f8c8a5",
+      "new_profile": "/home/robot/commercial_mobile_robot/experiments/tool_layout_v2/profiles/p0_06_observed_occlusion.yaml",
+      "new_profile_sha256": "687ead86d2f16800b6baf39d3a855fac4b3e34dd7bc93c892c1a57242939021b",
+      "status": "draft: new actual runtime probe NOT performed"
+    }
+  ],
+  "tool_sources": {
+    "tools/__init__.py": "d331046de3e9cc3f0bd17146f8cb175c19b90f706378e43f9675b291fedd72ae",
+    "tools/batch/__init__.py": "2033e2476b8f3c1d03098d1fef4c593da8b136642afaf1010b1664e75148af28",
+    "tools/batch/batch_core.py": "68343c03a6def81daa030f7ec5c63d22c4e04b392eb5292fe3966e7a5c35fb68",
+    "tools/batch/matrix.py": "252c0607f40e9dcc5754e93c57aa4ad70c90cd3a14de8c3e4d198efc47a872be",
+    "tools/batch/summary.py": "1d3472ac684b1a3d4909351c61929b98e017aefdcb2ef52f6fb9fd2a798a2e66",
+    "tools/contracts/__init__.py": "2033e2476b8f3c1d03098d1fef4c593da8b136642afaf1010b1664e75148af28",
+    "tools/contracts/dynamic_contract.py": "79e1098eb32bf4f4cc3afc285007ba304c9693f3d6c62d9ca9e74d977fde6df6",
+    "tools/contracts/task_contract.py": "01bce42aaffebe3095c6977722f76c8017192e3feb973864a86acffd7cf7bc37",
+    "tools/contracts/validation.py": "25b14647b2262866083b43ea5f0add691ee02253007b36904abb59b793729422",
+    "tools/dynamic/__init__.py": "1c9e84d28dd348802f00dcd881954bb29b218e5f82addeedda4f56c9dac2f98b",
+    "tools/dynamic/dynamic_geometry.py": "2984fa9fa9d01e8494755df1afc03a304276e7e41913f150458f5624f82808be",
+    "tools/dynamic/host_trial.py": "9310b0a200e5f4b36505554824819a3d0ceda5d6454b1364fc9268f0d8d9ef38",
+    "tools/dynamic/inspect_dynamic_recording.py": "3852966567c5fc0c66584bc4e183a2b396acd77f4339d71c4d7ab37205a80b6d",
+    "tools/dynamic/probe_preparation.py": "f206de82c8d0bae78afbf8f2bdb83e19992121eb62d6018874b63e910b1ceb70",
+    "tools/dynamic/runner_dynamic.py": "ee2d2fda3560ca2d6b007b712d5af8ea3f8aaddfce96bc53cdeacfcb0368e136",
+    "tools/evaluate_geometry.py": "e13f1462882d9fd7d0ab9022029f8794e27e3ddb46f84da00cbc8c67474ff571",
+    "tools/geometry/__init__.py": "2033e2476b8f3c1d03098d1fef4c593da8b136642afaf1010b1664e75148af28",
+    "tools/geometry/evaluation.py": "c77c9cec287e6ac01a134790e9c950625c51a8eb5a17775b360b5f98a0a11772",
+    "tools/geometry/geometry_inputs.py": "86a2b6df8049daff7eb02167b5b67023b0ce723726e1e20401a1d423879758b2",
+    "tools/geometry/geometry_metrics.py": "9a858bf043debbd7d1dac35e0285260e3e184beedd0dfaddd4293a2e883cd056",
+    "tools/geometry/plotting.py": "1e78552f4b874805c3846606e7b29ff3769ac55aaee0c5c9ea3a52a589ef3155",
+    "tools/geometry/spec_preparation.py": "a93f006a4df09c179bc52652615c2f12a66a005a1d5fc75d4cd6a14b4c2aeccd",
+    "tools/navigation/__init__.py": "bec7719c13492d15272717584bb9d80fab926c99cd93a0f6679ad9c67143a35c",
+    "tools/navigation/baselines.py": "11bd4aaf836c57766f522fa89baa955472dcf69c74250a75efe3b1a01ed13d7c",
+    "tools/navigation/manual_navigation.py": "558d32fb98f209149f31104b2a5a827ce05ef877c5f9507b574c8ecc07b6e5f2",
+    "tools/navigation/nav_goal.py": "a599fcc26f2cce05200b85db844ce51936367dc6a9918af2e5f95a5ca11b7f3a",
+    "tools/plot_geometry.py": "ca6f7f90e1574f91c365a09fa0305023bcbba40bb2d82718e02d4cb22b7bf980",
+    "tools/prepare_geometry_spec.py": "55c8e3a9072fcdf182b68ef22bcaa62f57b8db0a1f89035d14f0296b7c969c6b",
+    "tools/run_smoke_matrix.py": "ef117c7aa40f0515440f8b02028f7c5f9397e23505a671c1051ead39d1f5b799",
+    "tools/run_trial.py": "6b69bd8f74145a8faf2257579c6b16894248cd5d8c482ebe0cc8cfbeaa077929",
+    "tools/run_trial_observe.py": "56ffe482fe0c4844e91465d86999dae32eeaf4db6124ec88dcbbd33daba5da71",
+    "tools/runner/__init__.py": "2033e2476b8f3c1d03098d1fef4c593da8b136642afaf1010b1664e75148af28",
+    "tools/runner/archive.py": "3120fea7e49eec072a23b15b63cbe268e203582eaa5410f07a8319e50514eb32",
+    "tools/runner/failure_stop.py": "ecb07af7e477741f79302dbfa65285760da9d7f0e4c73eb0981db0bc6107a0c1",
+    "tools/runner/gui_scene_probe.py": "762f1c1da867c8b4c403254f7368e05a7851ac79aab3cad6cdf0b10c3de281ae",
+    "tools/runner/inspect_bag.py": "4846522eb93a1316663d040d604916d3ce7cb456d99833a0f7839f674abba091",
+    "tools/runner/observe.py": "0c77f50d7702ab7a4cac5efeec517aac23ef6f5dd8cc81077367d9bfd5e5b7a8",
+    "tools/runner/runner_analysis.py": "43b9d4d080b58fa27c09414f220609ee5f47b795839cd3eb5f2672a631a4c95f",
+    "tools/runner/runner_core.py": "425625eb5db68d2b3a296a8cc1151d5e2daafb012bd0900e11e02ea44e7b08f4",
+    "tools/runner/runner_faults.py": "dfa1f79d27d6298588e45c7fbd7600f82aa8c1759526007a8ab1cc97e4edf738",
+    "tools/runner/runner_gui.py": "0d00bfd25c31aef1b0c346f5273cd987a439d9c9b9252cc07ebc3f617ad9ee80",
+    "tools/runner/runner_processes.py": "487245c0468823f545d7907fc0e7a00d87741431b96ef8068061cfd3a24cfff1",
+    "tools/runner/trial.py": "8932ef881ad55bdb639c3a2b901624b06f656abd8fe4a1e95ef40a228cce9f1c",
+    "tools/stages/__init__.py": "625fb6ac296443f6d295ee3eae863b04dd03cb2c0b8dd5226ad66d53a7e03494",
+    "tools/stages/make_baselines.py": "618356482106ba7ee5c60e50d475503085777a2822743af3d5a07d64a785a0bb",
+    "tools/stages/p0_03_navigation.py": "c7a7df2ff6a4b5fa5e0062579c7573be9bbc96290a87c2dfc77bda515aaaa6c2",
+    "tools/stages/p0_06_host_trial.py": "2013cf167fa07352893dd19edf3a225fc32a5a3c4d8b8b57415ba7c44ec3836a",
+    "tools/stages/prepare_dynamic_probe.py": "ac046fcbfe7ca470929310c9a4f49145701d1af9548a9a54c1eb25b76886465d",
+    "tools/summarize_runs.py": "c8fec42e5541a339546af60f683e292697676c66b3d002f712b7d26fa0810916",
+    "tools/validate_run.py": "05936effd915e46da45fda8b5a5508711ccfba2a903d7b33d1da168f3239028b"
+  }
+}

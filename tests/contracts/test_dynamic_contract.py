@@ -2,28 +2,27 @@
 import copy,json,sys
 from pathlib import Path
 import pytest
-sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
-import validate_run as v
-import run_trial
-from dynamic_contract import motion_rules,resource,fingerprint
-ROOT=Path(__file__).resolve().parents[1]
+import tools.contracts.validation as v
+import tools.runner.trial as run_trial
+from tools.contracts.dynamic_contract import motion_rules, resource, fingerprint
+ROOT=Path(__file__).resolve().parents[2]
 @pytest.fixture
 def current_probe_inputs(tmp_path):
  # Production draft hashes intentionally preserve their historical build.
  # Bind only the isolated test copy to the binary under test.
- scenario=ROOT/'experiments/scenarios/p0_06_probe.yaml'
- profile=v.load_strict(ROOT/'experiments/profiles/p0_06_probe.yaml')
+ scenario=ROOT/'experiments/tool_layout_v2/scenarios/p0_06_probe.yaml'
+ profile=v.load_strict(ROOT/'experiments/tool_layout_v2/profiles/p0_06_probe.yaml')
  for ref in profile['executables'].values():ref['sha256']=v.digest(Path(ref['path']))
  target=tmp_path/'fixture_current_profile.json';target.write_text(json.dumps(profile))
  return scenario,target
 @pytest.fixture
 def spec():
- s=v.load_strict(ROOT/'experiments/scenarios/crossing.yaml')
+ s=v.load_strict(ROOT/'experiments/tool_layout_v2/scenarios/crossing.yaml')
  s['status']='draft';s['dynamic']['preparation']={'review':None,'probe':None}
  return s
 @pytest.mark.parametrize('name',['p0_06_probe','crossing','observed_occlusion'])
 def test_new_drafts_valid_but_not_ready(name,tmp_path):
- s=v.load_strict(ROOT/('experiments/scenarios/'+name+'.yaml'))
+ s=v.load_strict(ROOT/('experiments/tool_layout_v2/scenarios/'+name+'.yaml'))
  s['status']='draft';s['dynamic']['preparation']={'review':None,'probe':None}
  p=tmp_path/'fixture_draft.json';p.write_text(json.dumps(s))
  assert v.validate_scenario(p)['status']=='VALID'
@@ -67,12 +66,12 @@ def test_hash_change_rejected(tmp_path):
  with pytest.raises(ValueError):resource(ref)
 
 def test_prepare_requires_human_ack_without_writes(tmp_path):
- from prepare_dynamic_probe import prepare
+ from tools.dynamic.probe_preparation import prepare
  with pytest.raises(ValueError,match='acknowledgement'):
-  prepare(ROOT/'experiments/scenarios/p0_06_probe.yaml',ROOT/'experiments/profiles/p0_06_probe.yaml',tmp_path/'no_output',False)
+  prepare(ROOT/'experiments/tool_layout_v2/scenarios/p0_06_probe.yaml',ROOT/'experiments/tool_layout_v2/profiles/p0_06_probe.yaml',tmp_path/'no_output',False)
  assert not (tmp_path/'no_output').exists()
 def test_static_preparation_and_profile_gate_offline_only(tmp_path,monkeypatch,capsys,current_probe_inputs):
- from prepare_dynamic_probe import prepare
+ from tools.dynamic.probe_preparation import prepare
  monkeypatch.setattr(run_trial.subprocess,'Popen',lambda *a,**k:pytest.fail('preparation cannot launch'))
  output=tmp_path/'fixture_preparation'
  paths=prepare(*current_probe_inputs,output,True)
@@ -89,9 +88,9 @@ def test_static_preparation_and_profile_gate_offline_only(tmp_path,monkeypatch,c
  spec['status']='ready_for_recording';spec['dynamic']['purpose']='navigation_recording';spec['dynamic']['trigger']='goal_accepted'
  with pytest.raises(ValueError):v.scenario_rules(spec,'fixture')
 def test_v2_snapshot_archive_is_self_contained(tmp_path):
- from prepare_dynamic_probe import prepare
- from dynamic_contract import freeze_inputs,archive_rules
- paths=prepare(ROOT/'experiments/scenarios/p0_06_probe.yaml',ROOT/'experiments/profiles/p0_06_probe.yaml',tmp_path/'fixture_preparation',True)
+ from tools.dynamic.probe_preparation import prepare
+ from tools.contracts.dynamic_contract import freeze_inputs, archive_rules
+ paths=prepare(ROOT/'experiments/tool_layout_v2/scenarios/p0_06_probe.yaml',ROOT/'experiments/tool_layout_v2/profiles/p0_06_probe.yaml',tmp_path/'fixture_preparation',True)
  original=v.load_strict(paths['scenario'])
  run=tmp_path/'fixture_archive';(run/'artifacts').mkdir(parents=True)
  frozen=freeze_inputs(run,original)
@@ -104,7 +103,7 @@ def test_v2_snapshot_archive_is_self_contained(tmp_path):
  with pytest.raises(ValueError,match='archived'):archive_rules(frozen,refs,run,'fixture')
 def test_v2_cli_keeps_invalid_exit_two(tmp_path):
  import subprocess
- s=v.load_strict(ROOT/'experiments/scenarios/crossing.yaml');s['dynamic']['entity_name']='wrong'
+ s=v.load_strict(ROOT/'experiments/tool_layout_v2/scenarios/crossing.yaml');s['dynamic']['entity_name']='wrong'
  path=tmp_path/'fixture.json';path.write_text(json.dumps(s))
  r=subprocess.run([sys.executable,'-B',str(ROOT/'tools/validate_run.py'),'scenario',str(path)],capture_output=True,text=True,timeout=5)
  assert r.returncode==2 and json.loads(r.stdout)['status']=='INVALID'
@@ -115,15 +114,15 @@ def test_probe_preparation_binding_excludes_only_execution_purpose(spec):
  spec['dynamic']['delay_ns']+=1
  assert fingerprint(spec)!=first
 def test_occlusion_can_prepare_its_own_probe_without_editing_formal_draft(tmp_path):
- from prepare_dynamic_probe import prepare
- before=(ROOT/'experiments/scenarios/observed_occlusion.yaml').read_bytes()
- draft=v.load_strict(ROOT/'experiments/scenarios/observed_occlusion.yaml')
+ from tools.dynamic.probe_preparation import prepare
+ before=(ROOT/'experiments/tool_layout_v2/scenarios/observed_occlusion.yaml').read_bytes()
+ draft=v.load_strict(ROOT/'experiments/tool_layout_v2/scenarios/observed_occlusion.yaml')
  draft['status']='draft';draft['dynamic']['preparation']={'review':None,'probe':None}
  source=tmp_path/'fixture_s3_draft.json';source.write_text(json.dumps(draft))
- paths=prepare(source,ROOT/'experiments/profiles/p0_06_observed_occlusion.yaml',tmp_path/'fixture_s3_probe',True,as_probe=True)
+ paths=prepare(source,ROOT/'experiments/tool_layout_v2/profiles/p0_06_observed_occlusion.yaml',tmp_path/'fixture_s3_probe',True,as_probe=True)
  s=v.load_strict(paths['scenario'])
  assert s['kind']=='observed_occlusion' and s['dynamic']['purpose']=='probe' and s['dynamic']['trigger']=='probe_armed'
- assert (ROOT/'experiments/scenarios/observed_occlusion.yaml').read_bytes()==before
+ assert (ROOT/'experiments/tool_layout_v2/scenarios/observed_occlusion.yaml').read_bytes()==before
 
 @pytest.mark.parametrize('field',['trigger','motion_ref'])
 def test_legacy_event_conflicts_rejected(spec,field):

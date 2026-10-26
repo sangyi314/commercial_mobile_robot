@@ -1,7 +1,6 @@
 import json,sys
 from pathlib import Path
-sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
-from summarize_runs import summarize
+from tools.batch.summary import summarize
 
 def test_missing_and_invalid_are_indexed_without_write(tmp_path):
  (tmp_path/'trial-missing').mkdir();p=tmp_path/'trial-invalid';p.mkdir();(p/'manifest.json').write_text('{broken')

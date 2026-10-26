@@ -2,21 +2,20 @@
 import ast,json,sys
 from pathlib import Path
 import pytest
-sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
-import run_trial
-from runner_core import DeadlineBudget,TrialState,reduce_event,finalize_record,PLUGINS
-from runner_dynamic import DynamicSession
-ROOT=Path(__file__).resolve().parents[1]
+import tools.runner.trial as run_trial
+from tools.runner.runner_core import DeadlineBudget, TrialState, reduce_event, finalize_record, PLUGINS
+from tools.dynamic.runner_dynamic import DynamicSession
+ROOT=Path(__file__).resolve().parents[2]
 @pytest.mark.parametrize('name',['probe','crossing','observed_occlusion'])
 def test_dynamic_drafts_rejected_without_spawn_or_directory(monkeypatch,name,tmp_path):
  before=set((ROOT/'evidence/runs').iterdir())
  monkeypatch.setattr(run_trial.subprocess,'Popen',lambda *a,**k:pytest.fail('must not spawn'))
  scenario='p0_06_probe' if name=='probe' else name
- draft=run_trial.validate_run.load_strict(ROOT/('experiments/scenarios/'+scenario+'.yaml'))
+ draft=run_trial.validate_run.load_strict(ROOT/('experiments/tool_layout_v2/scenarios/'+scenario+'.yaml'))
  draft['status']='draft';draft['dynamic']['preparation']={'review':None,'probe':None}
  source=tmp_path/'fixture_draft.json';source.write_text(json.dumps(draft))
  with pytest.raises(ValueError,match='draft|prepared'):
-  run_trial.load_inputs(source,ROOT/('experiments/profiles/p0_06_'+name+'.yaml'),'mppi','p0-06-unit-draft')
+  run_trial.load_inputs(source,ROOT/('experiments/tool_layout_v2/profiles/p0_06_'+name+'.yaml'),'mppi','p0-06-unit-draft')
  assert before==set((ROOT/'evidence/runs').iterdir())
 @pytest.mark.parametrize('method',['mppi','dwb'])
 def test_old_preflight_keeps_no_side_effects(monkeypatch,method):
@@ -30,7 +29,7 @@ def test_recording_needs_actual_acceptance():
  x=DynamicSession.__new__(DynamicSession);x.profile={'mode':'navigation_recording'}
  with pytest.raises(ValueError,match='NO_ACCEPTED'):x.arm(DeadlineBudget.after(1),None)
 def test_no_second_lifecycle():
- source=(ROOT/'tools/runner_dynamic.py').read_text();tree=ast.parse(source)
+ source=(ROOT/'tools/dynamic/runner_dynamic.py').read_text();tree=ast.parse(source)
  assert not any(isinstance(x,ast.Attribute) and x.attr in ['Popen','kill','killpg','system'] for x in ast.walk(tree))
  assert 'supervisor.spawn' in source and 'supervisor.close' in source
 def test_probe_result_v1_keeps_unknown_metrics():
@@ -39,11 +38,11 @@ def test_probe_result_v1_keeps_unknown_metrics():
  r=finalize_record(manifest,'a'*64,s,3,[{'id':'runtime_parameters','kind':'runtime_parameters'}],PLUGINS['mppi'])
  assert r['status']['action']=='NOT_SENT' and r['metrics']['action_success'] is None and r['evaluation']['collision'] is None
 def test_worker_probe_send_guard_precedes_action():
- text=(ROOT/'tools/nav_goal.py').read_text();start=text.index("if op=='send':");guard=text.index("probe forbids navigation goals",start);send=text.index('ac.send_goal_async',start)
+ text=(ROOT/'tools/navigation/nav_goal.py').read_text();start=text.index("if op=='send':");guard=text.index("probe forbids navigation goals",start);send=text.index('ac.send_goal_async',start)
  assert start<guard<send
 
 def test_dynamic_failure_reason_is_preserved():
- from runner_dynamic import DynamicFailure
+ from tools.dynamic.runner_dynamic import DynamicFailure
  x=DynamicSession.__new__(DynamicSession)
  with pytest.raises(DynamicFailure) as caught:x.event({'type':'FAILURE','data':{'code':'MOTION_SERVICE_TIMEOUT'}},0)
  assert caught.value.code=='MOTION_SERVICE_TIMEOUT'

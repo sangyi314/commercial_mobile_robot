@@ -2,12 +2,11 @@
 import io,json,os,pty,sys,time
 from pathlib import Path
 import pytest
-sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
-import run_trial as runner
-import run_trial_observe as observe
-from runner_gui import GUIOptions,GUIClient,GUIFailure,gui_argv,log_readiness
-from runner_core import DeadlineBudget
-R=Path(__file__).resolve().parents[1]
+import tools.runner.trial as runner
+import tools.runner.observe as observe
+from tools.runner.runner_gui import GUIOptions, GUIClient, GUIFailure, gui_argv, log_readiness
+from tools.runner.runner_core import DeadlineBudget
+R=Path(__file__).resolve().parents[2]
 
 @pytest.mark.parametrize('kwargs',[{'gazebo_gui':1},{'wait_for_operator':True},{'operator_timeout_s':0},{'operator_timeout_s':float('nan')},{'operator_timeout_s':float('inf')},{'operator_timeout_s':121},{'gui_startup_timeout_s':61},{'gui_startup_timeout_s':-1},{'operator_timeout_s':True}])
 def test_invalid_options(kwargs):
@@ -131,7 +130,7 @@ def test_wait_timeout_has_no_dispatch_intent(client):
 @pytest.mark.parametrize('case',['hidden','wrong_owner','unmapped','mapped'])
 def test_owned_mapped_window_is_required_beyond_renderer_logs(client,case,monkeypatch):
  from types import SimpleNamespace
- import runner_gui
+ import tools.runner.runner_gui as runner_gui
  markers=log_readiness('')['markers'];(client.run/'logs/gazebo-gui.log').write_text('\n'.join(markers))
  client.item=Item();client.env={'GZ_PARTITION':'fixture'};client.start_deadline=time.monotonic()+10;client.window={'id':'0x42','width':800,'height':600}
  content={'hidden':'0x42 "Gazebo GUI": () 1x1+0+0','wrong_owner':'_NET_WM_PID(CARDINAL) = 99','unmapped':'Map State: IsUnMapped','mapped':'Map State: IsViewable'}[case]
@@ -154,7 +153,7 @@ def test_real_interleaved_gui_log_keeps_endpoint_requirement():
 @pytest.mark.parametrize('case',['valid','wrong_partition','negative','malformed','crashed'])
 def test_scene_gate_never_infers_visual_success(client,case,monkeypatch):
  from types import SimpleNamespace
- import runner_gui
+ import tools.runner.runner_gui as runner_gui
  client.window_ready=True;client.env={'GZ_PARTITION':'fixture'}
  proof={'valid':case!='negative','partition':'wrong' if case=='wrong_partition' else 'fixture'}
  log=client.run/'logs/scene.log';log.write_text('not JSON' if case=='malformed' else json.dumps(proof))
@@ -172,7 +171,7 @@ def test_scene_gate_never_infers_visual_success(client,case,monkeypatch):
 
 def test_scene_probe_timeout_is_bounded_and_keeps_process_for_cleanup(client,monkeypatch):
  from types import SimpleNamespace
- import runner_gui
+ import tools.runner.runner_gui as runner_gui
  client.window_ready=True;client.env={'GZ_PARTITION':'fixture'}
  probe=Item();client.supervisor.spawn=lambda *a,**k:probe
  monkeypatch.setattr(runner_gui.DeadlineBudget,'after',lambda *a:SimpleNamespace(remaining=lambda:0))

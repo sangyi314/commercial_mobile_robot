@@ -5,11 +5,9 @@ from pathlib import Path
 import sys
 import tempfile
 import unittest
-sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
-sys.path.insert(0,str(Path(__file__).resolve().parent))
-from geometry_inputs import actual_model, pose, raw_time, scene_identity, schema, collisions, prepare, SOURCE_PATHS, sha
-from evaluate_geometry import main
-from test_geometry_metrics import fixture
+from tools.geometry.geometry_inputs import actual_model, pose, raw_time, scene_identity, schema, collisions, prepare, SOURCE_PATHS, sha
+from tools.geometry.evaluation import main
+from .test_geometry_metrics import fixture
 
 class RawInputCases(unittest.TestCase):
     def test_actual_not_command_or_localization(self):

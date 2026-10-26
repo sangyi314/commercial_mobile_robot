@@ -1,0 +1,30 @@
+{
+  "profile_version": 2,
+  "scope": "simulation_only",
+  "mode": "probe",
+  "base_profile": "/home/robot/commercial_mobile_robot/experiments/runner_profile.yaml",
+  "base_scenario": "/home/robot/commercial_mobile_robot/experiments/scenarios/p0_05_official_static.yaml",
+  "scenario_ref": {
+    "path": "/home/robot/commercial_mobile_robot/experiments/tool_layout_v2/scenarios/p0_06_probe.yaml",
+    "sha256": "4a9cf59091840cdedde0df7a2dcd44f633477cbf74c676895b54bfa0844bd54e"
+  },
+  "executables": {
+    "driver": {
+      "path": "/home/robot/commercial_mobile_robot/install/p0-06-a3179_6v/cmr_sim/lib/cmr_sim/cmr_scene_driver",
+      "sha256": "a8ed5ab9394e7980b82f49d039d5586f0a3b110415fd06a1633cfa5bcfdfe87d"
+    },
+    "capture": {
+      "path": "/home/robot/commercial_mobile_robot/install/p0-06-a3179_6v/cmr_sim/lib/cmr_sim/cmr_truth_capture",
+      "sha256": "c3fe5b064deb98a4db91da65e89f589b9693ae3de774761558336f4b7505da5b"
+    }
+  },
+  "probe_sequence": [
+    "interfaces",
+    "motion",
+    "pause",
+    "contact_positive",
+    "contact_negative"
+  ],
+  "window_s": 30,
+  "pause_wall_s": 3
+}

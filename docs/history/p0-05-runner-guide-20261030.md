@@ -1,6 +1,8 @@
 # 当前入口：长路线 p0_long_route_v1
 
-map 起点 (-2.0,-0.5,0)，目标 (1.75,-0.5,0)，四元数 (0,0,0,1)。本次实施、实际 run_id、命令顺序、图表、失败保留与验收结论见 [长路线迁移交付](goal_migration_long_route_v1.md)。
+> 工具布局v2（当前入口）：根目录8个常用CLI保持路径；阶段入口改为tools/stages/，自动worker和实现移入功能子包。完整迁移表、归档布局和测试结果见[tools/README.md](../../tools/README.md)。下文旧日期、冻结输入与验收命令保留历史原文；旧动态源码锁不能直接用于新布局，新模板在experiments/tool_layout_v2且仍为draft，真实集成未验证。
+
+map 起点 (-2.0,-0.5,0)，目标 (1.75,-0.5,0)，四元数 (0,0,0,1)。本次实施、实际 run_id、命令顺序、图表、失败保留与验收结论见 [长路线迁移交付](../verification/long-route-v1-20261029.md)。
 
 静态日常入口：`/home/robot/commercial_mobile_robot/experiments/scenarios/p0_long_route_static_v1.yaml` 与 `/home/robot/commercial_mobile_robot/experiments/profiles/p0_long_route_static_v1.yaml`。动态入口 crossing/observed_occlusion 已切换新目标、新轨迹、新 world 和新 probe 证明；动态仍只使用 MPPI。07 使用各具体 run_id 的 JSON spec，p0_07_*.yaml 只是索引。08 仅同步并静态预检，本次没有重新执行故障矩阵。
 
@@ -58,7 +60,7 @@ MPPI正常：/home/robot/commercial_mobile_robot/evidence/runs/p0-05-mppi-202610
 
 缺初值：/home/robot/commercial_mobile_robot/evidence/runs/p0-05-noinitial-20261025-01，进入FAULT_ACTIVATED后约10秒退出3，未发布初值/目标，cleanup成功、合同VALID/0。它是预期失败案例，不是正常导航成功。
 
-完整实际命令、200个测试、原始行号、所有失败和保护指纹见[工程报告](verification/p0-05-bmzezluh.md)。开发证据：/home/robot/commercial_mobile_robot/evidence/env/p0-05-dev-bmzezluh。
+完整实际命令、200个测试、原始行号、所有失败和保护指纹见[工程报告](../verification/p0-05-bmzezluh.md)。开发证据：/home/robot/commercial_mobile_robot/evidence/env/p0-05-dev-bmzezluh。
 
 可再次执行的DWB只读预检：
 
@@ -77,4 +79,4 @@ python3 -B tools/summarize_runs.py --root /home/robot/commercial_mobile_robot/ev
 
 ## P0-06 增量（第6步审查门）
 
-原静态入口保持。新动态输入目前均draft，生产--check应拒绝。v2 probe/正式准备、代码差异、已执行测试和下一阶段停点见 [P0-06使用说明](p0_06_usage.md) 与 [第1～6步报告](verification/p0-06-a3179_6v-step1-6.md)。本次没有启动任何P0-06真实回合，未放行第7步。
+原静态入口保持。新动态输入目前均draft，生产--check应拒绝。v2 probe/正式准备、代码差异、已执行测试和下一阶段停点见 [P0-06使用说明](p0-06-guide-20261030.md) 与 [第1～6步报告](../verification/p0-06-a3179_6v-step1-6.md)。本次没有启动任何P0-06真实回合，未放行第7步。

@@ -52,4 +52,3 @@ def main():
   stop.set();thread.join(timeout=10)
   (out/'sampling-errors.json').write_text(json.dumps(fail,indent=2)+'\n')
  print(json.dumps({'output':str(out),'runner_exit':rc,'sampling_errors':fail}));return rc
-if __name__=='__main__':raise SystemExit(main())

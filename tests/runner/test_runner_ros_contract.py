@@ -2,10 +2,10 @@
 import copy,json,os,signal,subprocess,sys,threading,time,uuid
 from pathlib import Path
 import pytest
-sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
-from runner_core import DeadlineBudget,write_json
-from runner_processes import ProcessSupervisor
-from run_trial import WorkerLink
+pytestmark = pytest.mark.ros_contract
+from tools.runner.runner_core import DeadlineBudget, write_json
+from tools.runner.runner_processes import ProcessSupervisor
+from tools.runner.trial import WorkerLink
 
 @pytest.fixture(scope='module')
 def ros():
@@ -110,8 +110,8 @@ def session(ros,tmp_path):
  def create(mode='success'):
   rclpy,ex=ros;ns='test_'+uuid.uuid4().hex[:8];fake=Fake(rclpy,ex,ns,mode);run=tmp_path/('fixture_'+ns)
   for name in ['logs','runtime','artifacts']:(run/name).mkdir(parents=True)
-  root=Path(__file__).resolve().parents[1];p=json.loads((root/'experiments/runner_profile.yaml').read_text());p.update({'selected_method':'mppi','synthetic_test':True,'test_namespace':ns,'fault':None});write_json(run/'artifacts/profile.json',p);(run/'artifacts/goal.json').write_bytes(Path(p['files']['goal']['path']).read_bytes())
-  s=ProcessSupervisor(run);env=os.environ.copy();proc=s.spawn('worker',[sys.executable,'-B',str(root/'tools/nav_goal.py'),'--run-dir',str(run),'--test-namespace',ns],env,root,ipc=True);link=WorkerLink(proc,run.name,lambda *x:None,s);active.append((s,proc,link,fake));link.rpc('sensors',{},DeadlineBudget.after(3));return fake,run,link,s
+  root=Path(__file__).resolve().parents[2];p=json.loads((root/'experiments/runner_profile.yaml').read_text());p.update({'selected_method':'mppi','synthetic_test':True,'test_namespace':ns,'fault':None});write_json(run/'artifacts/profile.json',p);(run/'artifacts/goal.json').write_bytes(Path(p['files']['goal']['path']).read_bytes())
+  s=ProcessSupervisor(run);env=os.environ.copy();proc=s.spawn('worker',[sys.executable,'-B',str(root/'tools/navigation/nav_goal.py'),'--run-dir',str(run),'--test-namespace',ns],env,root,ipc=True);link=WorkerLink(proc,run.name,lambda *x:None,s);active.append((s,proc,link,fake));link.rpc('sensors',{},DeadlineBudget.after(3));return fake,run,link,s
  yield create
  for s,proc,link,fake in reversed(active):
   try:proc.critical=False;link.rpc('exit',{},DeadlineBudget.after(2))
@@ -161,10 +161,10 @@ def test_worker_bad_protocol_eof_still_owned(session):
 
 @pytest.mark.parametrize('wrong_frame,missing_static',[(False,False),(True,False),(False,True)])
 def test_real_mcap_late_static_and_content(ros,tmp_path,wrong_frame,missing_static):
- from inspect_bag import inspect
+ from tools.runner.inspect_bag import inspect
  rclpy,ex=ros;ns='bag_'+uuid.uuid4().hex[:8];fake=Fake(rclpy,ex,ns,wrong_frame=wrong_frame);run=tmp_path/('fixture_'+ns)
  for n in ['logs','runtime','artifacts']:(run/n).mkdir(parents=True)
- root=Path(__file__).resolve().parents[1];profile=json.loads((root/'experiments/runner_profile.yaml').read_text());profile.update({'synthetic_test':True,'test_namespace':ns,'fault':'withhold-initial-pose'});write_json(run/'artifacts/profile.json',profile)
+ root=Path(__file__).resolve().parents[2];profile=json.loads((root/'experiments/runner_profile.yaml').read_text());profile.update({'synthetic_test':True,'test_namespace':ns,'fault':'withhold-initial-pose'});write_json(run/'artifacts/profile.json',profile)
  qos=json.loads((root/'experiments/recording_qos.yaml').read_text());write_json(run/'artifacts/qos.yaml',{'/'+ns+t:v for t,v in qos.items()})
  supervisor=ProcessSupervisor(run);topics=['/clock','/tf','/scan','/odom','/cmr_experiment/events']+([] if missing_static else ['/tf_static'])
  proc=supervisor.spawn('recorder',['ros2','bag','record','-s','mcap','-o',str(run/'bag'),'--use-sim-time','--node-name','fixture_rec_'+ns,'--qos-profile-overrides-path',str(run/'artifacts/qos.yaml'),'--topics',*['/'+ns+t for t in topics]],os.environ.copy(),root)
@@ -190,10 +190,10 @@ def test_real_mcap_late_static_and_content(ros,tmp_path,wrong_frame,missing_stat
 @pytest.mark.parametrize('_repeat',[0,1,2])
 def test_installed_nav2_localization_manager_single_startup(ros,tmp_path,_repeat):
  """Real installed lifecycle components, isolated72; no simulator/initialpose/goal."""
- rclpy,ex=ros;root=Path(__file__).resolve().parents[1];run=tmp_path/'fixture_real_localization'
+ rclpy,ex=ros;root=Path(__file__).resolve().parents[2];run=tmp_path/'fixture_real_localization'
  for n in ['logs','runtime','artifacts']:(run/n).mkdir(parents=True)
  p=json.loads((root/'experiments/runner_profile.yaml').read_text());p.update({'selected_method':'mppi','synthetic_test':True,'fault':None});write_json(run/'artifacts/profile.json',p)
- sup=ProcessSupervisor(run);env=os.environ.copy();worker=sup.spawn('worker',[sys.executable,'-B',str(root/'tools/nav_goal.py'),'--run-dir',str(run)],env,root,ipc=True);link=WorkerLink(worker,run.name,lambda *a:None,sup);localization=None
+ sup=ProcessSupervisor(run);env=os.environ.copy();worker=sup.spawn('worker',[sys.executable,'-B',str(root/'tools/navigation/nav_goal.py'),'--run-dir',str(run)],env,root,ipc=True);link=WorkerLink(worker,run.name,lambda *a:None,sup);localization=None
  try:
   link.rpc('graph',{},DeadlineBudget.after(3))
   localization=sup.spawn('localization',['ros2','launch','--noninteractive','nav2_bringup','localization_launch.py','autostart:=false','use_sim_time:=false','use_composition:=False','use_respawn:=False','params_file:='+str(root/'src/cmr_bringup/config/nav2_mppi.yaml'),'map:=/opt/ros/jazzy/share/nav2_bringup/maps/tb3_sandbox.yaml'],env,root)

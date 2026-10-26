@@ -12,9 +12,9 @@ import subprocess
 import sys
 import xml.etree.ElementTree as ET
 
-from geometry_metrics import number, stamp
+from tools.geometry.geometry_metrics import number, stamp
 
-ROOT = Path(__file__).resolve().parents[1]
+from tools import PROJECT_ROOT as ROOT
 SOURCE_PATHS = ['manifest.json', 'result.json', 'artifacts/robot.sdf',
                 'artifacts/dynamic_actor.sdf', 'artifacts/world.sdf',
                 'artifacts/profile.json', 'artifacts/dynamic_motion.json',

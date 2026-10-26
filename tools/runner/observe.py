@@ -3,11 +3,12 @@
 Only scoped adapter classes are substituted while that same main owns the trial.
 No launch, recorder, action, pause, result or cleanup lifecycle is duplicated here.
 """
+from tools import PROJECT_ROOT
 import argparse,contextlib,io,json,sys,time
 from pathlib import Path
-import run_trial as runner
-from runner_core import DeadlineBudget
-from runner_gui import GUIOptions,GUIClient
+import tools.runner.trial as runner
+from tools.runner.runner_core import DeadlineBudget
+from tools.runner.runner_gui import GUIOptions, GUIClient
 
 @contextlib.contextmanager
 def gui_adapters(options):
@@ -51,7 +52,7 @@ def main(argv=None):
  parser.add_argument('--gui-startup-timeout',type=float,default=20.,metavar='SECONDS')
  args,forwarded=parser.parse_known_args(argv);saved=sys.argv
  try:
-  options=GUIOptions(args.gazebo_gui,args.wait_for_operator,args.operator_timeout,args.gui_startup_timeout).validate();sys.argv=[str(Path(runner.__file__)),*forwarded]
+  options=GUIOptions(args.gazebo_gui,args.wait_for_operator,args.operator_timeout,args.gui_startup_timeout).validate();sys.argv=[str(PROJECT_ROOT/'tools/run_trial.py'),*forwarded]
   if '--check' in forwarded:
    output=io.StringIO()
    with contextlib.redirect_stdout(output):code=runner.main()
@@ -63,5 +64,3 @@ def main(argv=None):
   with gui_adapters(options):return runner.main()
  except ValueError as exc:print(json.dumps({'preflight_rejected':str(exc)}),file=sys.stderr);return 2
  finally:sys.argv=saved
-
-if __name__=='__main__':raise SystemExit(main())

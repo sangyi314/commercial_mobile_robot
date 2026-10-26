@@ -1,8 +1,7 @@
 import sys,json,copy
 from pathlib import Path
 import pytest
-sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
-from batch_core import *
+from tools.batch.batch_core import *
 
 
 def test_journal_append_hash_truncation_and_mutation(tmp_path):
@@ -28,15 +27,15 @@ def test_same_cause_twice_and_unsafe_stop():
  with pytest.raises(ValueError,match='unsafe'):choose_slot(m,r,'reviewed')
 
 def test_preflight_no_side_effects(monkeypatch,tmp_path):
- import run_smoke_matrix,subprocess
- root=Path(__file__).resolve().parents[1];before={str(p) for d in ['evidence/runs','evidence/batches'] for p in (root/d).glob('*')}
+ import tools.batch.matrix as run_smoke_matrix, subprocess
+ root=Path(__file__).resolve().parents[2];before={str(p) for d in ['evidence/runs','evidence/batches'] for p in (root/d).glob('*')}
  monkeypatch.setattr(subprocess,'Popen',lambda *a,**k:pytest.fail('check starts process'))
  monkeypatch.setattr(sys,'argv',['matrix','--matrix',str(root/'experiments/p0_smoke_matrix.yaml'),'--batch-dir',str(root/'evidence/batches/p0-08-check-never-created'),'--check'])
  assert run_smoke_matrix.main()==0
  assert before=={str(p) for d in ['evidence/runs','evidence/batches'] for p in (root/d).glob('*')}
 
 def test_bad_matrix_order_and_hash():
- root=Path(__file__).resolve().parents[1];m=strict_json((root/'experiments/p0_smoke_matrix.yaml').read_text());m['slots'][0]['method']='dwb'
+ root=Path(__file__).resolve().parents[2];m=strict_json((root/'experiments/p0_smoke_matrix.yaml').read_text());m['slots'][0]['method']='dwb'
  with pytest.raises(ValueError,match='order'):validate_matrix(m,root,False)
  m=strict_json((root/'experiments/p0_smoke_matrix.yaml').read_text());m['slots'][0]['profile']['sha256']='0'*64
  with pytest.raises(ValueError,match='identity'):validate_matrix(m,root,False)

@@ -2,8 +2,9 @@
 from dataclasses import dataclass,asdict
 from pathlib import Path
 import json,math,os,re,select,sys,termios,time
-from runner_core import DeadlineBudget,write_json
-from runner_processes import ProcessSupervisor as BaseSupervisor
+from tools.runner.runner_core import DeadlineBudget, write_json
+from tools.runner.runner_processes import ProcessSupervisor as BaseSupervisor
+import tools.runner.runner_processes as runner_processes
 
 class GUIFailure(RuntimeError):
  def __init__(self,code,detail):self.code=code;super().__init__(code+': '+str(detail))
@@ -43,8 +44,6 @@ class GUIClient:
  def __init__(self,supervisor,options,emit):
   self.supervisor=supervisor;self.options=options;self.emit=emit;self.run=supervisor.run;self.item=None;self.probe=None;self.ready=False;self.window_ready=False;self.scene_proof=None;self.monitor=True;self.finished=False;self.failure=None;self.events=[];self.window={};self.counter=0;self.next_probe=0.;self.operator='not_requested';self.env=None
   write_json(self.run/'artifacts/gui-options.json',asdict(options))
-  for name in ['runner_gui.py','run_trial_observe.py','gui_scene_probe.py']:
-   (self.run/'artifacts'/name).write_bytes((Path(__file__).parent/name).read_bytes())
  def event(self,state,**data):
   value={'state':state,'wall_monotonic_s':time.monotonic(),**data};self.events.append(value);self.emit('GUI_'+state,value)
   with (self.run/'runtime/gui-events.jsonl').open('a') as f:
@@ -97,7 +96,7 @@ class GUIClient:
  def await_ready(self,link):
   while not self.window_ready:link.pump()
   budget=DeadlineBudget.after(8)
-  self.probe=self.supervisor.spawn('gui-scene-probe',[sys.executable,'-B',str(self.run/'artifacts/gui_scene_probe.py'),str(self.run)],self.env,self.run,critical=False)
+  self.probe=self.supervisor.spawn('gui-scene-probe',[sys.executable,'-B',str(self.run/'artifacts/tools/runner/gui_scene_probe.py'),str(self.run)],self.env,self.run,critical=False)
   while self.probe.process.poll() is None:
    if budget.remaining()<=0:self.fail('GUI_SCENE_TIMEOUT','No complete scene evidence before deadline')
    link.pump()

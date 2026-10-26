@@ -1,4 +1,8 @@
 """Read-only Gazebo scene probe. Invoked and reaped by the original supervisor."""
+if __package__ in (None, ''):
+    from pathlib import Path
+    from runpy import run_path
+    run_path(str(Path(__file__).resolve().parents[1] / '__init__.py'))['bootstrap']()
 import json, os, sys, threading, time
 from pathlib import Path
 from google.protobuf.json_format import MessageToDict

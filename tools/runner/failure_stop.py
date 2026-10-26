@@ -1,6 +1,6 @@
 """Pure abnormal-stop observation; no arrival requirement and no missing-as-zero."""
 import math
-from runner_analysis import finite,vector,distance
+from tools.runner.runner_analysis import finite, vector, distance
 
 TOPICS=['/cmd_vel_nav','/cmd_vel_smoothed','/cmd_vel']
 def observe_stop(rows,after,command_after,limits,axis='monotonic'):

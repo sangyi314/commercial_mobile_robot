@@ -10,13 +10,11 @@ import re
 import sys
 
 # Keep one exception/type identity when invoked as a CLI and importing v2 rules.
-if __name__ == "__main__":
-    sys.modules.setdefault("validate_run", sys.modules[__name__])
 
 from jsonschema import Draft202012Validator, validators
 import yaml
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
+from tools import PROJECT_ROOT as PROJECT_ROOT
 PLUGINS = {"mppi": "nav2_mppi_controller::MPPIController", "dwb": "dwb_core::DWBLocalPlanner"}
 EXIT_CODES = {"VALID": 0, "INVALID": 2, "INCOMPLETE": 3, "NOT_READY": 4}
 
@@ -181,7 +179,7 @@ def check_resource(resource, location, check_host=True):
 
 def scenario_rules(spec, path, check_host_resources=True):
     if spec["schema_version"] == 2:
-        from dynamic_contract import rules
+        from tools.contracts.dynamic_contract import rules
         rules(spec, path, check_host_resources)
         return
     where = f"{path}:$"
@@ -288,7 +286,7 @@ def manifest_rules(manifest, directory, path):
             validate_structure(spec, "scenario", target)
             scenario_rules(spec, target, check_host_resources=False)
             if spec["schema_version"] == 2:
-                from dynamic_contract import archive_rules
+                from tools.contracts.dynamic_contract import archive_rules
                 archive_rules(spec, refs, directory, target)
             for field in ("scenario_id", "scenario_revision"):
                 if spec[field] != manifest["scenario"][field]:
@@ -480,7 +478,3 @@ def main(argv=None):
         code = 1
     print(json.dumps(report, ensure_ascii=False, allow_nan=False))
     return code
-
-
-if __name__ == "__main__":
-    sys.exit(main())

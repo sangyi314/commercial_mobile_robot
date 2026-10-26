@@ -1,10 +1,10 @@
 """Thin serial dispatcher: only starts the existing single-trial parent."""
 import argparse,hashlib,json,os,shutil,signal,subprocess,sys,time
 from pathlib import Path
-from runner_core import strict_json,write_json,encode,digest,run_id
-from runner_processes import ProjectLock,identity
-from batch_core import *
-ROOT=Path(__file__).resolve().parents[1]
+from tools.runner.runner_core import strict_json, write_json, encode, digest, run_id
+from tools.runner.runner_processes import ProjectLock, identity
+from tools.batch.batch_core import *
+from tools import PROJECT_ROOT as ROOT
 
 def main():
  ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--matrix');ap.add_argument('--batch-dir');ap.add_argument('--resume');ap.add_argument('--limit',type=int,default=1);ap.add_argument('--check',action='store_true');ap.add_argument('--resume-reason');a=ap.parse_args()
@@ -77,5 +77,3 @@ def main():
     a.resume_reason=None
    complete=choose_slot(matrix,journal.rows) is None;journal.append('COMPLETE' if complete else 'PAUSED_AT_LIMIT');print('COMPLETE' if complete else 'PAUSED_AT_LIMIT',flush=True);return 0
  except Exception as exc:print(json.dumps({'batch_refused':str(exc)},ensure_ascii=False),file=sys.stderr);return 2
-
-if __name__=='__main__':sys.exit(main())

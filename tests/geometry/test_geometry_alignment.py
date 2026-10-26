@@ -3,10 +3,8 @@ import math
 from pathlib import Path
 import sys
 import unittest
-sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
-sys.path.insert(0,str(Path(__file__).resolve().parent))
-from test_geometry_metrics import fixture
-from geometry_metrics import evaluate, segment_minimum
+from .test_geometry_metrics import fixture
+from tools.geometry.geometry_metrics import evaluate, segment_minimum
 
 class AlignmentCases(unittest.TestCase):
     def test_translation_rotation_exchange_invariance(self):

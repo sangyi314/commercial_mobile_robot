@@ -40,4 +40,4 @@
 
 `accept` 只在调用时检查，不存储有效命令、不定时回调、不输出零速度；没有新消息时不会在 TTL 到期自动停车。P1 的周期监督/输出撤销和 P2 的独立底盘 watchdog 尚未实现或验证。此合同不构成生产级安全性或实车放行结论。
 
-对应案例与源码定位见 [测试设计](core_test_design.md)；本阶段证据见 [审查报告](verification/p0-01-gfGjKp8O-draft.md)。
+对应案例与源码定位见 [测试设计](../design/core-test-design.md)；本阶段证据见 [审查报告](../verification/p0-01-gfGjKp8O-draft.md)。

@@ -11,12 +11,10 @@ import sys
 import pytest
 import yaml
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 FIXTURES = ROOT / "tests" / "fixtures"
 TOOL = ROOT / "tools" / "validate_run.py"
-module_spec = importlib.util.spec_from_file_location("cmr_validate_run", TOOL)
-validator = importlib.util.module_from_spec(module_spec)
-module_spec.loader.exec_module(validator)
+import tools.contracts.validation as validator
 
 
 def sha(path):

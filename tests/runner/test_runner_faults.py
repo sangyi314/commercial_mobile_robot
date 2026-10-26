@@ -1,8 +1,7 @@
 import sys,copy,queue,io,time
 from pathlib import Path
 import pytest
-sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
-from runner_faults import *
+from tools.runner.runner_faults import *
 
 def profile(f):return {'faults':[f] if f else [],'p0_08':{'version':1,'fault':f,'policy':POLICY.copy(),'raw_gazebo':True,'arrival_policy':'first_fresh_post_terminal_0.5s'}}
 @pytest.mark.parametrize('f',[None,*FAULTS])

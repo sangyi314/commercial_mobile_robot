@@ -1,9 +1,13 @@
 """Independent ROS worker. JSONL IPC only; never creates processes."""
+if __package__ in (None, ''):
+    from pathlib import Path
+    from runpy import run_path
+    run_path(str(Path(__file__).resolve().parents[1] / '__init__.py'))['bootstrap']()
 import argparse,math,os,select,sys,time,uuid
 from pathlib import Path
-from runner_core import strict_json,encode,write_json,validate_envelope,PLUGINS
-from runner_analysis import analyze
-from failure_stop import observe_stop,shutdown_transition
+from tools.runner.runner_core import strict_json, encode, write_json, validate_envelope, PLUGINS
+from tools.runner.runner_analysis import analyze
+from tools.runner.failure_stop import observe_stop, shutdown_transition
 
 def main():
  parser=argparse.ArgumentParser();parser.add_argument('--run-dir',required=True);parser.add_argument('--test-namespace',default='');args=parser.parse_args()

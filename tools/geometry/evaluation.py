@@ -6,8 +6,8 @@ import os
 from pathlib import Path
 import sys
 sys.dont_write_bytecode = True
-from geometry_inputs import ROOT, adapt, read, schema, sha, verify_sources
-from geometry_metrics import evaluate
+from tools.geometry.geometry_inputs import ROOT, adapt, read, schema, sha, verify_sources
+from tools.geometry.geometry_metrics import evaluate
 from jsonschema.exceptions import ValidationError
 
 
@@ -55,7 +55,7 @@ def main(argv=None):
         out.parent.mkdir(parents=True, exist_ok=True); out.mkdir(); created = True
         atomic(out/'spec.json', spec); atomic(out/'input.json', data); atomic(out/'sources.json', audit)
         atomic(out/'intervals.json', [{'pair': x['pair'], 'intervals': x['intervals']} for x in result['pairs']])
-        implementation = {str(path.relative_to(ROOT)): sha(path) for path in sorted((ROOT/'tools').glob('*geometry*.py'))}
+        implementation = {str(path.relative_to(ROOT)): sha(path) for path in sorted((ROOT/'tools').rglob('*.py'))}
         implementation.update({str(path.relative_to(ROOT)): sha(path) for path in sorted((ROOT/'experiments/schemas').glob('evaluation*.json'))})
         report = {'schema_version': 1, 'run_id': data['run_id'], 'record_origin': data['record_origin'],
                   'evaluation_id': out.name, 'spec_sha256': sha(out/'spec.json'), 'input_sha256': sha(out/'input.json'),
@@ -91,6 +91,3 @@ def main(argv=None):
         error = {'error_type': type(e).__name__, 'diagnostic': str(e), 'exit_code': 1}
         if created: atomic(a.output_dir/'failure.json', error)
         print(json.dumps(error), file=sys.stderr); return 1
-
-
-if __name__ == '__main__': raise SystemExit(main())

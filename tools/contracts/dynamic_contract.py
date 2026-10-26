@@ -1,7 +1,7 @@
 """Strict v2 preparation gates. No processes, ROS imports or network."""
 from pathlib import Path
 import copy,hashlib,json,math,re
-import validate_run as v
+import tools.contracts.validation as v
 
 def fingerprint(spec):
     def content(value):
@@ -89,7 +89,7 @@ def profile_inputs(spec,profile,method,legacy_loader,identity):
     resource(profile['scenario_ref'])
     if v.load_strict(resource(profile['scenario_ref']))!=spec:raise ValueError('scenario/profile mismatch')
     if profile.get('task_version') is not None:
-        from task_contract import VERSION
+        from tools.contracts.task_contract import VERSION
         if profile['task_version']!=VERSION:raise ValueError('unknown task version')
         for name in ['profile','scenario']:
             if resource(profile['base_inputs'][name]).resolve()!=Path(profile['base_'+name]).resolve():raise ValueError('base input identity')
@@ -116,7 +116,7 @@ def profile_inputs(spec,profile,method,legacy_loader,identity):
     for name in ('actor','motion','geometry'):
         base['files']['dynamic_'+name]=spec['dynamic'][name]
     goal=v.load_strict(resource(spec['dynamic']['goal_request']))
-    from task_contract import request_pose,poses_equal
+    from tools.contracts.task_contract import request_pose, poses_equal
     if not poses_equal(request_pose(goal),spec['task']['goal_pose']) or spec['dynamic']['goal_request']['sha256']!=base['files']['goal']['sha256']:raise ValueError('task request mismatch')
     gp=goal['pose']['pose'];gq=gp['orientation'];yaw=math.atan2(2*(gq['w']*gq['z']+gq['x']*gq['y']),1-2*(gq['y']**2+gq['z']**2))
     if goal['pose']['header']['frame_id']!='map' or any(abs(a-b)>1e-9 for a,b in zip([gp['position']['x'],gp['position']['y'],yaw],[spec['task']['goal_pose'][k] for k in ['x_m','y_m','yaw_rad']])):raise ValueError('task request mismatch')
@@ -127,7 +127,7 @@ def profile_inputs(spec,profile,method,legacy_loader,identity):
 
 def freeze_inputs(run,spec):
     """Copy closure and preparation bytes; archived references remain run-relative."""
-    from runner_core import atomic_write_new,write_json,digest
+    from tools.runner.runner_core import atomic_write_new, write_json, digest
     frozen=copy.deepcopy(spec);art=Path(run)/'artifacts';counter=0;cached={}
     def freeze(ref):
         nonlocal counter

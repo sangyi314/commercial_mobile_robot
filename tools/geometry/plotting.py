@@ -4,7 +4,7 @@ import argparse
 from pathlib import Path
 import sys
 sys.dont_write_bytecode = True
-from geometry_inputs import read, schema
+from tools.geometry.geometry_inputs import read, schema
 
 
 def main():
@@ -46,6 +46,3 @@ def main():
     with a.output.open('xb') as f:fig.savefig(f,format='png',dpi=160)
     plt.close(fig)
     print(a.output.resolve())
-
-
-if __name__ == '__main__': main()

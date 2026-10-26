@@ -1,7 +1,7 @@
 """Strict serial batch contracts, append-only recovery and read-only reconciliation."""
 from pathlib import Path
 import hashlib,json,os,time
-from runner_core import strict_json,encode,digest,write_json,run_id
+from tools.runner.runner_core import strict_json, encode, digest, write_json, run_id
 
 
 def journal_read(path):
@@ -102,8 +102,8 @@ def validate_matrix(matrix,root,check_inputs=True):
    ref=slot[key]
    if set(ref)!={'path','sha256'} or not Path(ref['path']).is_absolute() or digest(ref['path'])!=ref['sha256']:raise ValueError(key+' identity')
   if check_inputs:
-   from run_trial import load_inputs
-   from runner_faults import validate_policy
+   from tools.runner.trial import load_inputs
+   from tools.runner.runner_faults import validate_policy
    p,_=load_inputs(slot['scenario']['path'],slot['profile']['path'],method,'p008-readonly-check')
    validate_policy(p,fault)
  return matrix
@@ -123,7 +123,7 @@ def live_owned(run):
  for p in Path('/proc').iterdir():
   if not p.name.isdigit():continue
   try:
-   from runner_processes import identity
+   from tools.runner.runner_processes import identity
    info=identity(p.name)
    if not info or info['state']=='Z':continue
    env=(p/'environ').read_bytes().split(b'\0')
@@ -147,7 +147,7 @@ def audit_run(root,intent,exit_code):
   events=read_rows(run/'logs/events.jsonl')
   starts=[e['data'] for e in events if e['type']=='PROCESS_STARTED' and e['data']['role']=='gazebo']
   out['actual_start']=len(starts)==1
-  import validate_run
+  import tools.contracts.validation as validate_run
   diag=validate_run.validate_run_dir(run);out['contract']=diag['status'];out['diagnostic']=diag
   result=strict_json((run/'result.json').read_text());out['origin']=result.get('record_origin')
   manifest=strict_json((run/'manifest.json').read_text());out['origin']=manifest['record_origin']
@@ -165,13 +165,13 @@ def audit_run(root,intent,exit_code):
 
   observations=read_rows(run/'runtime/observations.jsonl');profile=strict_json((run/'artifacts/profile.json').read_text())
   if intent['purpose']=='normal':
-   from runner_analysis import analyze
+   from tools.runner.runner_analysis import analyze
    # The runner's own behavior report is not used as the reconstruction input.
    original=analyze(observations,acts,strict_json((run/'artifacts/goal.json').read_text()),strict_json((run/'runtime/all-parameters.json').read_text())['controller_server'],arrival_policy=profile.get('p0_08',{}).get('arrival_policy','last_fresh'))
    out['behavior']=original
    out['pass']=all([out['safe_to_resume'],out['cold_start'],out['bag_valid'],out['accepted'],status['action']=='SUCCEEDED',status['harness']=='COMPLETED',all(original['checks'].values()),exit_code==0])
   else:
-   from failure_stop import observe_stop
+   from tools.runner.failure_stop import observe_stop
    stop=strict_json((run/'runtime/failure-stop.json').read_text());req=stop['request']
    recalculated=observe_stop(observations,req['after_monotonic_s'],req['command_after_monotonic_s'],profile['stop'])
    fault=strict_json((run/'runtime/fault-check.json').read_text());out['fault']=fault;out['stop_recomputed']=recalculated

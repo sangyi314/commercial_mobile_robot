@@ -1,9 +1,8 @@
 import os,signal,subprocess,sys,time
 from pathlib import Path
 import pytest
-sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
-from runner_core import DeadlineBudget
-from runner_processes import ProcessSupervisor,ProjectLock,identity
+from tools.runner.runner_core import DeadlineBudget
+from tools.runner.runner_processes import ProcessSupervisor, ProjectLock, identity
 
 def supervise(tmp_path,code):
  (tmp_path/'logs').mkdir(exist_ok=True);s=ProcessSupervisor(tmp_path);p=s.spawn('child',[sys.executable,'-u','-c',code],os.environ.copy(),tmp_path);return s,p
@@ -29,7 +28,7 @@ def test_large_log_no_pipe_deadlock(tmp_path):
 def test_crash_is_not_success(tmp_path):
  s,p=supervise(tmp_path,'import os;os._exit(7)');p.process.wait(timeout=2);assert not s.close(p,DeadlineBudget.after(1),initial_signal=False,grace=.05)['ok']
 def test_pid_reuse_refused(tmp_path,monkeypatch):
- import runner_processes
+ import tools.runner.runner_processes as runner_processes
  s,p=supervise(tmp_path,"import time,pathlib;pathlib.Path('ready').touch();time.sleep(20)");ready(tmp_path/'ready');real=runner_processes.identity
  try:
   monkeypatch.setattr(runner_processes,'identity',lambda pid:{**real(pid),'start_ticks':real(pid)['start_ticks']+1})
@@ -57,7 +56,7 @@ def test_recorder_early_exit_detected_even_when_exit_zero(tmp_path):
  s.close(p,DeadlineBudget.after(1),initial_signal=False,grace=.05)
 
 def test_worker_oversized_output_fails_bounded(tmp_path):
- from run_trial import WorkerLink
+ from tools.runner.trial import WorkerLink
  (tmp_path/'logs').mkdir();s=ProcessSupervisor(tmp_path);p=s.spawn('worker',[sys.executable,'-c',"import os;os.write(1,b'x'*70000)"],os.environ.copy(),tmp_path,ipc=True);link=WorkerLink(p,'fixture',lambda *x:None,s)
  try:
   end=DeadlineBudget.after(2)
@@ -66,7 +65,7 @@ def test_worker_oversized_output_fails_bounded(tmp_path):
  finally:s.close(p,DeadlineBudget.after(2),grace=.1)
 
 def test_worker_no_heartbeat_has_wall_deadline(tmp_path):
- from run_trial import WorkerLink
+ from tools.runner.trial import WorkerLink
  (tmp_path/'logs').mkdir();s=ProcessSupervisor(tmp_path);p=s.spawn('worker',[sys.executable,'-c','import time;time.sleep(20)'],os.environ.copy(),tmp_path,ipc=True);link=WorkerLink(p,'fixture',lambda *x:None,s);link.last_heartbeat=time.monotonic()-4
  try:
   with pytest.raises(TimeoutError,match='heartbeat'):link.pump()

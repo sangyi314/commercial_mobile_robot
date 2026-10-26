@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """P0-03: attach to an existing TB3 Gazebo world, localize, then start Nav2.
 
-Source the simulation's session.bash and tools/p0_03_env.bash, then supply its verified world pose:
-  python3 tools/p0_03_navigation.py --initial-pose X Y YAW
+Source the simulation's session.bash and tools/stages/p0_03_env.bash, then supply its verified world pose:
+  python3 tools/stages/p0_03_navigation.py --initial-pose X Y YAW
 No world or goal is created. Ctrl-C shuts down this launcher's processes only.
 """
+from tools import PROJECT_ROOT
 import argparse
 import math
 import os
@@ -126,7 +127,7 @@ class Startup:
             raise RuntimeError(f'Existing ROS owners: {sorted(conflicts)}; stop their launcher first')
         sim = Path(get_package_share_directory('nav2_minimal_tb3_sim'))
         nav = Path(get_package_share_directory('nav2_bringup'))
-        config = Path(__file__).resolve().parents[1] / 'src/cmr_bringup/config/nav2_mppi.yaml'
+        config = PROJECT_ROOT / 'src/cmr_bringup/config/nav2_mppi.yaml'
         self.start('robot_state_publisher', [
             '/opt/ros/jazzy/lib/robot_state_publisher/robot_state_publisher', '--ros-args',
             '-p', 'use_sim_time:=true', '-p', 'robot_description:=' +
@@ -200,11 +201,11 @@ def main():
         parser.error('Source the real CMR simulation session: domain 71 and GZ_PARTITION required')
     if not all(math.isfinite(v) for v in args.initial_pose):
         parser.error('Initial pose must be finite')
-    profile = Path(__file__).resolve().parents[1] / 'src/cmr_bringup/config/fastdds_loopback_udp.xml'
+    profile = PROJECT_ROOT / 'src/cmr_bringup/config/fastdds_loopback_udp.xml'
     if (os.environ.get('ROS_AUTOMATIC_DISCOVERY_RANGE') != 'SYSTEM_DEFAULT' or
             os.environ.get('FASTRTPS_DEFAULT_PROFILES_FILE') != str(profile) or
             os.environ.get('RMW_IMPLEMENTATION') != 'rmw_fastrtps_cpp'):
-        parser.error('Source tools/p0_03_env.bash in every P0-03 terminal first')
+        parser.error('Source tools/stages/p0_03_env.bash in every P0-03 terminal first')
     rclpy.init(signal_handler_options=SignalHandlerOptions.NO)
     startup = Startup(args.initial_pose)
     try:
@@ -214,7 +215,3 @@ def main():
     finally:
         startup.close()
         rclpy.shutdown()
-
-
-if __name__ == '__main__':
-    main()

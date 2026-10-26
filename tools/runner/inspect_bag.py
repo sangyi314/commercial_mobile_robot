@@ -1,10 +1,14 @@
 """Read closed MCAP messages without replaying anything into ROS."""
+if __package__ in (None, ''):
+    from pathlib import Path
+    from runpy import run_path
+    run_path(str(Path(__file__).resolve().parents[1] / '__init__.py'))['bootstrap']()
 import argparse,json,math,sys
 from pathlib import Path
 import yaml
-from runner_core import digest,within,write_json,strict_json
-from runner_analysis import analyze,yaw
-from failure_stop import observe_stop
+from tools.runner.runner_core import digest, within, write_json, strict_json
+from tools.runner.runner_analysis import analyze, yaw
+from tools.runner.failure_stop import observe_stop
 
 def inspect(run):
  import rosbag2_py

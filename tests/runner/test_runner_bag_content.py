@@ -2,8 +2,7 @@
 import json,sys
 from pathlib import Path
 import pytest
-sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
-from runner_core import write_json
+from tools.runner.runner_core import write_json
 
 def make_bag(run,case):
  import rosbag2_py
@@ -53,7 +52,7 @@ def make_bag(run,case):
 
 @pytest.mark.parametrize('case',['valid','missing_static','wrong_frame','missing_terminal','corrupt'])
 def test_full_bag_exact_content_and_negative_cases(tmp_path,case):
- from inspect_bag import inspect
+ from tools.runner.inspect_bag import inspect
  run=tmp_path/'fixture';make_bag(run,case)
  if case=='corrupt':next((run/'bag').glob('*.mcap')).write_bytes(b'broken')
  report=inspect(run)
@@ -65,7 +64,7 @@ def test_full_bag_exact_content_and_negative_cases(tmp_path,case):
 
 
 def test_missing_metadata_is_not_a_valid_recording(tmp_path):
- from inspect_bag import inspect
+ from tools.runner.inspect_bag import inspect
  run=tmp_path/'fixture_missing_metadata';(run/'bag').mkdir(parents=True);(run/'artifacts').mkdir()
  (run/'artifacts/profile.json').write_text(json.dumps({'synthetic_test':True,'fault':None}))
  report=inspect(run);assert not report['valid'] and report['errors']

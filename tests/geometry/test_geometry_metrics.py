@@ -5,8 +5,7 @@ from pathlib import Path
 import random
 import sys
 import unittest
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'tools'))
-from geometry_metrics import evaluate, signed_clearance, segment_minimum
+from tools.geometry.geometry_metrics import evaluate, signed_clearance, segment_minimum
 
 
 def fixture(a=None, b=None, interval=(0, 10), gap=10):

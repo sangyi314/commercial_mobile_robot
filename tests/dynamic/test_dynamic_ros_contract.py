@@ -2,19 +2,20 @@
 import json,os,sys
 from pathlib import Path
 import pytest
-from test_runner_ros_contract import ros,Fake
-from runner_processes import ProcessSupervisor
-from runner_core import DeadlineBudget,write_json
-from run_trial import WorkerLink
+pytestmark = pytest.mark.ros_contract
+from ..runner.test_runner_ros_contract import ros,Fake
+from tools.runner.runner_processes import ProcessSupervisor
+from tools.runner.runner_core import DeadlineBudget, write_json
+from tools.runner.trial import WorkerLink
 @pytest.fixture
 def probe_worker(ros,tmp_path):
  import uuid
  rclpy,ex=ros;ns='probe_'+uuid.uuid4().hex[:8];fake=Fake(rclpy,ex,ns)
- root=Path(__file__).resolve().parents[1];run=tmp_path/('fixture_'+ns)
+ root=Path(__file__).resolve().parents[2];run=tmp_path/('fixture_'+ns)
  for d in ['logs','runtime','artifacts']:(run/d).mkdir(parents=True)
  profile=json.loads((root/'experiments/runner_profile.yaml').read_text());profile.update({'mode':'probe','selected_method':'mppi','synthetic_test':True,'test_namespace':ns})
  write_json(run/'artifacts/profile.json',profile);(run/'artifacts/goal.json').write_bytes(Path(profile['files']['goal']['path']).read_bytes())
- supervisor=ProcessSupervisor(run);item=supervisor.spawn('worker',[sys.executable,'-B',str(root/'tools/nav_goal.py'),'--run-dir',str(run),'--test-namespace',ns],os.environ.copy(),root,ipc=True);link=WorkerLink(item,run.name,lambda *x:None,supervisor)
+ supervisor=ProcessSupervisor(run);item=supervisor.spawn('worker',[sys.executable,'-B',str(root/'tools/navigation/nav_goal.py'),'--run-dir',str(run),'--test-namespace',ns],os.environ.copy(),root,ipc=True);link=WorkerLink(item,run.name,lambda *x:None,supervisor)
  try:
   link.rpc('sensors',{},DeadlineBudget.after(3));yield fake,run,link
  finally:

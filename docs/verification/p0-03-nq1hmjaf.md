@@ -62,6 +62,6 @@ AI 本次实际完成：只读节点/生命周期/Action status 复核，另起�
 
 manifest 仍绑定运行开始时的源码和 source-at-start.tgz；事后记录合同修订另以快照与回归来源归档，没有重写 manifest 或假称使用新工具重新导航。manifest SHA256 为 `0e87af927931b13f259b24a056365b4355d6d0de5970148825593fe2e9fdf74e`；result SHA256 为 `bf5c8714200ecfb8c243b06b9734afe21fc687a4ec444f78205f89454ffc9e71`。
 
-[数据流](../dataflow.md)、[冒烟说明](../navigation_smoke.md)、[P0-02 交接补充](p0-02-RaLo7r83-handoff-20261022.md) 已增量整理；P0-02 原草稿未改，官方通用场景与本 run 冻结场景均保留 draft/pending。负责人已确认本轮事实和合同修订，但个人推导、独立排故、RViz 观察熟练度没有代打勾。
+[数据流](../history/p0-03-dataflow.md)、[冒烟说明](../history/p0-03-navigation-smoke.md)、[P0-02 交接补充](p0-02-RaLo7r83-handoff-20261022.md) 已增量整理；P0-02 原草稿未改，官方通用场景与本 run 冻结场景均保留 draft/pending。负责人已确认本轮事实和合同修订，但个人推导、独立排故、RViz 观察熟练度没有代打勾。
 
 下一轮仍需先解决启动时序、确认所需节点 active，并保证观察器在发目标前仍采样；另建 run，不覆盖本轮拒绝，不在此目录发第二目标。本次未完成成功导航、动作期间移动或成功后停止的通过验收，没有独立碰撞/实车/生产安全结论。

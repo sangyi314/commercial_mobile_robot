@@ -155,4 +155,4 @@ ros2 launch nav2_bringup tb3_simulation_launch.py --show-args
 
 已核对步骤 2–3 的真实编号 `p0-01-gfGjKp8O`：8 项重点与 69 项已跟踪指纹匹配修改前文件，备份内容一致；既有 Release 基准日志为 5/5，只用于修改前版本。本次未重跑或改写这些基准日志。
 
-本次在原五组内补齐清单缺口并更新接口/测试说明。新草稿未编译、未运行新增测试，独立 Release、ASan/UBSan、Jazzy/ament 和两种安装消费者均待负责人审查后顺序验收；ROS/Nav2/Gazebo/实车均未执行，不写 P0-01 通过结论。实际改动、草稿指纹、差异与新证据链接见 [P0-01 草稿报告](verification/p0-01-gfGjKp8O-draft.md)。本人理解与人工审查未被观察，继续待确认。
+本次在原五组内补齐清单缺口并更新接口/测试说明。新草稿未编译、未运行新增测试，独立 Release、ASan/UBSan、Jazzy/ament 和两种安装消费者均待负责人审查后顺序验收；ROS/Nav2/Gazebo/实车均未执行，不写 P0-01 通过结论。实际改动、草稿指纹、差异与新证据链接见 [P0-01 草稿报告](p0-01-gfGjKp8O-draft.md)。本人理解与人工审查未被观察，继续待确认。

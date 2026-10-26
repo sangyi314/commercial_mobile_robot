@@ -2,9 +2,8 @@
 import sys
 from pathlib import Path
 import pytest
-sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
 pytest.importorskip('gz.transport13')
-import gui_scene_probe as probe
+import tools.runner.gui_scene_probe as probe
 
 def scene_fixture():
  scene=probe.Scene()

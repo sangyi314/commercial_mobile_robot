@@ -1,7 +1,7 @@
 """Versioned frozen task identities; legacy evidence is resource provenance only."""
 import json,math
 from pathlib import Path
-from runner_core import digest
+from tools.runner.runner_core import digest
 VERSION='p0_long_route_v1'
 INITIAL={'frame_id':'map','x_m':-2.0,'y_m':-.5,'yaw_rad':0.0}
 GOAL={'frame_id':'map','x_m':1.75,'y_m':-.5,'yaw_rad':0.0}

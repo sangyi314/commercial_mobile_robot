@@ -2,12 +2,11 @@
 import copy,json,sys
 from pathlib import Path
 import pytest
-sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
-import run_trial,geometry_inputs
-from task_contract import validate_task
-from runner_core import digest,DeadlineBudget
-from runner_dynamic import DynamicSession
-R=Path(__file__).resolve().parents[1]
+import tools.runner.trial as run_trial, tools.geometry.geometry_inputs as geometry_inputs
+from tools.contracts.task_contract import validate_task
+from tools.runner.runner_core import digest, DeadlineBudget
+from tools.dynamic.runner_dynamic import DynamicSession
+R=Path(__file__).resolve().parents[2]
 def load(p):return json.loads(Path(p).read_text())
 @pytest.mark.parametrize('method',['mppi','dwb'])
 @pytest.mark.parametrize('legacy',[True,False])
@@ -34,11 +33,11 @@ def test_task_rejects_inconsistent_frozen_inputs(case,tmp_path):
   frozen=load(p['task_inputs']['path']);frozen['files']['goal']=p['files']['goal'];b=tmp_path/'binding.json';b.write_text(json.dumps(frozen));p['task_inputs']={'path':str(b),'sha256':digest(b)}
  with pytest.raises(ValueError):validate_task(s,p)
 def test_old_preparation_cannot_authorize_new_goal(tmp_path):
- import validate_run as v
- from prepare_dynamic_probe import prepare
- from dynamic_contract import fingerprint
- s=load(R/'experiments/scenarios/crossing.yaml');s['status']='draft';s['dynamic']['preparation']={'review':None,'probe':None};f=tmp_path/'draft.json';f.write_text(json.dumps(s))
- paths=prepare(f,R/'experiments/profiles/p0_06_crossing.yaml',tmp_path/'new-prep',True,as_probe=True)
+ import tools.contracts.validation as v
+ from tools.dynamic.probe_preparation import prepare
+ from tools.contracts.dynamic_contract import fingerprint
+ s=load(R/'experiments/tool_layout_v2/scenarios/crossing.yaml');s['status']='draft';s['dynamic']['preparation']={'review':None,'probe':None};f=tmp_path/'draft.json';f.write_text(json.dumps(s))
+ paths=prepare(f,R/'experiments/tool_layout_v2/profiles/p0_06_crossing.yaml',tmp_path/'new-prep',True,as_probe=True)
  s=load(paths['scenario']);old=R/'evidence/env/p0-06-live-kwdqt70u/crossing-r10-preparation/preparation.json'
  s['dynamic']['preparation']['review']={'path':str(old),'sha256':digest(old)}
  with pytest.raises(ValueError,match='preparation'):v.scenario_rules(s,'fixture')

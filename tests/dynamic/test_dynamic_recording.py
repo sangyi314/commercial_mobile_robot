@@ -2,9 +2,8 @@
 import copy,json,math,sys
 from pathlib import Path
 import pytest
-sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
-from dynamic_geometry import interpolate,classify,ray_circle
-from inspect_dynamic_recording import clock_alignment,actual_poses,inspect,sequence_valid
+from tools.dynamic.dynamic_geometry import interpolate, classify, ray_circle
+from tools.dynamic.inspect_dynamic_recording import clock_alignment, actual_poses, inspect, sequence_valid
 def poses():return [{'epoch':'e','entity_id':1,'frame':'world','t_ns':t,'xyyaw':[t*1e-9,0,0]} for t in [0,20000000,40000000]]
 @pytest.mark.parametrize('bad',['missing','epoch','entity','order','gap','future','frame','nan'])
 def test_alignment_rejects(bad):
@@ -59,7 +58,7 @@ def test_no_scan_frame_cannot_be_visibility():
 
 # Additional end-to-end synthetic sidecar tests. They are never real runs.
 def fixture_record(tmp_path):
- from runner_core import write_json
+ from tools.runner.runner_core import write_json
  run=tmp_path/'fixture_dynamic';(run/'runtime').mkdir(parents=True);(run/'logs').mkdir();(run/'artifacts').mkdir()
  epoch=run.name+':sim0'
  d={'truth_gap_ns':50000000,'max_gap_ns':50000000,'position_tolerance_m':.02,'range_tolerance_m':.05}
@@ -122,7 +121,7 @@ def test_raw_end_to_end_negatives(tmp_path,case):
  if case=='source_clock_offset':assert 'CLOCK_ALIGNMENT_FAILED' in report['errors']
 
 def test_actual_crossing_is_not_parallel_overlap():
- from dynamic_geometry import polyline_crossing
+ from tools.dynamic.dynamic_geometry import polyline_crossing
  def row(x,y,t):return {'xyz':[x,y,0],'t_ns':t}
  horizontal=[row(-1,0,0),row(1,0,1)]
  assert polyline_crossing([row(0,-1,0),row(0,1,1)],horizontal)
@@ -147,15 +146,15 @@ def test_injected_scan_cannot_certify_real_data(tmp_path):
  report=inspect(run,scans);assert not report['dynamic_recording_valid'] and 'INJECTED_SCAN_FOR_REAL_FORBIDDEN' in report['errors']
 
 def test_absent_probe_facilities_remain_unknown():
- from inspect_dynamic_recording import probe_facilities
+ from tools.dynamic.inspect_dynamic_recording import probe_facilities
  flags,evidence=probe_facilities([],[],[],[])
  assert all(value is None for value in flags.values())
 def test_nonplanar_truth_is_not_silently_flattened():
- from inspect_dynamic_recording import pose_value
+ from tools.dynamic.inspect_dynamic_recording import pose_value
  with pytest.raises(ValueError,match='NONPLANAR'):pose_value({'position':{},'orientation':{'x':.01,'w':math.sqrt(1-.01**2)}})
 
 def test_partial_or_missing_sequence_is_not_filled(tmp_path):
- from inspect_dynamic_recording import raw_rows
+ from tools.dynamic.inspect_dynamic_recording import raw_rows
  p=tmp_path/'fixture.jsonl';p.write_text('{"seq":1}\n{"seq":')
  with pytest.raises(ValueError,match='PARTIAL'):raw_rows(p)
  assert len(raw_rows(p,live=True))==1
@@ -168,7 +167,7 @@ def test_bad_real_manifest_cannot_be_certified(tmp_path):
  assert not report['dynamic_recording_valid'] and 'RECORD_CONTRACT_INVALID' in report['errors']
 
 def test_crossing_witness_preserves_time_order_and_rejects_long_gaps():
- from dynamic_geometry import polyline_crossing
+ from tools.dynamic.dynamic_geometry import polyline_crossing
  robot=[{'xyz':[0,-1,0],'t_ns':0},{'xyz':[0,1,0],'t_ns':10}]
  actor=[{'xyz':[-1,0,0],'t_ns':30},{'xyz':[1,0,0],'t_ns':40}]
  witness=polyline_crossing(robot,actor)
@@ -177,7 +176,7 @@ def test_crossing_witness_preserves_time_order_and_rejects_long_gaps():
  assert polyline_crossing(robot,actor) is None
 
 def test_cached_scene_replies_are_not_actual_paused_pose():
- from inspect_dynamic_recording import probe_facilities
+ from tools.dynamic.inspect_dynamic_recording import probe_facilities
  rows=[]
  for i,(mono,sec) in enumerate([(100.,1),(103.,1),(110.,2),(113.,2)]):
   rows.append({'kind':'scene_snapshot','_line':i+1,'receive_monotonic_s':mono,'protobuf':{'header':{'stamp':{'sec':str(sec),'nsec':0}},'model':[{'name':'scripted_obstacle','pose':{'orientation':{'w':1}}}]}})
@@ -193,13 +192,13 @@ def test_command_trace_mismatch_is_preserved_even_if_actual_pose_is_good(tmp_pat
 
 @pytest.mark.parametrize('missing',['position','orientation'])
 def test_missing_pose_message_is_not_default_zero(missing):
- from inspect_dynamic_recording import pose_value
+ from tools.dynamic.inspect_dynamic_recording import pose_value
  p={'position':{},'orientation':{'w':1}};p.pop(missing)
  with pytest.raises(ValueError,match='FIELDS_MISSING'):pose_value(p)
 
 
 def test_full_3d_ray_preserves_pitch_and_height():
- from dynamic_geometry import rpy_quat,rotate,ray_cylinder_3d
+ from tools.dynamic.dynamic_geometry import rpy_quat, rotate, ray_cylinder_3d
  q=rpy_quat([0.,.1,0.]);d=rotate(q,[1.,0.,0.])
  assert d[2]<0 and math.isclose(sum(x*x for x in d),1.)
  hit=ray_cylinder_3d([0,0,.3],d,[1,0,.1],0.,.6)
@@ -207,14 +206,14 @@ def test_full_3d_ray_preserves_pitch_and_height():
  assert ray_cylinder_3d([0,0,1.],d,[1,0,.1],0.,.6) is None
 
 def test_full_quaternion_interpolation_no_extrapolation():
- from dynamic_geometry import PoseSeries,rpy_quat,rotate
+ from tools.dynamic.dynamic_geometry import PoseSeries, rpy_quat, rotate
  seq=[{'epoch':'e','entity_id':1,'frame':'world','t_ns':t,'xyz':[0,0,0],'xyyaw':[0,0,0],'quaternion_xyzw':rpy_quat([0,p,0])} for t,p in [(0,0.),(20000000,.1)]]
  series=PoseSeries(seq,'e',1,50000000)
  assert math.isclose(rotate(series.quat_at(10000000),[1,0,0])[2],-math.sin(.05))
  with pytest.raises(ValueError,match='extrapolation'):series.quat_at(30000000)
 
 def test_fresh_paused_source_publications_not_cached_scene():
- from inspect_dynamic_recording import probe_facilities
+ from tools.dynamic.inspect_dynamic_recording import probe_facilities
  rows=[]
  for start,sec in [(100.,1),(110.,2)]:
   rows += [{'kind':'scene_snapshot','_line':len(rows)+1,'receive_monotonic_s':t,'protobuf':{}} for t in [start,start+3]]
@@ -235,7 +234,7 @@ def test_missing_motion_window_scans_cannot_hide_in_shutdown(tmp_path):
 @pytest.mark.parametrize('case',['bounded_robot','unpaused','large_robot','actor_change','cumulative_drift'])
 def test_paused_duplicate_bound_is_not_a_missing_data_fill(tmp_path,case):
  run,_=fixture_record(tmp_path)
- from inspect_dynamic_recording import raw_rows
+ from tools.dynamic.inspect_dynamic_recording import raw_rows
  path=run/'runtime/gazebo-raw.jsonl';rows=raw_rows(path)
  index=next(i for i,row in enumerate(rows) if row['kind']=='pose' and row['protobuf']['header']['stamp']=={'sec':'1','nsec':200000000})
  original=rows[index];copies=[]

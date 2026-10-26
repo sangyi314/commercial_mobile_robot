@@ -4,5 +4,5 @@ export ROS_DOMAIN_ID=71
 export RMW_IMPLEMENTATION=rmw_fastrtps_cpp
 export ROS_AUTOMATIC_DISCOVERY_RANGE=SYSTEM_DEFAULT
 unset ROS_LOCALHOST_ONLY
-export FASTRTPS_DEFAULT_PROFILES_FILE="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)/src/cmr_bringup/config/fastdds_loopback_udp.xml"
+export FASTRTPS_DEFAULT_PROFILES_FILE="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd)/src/cmr_bringup/config/fastdds_loopback_udp.xml"
 export FASTDDS_DEFAULT_PROFILES_FILE="$FASTRTPS_DEFAULT_PROFILES_FILE"

@@ -1,9 +1,8 @@
 import copy,json,math,sys
 from pathlib import Path
 import pytest
-sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
-from runner_core import *
-from runner_analysis import analyze
+from tools.runner.runner_core import *
+from tools.runner.runner_analysis import analyze
 
 def test_budget_nested_monotonic():
  now=[10.];clock=lambda:now[0];p=DeadlineBudget.after(5,clock);c=p.child(20);assert c.end==15
@@ -87,21 +86,21 @@ def test_finalize_unknowns_and_runtime_gate():
  r=finalize_record(m,'a'*64,s,7,[{'id':'runtime_parameters','kind':'runtime_parameters'}],PLUGINS['mppi']);assert r['metrics']['action_success'] is True and r['status']['cleanup']=='FAILED'
 
 def test_preflight_no_process_or_run_creation(monkeypatch):
- import run_trial,subprocess
- root=Path(__file__).resolve().parents[1];before=set((root/'evidence/runs').iterdir())
+ import tools.runner.trial as run_trial, subprocess
+ root=Path(__file__).resolve().parents[2];before=set((root/'evidence/runs').iterdir())
  monkeypatch.setattr(subprocess,'Popen',lambda *a,**k:(_ for _ in ()).throw(AssertionError('preflight spawned process')))
  monkeypatch.setattr(sys,'argv',['run_trial','--scenario',str(root/'experiments/scenarios/p0_05_official_static.yaml'),'--profile',str(root/'experiments/runner_profile.yaml'),'--method','mppi','--run-id','p0-05-unit-check-only','--check'])
  assert run_trial.main()==0 and before==set((root/'evidence/runs').iterdir())
 
 
 def test_raw_xacro_is_not_execution_sdf(tmp_path):
- import run_trial
- root=Path(__file__).resolve().parents[1];profile=json.loads((root/'experiments/runner_profile.yaml').read_text());profile['files']['robot']=profile['files']['robot_source'];bad=tmp_path/'bad-profile.yaml';bad.write_text(json.dumps(profile))
+ import tools.runner.trial as run_trial
+ root=Path(__file__).resolve().parents[2];profile=json.loads((root/'experiments/runner_profile.yaml').read_text());profile['files']['robot']=profile['files']['robot_source'];bad=tmp_path/'bad-profile.yaml';bad.write_text(json.dumps(profile))
  with pytest.raises(ValueError,match='expanded robot'):run_trial.load_inputs(root/'experiments/scenarios/p0_05_official_static.yaml',bad,'mppi','p0-05-test-bad-robot')
 
 
 def test_broken_console_pipe_cannot_abort_cleanup_path(monkeypatch):
- import run_trial,io
+ import tools.runner.trial as run_trial, io
  class Broken(io.StringIO):
   def write(self,s):raise BrokenPipeError('consumer gone')
  monkeypatch.setattr(sys,'stdout',Broken());run_trial.safe_print('PHASE','SHUTDOWN');assert sys.stdout is not None

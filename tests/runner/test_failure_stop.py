@@ -1,9 +1,8 @@
 import sys,copy,math
 from pathlib import Path
 import pytest
-sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
-from failure_stop import *
-from test_runner_lifecycle import samples
+from tools.runner.failure_stop import *
+from .test_runner_lifecycle import samples
 LIMIT={'min_span_s':3.,'min_samples':5,'max_gap_s':.5,'max_linear':.01,'max_wz':.03,'max_drift':.02,'max_cmd':.001}
 
 def test_stop_without_success_or_arrival():
@@ -34,7 +33,7 @@ def test_unknown_shutdown_rejected(state):
  with pytest.raises(ValueError):shutdown_transition(state)
 
 def test_fixed_arrival_policy_not_best_error_and_legacy_unchanged():
- from runner_analysis import analyze
+ from tools.runner.runner_analysis import analyze
  rows,actions,goal,params=samples()
  for x in rows:
   if x['kind']=='map_base' and x['ros_now_s']>11:x['data']['position'][0]=1.3

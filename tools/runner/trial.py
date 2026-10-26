@@ -3,11 +3,11 @@ import argparse,copy,json,os,select,signal,subprocess,sys,tarfile,time,uuid
 from pathlib import Path
 from datetime import datetime,timezone
 import yaml
-from runner_core import *
-from runner_processes import ProcessSupervisor,ProjectLock
-import validate_run
-from runner_faults import FAULTS,validate_policy,GazeboEvidence,FaultExercise
-ROOT=Path(__file__).resolve().parents[1]
+from tools.runner.runner_core import *
+from tools.runner.runner_processes import ProcessSupervisor, ProjectLock
+import tools.contracts.validation as validate_run
+from tools.runner.runner_faults import FAULTS, validate_policy, GazeboEvidence, FaultExercise
+from tools import PROJECT_ROOT as ROOT
 def safe_print(*args,**kwargs):
  try:print(*args,**kwargs)
  except BrokenPipeError:sys.stdout=open(os.devnull,'w')
@@ -53,7 +53,7 @@ def load_inputs(scenario,profile,method,identity):
  if 'synthetic_test' in p or 'test_namespace' in p:raise ValueError('synthetic profile cannot execute production runner')
  s=validate_run.load_strict(Path(scenario));validate_run.validate_structure(s,'scenario',scenario);validate_run.scenario_rules(s,Path(scenario))
  if p.get('profile_version')==2:
-  from dynamic_contract import profile_inputs
+  from tools.contracts.dynamic_contract import profile_inputs
   return profile_inputs(s,p,method,load_inputs,identity)
  if p.get('scope')!='simulation_only' or p.get('profile_version')!=1 or s['kind']!='static_smoke' or s['dynamic_events']:raise ValueError('only reviewed static simulation profile supported')
  if p.get('launch')!={'package':'nav2_bringup','localization':'localization_launch.py','navigation':'navigation_launch.py','autostart':False,'use_composition':False,'use_respawn':False,'rviz':False}:raise ValueError('unreviewed launch profile')
@@ -72,11 +72,11 @@ def load_inputs(scenario,profile,method,identity):
  if sum(p['budgets'][k] for k in ['work','cleanup','finalize'])>450:raise ValueError('total waiting budget')
  if any(s['task'][k] is None for k in ['initial_pose','goal_pose','common_constraints_ref']):raise ValueError('missing task')
  if p.get('task_version') is not None:
-  from task_contract import validate_task
+  from tools.contracts.task_contract import validate_task
   validate_task(s,p)
  else:
   if s['task']!=validate_run.load_strict(Path(p['pair'])/'inputs/scenario-template.yaml')['task']:raise ValueError('unreviewed task')
-  from task_contract import request_pose,poses_equal
+  from tools.contracts.task_contract import request_pose, poses_equal
   if not poses_equal(request_pose(validate_run.load_strict(p['files']['goal']['path'])),s['task']['goal_pose']) or not poses_equal(request_pose(validate_run.load_strict(p['files']['initialpose']['path']),True),s['task']['initial_pose']):raise ValueError('legacy task request mismatch')
  for v in json.loads(Path(p['files']['dependencies']['path']).read_text())['files'].items():
   if digest(v[0])!=v[1]:raise ValueError('model dependency changed')
@@ -151,19 +151,18 @@ def main():
    except (PermissionError,FileNotFoundError,ProcessLookupError):pass
   for key,name in [('world','world.sdf'),('robot','robot.sdf'),('goal','goal.json'),('initialpose','initialpose.json'),('constraints','constraints.json')]:atomic_write_new(run/'artifacts'/name,Path(p['files'][key]['path']).read_bytes())
   atomic_write_new(run/'artifacts/config.yaml',Path(p['methods'][args.method]['config']).read_bytes());atomic_write_new(run/'artifacts/recording_qos.yaml',Path(p['recording']['qos']).read_bytes())
-  for name in ['runner_core.py','runner_processes.py','runner_analysis.py','nav_goal.py','inspect_bag.py','run_trial.py','runner_faults.py','failure_stop.py']:atomic_write_new(run/'artifacts'/name,(ROOT/'tools'/name).read_bytes())
+  from tools.runner.archive import snapshot_code
+  snapshot_code(run)
   if p.get('profile_version')==2:
    for key in ['actor','motion','geometry']:
     atomic_write_new(run/'artifacts'/('dynamic_'+key+('.sdf' if key=='actor' else '.json')),Path(p['files']['dynamic_'+key]['path']).read_bytes())
-   for name in ['runner_dynamic.py','dynamic_contract.py','dynamic_geometry.py','inspect_dynamic_recording.py']:
-    atomic_write_new(run/'artifacts'/name,(ROOT/'tools'/name).read_bytes())
    for role,ref in p['dynamic_profile']['executables'].items():
     atomic_write_new(run/'artifacts'/('cmr_'+role+'.binary'),Path(ref['path']).read_bytes())
   if p.get('task_inputs'):atomic_write_new(run/'artifacts/task-inputs.json',Path(p['task_inputs']['path']).read_bytes())
   frozen=copy.deepcopy(p);frozen.update({'selected_method':args.method,'fault':args.fault,'ack_test_fault':args.ack_test_fault});write_json(run/'artifacts/profile.json',frozen)
   scene=copy.deepcopy(scenario);scene['scenario_revision']=args.run_id;scene['resources']['world']['path']=str(run/'artifacts/world.sdf');scene['task']['common_constraints_ref']['path']=str(run/'artifacts/constraints.json')
   if p.get('profile_version')==2:
-   from dynamic_contract import freeze_inputs
+   from tools.contracts.dynamic_contract import freeze_inputs
    scene=freeze_inputs(run,scenario);scene['scenario_revision']=args.run_id
   write_json(run/'artifacts/scenario.yaml',scene)
   head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True,timeout=5).strip();status=subprocess.check_output(['git','status','--porcelain=v1'],cwd=ROOT,text=True,timeout=5)
@@ -173,7 +172,7 @@ def main():
     for name in sorted(set(names)):
      if name and Path(name).parts[0] not in ['evidence','build','install','log','.git'] and (ROOT/name).is_file():archive.add(ROOT/name,arcname=name,recursive=False)
   artifacts=[]
-  for i,f in enumerate(sorted((run/'artifacts').iterdir())):
+  for i,f in enumerate(sorted(f for f in (run/'artifacts').rglob('*') if f.is_file())):
    kind={'scenario.yaml':'scenario','config.yaml':'config','constraints.json':'common_constraints','source.tgz':'source_snapshot'}.get(f.name,'other');artifacts.append({'id':'source_snapshot' if f.name=='source.tgz' else 'input_'+str(i),'path':str(f.relative_to(run)),'sha256':digest(f),'kind':kind})
   manifest={'schema_version':1,'run_id':args.run_id,'record_origin':'real','scenario':{'scenario_id':scene['scenario_id'],'scenario_revision':scene['scenario_revision'],'spec_sha256':digest(run/'artifacts/scenario.yaml')},'source':{'git_commit':head,'dirty':bool(status),'snapshot_ref':'source_snapshot' if status else None},'baseline':{'method':args.method,'config_sha256':digest(run/'artifacts/config.yaml'),'expected_plugin':PLUGINS[args.method],'common_constraints_sha256':digest(run/'artifacts/constraints.json')},'environment':{'ros_distro':'jazzy','platform':os.uname().sysname+' '+os.uname().machine,'package_versions':p['packages'],'external_seed':None,'seed_scope':[],'controller_seed_controlled':False},'clock':{'clock_epoch':args.run_id+':sim0','started_at_utc':datetime.now(timezone.utc).isoformat().replace('+00:00','Z'),'sim_start_s':None},'artifacts':artifacts};write_json(run/'manifest.json',manifest)
   check=validate_run.validate_run_dir(run);write_json(run/'runtime/pre-start-validation.json',check)
@@ -181,7 +180,7 @@ def main():
   write_json(run/'runtime/environment.json',{k:env[k] for k in [*p['environment'],'GZ_PARTITION','DISPLAY','XAUTHORITY'] if k in env});write_json(run/'runtime/ownership.json',{'boot_id':Path('/proc/sys/kernel/random/boot_id').read_text().strip(),'parent_pid':os.getpid(),'token':supervisor.token})
   work=DeadlineBudget(min(entry+p['budgets']['work'],time.monotonic()+p['budgets']['work']));startup=DeadlineBudget(min(entry+p['budgets']['startup'],work.end))
   display=supervisor.spawn('display-check',['xdpyinfo'],env,ROOT,critical=False);wait_process(display,startup.child(5))
-  worker=supervisor.spawn('worker',[sys.executable,'-B',str(run/'artifacts/nav_goal.py'),'--run-dir',str(run)],env,ROOT,ipc=True);objects['worker']=worker;link=WorkerLink(worker,args.run_id,log,supervisor,incoming)
+  worker=supervisor.spawn('worker',[sys.executable,'-B',str(run/'artifacts/tools/navigation/nav_goal.py'),'--run-dir',str(run)],env,ROOT,ipc=True);objects['worker']=worker;link=WorkerLink(worker,args.run_id,log,supervisor,incoming)
   rpc('graph',{},startup.child(5));phase('START_SIM')
   genv=env.copy();genv.update(p['gazebo_environment']);objects['gazebo']=supervisor.spawn('gazebo',['gz','sim','-s','-r','-v','3','--render-engine-server','ogre',str(run/'artifacts/world.sdf')],genv,ROOT)
   if p.get('p0_08'):
@@ -191,7 +190,7 @@ def main():
   objects['robot']=supervisor.spawn('robot',['/opt/ros/jazzy/lib/robot_state_publisher/robot_state_publisher','--ros-args','-p','use_sim_time:=true','-p','robot_description:='+(sim/'urdf/turtlebot3_waffle.urdf').read_text()],env,ROOT)
   objects['bridge']=supervisor.spawn('bridge',['/opt/ros/jazzy/lib/ros_gz_bridge/parameter_bridge','--ros-args','-p','use_sim_time:=true','-p','expand_gz_topic_names:=true','-p','config_file:='+str(sim/'configs/turtlebot3_waffle_bridge.yaml')],env,ROOT)
   if p.get('profile_version')==2:
-   from runner_dynamic import DynamicSession
+   from tools.dynamic.runner_dynamic import DynamicSession
    dynamic=DynamicSession(supervisor,run,p,env,log,link,WorkerLink)
   phase('SENSOR_READY');rpc('sensors',{},startup.child(35));phase('START_RECORDER')
   recorder_name='cmr_recorder_'+args.run_id.replace('-','_')
@@ -294,7 +293,7 @@ def main():
    write_json(run/'runtime/cleanup.json',{'ok':cleanup_ok,'operations':cleanup_evidence,'processes':[x.result for x in supervisor.owned],'remaining':[m for x in supervisor.owned for m in supervisor.members(x)]})
    final=DeadlineBudget.after(p['budgets']['finalize']);phase('INSPECT_BAG')
    if (run/'bag/metadata.yaml').exists():
-    inspect_item=supervisor.spawn('bag-inspection',[sys.executable,'-B',str(run/'artifacts/inspect_bag.py'),'--run-dir',str(run),'--output',str(run/'runtime/bag-check.json')],env,ROOT,critical=False)
+    inspect_item=supervisor.spawn('bag-inspection',[sys.executable,'-B',str(run/'artifacts/tools/runner/inspect_bag.py'),'--run-dir',str(run),'--output',str(run/'runtime/bag-check.json')],env,ROOT,critical=False)
     # Worker has exited; inspector is a bounded, expected one-shot process.
     try:
      inspect_item.process.wait(timeout=final.require());supervisor.close(inspect_item,final,initial_signal=False,grace=.1);bagcheck=json.loads((run/'runtime/bag-check.json').read_text())
@@ -302,7 +301,7 @@ def main():
     except BaseException as exc:update({'type':'FAIL','code':'BAG_INVALID','detail':str(exc),'harness':'RECORDER_FAILED'});supervisor.close(inspect_item,final,grace=.1)
    elif 'recorder' in objects:update({'type':'FAIL','code':'BAG_MISSING','detail':'no closed metadata','harness':'RECORDER_FAILED'})
    if dynamic:
-    inspector=supervisor.spawn('dynamic-inspection',[sys.executable,'-B',str(ROOT/'tools/inspect_dynamic_recording.py'),'--run-dir',str(run),'--output',str(run/'runtime/dynamic-report.json')],env,ROOT,critical=False)
+    inspector=supervisor.spawn('dynamic-inspection',[sys.executable,'-B',str(run/'artifacts/tools/dynamic/inspect_dynamic_recording.py'),'--run-dir',str(run),'--output',str(run/'runtime/dynamic-report.json')],env,ROOT,critical=False)
     try:
      inspector.process.wait(timeout=final.require());supervisor.close(inspector,final,initial_signal=False,grace=.1);dynamic_report=json.loads((run/'runtime/dynamic-report.json').read_text())
      if not (dynamic_report['dynamic_recording_valid'] or dynamic_report['probe_pass']):update({'type':'FAIL','code':'DYNAMIC_RECORDING_INVALID','detail':str(dynamic_report['errors'])})
@@ -332,4 +331,3 @@ def main():
   else:exitcode=3
   lock.__exit__(None,None,None)
  return exitcode
-if __name__=='__main__':sys.exit(main())

@@ -1,8 +1,9 @@
 """Scene operations using the existing supervisor, links and budgets."""
+from tools import PROJECT_ROOT
 from pathlib import Path
 import json,math,time
-from runner_core import write_json
-from inspect_dynamic_recording import clock_alignment,raw_rows
+from tools.runner.runner_core import write_json
+from tools.dynamic.inspect_dynamic_recording import clock_alignment, raw_rows
 class DynamicFailure(RuntimeError):
     def __init__(self,code,detail=''):
         self.code=code;super().__init__(code+': '+str(detail))
@@ -10,7 +11,7 @@ class DynamicSession:
     def __init__(self,supervisor,run,profile,env,log,worker,link_type):
         self.supervisor=supervisor;self.run=Path(run);self.profile=profile;self.worker=worker;self.log=log;self.links={};self.items={};self.entity=None;self.release=None
         for role in ['capture','driver']:
-            item=supervisor.spawn('scene-'+role,[profile['dynamic_profile']['executables'][role]['path'],'--run-dir',str(run)],env,Path(__file__).resolve().parents[1],ipc=True)
+            item=supervisor.spawn('scene-'+role,[profile['dynamic_profile']['executables'][role]['path'],'--run-dir',str(run)],env,PROJECT_ROOT,ipc=True)
             self.items[role]=item;peer=link_type(item,run.name,log,supervisor,self.event);self.links[role]=peer;worker.sidecars.append(peer)
     def event(self,event,received):
         if event['type']=='FAILURE':raise DynamicFailure(event['data']['code'],event['data'])
@@ -110,7 +111,7 @@ class DynamicSession:
             else:self.worker.pump()
         self.log('MOTION_FINISHED',s)
     def cover_geometry_scope(self,budget):
-        from geometry_inputs import scope
+        from tools.geometry.geometry_inputs import scope
         required=scope(self.run)['interval_ns'][1]
         while True:
             budget.require();s=self.status(budget)

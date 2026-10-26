@@ -1,7 +1,8 @@
 """Explicit fixture interfaces in isolated domain 72; never real fault evidence."""
-from test_runner_ros_contract import ros,session
-from runner_core import DeadlineBudget
+from .test_runner_ros_contract import ros,session
+from tools.runner.runner_core import DeadlineBudget
 import pytest
+pytestmark = pytest.mark.ros_contract
 
 @pytest.mark.parametrize('stuck',[False,True])
 def test_shutdown_actual_mixed_states_and_bounded_failure(session,stuck):

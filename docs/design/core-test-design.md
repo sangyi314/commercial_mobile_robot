@@ -2,7 +2,7 @@
 
 2026-10-20（Asia/Shanghai）：逐项核对当前源码后的增量版本。旧版本 56 行简版仅有五组基础检查，不能按旧文档声称已有全部边界。现保留原有检查，在原 `straight / arc / near_zero / wheels / gate` 内补缺；CMake 五组注册保持原样。以下是**草稿覆盖索引，新增案例尚未编译或运行，不是通过记录**。
 
-接口依据见 [core_contract.md](core_contract.md)。本轮沿用真实步骤 2–3 编号 `p0-01-gfGjKp8O`；基准指纹、日志与审查停点见 [本步报告](verification/p0-01-gfGjKp8O-draft.md)。
+接口依据见 [core_contract.md](../contracts/core-contract.md)。本轮沿用真实步骤 2–3 编号 `p0-01-gfGjKp8O`；基准指纹、日志与审查停点见 [本步报告](../verification/p0-01-gfGjKp8O-draft.md)。
 
 ## 案例对照
 

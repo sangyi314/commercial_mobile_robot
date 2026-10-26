@@ -1,5 +1,7 @@
 # Gazebo 观察入口与空白场景修复
 
+> 工具布局v2（当前入口）：根目录8个常用CLI保持路径；阶段入口改为tools/stages/，自动worker和实现移入功能子包。完整迁移表、归档布局和测试结果见[tools/README.md](../../tools/README.md)。下文旧日期、冻结输入与验收命令保留历史原文；旧动态源码锁不能直接用于新布局，新模板在experiments/tool_layout_v2且仍为draft，真实集成未验证。
+
 适用仓库：/home/robot/commercial_mobile_robot。保留 Ogre1、LIBGL_ALWAYS_SOFTWARE=1 和原有 preload。观察入口复用原 run_trial.main；不创建第二套 Server、Nav2、录包或清理生命周期。
 
 ## 修复范围

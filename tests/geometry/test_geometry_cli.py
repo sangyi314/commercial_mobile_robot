@@ -6,11 +6,9 @@ from pathlib import Path
 import sys
 import tempfile
 import unittest
-sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
-sys.path.insert(0,str(Path(__file__).resolve().parent))
-from test_geometry_metrics import fixture
-from geometry_inputs import sha, verify_sources, pose, loads, collisions, schema, SOURCE_PATHS
-from evaluate_geometry import main, output_guard
+from .test_geometry_metrics import fixture
+from tools.geometry.geometry_inputs import sha, verify_sources, pose, loads, collisions, schema, SOURCE_PATHS
+from tools.geometry.evaluation import main, output_guard
 
 class InputsCLI(unittest.TestCase):
     def setUp(self):
@@ -63,7 +61,7 @@ class InputsCLI(unittest.TestCase):
         d=fixture();d['physical_error_bound_m']=0
         with self.assertRaises(Exception):schema(d,'evaluation_input')
     def test_saved_counterexamples(self):
-        folder=Path(__file__).parent/'fixtures/geometry'
+        folder=Path(__file__).resolve().parents[1]/'fixtures/geometry'
         for name,expected in [('interior',0),('gap',4),('wrong_epoch',2),('wrong_frame',2),('negative_radius',2),('conflicting_duplicate',2),('missing_pose',3)]:
             self.write(json.loads((folder/(name+'.json')).read_text()))
             with self.subTest(name=name):self.assertEqual(self.call('--allow-fixtures','--check'),expected)
