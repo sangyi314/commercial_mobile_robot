@@ -1,15 +1,15 @@
 {
   "schema_version": 2,
   "scenario_id": "observed_occlusion",
-  "scenario_revision": "p0-06-frozen-s3-final08-kwdqt70u",
+  "scenario_revision": "p0-06-long-route-v1-r1-reviewed",
   "kind": "observed_occlusion",
   "master_scenario_id": "S3",
   "legacy_id": null,
   "status": "ready_for_recording",
   "resources": {
     "world": {
-      "path": "/home/robot/commercial_mobile_robot/src/cmr_sim/worlds/p0_06_observed_occlusion.sdf",
-      "sha256": "c122e991643719aa4f35f0dd593c5327dabf68267f546e9a4455c1e18aacbf6c",
+      "path": "/home/robot/commercial_mobile_robot/src/cmr_sim/worlds/p0_06_observed_occlusion_long_route_v1.sdf",
+      "sha256": "9736b1659816fb97738785e39fe851a54a0d88ba9cf9f0247b467c8b1603cf81",
       "package": null,
       "package_version": null
     },
@@ -32,8 +32,8 @@
       "package_version": null
     },
     "dependency_lock": {
-      "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/observed_occlusion-final08-preparation/dependencies.json",
-      "sha256": "0b0530e4a6d39adf46a5d15930ce1fbabc0b6d67b05d7842abcc30425a02ce71",
+      "path": "/home/robot/commercial_mobile_robot/evidence/env/goal-long-route-v1-20261029/observed_occlusion-prep-r1/dependencies.json",
+      "sha256": "d468eb3b95c0fc9b993cf8b23e65c552194c660c50c7bb9977694dd8676dfe77",
       "package": null,
       "package_version": null
     }
@@ -47,9 +47,9 @@
     },
     "goal_pose": {
       "frame_id": "map",
-      "x_m": -1.9568372509483436,
-      "y_m": 0.40347409679604745,
-      "yaw_rad": 1.557737172558183
+      "x_m": 1.75,
+      "y_m": -0.5,
+      "yaw_rad": 0.0
     },
     "common_constraints_ref": {
       "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-04-pair-q2MXrdh3/inputs/common_constraints.json",
@@ -105,7 +105,7 @@
       "event_id": "motion_once",
       "actor_id": "scripted_obstacle",
       "trigger": null,
-      "motion_ref": "/home/robot/commercial_mobile_robot/experiments/motions/observed_occlusion.yaml"
+      "motion_ref": "/home/robot/commercial_mobile_robot/experiments/motions/observed_occlusion_long_route_v1.yaml"
     }
   ],
   "evaluation_scope": null,
@@ -115,9 +115,8 @@
     "poses_free": "checked",
     "interfaces_observed": "checked",
     "evidence_refs": [
-      "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/ready-proof-observed_occlusion-final08.json",
-      "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/world-map-landmark-review.json",
-      "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/calibration-01.json"
+      "/home/robot/commercial_mobile_robot/evidence/env/goal-long-route-v1-20261029/observed_occlusion-ready-proof-r1.json",
+      "/home/robot/commercial_mobile_robot/evidence/env/goal-long-route-v1-20261029/map-review-v2.json"
     ]
   },
   "dynamic": {
@@ -126,7 +125,7 @@
     "time_domain": "sim_ns",
     "purpose": "navigation_recording",
     "trigger": "goal_accepted",
-    "delay_ns": 2000000000,
+    "delay_ns": 20000000000,
     "period_ns": 20000000,
     "max_gap_ns": 50000000,
     "truth_gap_ns": 50000000,
@@ -137,25 +136,25 @@
       "sha256": "99c7c5c65a9a869a0681caf58fc1f00b467c2e7e7e758481b5f03e412ebf4b93"
     },
     "motion": {
-      "path": "/home/robot/commercial_mobile_robot/experiments/motions/observed_occlusion.yaml",
-      "sha256": "cd5154316ba62a6ca71ee15952930e7934e36734e38c1ca8e95f7ddf72f60a38"
+      "path": "/home/robot/commercial_mobile_robot/experiments/motions/observed_occlusion_long_route_v1.yaml",
+      "sha256": "3d43d1c4ff3a9b9dc297c30c88a84df71ed6de9b9dfb355f14b4c4e6ad5af602"
     },
     "geometry": {
       "path": "/home/robot/commercial_mobile_robot/experiments/p0_06_geometry-r02.json",
       "sha256": "69e580656b35ff6027b95696f425f9d79486c2122d2c88f01baaf35ce8bbfdf6"
     },
     "goal_request": {
-      "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-04-pair-q2MXrdh3/inputs/goal.yaml",
-      "sha256": "ec2f5831f69823f2b94dfc13779b98d71ef8fae0f6e19f41d9c657b2232e5688"
+      "path": "/home/robot/commercial_mobile_robot/experiments/goals/p0_long_route_v1.json",
+      "sha256": "17a88cc5654260ef39c491cc20cb6a22119c0e06de2969842057b9a163ca6cfa"
     },
     "preparation": {
       "review": {
-        "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/observed_occlusion-final08-preparation/preparation.json",
-        "sha256": "06e46519b566ebff25050b37dbb9750833e73dbb50eac99f1b83f53c79f70fe9"
+        "path": "/home/robot/commercial_mobile_robot/evidence/env/goal-long-route-v1-20261029/observed_occlusion-prep-r1/preparation.json",
+        "sha256": "d87ac364c277008b58ceacef4914b669db80db673d63c5cb27b092987fbea076"
       },
       "probe": {
-        "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/ready-proof-observed_occlusion-final08.json",
-        "sha256": "7a89cd50d44617cbf70ce311daa7150e96bd20c136fce50a042d2aeaca351fff"
+        "path": "/home/robot/commercial_mobile_robot/evidence/env/goal-long-route-v1-20261029/observed_occlusion-ready-proof-r1.json",
+        "sha256": "0ed37292d3f7a8892d1f350ad0f6c7d8b9402defa27ea31fd1e4c6a7104453e1"
       }
     }
   }

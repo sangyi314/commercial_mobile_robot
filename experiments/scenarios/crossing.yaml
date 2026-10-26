@@ -1,15 +1,15 @@
 {
   "schema_version": 2,
   "scenario_id": "crossing",
-  "scenario_revision": "p0-06-frozen-s1-r10-kwdqt70u",
+  "scenario_revision": "p0-06-long-route-v1-r1-reviewed",
   "kind": "crossing",
   "master_scenario_id": "S1",
   "legacy_id": null,
   "status": "ready_for_recording",
   "resources": {
     "world": {
-      "path": "/home/robot/commercial_mobile_robot/src/cmr_sim/worlds/p0_06_crossing_r10.sdf",
-      "sha256": "1353f6923c340ee10b79d6da0f8a94a06bc94bb7d33595cf3ce9bfedd91a3731",
+      "path": "/home/robot/commercial_mobile_robot/src/cmr_sim/worlds/p0_06_crossing_long_route_v1.sdf",
+      "sha256": "2b5c087530b70edeb20ff5b1fdcae83bab3ff34a0e8dbd16dd0900fbbb7d9e18",
       "package": null,
       "package_version": null
     },
@@ -32,8 +32,8 @@
       "package_version": null
     },
     "dependency_lock": {
-      "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/crossing-r10-preparation/dependencies.json",
-      "sha256": "4a4741ed22553ce9cc12adf5f882ce44166dc2cfe69ad992058fe420280910a7",
+      "path": "/home/robot/commercial_mobile_robot/evidence/env/goal-long-route-v1-20261029/crossing-prep-r1/dependencies.json",
+      "sha256": "d468eb3b95c0fc9b993cf8b23e65c552194c660c50c7bb9977694dd8676dfe77",
       "package": null,
       "package_version": null
     }
@@ -47,9 +47,9 @@
     },
     "goal_pose": {
       "frame_id": "map",
-      "x_m": -1.9568372509483436,
-      "y_m": 0.40347409679604745,
-      "yaw_rad": 1.557737172558183
+      "x_m": 1.75,
+      "y_m": -0.5,
+      "yaw_rad": 0.0
     },
     "common_constraints_ref": {
       "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-04-pair-q2MXrdh3/inputs/common_constraints.json",
@@ -105,7 +105,7 @@
       "event_id": "motion_once",
       "actor_id": "scripted_obstacle",
       "trigger": null,
-      "motion_ref": "/home/robot/commercial_mobile_robot/experiments/motions/crossing_r10.yaml"
+      "motion_ref": "/home/robot/commercial_mobile_robot/experiments/motions/crossing_long_route_v1.yaml"
     }
   ],
   "evaluation_scope": null,
@@ -115,9 +115,8 @@
     "poses_free": "checked",
     "interfaces_observed": "checked",
     "evidence_refs": [
-      "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/ready-proof-crossing-r10.json",
-      "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/world-map-landmark-review.json",
-      "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/calibration-01.json"
+      "/home/robot/commercial_mobile_robot/evidence/env/goal-long-route-v1-20261029/crossing-ready-proof-r1.json",
+      "/home/robot/commercial_mobile_robot/evidence/env/goal-long-route-v1-20261029/map-review-v2.json"
     ]
   },
   "dynamic": {
@@ -137,25 +136,25 @@
       "sha256": "99c7c5c65a9a869a0681caf58fc1f00b467c2e7e7e758481b5f03e412ebf4b93"
     },
     "motion": {
-      "path": "/home/robot/commercial_mobile_robot/experiments/motions/crossing_r10.yaml",
-      "sha256": "be4458ed0bd529edec078fb3fb945a89c0209dcb69bbad8e7254daae757018aa"
+      "path": "/home/robot/commercial_mobile_robot/experiments/motions/crossing_long_route_v1.yaml",
+      "sha256": "dfa658b2b54c85c70d5e06ce91be39c6507dcdaf46cd499e1ed7c88e46f0dd4e"
     },
     "geometry": {
       "path": "/home/robot/commercial_mobile_robot/experiments/p0_06_geometry-r02.json",
       "sha256": "69e580656b35ff6027b95696f425f9d79486c2122d2c88f01baaf35ce8bbfdf6"
     },
     "goal_request": {
-      "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-04-pair-q2MXrdh3/inputs/goal.yaml",
-      "sha256": "ec2f5831f69823f2b94dfc13779b98d71ef8fae0f6e19f41d9c657b2232e5688"
+      "path": "/home/robot/commercial_mobile_robot/experiments/goals/p0_long_route_v1.json",
+      "sha256": "17a88cc5654260ef39c491cc20cb6a22119c0e06de2969842057b9a163ca6cfa"
     },
     "preparation": {
       "review": {
-        "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/crossing-r10-preparation/preparation.json",
-        "sha256": "169fc35965f33d5a3a4a4f69245f79783e92b8271a638723c6e755e49177485b"
+        "path": "/home/robot/commercial_mobile_robot/evidence/env/goal-long-route-v1-20261029/crossing-prep-r1/preparation.json",
+        "sha256": "564fee31313e3b0bc64bbec716ba3f8977b9668ebe6c370cf5e4a243f279e666"
       },
       "probe": {
-        "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-06-live-kwdqt70u/ready-proof-crossing-r10.json",
-        "sha256": "f2f695625a10b2ac3a3e822aed0c60bec31edf5440ad2d9e85742f1435062ae8"
+        "path": "/home/robot/commercial_mobile_robot/evidence/env/goal-long-route-v1-20261029/crossing-ready-proof-r1.json",
+        "sha256": "d8453f3fed7777c87f9fb2bf4ca3d26bbd85ed009ee4bf193d60254b68cb8f4b"
       }
     }
   }

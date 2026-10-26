@@ -1,5 +1,5 @@
 {
-  "catalog_version": 1,
+  "catalog_version": 2,
   "scene": "crossing",
   "scope_rule": "accepted_to_max_terminal_plus_5s_or_frozen_motion_end",
   "meaning": "Index only; pass one listed concrete JSON spec to the CLI. No default latest-run selection.",
@@ -7,12 +7,26 @@
     {
       "run_id": "p0-06-crossing-kwdqt70u-c11",
       "path": "/home/robot/commercial_mobile_robot/experiments/evaluations/p0-06-crossing-kwdqt70u-c11.json",
-      "sha256": "bd5409ba4a3dfee1d7aff824b71babffc68d9357e111852740a5bbc00ebf1716"
+      "sha256": "bd5409ba4a3dfee1d7aff824b71babffc68d9357e111852740a5bbc00ebf1716",
+      "task_version": "legacy_short_route"
     },
     {
       "run_id": "p0-06-crossing-kwdqt70u-c12",
       "path": "/home/robot/commercial_mobile_robot/experiments/evaluations/p0-06-crossing-kwdqt70u-c12.json",
-      "sha256": "e55e4ca6c1419ef2c575f2aca6bb56fa394f900bc4466654dbc46a1d0bfe61d8"
+      "sha256": "e55e4ca6c1419ef2c575f2aca6bb56fa394f900bc4466654dbc46a1d0bfe61d8",
+      "task_version": "legacy_short_route"
+    },
+    {
+      "run_id": "p0-long-crossing-low-20261029-a1",
+      "task_version": "p0_long_route_v1",
+      "path": "/home/robot/commercial_mobile_robot/experiments/evaluations/p0-long-crossing-low-20261029-a1.json",
+      "sha256": "d2b1f399d1cf21f4e709debe275fb964fb2cce98a1f60bf032f51043d85d1cad"
+    },
+    {
+      "run_id": "p0-long-crossing-higher-20261029-a1",
+      "task_version": "p0_long_route_v1",
+      "path": "/home/robot/commercial_mobile_robot/experiments/evaluations/p0-long-crossing-higher-20261029-a1.json",
+      "sha256": "dbeafb8309e720ff1db8fd9f77d347a19cc8a84538813a304cd38df451ed1161"
     }
   ]
 }

@@ -1,0 +1,60 @@
+# 当前入口：长路线 p0_long_route_v1
+
+map 起点 (-2.0,-0.5,0)，目标 (1.75,-0.5,0)，四元数 (0,0,0,1)。本次实施、实际 run_id、命令顺序、图表、失败保留与验收结论见 [长路线迁移交付](goal_migration_long_route_v1.md)。
+
+静态日常入口：`/home/robot/commercial_mobile_robot/experiments/scenarios/p0_long_route_static_v1.yaml` 与 `/home/robot/commercial_mobile_robot/experiments/profiles/p0_long_route_static_v1.yaml`。动态入口 crossing/observed_occlusion 已切换新目标、新轨迹、新 world 和新 probe 证明；动态仍只使用 MPPI。07 使用各具体 run_id 的 JSON spec，p0_07_*.yaml 只是索引。08 仅同步并静态预检，本次没有重新执行故障矩阵。
+
+下文为保留的旧版本说明/历史命令。旧 runner_profile.yaml 与 p0_05_official_static.yaml 继续作为旧任务兼容入口；旧目标结果不能算作新长路线验证。重新采集必须新 run_id，重新分析必须新 evaluation_id，禁止覆盖。
+
+---
+
+# P0-08 串行冷启动与受控故障
+
+工作区：/home/robot/commercial_mobile_robot。只用于仿真。原 P0-05/06 单回合入口继续兼容；新调度器只启动该 runner，不操作 ROS 节点或写 result。
+
+## 入口与冻结
+
+正常矩阵 /home/robot/commercial_mobile_robot/experiments/p0_smoke_matrix.yaml 固定20槽位，MPPI/DWB各10，奇数对M→D、偶数对D→M。故障矩阵 /home/robot/commercial_mobile_robot/experiments/p0_fault_matrix.yaml 独立6槽位。
+
+新 profile 在 /home/robot/commercial_mobile_robot/experiments/profiles/p0_08_*.yaml。派生世界仅增加 SceneBroadcaster；地图、实体几何、原基线和目标不变。到达按终态后0.5仿真秒内首个新鲜定位样本；记录晚期误差，不能解释为最终定位持续在门槛内。旧 profile 保持旧采样规则。详细合同见 /home/robot/commercial_mobile_robot/docs/p0_08_contract.md。
+
+已实际执行的只读预检（现有批次使用 resume，不重复创建）：
+
+```bash
+cd /home/robot/commercial_mobile_robot
+source /opt/ros/jazzy/setup.bash
+python3 -B tools/run_smoke_matrix.py --resume /home/robot/commercial_mobile_robot/evidence/batches/p0-08-normal-v6vn6igl-r05 --check
+```
+
+check 直接读取合同，不创建目录、锁、节点或子进程。源码/profile/资源指纹改变会拒绝继续旧 cohort，不能用新文件覆盖旧 batch。
+
+本次首对实际启动命令（目录已存在，原样重跑会拒绝覆盖）：
+
+```bash
+python3 -B tools/run_smoke_matrix.py --matrix /home/robot/commercial_mobile_robot/experiments/p0_smoke_matrix.yaml --batch-dir /home/robot/commercial_mobile_robot/evidence/batches/p0-08-normal-v6vn6igl-r05 --limit 2
+```
+
+本次故障逐轮调用：
+
+```bash
+python3 -B tools/run_smoke_matrix.py --resume /home/robot/commercial_mobile_robot/evidence/batches/p0-08-fault-v6vn6igl-r05 --limit 1
+```
+
+limit 限制本次新增调用数量，不是重跑前几槽。完成的槽位不会再发目标。任一不合格结果暂停；人工/工程复核后才能以具体 --resume-reason 创建新 attempt 补采。无法确认归属或正常清理时不能恢复；同首因连续两次停止。不同版本必须新建批次，旧成功不混入新分母。
+
+## 记录和恢复
+
+batch-manifest.json / matrix-frozen.yaml 冻结版本和所有输入；journal.jsonl 先 fsync INTENT 再 Popen，只追加带序号/链hash的日志。每轮 runtime/batch-association.json 绑定 batch/slot/attempt/run。实际 Gazebo PID/start_ticks、partition、epoch、源 Pose_V 初态独立记录；前轮退出后才派发。
+
+批次使用 p0-08-dispatch.lock，runner 使用 p0-05-project.lock，父进程不持有子进程的锁。中断只向本次已核身份 runner 转发一次 SIGINT，并等待其收尾；外层510秒超限保留未决，不强杀、不继续下一轮。崩溃时 INTENT 无可靠 child 身份或结果未闭合会拒绝自动重发，需基于归属和原始记录排查，不能删除 journal/锁绕过。
+
+故障只允许 controller-deactivate、short-deadline、pause-gazebo，profile与 --fault/--ack-test-fault 必须一致。触发资格、实际激活、取消响应、真实终态、推进时钟中的停止、清理和袋内容分别报告。runner fault退出3是预期，不修改为0；调度器只在所有故障证据门通过时继续。
+
+## 只读汇总与独立审查
+
+保留原 summarize_runs.py --root/--prefix/--output 入口；新增 --batch-dir 与排他 --output-dir，生成 p0_summary.json/csv/md。汇总不会修写原结果。最终已执行路径和命令由 /home/robot/commercial_mobile_robot/docs/verification/p0-08-v6vn6igl.md 列明。
+
+开发验收目录 /home/robot/commercial_mobile_robot/evidence/env/p0-08-dev-v6vn6igl 保存所有测试轮次、修改前原件、完整差异、工程复核及失败。独立复核脚本直接读 observations、Action、Gazebo Pose_V 和关闭后的 MCAP，不调用被测停车分析函数。
+
+本轮没有完整静态世界的独立碰撞评价合同，P0-07 not_evaluated、collision=null；odom运动、AMCL定位、独立Gazebo位姿不能混称。本人理解、本人抽查和目视均待本人确认。工程完成与否以最终验收报告为准，不能由此说明文件推断。
+

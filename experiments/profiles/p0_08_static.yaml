@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "scenario_id": "p0-08-official-static",
+  "scenario_revision": "p0-08-long-route-v1-r1",
+  "kind": "static_smoke",
+  "master_scenario_id": "S0",
+  "legacy_id": null,
+  "status": "draft",
+  "resources": {
+    "world": {
+      "path": "/home/robot/commercial_mobile_robot/experiments/profiles/p0_08_world.sdf",
+      "sha256": "6213ae5f6643dafd55d1f9c5a9fc0fba6d6868e2eb357661b8a0325a8cf55bbf",
+      "package": null,
+      "package_version": null
+    },
+    "map_yaml": {
+      "path": "/opt/ros/jazzy/share/nav2_bringup/maps/tb3_sandbox.yaml",
+      "sha256": "2a284eba0a3aa4a904bce71734c56a543e979899f1cf34daad6e8215e608b438",
+      "package": "nav2_bringup",
+      "package_version": "1.3.13"
+    },
+    "map_image": {
+      "path": "/opt/ros/jazzy/share/nav2_bringup/maps/tb3_sandbox.pgm",
+      "sha256": "0103b9dfaa3b79592af71cc35d64f69cfbd3565d173160820ad8ef56cd27b3fc",
+      "package": "nav2_bringup",
+      "package_version": "1.3.13"
+    },
+    "robot": {
+      "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-04-pair-q2MXrdh3/inputs/robot.sdf",
+      "sha256": "2e176104db94a82c46d9bf37b88a2b1faa62743c2e443f5dfcefead263411541",
+      "package": null,
+      "package_version": null
+    },
+    "dependency_lock": null
+  },
+  "task": {
+    "initial_pose": {
+      "frame_id": "map",
+      "x_m": -2.0,
+      "y_m": -0.5,
+      "yaw_rad": 0.0
+    },
+    "goal_pose": {
+      "frame_id": "map",
+      "x_m": 1.75,
+      "y_m": -0.5,
+      "yaw_rad": 0.0
+    },
+    "common_constraints_ref": {
+      "path": "/home/robot/commercial_mobile_robot/evidence/env/p0-04-pair-q2MXrdh3/inputs/common_constraints.json",
+      "sha256": "fe17b54e792bdcd87bd221c303a7d43b0ab6375256188d57d62cfb0326b7d320",
+      "package": null,
+      "package_version": null
+    }
+  },
+  "interfaces": [
+    {
+      "role": "laser_scan",
+      "topic": "/scan",
+      "type": "sensor_msgs/msg/LaserScan",
+      "frame_id": "base_scan",
+      "time_domain": "ros_sim",
+      "usage": "algorithm_input"
+    }
+  ],
+  "dynamic_events": [],
+  "evaluation_scope": null,
+  "verification": {
+    "resource_dependencies": "pending",
+    "world_map_alignment": "pending",
+    "poses_free": "pending",
+    "interfaces_observed": "pending",
+    "evidence_refs": []
+  }
+}

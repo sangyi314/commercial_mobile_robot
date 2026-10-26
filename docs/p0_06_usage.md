@@ -1,3 +1,13 @@
+# 当前入口：长路线 p0_long_route_v1
+
+map 起点 (-2.0,-0.5,0)，目标 (1.75,-0.5,0)，四元数 (0,0,0,1)。本次实施、实际 run_id、命令顺序、图表、失败保留与验收结论见 [长路线迁移交付](goal_migration_long_route_v1.md)。
+
+静态日常入口：`/home/robot/commercial_mobile_robot/experiments/scenarios/p0_long_route_static_v1.yaml` 与 `/home/robot/commercial_mobile_robot/experiments/profiles/p0_long_route_static_v1.yaml`。动态入口 crossing/observed_occlusion 已切换新目标、新轨迹、新 world 和新 probe 证明；动态仍只使用 MPPI。07 使用各具体 run_id 的 JSON spec，p0_07_*.yaml 只是索引。08 仅同步并静态预检，本次没有重新执行故障矩阵。
+
+下文为保留的旧版本说明/历史命令。旧 runner_profile.yaml 与 p0_05_official_static.yaml 继续作为旧任务兼容入口；旧目标结果不能算作新长路线验证。重新采集必须新 run_id，重新分析必须新 evaluation_id，禁止覆盖。
+
+---
+
 # P0-06 使用说明（第7～11步工程验证后）
 
 真实工程记录与边界见 docs/verification/p0-06-kwdqt70u-live.md。当前 crossing 和 observed_occlusion 已冻结为 ready_for_recording；旧 probe/draft 文件保留，不能当当前正式输入。P0-05静态入口、v1合同保留。个人目视/理解仍待确认，collision=null。

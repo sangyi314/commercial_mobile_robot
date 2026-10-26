@@ -7,7 +7,7 @@ def distance(a,b):return math.hypot(a[0]-b[0],a[1]-b[1])
 def yaw(q):
  if not vector(q,4) or abs(sum(v*v for v in q)-1)>.001:raise ValueError('quaternion')
  x,y,z,w=q;return math.atan2(2*(w*z+x*y),1-2*(y*y+z*z))
-def analyze(rows,actions,goal,parameters,axis="monotonic"):
+def analyze(rows,actions,goal,parameters,axis="monotonic",arrival_policy="last_fresh"):
  recv=lambda r:r["receive_monotonic_s"] if axis=="monotonic" else r["ros_now_s"]
  at=lambda r:r["monotonic_s"] if axis=="monotonic" else r["ros_s"]
  dispatch=[r for r in actions if r['kind']=='dispatch'];response=[r for r in actions if r['kind']=='response'];terminal=[r for r in actions if r['kind']=='terminal']
@@ -34,8 +34,14 @@ def analyze(rows,actions,goal,parameters,axis="monotonic"):
  stop={'start_sim_s':win[0]['data']['stamp_s'],'end_sim_s':win[-1]['data']['stamp_s'],'span_s':win[-1]['data']['stamp_s']-win[0]['data']['stamp_s'],'samples':len(win),'max_gap_s':max(gaps),'min_gap_s':min(gaps),'max_linear':max(math.hypot(*r['data']['linear'][:2]) for r in win),'max_wz':max(abs(r['data']['angular'][2]) for r in win),'max_drift_m':drift,'max_age_s':max(abs(r['ros_now_s']-r['data']['stamp_s']) for r in win),'line_range':[win[0].get('line'),win[-1].get('line')]}
  maps=[r for r in rows if r['kind']=='map_base' and recv(r)>=at(t) and vector(r['data'].get('position'),3) and vector(r['data'].get('quaternion_xyzw'),4) and abs(r['ros_now_s']-r['data']['stamp_s'])<=.5]
  if not maps:raise ValueError('no fresh post-terminal localization')
- p=maps[-1]['data'];gp=goal['pose']['pose'];gq=gp['orientation'];gy=yaw([gq[k] for k in ['x','y','z','w']]);py=yaw(p['quaternion_xyzw'])
- arrival={'position_m':distance(p['position'],[gp['position']['x'],gp['position']['y']]),'yaw_rad':abs(math.atan2(math.sin(py-gy),math.cos(py-gy))),'line':maps[-1].get('line'),'stamp_s':p['stamp_s'],'scope':'AMCL/TF estimate, not independent physical truth'}
+ if arrival_policy not in ['last_fresh','first_fresh_post_terminal_0.5s']:raise ValueError('unknown arrival sampling policy')
+ selected=maps[-1]
+ if arrival_policy=='first_fresh_post_terminal_0.5s':
+  eligible=[r for r in maps if t['ros_s']<=r['data']['stamp_s']<=t['ros_s']+.5]
+  if not eligible:raise ValueError('no fresh localization in fixed post-terminal interval')
+  selected=min(eligible,key=lambda r:(r['data']['stamp_s'],recv(r)))
+ p=selected['data'];gp=goal['pose']['pose'];gq=gp['orientation'];gy=yaw([gq[k] for k in ['x','y','z','w']]);py=yaw(p['quaternion_xyzw'])
+ arrival={'position_m':distance(p['position'],[gp['position']['x'],gp['position']['y']]),'yaw_rad':abs(math.atan2(math.sin(py-gy),math.cos(py-gy))),'line':selected.get('line'),'stamp_s':p['stamp_s'],'scope':'AMCL/TF estimate, not independent physical truth','sampling_policy':arrival_policy,'late_position_m':distance(maps[-1]['data']['position'],[gp['position']['x'],gp['position']['y']])}
  matched=[x for r in rows if r['kind']=='action_status' for x in r['data'] if x['goal_uuid']==uid]
  badwindow=any(not valid(r) and recv(win[0])<=recv(r)<=recv(win[-1]) for r in odall)
  clocks=[r['data']['sim_s'] for r in rows if r['kind']=='clock']

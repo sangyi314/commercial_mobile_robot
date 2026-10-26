@@ -109,6 +109,14 @@ class DynamicSession:
             if probe:self.worker.rpc('probe_observe',{'duration_sim_s':.25},budget.child(5))
             else:self.worker.pump()
         self.log('MOTION_FINISHED',s)
+    def cover_geometry_scope(self,budget):
+        from geometry_inputs import scope
+        required=scope(self.run)['interval_ns'][1]
+        while True:
+            budget.require();s=self.status(budget)
+            if s['pose_stamp_ns']>=required+self.profile['dynamic_spec']['dynamic']['truth_gap_ns']:break
+            self.worker.pump()
+        self.log('GEOMETRY_CAPTURE_BOUNDARY',{'required_end_ns':required,'actual_pose_source_ns':s['pose_stamp_ns'],'no_extrapolation':True})
     def close(self,budget):
         results=[];errors=[];self.worker.sidecars=[x for x in self.worker.sidecars if x not in self.links.values()]
         for role in ['driver','capture']:

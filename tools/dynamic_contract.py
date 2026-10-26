@@ -81,15 +81,22 @@ def rules(spec,path,check_host=True):
     except (ValueError,KeyError,TypeError) as exc:v.fail('DYNAMIC_CONTRACT',str(path),exc)
 
 def profile_inputs(spec,profile,method,legacy_loader,identity):
-    if set(profile)-{'profile_version','scope','mode','base_profile','base_scenario','scenario_ref','executables','probe_sequence','window_s','pause_wall_s'}:raise ValueError('unknown dynamic profile field')
+    if set(profile)-{'profile_version','scope','mode','base_profile','base_scenario','scenario_ref','executables','probe_sequence','window_s','pause_wall_s','task_version','base_inputs'}:raise ValueError('unknown dynamic profile field')
     if type(profile['profile_version']) is not int or profile['profile_version']!=2 or profile['scope']!='simulation_only' or method!='mppi':raise ValueError('dynamic mode/method')
     mode=profile['mode']
     if mode not in ('probe','navigation_recording') or spec['dynamic']['purpose']!=mode:raise ValueError('purpose mismatch')
     if spec['status']!=('ready_for_probe' if mode=='probe' else 'ready_for_recording'):raise ValueError('dynamic draft/not prepared')
     resource(profile['scenario_ref'])
     if v.load_strict(resource(profile['scenario_ref']))!=spec:raise ValueError('scenario/profile mismatch')
-    if Path(profile['base_profile']).resolve()!=v.PROJECT_ROOT/'experiments/runner_profile.yaml' or Path(profile['base_scenario']).resolve()!=v.PROJECT_ROOT/'experiments/scenarios/p0_05_official_static.yaml':raise ValueError('unreviewed base profile')
+    if profile.get('task_version') is not None:
+        from task_contract import VERSION
+        if profile['task_version']!=VERSION:raise ValueError('unknown task version')
+        for name in ['profile','scenario']:
+            if resource(profile['base_inputs'][name]).resolve()!=Path(profile['base_'+name]).resolve():raise ValueError('base input identity')
+    elif Path(profile['base_profile']).resolve()!=v.PROJECT_ROOT/'experiments/runner_profile.yaml' or Path(profile['base_scenario']).resolve()!=v.PROJECT_ROOT/'experiments/scenarios/p0_05_official_static.yaml':raise ValueError('unreviewed base profile')
     base,base_spec=legacy_loader(profile['base_scenario'],profile['base_profile'],method,identity)
+    if profile.get('task_version')!=base.get('task_version'):raise ValueError('base task version mismatch')
+    if spec['task']['goal_pose']!=base_spec['task']['goal_pose']:raise ValueError('base goal task mismatch')
     if spec['task']['initial_pose']!=base_spec['task']['initial_pose'] or spec['task']['common_constraints_ref']['sha256']!=base['files']['constraints']['sha256']:raise ValueError('unreviewed initial pose/common constraints')
     for name in ['robot','map_yaml','map_image']:
         if spec['resources'][name]['sha256']!=base['files'][name]['sha256']:raise ValueError('unreviewed baseline resource')
@@ -109,6 +116,8 @@ def profile_inputs(spec,profile,method,legacy_loader,identity):
     for name in ('actor','motion','geometry'):
         base['files']['dynamic_'+name]=spec['dynamic'][name]
     goal=v.load_strict(resource(spec['dynamic']['goal_request']))
+    from task_contract import request_pose,poses_equal
+    if not poses_equal(request_pose(goal),spec['task']['goal_pose']) or spec['dynamic']['goal_request']['sha256']!=base['files']['goal']['sha256']:raise ValueError('task request mismatch')
     gp=goal['pose']['pose'];gq=gp['orientation'];yaw=math.atan2(2*(gq['w']*gq['z']+gq['x']*gq['y']),1-2*(gq['y']**2+gq['z']**2))
     if goal['pose']['header']['frame_id']!='map' or any(abs(a-b)>1e-9 for a,b in zip([gp['position']['x'],gp['position']['y'],yaw],[spec['task']['goal_pose'][k] for k in ['x_m','y_m','yaw_rad']])):raise ValueError('task request mismatch')
     base['files']['goal']=spec['dynamic']['goal_request']

@@ -4,6 +4,7 @@ from pathlib import Path
 import yaml
 from runner_core import digest,within,write_json,strict_json
 from runner_analysis import analyze,yaw
+from failure_stop import observe_stop
 
 def inspect(run):
  import rosbag2_py
@@ -71,10 +72,25 @@ def inspect(run):
    coverage='probe-no-navigation'
    if any(x['kind']=='dispatch' for x in actions) or any(r['data'] for r in rows if r['kind']=='action_status'):errors.append('probe goal forbidden')
    if counts.get('/initialpose',0)!=1 or 'PROBE_ARMED' not in eventtypes:errors.append('probe preparation/arm absent')
-  elif fault:
+  elif fault=='withhold-initial-pose':
    if 'FAULT_ACTIVATED' not in eventtypes:errors.append('fault stage not reached')
    if counts.get('/initialpose',0)>0 or any(x['kind']=='dispatch' for x in actions):errors.append('fault emitted pose/goal')
    coverage='partial-localization-fault'
+  elif fault in ['controller-deactivate','short-deadline','pause-gazebo']:
+   coverage='active-navigation-fault'
+   if 'FAULT_ACTIVATED' not in eventtypes:errors.append('fault not activated')
+   if counts.get('/initialpose',0)!=1:errors.append('fault initialpose count')
+   accepted=[a for a in actions if a['kind']=='response' and a['data'].get('accepted')]
+   dispatched=[a for a in actions if a['kind']=='dispatch']
+   if len(accepted)!=1 or len(dispatched)!=1 or accepted[0]['data']['uuid']!=dispatched[0]['data']['uuid']:errors.append('fault unique accepted UUID missing')
+   stopfile=run/'runtime/failure-stop.json'
+   if stopfile.exists():
+    request=strict_json(stopfile.read_text())['request'];behavior=observe_stop(rows,request['after_sim_s'],request['command_after_sim_s'],profile['stop'],axis='ros_sim')
+    if not all(behavior['checks'].values()):errors.append('bag abnormal stop not established')
+   else:errors.append('fault stop evidence missing')
+   terminals=[a for a in actions if a['kind']=='terminal']
+   for terminal in terminals:
+    if not any(e['type']=='ACTION_TERMINAL' and e['data']['data']['uuid']==terminal['data']['uuid'] for e in events):errors.append('fault terminal bag event absent')
   elif any(x['kind']=='terminal' and x['data']['action']=='SUCCEEDED' for x in actions):
    coverage='full-navigation'
    for t in profile['recording']['topics']:
@@ -92,7 +108,7 @@ def inspect(run):
      rows.append(row('map_base',{'stamp_s':ost,'position':[a.x+math.cos(ma)*b.x-math.sin(ma)*b.y,a.y+math.sin(ma)*b.x+math.cos(ma)*b.y,0.0],'quaternion_xyzw':[0.,0.,math.sin(angle/2),math.cos(angle/2)]},received))
     rows.sort(key=lambda x:x['ros_now_s'])
     try:
-     behavior=analyze(rows,actions,strict_json((run/'artifacts/goal.json').read_text()),strict_json((run/'runtime/all-parameters.json').read_text())['controller_server'],axis='ros_sim')
+     behavior=analyze(rows,actions,strict_json((run/'artifacts/goal.json').read_text()),strict_json((run/'runtime/all-parameters.json').read_text())['controller_server'],axis='ros_sim',arrival_policy=profile.get('p0_08',{}).get('arrival_policy','last_fresh'))
      if not all(behavior['checks'].values()):errors.append('bag behavior checks '+str(behavior['checks']))
     except Exception as exc:errors.append('bag behavior '+str(exc))
    terminal=[x for x in actions if x['kind']=='terminal'][-1]

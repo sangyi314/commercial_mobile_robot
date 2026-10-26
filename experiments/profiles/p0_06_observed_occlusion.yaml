@@ -2,11 +2,11 @@
   "profile_version": 2,
   "scope": "simulation_only",
   "mode": "navigation_recording",
-  "base_profile": "/home/robot/commercial_mobile_robot/experiments/runner_profile.yaml",
-  "base_scenario": "/home/robot/commercial_mobile_robot/experiments/scenarios/p0_05_official_static.yaml",
+  "base_profile": "/home/robot/commercial_mobile_robot/experiments/profiles/p0_long_route_static_v1.yaml",
+  "base_scenario": "/home/robot/commercial_mobile_robot/experiments/scenarios/p0_long_route_static_v1.yaml",
   "scenario_ref": {
     "path": "/home/robot/commercial_mobile_robot/experiments/scenarios/observed_occlusion.yaml",
-    "sha256": "3f7b3a495619e0bb3043a4da9ac826f7aed861f41af16b3bf81feb8b1f3324c3"
+    "sha256": "3de6b18605d21d0fe580613c278a136595db7f13d8d758f389c0368db12aa518"
   },
   "executables": {
     "driver": {
@@ -25,6 +25,17 @@
     "contact_positive",
     "contact_negative"
   ],
-  "window_s": 30,
-  "pause_wall_s": 3
+  "window_s": 45,
+  "pause_wall_s": 3,
+  "task_version": "p0_long_route_v1",
+  "base_inputs": {
+    "profile": {
+      "path": "/home/robot/commercial_mobile_robot/experiments/profiles/p0_long_route_static_v1.yaml",
+      "sha256": "5b085a17d41af149abbd231cd89269ae1ea81ade894f78963a4159ae99027375"
+    },
+    "scenario": {
+      "path": "/home/robot/commercial_mobile_robot/experiments/scenarios/p0_long_route_static_v1.yaml",
+      "sha256": "d6c756c0468bd4b4eaeb03a8c82f88f2f44b7dfcd74835041e1ecdaff5ccb7d6"
+    }
+  }
 }

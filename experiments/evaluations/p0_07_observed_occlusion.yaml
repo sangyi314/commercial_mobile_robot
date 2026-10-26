@@ -1,5 +1,5 @@
 {
-  "catalog_version": 1,
+  "catalog_version": 2,
   "scene": "observed_occlusion",
   "scope_rule": "accepted_to_max_terminal_plus_5s_or_frozen_motion_end",
   "meaning": "Index only; pass one listed concrete JSON spec to the CLI. No default latest-run selection.",
@@ -7,12 +7,26 @@
     {
       "run_id": "p0-06-occlusion-kwdqt70u-o5",
       "path": "/home/robot/commercial_mobile_robot/experiments/evaluations/p0-06-occlusion-kwdqt70u-o5.json",
-      "sha256": "0ff539f2aea19b5c1077e0d6b1cdc3f6c65c24d1ad9a8a9ba811070ca2e83c14"
+      "sha256": "0ff539f2aea19b5c1077e0d6b1cdc3f6c65c24d1ad9a8a9ba811070ca2e83c14",
+      "task_version": "legacy_short_route"
     },
     {
       "run_id": "p0-06-occlusion-kwdqt70u-o6",
       "path": "/home/robot/commercial_mobile_robot/experiments/evaluations/p0-06-occlusion-kwdqt70u-o6.json",
-      "sha256": "c8a6bd4dd51b4fcdad39c44a38df8cf50393cfa88a1b58e6d36ce0371aa6c5e6"
+      "sha256": "c8a6bd4dd51b4fcdad39c44a38df8cf50393cfa88a1b58e6d36ce0371aa6c5e6",
+      "task_version": "legacy_short_route"
+    },
+    {
+      "run_id": "p0-long-occlusion-low-20261029-a1",
+      "task_version": "p0_long_route_v1",
+      "path": "/home/robot/commercial_mobile_robot/experiments/evaluations/p0-long-occlusion-low-20261029-a1.json",
+      "sha256": "abd0fa77c16cc2f6ff72588421bc9c469ceb0116950d7a2033e861ade6ef7565"
+    },
+    {
+      "run_id": "p0-long-occlusion-higher-20261029-a1",
+      "task_version": "p0_long_route_v1",
+      "path": "/home/robot/commercial_mobile_robot/experiments/evaluations/p0-long-occlusion-higher-20261029-a1.json",
+      "sha256": "247d72efa390859a402fe7f38c77a7eae089ce3627670a16ccb5efd109850589"
     }
   ]
 }

@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "run_id": "p0-long-crossing-higher-20261029-a1",
+  "record_origin": "real",
+  "epoch": "p0-long-crossing-higher-20261029-a1:sim0",
+  "frame": "world",
+  "scope": {
+    "interval_ns": [
+      14808000000,
+      39938000000
+    ],
+    "rule": "accepted_to_max_terminal_plus_5s_or_frozen_motion_end",
+    "uuid": "8f79b016ef444bb3ae72ddd36d3e5557",
+    "action_lines": [
+      2,
+      2027
+    ],
+    "motion_arm_line": 1,
+    "terminal": "SUCCEEDED"
+  },
+  "max_gap_ns": 50000000,
+  "robot_name": "turtlebot3_waffle",
+  "obstacle_name": "scripted_obstacle",
+  "scene_identity": {
+    "models": {
+      "scripted_obstacle": {
+        "id": 41,
+        "links": {
+          "body": 42
+        }
+      },
+      "turtlebot3_waffle": {
+        "id": 47,
+        "links": {
+          "base_footprint": 48,
+          "base_link": 49,
+          "imu_link": 52,
+          "base_scan": 54,
+          "wheel_left_link": 58,
+          "wheel_right_link": 61,
+          "caster_back_right_link": 64,
+          "caster_back_left_link": 66,
+          "camera_link": 68
+        }
+      }
+    },
+    "line": 2,
+    "seq": 2
+  },
+  "source_hashes": {
+    "manifest.json": "c098f33ad6ffcfd0fdeedd06580156834679306352c800ee83c23b0b3f6f6c01",
+    "result.json": "c0521b6a30f6d8448f03f7a93c351d625f349a4476ea2472e7ecb9167d5e06f6",
+    "artifacts/robot.sdf": "2e176104db94a82c46d9bf37b88a2b1faa62743c2e443f5dfcefead263411541",
+    "artifacts/dynamic_actor.sdf": "99c7c5c65a9a869a0681caf58fc1f00b467c2e7e7e758481b5f03e412ebf4b93",
+    "artifacts/world.sdf": "2b5c087530b70edeb20ff5b1fdcae83bab3ff34a0e8dbd16dd0900fbbb7d9e18",
+    "artifacts/profile.json": "9d656b0030a20156bb09ef0f20bc436c7386bf3a1bacbfb5d8310bafb7b035c5",
+    "artifacts/dynamic_motion.json": "dfa658b2b54c85c70d5e06ce91be39c6507dcdaf46cd499e1ed7c88e46f0dd4e",
+    "runtime/gazebo-raw.jsonl": "e711566fe6204d35bf5f4985c0296254d900de0124d587e687885be3110301eb",
+    "runtime/motion-commands.jsonl": "53a31ad68692b451d30de73386e85375558c830451dd239b0afde35ce9b8a5b2",
+    "runtime/dynamic-readiness.json": "8b772b28b0781787417e1312e7a4bf715603998aace8250c28d25cdc1537a37c",
+    "logs/action-client.jsonl": "fe413c4d83be8fbaea814b7b5884d080308817305d8b5e3f05c280320a8ee45a"
+  },
+  "robot_radius_rule": "all_collision_3d_bound_about_model_origin",
+  "physical_error_bound_m": null
+}

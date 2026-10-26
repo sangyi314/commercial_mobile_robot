@@ -3,6 +3,7 @@ import argparse,math,os,select,sys,time,uuid
 from pathlib import Path
 from runner_core import strict_json,encode,write_json,validate_envelope,PLUGINS
 from runner_analysis import analyze
+from failure_stop import observe_stop,shutdown_transition
 
 def main():
  parser=argparse.ArgumentParser();parser.add_argument('--run-dir',required=True);parser.add_argument('--test-namespace',default='');args=parser.parse_args()
@@ -17,7 +18,7 @@ def main():
  from rclpy.signals import SignalHandlerOptions
  from tf2_ros import Buffer,TransformListener
  from sensor_msgs.msg import LaserScan
- from nav_msgs.msg import Odometry,OccupancyGrid
+ from nav_msgs.msg import Odometry,OccupancyGrid,Path as NavPath
  from rosgraph_msgs.msg import Clock
  from geometry_msgs.msg import Twist,PoseWithCovarianceStamped
  from action_msgs.msg import GoalStatusArray
@@ -25,7 +26,7 @@ def main():
  from unique_identifier_msgs.msg import UUID
  from nav2_msgs.action import NavigateToPose
  from nav2_msgs.srv import ManageLifecycleNodes,GetCostmap
- from lifecycle_msgs.srv import GetState
+ from lifecycle_msgs.srv import GetState,ChangeState
  from rcl_interfaces.srv import ListParameters,GetParameters
  from rosbag2_interfaces.srv import IsPaused
  from std_srvs.srv import Trigger
@@ -40,7 +41,7 @@ def main():
  durable=QoSProfile(depth=100,reliability=ReliabilityPolicy.RELIABLE,durability=DurabilityPolicy.TRANSIENT_LOCAL)
  observations=(run/'runtime/observations.jsonl').open('x');actionfile=(run/'logs/action-client.jsonl').open('x')
  rows=[];actions=[];latest={};lastclock=None;lastadvance=time.monotonic();clockticks=0;clock_jump=False;seq=0;lastseq=0;lastheart=0.;lasttf=0.;outbuf=bytearray();inbuf=bytearray();cache={};initial_sent=False;navigation_ready=False
- goal_future=None;handle=None;result_future=None;response_recorded=False;terminal=None;goal_uuid=None;action_request='';late_services=[];stale_emitted=False;service_clients={};probe_origin=None;probe_pause_deadline=None
+ goal_future=None;handle=None;result_future=None;response_recorded=False;terminal=None;goal_uuid=None;action_request='';late_services=[];stale_emitted=False;service_clients={};probe_origin=None;probe_pause_deadline=None;fault_deactivated=False
  eventpub=node.create_publisher(String,topic('cmr_experiment/events'),100)
  initialpub=node.create_publisher(PoseWithCovarianceStamped,topic('initialpose'),10)
  ac=ActionClient(node,NavigateToPose,topic('navigate_to_pose'))
@@ -80,6 +81,10 @@ def main():
  for name,typ,qos in [('clock',Clock,qos_profile_sensor_data),('scan',LaserScan,qos_profile_sensor_data),('odom',Odometry,qos_profile_sensor_data),('map',OccupancyGrid,durable),('amcl_pose',PoseWithCovarianceStamped,durable)]:node.create_subscription(typ,topic(name),lambda m,k=name:receive(k,m),qos)
  for name in ['/cmd_vel_nav','/cmd_vel_smoothed','/cmd_vel']:node.create_subscription(Twist,topic(name),lambda m,k=name:receive(k,m),qos_profile_sensor_data)
  node.create_subscription(GoalStatusArray,topic('navigate_to_pose/_action/status'),lambda m:receive('action_status',m),durable)
+ if profile.get('task_version'):
+  def path_evidence(m):
+   with (run/'runtime/plans.jsonl').open('a') as f:f.write(encode({'receive_monotonic_s':time.monotonic(),'source_ros_s':stamp(m.header.stamp),'message':message_to_ordereddict(m)}).decode())
+  node.create_subscription(NavPath,topic('plan'),path_evidence,10)
  def action_record(kind,data):
   item={'kind':kind,'monotonic_s':time.monotonic(),'ros_s':rosnow(),'data':data,'line':len(actions)+1};actions.append(item);actionfile.write(encode(item).decode());actionfile.flush();return item
  def finish(action,status=None,result=None):
@@ -156,7 +161,7 @@ def main():
    allp[name]=dict(zip(keys,[parameter_value_to_python(v) for v in vals]));write_json(run/'runtime'/(name.replace('/','__')+'.yaml'),{name:{'ros__parameters':allp[name]}})
   write_json(run/'runtime/all-parameters.json',allp);return allp
  def execute(op,data,deadline,rid):
-  nonlocal initial_sent,navigation_ready,goal_future,goal_uuid,action_request,probe_origin,probe_pause_deadline
+  nonlocal initial_sent,navigation_ready,goal_future,goal_uuid,action_request,probe_origin,probe_pause_deadline,fault_deactivated
   if op=='graph':
    names=node.get_node_names();foreign=[x for x in names if x!='cmr_worker' and not x.startswith('_ros2cli_daemon')]
    if foreign:raise RuntimeError('existing ROS owners '+str(foreign))
@@ -183,6 +188,73 @@ def main():
    st=states(names,deadline)
    if command=='STARTUP' and any(x['id']!=3 for x in st.values()):raise RuntimeError('manager not active '+str(st))
    return {'success':True,'states':st}
+  if op=='shutdown_actual':
+   names=['map_server','amcl'] if data['phase']=='localization' else navnodes
+   records=[]
+   if data.get('coordinate_manager'):
+    def stable_manager():
+     gate=read_service(Trigger,'lifecycle_manager_'+data['phase']+'/is_active',Trigger.Request(),deadline)
+     return gate.success and all(x['id']==3 for x in states(names,deadline).values())
+    wait(stable_manager,deadline,'manager recovery did not reach stable active state')
+    before=states(names,deadline);wire('MANAGER_RECOVERY_STABLE',{'states':before},rid)
+    req=ManageLifecycleNodes.Request();req.command=req.SHUTDOWN
+    response=service(ManageLifecycleNodes,'lifecycle_manager_'+data['phase']+'/manage_nodes',req,deadline)
+    after=states(names,deadline);wire('COORDINATED_MANAGER_SHUTDOWN',{'before':before,'response':response.success,'after':after},rid)
+    if not response.success or any(x['id']!=4 for x in after.values()):raise RuntimeError('manager shutdown not finalized')
+    return {'success':True,'manager_coordinated':True,'states':after}
+   for name in reversed(names):
+    seen=set()
+    while time.monotonic()<deadline:
+     st=states([name],deadline)[name]['id']
+     if st==4:break
+     if st not in [1,2,3]:pump();continue
+     if st in seen:raise RuntimeError('shutdown transition repeated '+name+' '+str(st))
+     seen.add(st);req=ChangeState.Request();req.transition.id=shutdown_transition(st)
+     response=service(ChangeState,name+'/change_state',req,deadline)
+     after=states([name],deadline)[name]
+     record={'node':name,'before':st,'transition':req.transition.id,'response':response.success,'after':after};records.append(record);wire('ACTUAL_SHUTDOWN_TRANSITION',record,rid)
+     if after['id']==4:break
+    else:raise TimeoutError('shutdown actual '+name)
+   return {'success':True,'transitions':records,'states':states(names,deadline)}
+  if op=='fault_ready':
+   if profile.get('fault') not in ['controller-deactivate','short-deadline','pause-gazebo'] or data['uuid']!=goal_uuid:raise ValueError('fault scope/UUID')
+   if not navigation_ready or handle is None or not handle.accepted:raise RuntimeError('NOT_EXERCISED: no accepted ready goal')
+   st=states(['controller_server'],deadline)
+   if st['controller_server']['id']!=3:raise RuntimeError('NOT_EXERCISED: controller inactive')
+   answer={}
+   def qualifies():
+    if terminal is not None:raise RuntimeError('NOT_EXERCISED: early terminal')
+    accepted=[a for a in actions if a['kind']=='response' and a['data']['accepted']][-1]
+    od=[r for r in rows if r['kind']=='odom' and r['receive_monotonic_s']>=accepted['monotonic_s']]
+    if len(od)<3 or not sensor_ready():return False
+    stamps=[r['data']['stamp_s'] for r in od]
+    if not all(b>a for a,b in zip(stamps,stamps[1:])):return False
+    movement=math.hypot(od[-1]['data']['position'][0]-od[0]['data']['position'][0],od[-1]['data']['position'][1]-od[0]['data']['position'][1])
+    speed=math.hypot(*od[-1]['data']['linear'][:2])
+    statuses=latest.get('action_status',(0,None))[1]
+    active=statuses is not None and any(bytes(x.goal_info.goal_id.uuid).hex()==goal_uuid and x.status==2 for x in statuses.status_list)
+    if movement<.05 or speed<.01 or not active:return False
+    answer.update(uuid=goal_uuid,monotonic_s=time.monotonic(),sim_s=lastclock,odom_lines=[od[0]['line'],od[-1]['line']],samples=len(od),displacement_m=movement,linear_mps=speed,active_status=2,controller=st['controller_server'],fresh=True)
+    return True
+   wait(qualifies,deadline,'NOT_EXERCISED: movement qualification');return answer
+  if op=='fault_deactivate':
+   if profile.get('fault')!='controller-deactivate' or data['uuid']!=goal_uuid or fault_deactivated:raise ValueError('deactivate whitelist/once/UUID')
+   if terminal is not None:return {'activated':False,'reason':'terminal before request'}
+   before=states(['controller_server'],deadline)
+   if before['controller_server']['id']!=3:raise RuntimeError('NOT_EXERCISED: controller already inactive')
+   fault_deactivated=True;req=ChangeState.Request();req.transition.id=4
+   response=service(ChangeState,'controller_server/change_state',req,deadline)
+   after=states(['controller_server'],deadline)
+   return {'activated':bool(response.success and after['controller_server']['id'] in [1,2,4]),'before':before,'response':response.success,'after':after,'uuid':goal_uuid,'monotonic_s':time.monotonic(),'sim_s':lastclock}
+  if op=='failure_stop':
+   if not profile.get('p0_08') or goal_uuid is None:raise ValueError('abnormal stop scope')
+   request={'after_monotonic_s':time.monotonic(),'after_sim_s':lastclock,**data};report=None
+   while time.monotonic()<deadline-.3:
+    pump();report=observe_stop(rows,request['after_monotonic_s'],request['command_after_monotonic_s'],profile['stop'])
+    if all(report['checks'].values()) and sensor_ready():break
+   if report is None:raise RuntimeError('no failure stop observation budget')
+   report['request']=request;report['uuid']=goal_uuid;report['terminal']=terminal['data']['action'] if terminal else 'UNKNOWN'
+   write_json(run/'runtime/failure-stop.json',report);return report
   if op=='localize':
    if initial_sent:raise RuntimeError('initialpose already sent')
    wait(lambda:initialpub.get_subscription_count()>=1 and 'map' in latest,deadline,'map / initialpose subscriber')
@@ -223,6 +295,9 @@ def main():
    for kind in ['global','local']:
     cm=service(GetCostmap,kind+'_costmap/get_costmap',GetCostmap.Request(),deadline).map
     (run/'runtime'/(kind+'-costmap.yaml')).write_text(message_to_yaml(cm));md=cm.metadata;x,y=g['x'],g['y']
+    # Rolling local map covers the current robot. The global map checks the remote goal.
+    if kind=='local' and profile.get('task_version'):
+     tr=buffer.lookup_transform('map','base_link',Time()).transform;x,y=tr.translation.x,tr.translation.y
     if cm.header.frame_id!='map':
      tr=buffer.lookup_transform(cm.header.frame_id,'map',Time()).transform;angle=math.atan2(2*(tr.rotation.w*tr.rotation.z+tr.rotation.x*tr.rotation.y),1-2*(tr.rotation.y**2+tr.rotation.z**2));x,y=tr.translation.x+math.cos(angle)*x-math.sin(angle)*y,tr.translation.y+math.sin(angle)*x+math.cos(angle)*y
     radius=p[kind+'_costmap/'+kind+'_costmap']['robot_radius']+p[kind+'_costmap/'+kind+'_costmap']['footprint_padding'];worst=0
@@ -300,7 +375,7 @@ def main():
    if terminal is None:return {'observed':False,'reason':'terminal unknown'}
    goal=strict_json((run/'artifacts/goal.json').read_text());p=strict_json((run/'runtime/all-parameters.json').read_text())['controller_server'];target=lastclock+8
    wait(lambda:lastclock>=target,deadline,'post-terminal sim-time stop window')
-   report=analyze(rows,actions,goal,p);write_json(run/'runtime/behavior.json',report);return report
+   report=analyze(rows,actions,goal,p,arrival_policy=profile.get('p0_08',{}).get('arrival_policy','last_fresh'));write_json(run/'runtime/behavior.json',report);return report
   if op=='mark':
    wire(data['name'],data.get('data',{}),rid)
    if data['name'] in ('RECORDING_START','RECORDING_END'):

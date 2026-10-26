@@ -42,6 +42,7 @@ def prepare(scenario,profile,output,ack,as_probe=False):
     files += [Path(x['config']) for x in base['methods'].values()]
     files += [Path(base['environment']['FASTRTPS_DEFAULT_PROFILES_FILE'])]
     files += [Path(base['files']['robot_source']['path'])]
+    if base.get('task_inputs'):files += [Path(base['task_inputs']['path'])]
     files += list((ROOT/'tools').glob('*.py'))+list((ROOT/'experiments/schemas').glob('*.json'))
     files += list((ROOT/'src/cmr_sim').rglob('*.cpp'))+list((ROOT/'src/cmr_sim').rglob('*.hpp'))
     closure={'resources':[{'path':str(f),'sha256':digest(f)} for f in sorted(set(files))],'unresolved':[]}
