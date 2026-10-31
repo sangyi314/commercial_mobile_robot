@@ -71,3 +71,17 @@
 6. ADR沿用四位递增编号，至少写背景、选择、理由与影响。只有实际决策时新增，不预建空白模板。
 
 P1-01优先做纯逻辑配送状态机，再做隔离模拟Nav2 Action Server协议测试，之后才接真实导航。计划本身不是运行或安全证据。
+
+
+## P1 当前入口（2026-10-31）
+
+新五阶段：01纯任务逻辑与持久化→02 Action→03授权与停止→04配送/FIFO→05可靠性候选交付；取代本文早先将Fake Action并入01的编排。
+
+- [共享Mission合同](contracts/p1-mission-v1.md)：五阶段状态、接口与事务语义。
+- [首个离线切片验收](verification/p1-01-admission-20261031.md)：实际8/8与核心5/5，不代表整个01通过。
+- 详细顺序指南位于既有项目管理deliverables的`Phase_1_P1-01_顺序执行版_v2.md`至`Phase_1_P1-05_顺序执行版_v2.md`；工程合同以本仓库为准。
+
+
+## P1-01 离线任务核心（2026-10-31增量）
+
+[运行指南](guides/mission-offline.md)与[设计/测试](design/p1-mission-tests.md)。本轮在S1基础上增加FSM、SQLite、单写者、离线崩溃/交错验证；实际结果见[最终报告](verification/p1-01-complete-20261031.md)。没有ROS/Gazebo验证，个人验收仍待本人。

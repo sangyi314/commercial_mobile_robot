@@ -188,3 +188,10 @@ P1-01 的第一步是冻结状态与接口合同，再实现计划中的 `src/cm
 ## 许可证与来源
 
 根目录 [LICENSE](LICENSE) 为 MIT；`cmr_core/package.xml` 当前声明 Apache-2.0，许可证元数据尚未统一，需在正式发布前核对。本次仅如实记录，不修改许可证或包配置。上游组件的来源与许可证见 [THIRD_PARTY](THIRD_PARTY.md)。
+
+
+## 2026-10-31：P1 五阶段重组与首个离线切片
+
+本节更新此前“阶段切换与P1路线”中的旧三段编排：P1-01为纯任务逻辑/SQLite，P1-02为Action异步执行，P1-03为最小授权Gate，P1-04为配送闭环/FIFO/恢复，P1-05为可靠性与v0.2候选。五份详细v2指南保存在既有项目管理deliverables目录；旧指南保留。
+
+工程共享合同见[Mission v1](docs/contracts/p1-mission-v1.md)，实际首步见[验收报告](docs/verification/p1-01-admission-20261031.md)。src/cmr_mission现已新增纯准入逻辑，Release 8/8；原核心回归5/5。完整FSM/SQLite/ROS/停车尚未实现，本阶段未完成；P0-09仍暂缓、没有正式发布。
