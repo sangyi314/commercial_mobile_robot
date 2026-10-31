@@ -1,0 +1,7 @@
+string command
+string case_id
+string goal_uuid
+int64 value_ms
+---
+bool success
+string detail

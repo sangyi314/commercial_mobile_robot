@@ -6,7 +6,7 @@
 namespace cmr::mission {
 enum class State { Accepted, Navigating, WaitHandover, Returning, Paused, Recovering, Completed, Failed, Canceled };
 enum class Phase { None, SendPending, Active, StopPending, Uncertain };
-enum class Kind { Prepare, Accepted, Succeeded, Aborted, Rejected, Cancel, CancelAck, RevokeAck, Stop, Arrival, Handover, Tick, Fatal, Recover, Retry, Resolve, Restart, Feedback };
+enum class Kind { Prepare, Accepted, Succeeded, Aborted, Rejected, Cancel, CancelAck, RevokeAck, Stop, Arrival, Handover, Tick, Fatal, Recover, Retry, Resolve, Restart, Feedback, CanceledResult };
 enum class EffectKind { Send, CancelExact, Revoke };
 struct Effect { std::string id, mission, operation, attempt, uuid; EffectKind kind; };
 struct Record {
@@ -18,7 +18,7 @@ struct Record {
  std::int64_t stop_until{0}, deadline{100000}, last_now{0};
 };
 struct Event {
- std::string id, mission, epoch, operation, attempt, uuid;
+ std::string id, mission, epoch, operation, attempt, uuid, detail;
  Kind kind{Kind::Feedback}; std::int64_t now{0};
  std::uint64_t expected_version{0}; bool synthetic{true};
  std::string gate_epoch{"synthetic-gate"}, clock_epoch{"synthetic-clock"};

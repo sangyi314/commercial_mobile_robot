@@ -1,0 +1,107 @@
+{
+  "version": 1,
+  "domain": 72,
+  "synthetic": true,
+  "cases": [
+    {
+      "id": "A01",
+      "description": "normal round trip",
+      "layer": "ROS+owner+SQLite"
+    },
+    {
+      "id": "A02",
+      "description": "duplicate conflict busy",
+      "layer": "ROS+owner+SQLite"
+    },
+    {
+      "id": "A03",
+      "description": "unavailable readiness",
+      "layer": "ROS+owner+SQLite"
+    },
+    {
+      "id": "A04",
+      "description": "rejected",
+      "layer": "ROS+owner+SQLite"
+    },
+    {
+      "id": "A05",
+      "description": "feedback aborted",
+      "layer": "ROS+owner+SQLite"
+    },
+    {
+      "id": "A06",
+      "description": "cancel delayed terminal",
+      "layer": "ROS+owner+SQLite"
+    },
+    {
+      "id": "A07",
+      "description": "cancel rejected",
+      "layer": "ROS+owner+SQLite"
+    },
+    {
+      "id": "A08",
+      "description": "late acceptance cancel",
+      "layer": "ROS+owner+SQLite"
+    },
+    {
+      "id": "A09",
+      "description": "success cancel order",
+      "layer": "ROS+owner+SQLite"
+    },
+    {
+      "id": "A10",
+      "description": "timeout late acceptance",
+      "layer": "ROS+owner+SQLite"
+    },
+    {
+      "id": "A11",
+      "description": "identity reorder unit injection",
+      "layer": "adapter-unit+ROS"
+    },
+    {
+      "id": "A12",
+      "description": "server restart",
+      "layer": "ROS+owner+SQLite"
+    },
+    {
+      "id": "A13",
+      "description": "mission crash restart",
+      "layer": "ROS+owner+SQLite"
+    },
+    {
+      "id": "A14",
+      "description": "ROS clock pause rollback",
+      "layer": "ROS+owner+SQLite"
+    },
+    {
+      "id": "A15",
+      "description": "stop missing expired mismatch",
+      "layer": "ROS+owner+SQLite"
+    },
+    {
+      "id": "A16",
+      "description": "storage overload",
+      "layer": "ROS+owner+SQLite"
+    },
+    {
+      "id": "A17",
+      "description": "seed interleavings",
+      "layer": "ROS+owner+SQLite"
+    },
+    {
+      "id": "A18",
+      "description": "shutdown callback lifetime",
+      "layer": "ROS+owner+SQLite"
+    },
+    {
+      "id": "A19",
+      "description": "isolation config output refusal",
+      "layer": "ROS+owner+SQLite"
+    },
+    {
+      "id": "A20",
+      "description": "production fixture refusal",
+      "layer": "ROS+owner+SQLite"
+    }
+  ]
+}

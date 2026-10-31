@@ -16,13 +16,16 @@ Decision reduce(const Record& old, const Event& e) {
  if(e.kind!=Kind::Restart && e.now<old.last_now) {d.reason="TIME_ROLLBACK";return d;}
  auto effect=[&](EffectKind k) {for(const auto& x:d.effects)if(x.kind==k)return;d.effects.push_back({old.request.mission_id+":"+std::to_string(old.version+1)+":"+std::to_string(static_cast<int>(k)),old.request.mission_id,n.operation,n.attempt,n.uuid,k});};
  auto pause=[&](const std::string& why) {
-  n.state=State::Paused; n.pending=why; n.reason=why;
+  n.state=State::Paused;
+  // Business termination is first-writer-wins. A later navigation result is
+  // still audited by Store::apply, but cannot replace a committed cancel.
+  if(n.pending.empty()) { n.pending=why; n.reason=why; }
   effect(EffectKind::Revoke);
   if(!n.goal_terminal && !n.uuid.empty()) effect(EffectKind::CancelExact);
   n.phase=n.goal_terminal?Phase::StopPending:Phase::Uncertain;
  };
  auto clean=[&] {return n.goal_terminal && n.revoked && n.stopped && (!n.ever_sent || e.now<n.stop_until);};
- const bool nav=e.kind==Kind::Accepted || e.kind==Kind::Succeeded || e.kind==Kind::Aborted || e.kind==Kind::Rejected || e.kind==Kind::Stop || e.kind==Kind::RevokeAck || e.kind==Kind::Arrival || e.kind==Kind::CancelAck || e.kind==Kind::Feedback;
+ const bool nav=e.kind==Kind::CanceledResult || e.kind==Kind::Accepted || e.kind==Kind::Succeeded || e.kind==Kind::Aborted || e.kind==Kind::Rejected || e.kind==Kind::Stop || e.kind==Kind::RevokeAck || e.kind==Kind::Arrival || e.kind==Kind::CancelAck || e.kind==Kind::Feedback;
  if(nav && (e.operation!=old.operation || e.attempt!=old.attempt || (e.kind!=Kind::Accepted && !old.uuid.empty() && e.uuid!=old.uuid))) {d.reason="OPERATION";return d;}
  switch(e.kind) {
  case Kind::Prepare:
@@ -37,6 +40,7 @@ Decision reduce(const Record& old, const Event& e) {
   if(old.state==State::Paused) {effect(EffectKind::CancelExact);n.phase=Phase::Uncertain;}
   else {n.state=n.returning?State::Returning:State::Navigating;n.phase=Phase::Active;}break;
  case Kind::Succeeded:
+ case Kind::CanceledResult:
  case Kind::Aborted:
  case Kind::Rejected:
   if(old.goal_terminal) return d;

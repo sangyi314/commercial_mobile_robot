@@ -1,0 +1,19 @@
+string operation
+string command_id
+uint32 schema_version
+string mission_id
+string delivery_station
+string return_station
+string map_version
+string station_version
+int64 created_at_unix_ms
+uint64 expected_state_version
+---
+string code
+string state
+uint64 state_version
+string pending
+string operation_id
+string attempt_id
+string goal_uuid
+string detail

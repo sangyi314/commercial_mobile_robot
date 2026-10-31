@@ -85,3 +85,11 @@ P1-01优先做纯逻辑配送状态机，再做隔离模拟Nav2 Action Server协
 ## P1-01 离线任务核心（2026-10-31增量）
 
 [运行指南](guides/mission-offline.md)与[设计/测试](design/p1-mission-tests.md)。本轮在S1基础上增加FSM、SQLite、单写者、离线崩溃/交错验证；实际结果见[最终报告](verification/p1-01-complete-20261031.md)。没有ROS/Gazebo验证，个人验收仍待本人。
+
+
+P1-01补充：[首次终止意图覆盖修复](verification/p1-01-cancel-intent-fix-20261031.md)。P1-02前置审查新增反例推翻此前覆盖充分性判断，本修复保留原失败并增加16组回归；不代表P1-02已实施。
+
+
+## P1-02 Action协议工程（2026-10-31）
+
+[Action合同](contracts/p1-action-v1.md)、[六模块导读与工程问答](design/p1-action-design.md)、[构建/协议/重放指南](guides/mission-action-tests.md)、[验收报告](verification/p1-02-action-20261031.md)。保留原Mission核心与SQLite，新增薄适配和隔离Fake Server。A01–A20分层结果、sanitizer与P0失败均以报告为准；不是Gazebo/物理停止或正式发布。

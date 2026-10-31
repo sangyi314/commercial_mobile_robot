@@ -42,7 +42,7 @@ struct Store::Impl {
  void hit(const std::string& s){if(hook)hook(s);}
  std::optional<Record> get(const std::string& id){Stmt q(db,"SELECT record FROM missions WHERE id=?");q.bind(1,id);if(!q.step())return {};return decode(q.text(0));}
  void save(const Record& r){Stmt q(db,"INSERT INTO missions(id,record,terminal) VALUES(?,?,?) ON CONFLICT(id) DO UPDATE SET record=excluded.record,terminal=excluded.terminal");q.bind(1,r.request.mission_id);q.bind(2,encode(r));q.bind(3,terminal(r.state)?"1":"0");q.step();}
- void audit(const Record& r,const Event& e,const Decision& d){Stmt q(db,"INSERT INTO events(mission,event_id,kind,identity,reason,before_version,after_record) VALUES(?,?,?,?,?,?,?)");q.bind(1,r.request.mission_id);q.bind(2,e.id);q.bind(3,std::to_string(static_cast<int>(e.kind)));q.bind(4,e.epoch+"/"+e.operation+"/"+e.attempt+"/"+e.uuid);q.bind(5,d.reason);q.bind(6,std::to_string(r.version));q.bind(7,encode(d.next));q.step();}
+ void audit(const Record& r,const Event& e,const Decision& d){Stmt q(db,"INSERT INTO events(mission,event_id,kind,identity,reason,before_version,after_record) VALUES(?,?,?,?,?,?,?)");q.bind(1,r.request.mission_id);q.bind(2,e.id);q.bind(3,std::to_string(static_cast<int>(e.kind)));q.bind(4,e.epoch+"/"+e.operation+"/"+e.attempt+"/"+e.uuid+" detail="+e.detail);q.bind(5,d.reason);q.bind(6,std::to_string(r.version));q.bind(7,encode(d.next));q.step();}
  void effects(const std::vector<Effect>& effects){for(const auto& e:effects){Stmt q(db,"INSERT INTO operations(id,mission,operation,attempt,uuid,kind,status) VALUES(?,?,?,?,?,?,'INTENT')");q.bind(1,e.id);q.bind(2,e.mission);q.bind(3,e.operation);q.bind(4,e.attempt);q.bind(5,e.uuid);q.bind(6,std::to_string(static_cast<int>(e.kind)));q.step();}}
  void emergency() noexcept {fault=true;try{Stmt q(db,"SELECT record FROM missions WHERE id=(SELECT active FROM manager WHERE singleton=1)");if(q.step()&&port){auto r=decode(q.text(0));port->execute({"emergency-revoke",r.request.mission_id,r.operation,r.attempt,r.uuid,EffectKind::Revoke});if(!r.uuid.empty())port->execute({"emergency-cancel",r.request.mission_id,r.operation,r.attempt,r.uuid,EffectKind::CancelExact});}std::cerr<<"STORAGE_FAULT: no new send; emergency actions are NOT persisted\n";}catch(...){std::cerr<<"STORAGE_FAULT: emergency path unavailable\n";}}
 };
@@ -69,11 +69,15 @@ Store::Store(const std::string& name,const std::string& epoch,Port* port,Hook ho
 }
 Store::~Store()=default;
 std::optional<Record> Store::get(const std::string& id){p->check();return p->get(id);}
+std::optional<Record> Store::active(){p->check();Stmt q(p->db,"SELECT active FROM manager WHERE singleton=1");if(!q.step()||sqlite3_column_type(q.value,0)==SQLITE_NULL)return std::nullopt;return p->get(q.text(0));}
 Admission Store::submit(const MissionRequest& r){p->check();try{Tx tx(p->db);AdmissionContext c;if(auto found=p->get(r.mission_id))c.existing=found->request;{Stmt q(p->db,"SELECT active IS NOT NULL FROM manager");q.step();c.active_slot_held=sqlite3_column_int(q.value,0)!=0;}
  auto a=decide_admission(r,c);if(a==Admission::CreateIntent){Record n;n.request=r;n.epoch=p->epoch;p->save(n);Stmt q(p->db,"UPDATE manager SET active=? WHERE singleton=1 AND active IS NULL");q.bind(1,r.mission_id);q.step();Event e;e.id="submit";e.mission=r.mission_id;e.epoch=p->epoch;p->audit(n,e,{n,{},true,"ACCEPTED"});p->hit("submit-before-commit");}tx.commit();p->hit("submit-after-commit");return a;
  }catch(...){p->emergency();throw;}}
 Decision Store::apply(const Event& e){p->check();try{Tx tx(p->db);auto record=p->get(e.mission);if(!record){tx.commit();return {Record{}, {},false,"UNKNOWN_MISSION"};}auto r=*record;
- {Stmt q(p->db,"SELECT 1 FROM events WHERE mission=? AND event_id=?");q.bind(1,e.mission);q.bind(2,e.id);if(q.step()){tx.commit();return {r,{},false,"DUPLICATE"};}}
+ {Stmt q(p->db,"SELECT kind,identity FROM events WHERE mission=? AND event_id=?");q.bind(1,e.mission);q.bind(2,e.id);if(q.step()){
+ const auto identity=q.text(1);const auto mark=identity.find(" detail=");
+ const bool conflict=e.detail.rfind("API ",0)==0 && (q.text(0)!=std::to_string(static_cast<int>(e.kind)) || mark==std::string::npos || identity.substr(mark+8)!=e.detail);
+ tx.commit();return {r,{},false,conflict?"COMMAND_CONFLICT":"DUPLICATE"};}}
  auto d=reduce(r,e);p->audit(r,e,d);if(d.changed){p->save(d.next);p->effects(d.effects);if(terminal(d.next.state)){Stmt q(p->db,"UPDATE manager SET active=NULL WHERE active=?");q.bind(1,e.mission);q.step();}}
  p->hit(terminal(d.next.state)?"terminal-before-commit":"event-before-commit");tx.commit();p->hit(terminal(d.next.state)?"terminal-after-commit":"event-after-commit");return d;
  }catch(...){p->emergency();throw;}}

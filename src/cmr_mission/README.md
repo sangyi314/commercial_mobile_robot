@@ -1,9 +1,10 @@
-# cmr_mission offline core
+# cmr_mission
 
-C++17 FSM, system SQLite C API store, bounded single-owner Runtime and synthetic Port tests.
-No ROS package/runtime, no Gazebo, no physical stop claim. S1 admission implementation unchanged.
+C++17 persistent Mission core and optional thin Jazzy NavigateToPose adapter.
 
-See ../../docs/guides/mission-offline.md and ../../docs/design/p1-mission-tests.md.
-Build and test in a new directory. SQLite3 development headers and POSIX flock are required.
-Runtime drains accepted mailbox work on close; a blocked user Port cannot be forcefully preempted.
-The offline probe uses Runtime/Store, records synthetic=true and requires new DBs for scenarios.
+- CMR_MISSION_BUILD_ROS=OFF: FSM, SQLite, owner Runtime and offline tests; no ROS lookup/linking.
+- CMR_MISSION_BUILD_ROS=ON: ament package, mission_node, and BUILD_TESTING-only fake_nav2_server.
+- Business services return only after owner transactions. Synthetic evidence exists only in explicit isolated test mode; production is refused until a real ExecutionPort exists.
+
+See ../../docs/contracts/p1-action-v1.md, ../../docs/design/p1-action-design.md and ../../docs/guides/mission-action-tests.md.
+No Gazebo/Nav2 stack, actual motion gate or physical stop guarantee is supplied by this package.

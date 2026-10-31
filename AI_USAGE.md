@@ -22,3 +22,15 @@ AI承担只读现状调查、上游六文件固定commit研究、五份指南和
 ## 2026-10-31 — P1-01 S2–S6离线实施
 
 AI独立编写轻量FSM、系统SQLite封装、owner邮箱、离线Port/屏障/测试和文档。用户提供合同、任务书与使用边界；本人理解/验收尚未确认。没有复制第三方系统；实际命令、失败修复和验证范围见docs/verification/p1-01-complete-20261031.md。
+
+
+## 2026-10-31 — P1-01取消意图覆盖修复
+
+AI在用户授权下修复pause中首次终止意图，新增纯FSM/真实Runtime-Store/并发屏障三组回归；修复前3组失败，修复后Release与ASan/UBSan各16/16，原反例Send由2变1。未改合同/schema/第三方依赖，未迁移历史DB，无ROS或Git提交。个人验收待本人；详见docs/verification/p1-01-cancel-intent-fix-20261031.md。
+
+
+## 2026-10-31 — P1-02完整工程实施
+
+用户提供任务书、合同与无Gazebo/真实目标边界；AI负责上游实际源码/本机API核查、接口、薄适配、Fake、监督器、矩阵、故障排查与六模块教学文档。未重写Mission状态机；增量扩展导航CanceledResult和事件审计。个人理解、反例设计与正式放行仍待用户验收。
+
+原P1-01 16组基准重跑；当前OFF核心/关联17组及ASan/UBSan通过，ON colcon17组通过；真实ROS A01–A20分层结果和13案instrumented协议结果见docs/verification/p1-02-action-20261031.md。A11非法线协议只按共用适配边界单元报告。TSan空程序运行时也失败，P0布局23通过1冻结系统库哈希失败均保留，不宣称全仓库绿色。未commit/push/tag/release，未启动Gazebo/Bridge/Nav2栈或真实Gate。

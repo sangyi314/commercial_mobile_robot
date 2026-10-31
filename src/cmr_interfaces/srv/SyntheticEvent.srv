@@ -1,0 +1,15 @@
+string event_id
+string mission_id
+string kind
+string epoch
+string operation_id
+string attempt_id
+string goal_uuid
+string gate_epoch
+string clock_epoch
+int64 valid_for_ms
+bool synthetic
+---
+string code
+string state
+string detail
