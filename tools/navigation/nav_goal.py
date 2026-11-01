@@ -12,7 +12,7 @@ from tools.runner.failure_stop import observe_stop, shutdown_transition
 def main():
  parser=argparse.ArgumentParser();parser.add_argument('--run-dir',required=True);parser.add_argument('--test-namespace',default='');args=parser.parse_args()
  if args.test_namespace and (os.environ.get('ROS_DOMAIN_ID')!='72' or os.environ.get('CMR_TEST_ROS_DOMAIN_ID')!='72'):parser.error('test namespace requires explicit isolated domain72')
- run=Path(args.run_dir);profile=strict_json((run/'artifacts/profile.json').read_text());method=profile['selected_method']
+ run=Path(args.run_dir);profile=strict_json((run/'artifacts/profile.json').read_text());method=profile['selected_method'];execution=profile.get('execution_v1')
  import rclpy
  from rclpy.parameter import Parameter,parameter_value_to_python
  from rclpy.qos import qos_profile_sensor_data,QoSProfile,ReliabilityPolicy,DurabilityPolicy
@@ -24,7 +24,7 @@ def main():
  from sensor_msgs.msg import LaserScan
  from nav_msgs.msg import Odometry,OccupancyGrid,Path as NavPath
  from rosgraph_msgs.msg import Clock
- from geometry_msgs.msg import Twist,PoseWithCovarianceStamped
+ from geometry_msgs.msg import Twist,TwistStamped,PoseWithCovarianceStamped
  from action_msgs.msg import GoalStatusArray
  from action_msgs.srv import CancelGoal
  from unique_identifier_msgs.msg import UUID
@@ -83,7 +83,18 @@ def main():
    obs(key,{'linear':clean([msg.linear.x,msg.linear.y,msg.linear.z]),'angular':clean([msg.angular.x,msg.angular.y,msg.angular.z])})
   elif key=='action_status':obs(key,[{'goal_uuid':bytes(x.goal_info.goal_id.uuid).hex(),'status':x.status,'accepted_stamp_s':stamp(x.goal_info.stamp)} for x in msg.status_list])
  for name,typ,qos in [('clock',Clock,qos_profile_sensor_data),('scan',LaserScan,qos_profile_sensor_data),('odom',Odometry,qos_profile_sensor_data),('map',OccupancyGrid,durable),('amcl_pose',PoseWithCovarianceStamped,durable)]:node.create_subscription(typ,topic(name),lambda m,k=name:receive(k,m),qos)
- for name in ['/cmd_vel_nav','/cmd_vel_smoothed','/cmd_vel']:node.create_subscription(Twist,topic(name),lambda m,k=name:receive(k,m),qos_profile_sensor_data)
+ if execution:
+  from cmr_interfaces.msg import GateState,StopReport
+  def stamped(k,m):
+   receive(k,m.twist)
+   obs('stamped_candidate',{'topic':k,'stamp_s':stamp(m.header.stamp),'frame_id':m.header.frame_id,'linear':clean([m.twist.linear.x,m.twist.linear.y,m.twist.linear.z]),'angular':clean([m.twist.angular.x,m.twist.angular.y,m.twist.angular.z])})
+  for name in ['/cmd_vel_nav','/cmd_vel_smoothed',execution['namespace']+'/candidate']:node.create_subscription(TwistStamped,name,lambda m,k=name:stamped(k,m),qos_profile_sensor_data)
+  node.create_subscription(Twist,execution['namespace']+'/final',lambda m:receive('/cmd_vel',m),qos_profile_sensor_data)
+  def gate_receive(k,m):latest[k]=(time.monotonic(),m);obs(k,message_to_ordereddict(m))
+  node.create_subscription(GateState,execution['namespace']+'/state',lambda m:gate_receive('gate_state',m),10)
+  node.create_subscription(StopReport,execution['namespace']+'/stop_report',lambda m:gate_receive('stop_report',m),10)
+ else:
+  for name in ['/cmd_vel_nav','/cmd_vel_smoothed','/cmd_vel']:node.create_subscription(Twist,topic(name),lambda m,k=name:receive(k,m),qos_profile_sensor_data)
  node.create_subscription(GoalStatusArray,topic('navigate_to_pose/_action/status'),lambda m:receive('action_status',m),durable)
  if profile.get('task_version'):
   def path_evidence(m):
@@ -139,6 +150,7 @@ def main():
    except TimeoutError:wire('READINESS_QUERY_TIMEOUT',{'service':name,'remaining_s':max(0.,deadline-time.monotonic())})
   raise TimeoutError('read-only readiness deadline '+name)
  navnodes=['controller_server','smoother_server','planner_server','route_server','behavior_server','velocity_smoother','collision_monitor','bt_navigator','waypoint_follower','docking_server']
+ if execution:navnodes=execution['nodes']
  def states(names,deadline):
   out={}
   for name in names:
@@ -157,13 +169,22 @@ def main():
    if abs(stamp(t.header.stamp)-lastclock)>.5:return False
   except Exception:return False
   return True
- def params_snapshot(names,deadline):
+ def params_snapshot(names,deadline,tag=""):
   allp={}
   for name in names:
    req=ListParameters.Request();req.depth=0;keys=service(ListParameters,name+'/list_parameters',req,deadline).result.names
    req=GetParameters.Request();req.names=keys;vals=service(GetParameters,name+'/get_parameters',req,deadline).values
-   allp[name]=dict(zip(keys,[parameter_value_to_python(v) for v in vals]));write_json(run/'runtime'/(name.replace('/','__')+'.yaml'),{name:{'ros__parameters':allp[name]}})
-  write_json(run/'runtime/all-parameters.json',allp);return allp
+   if len(vals)!=len(keys):
+    # Jazzy GetParameters can return an empty batch when one declared optional
+    # parameter is uninitialized. Query individually; record missing explicitly.
+    initialized=[];individual=[];missing=[]
+    for key in keys:
+     req=GetParameters.Request();req.names=[key];v=service(GetParameters,name+'/get_parameters',req,deadline).values
+     if len(v)==1:initialized.append(key);individual.append(v[0])
+     else:missing.append(key)
+    write_json(run/'runtime'/(tag+name.replace('/','__')+'-uninitialized.json'),missing);keys=initialized;vals=individual
+   allp[name]=dict(zip(keys,[parameter_value_to_python(v) for v in vals]));write_json(run/'runtime'/(tag+name.replace('/','__')+'.yaml'),{name:{'ros__parameters':allp[name]}})
+  write_json(run/'runtime'/(tag+'all-parameters.json'),allp);return allp
  def execute(op,data,deadline,rid):
   nonlocal initial_sent,navigation_ready,goal_future,goal_uuid,action_request,probe_origin,probe_pause_deadline,fault_deactivated
   if op=='graph':
@@ -221,7 +242,7 @@ def main():
     else:raise TimeoutError('shutdown actual '+name)
    return {'success':True,'transitions':records,'states':states(names,deadline)}
   if op=='fault_ready':
-   if profile.get('fault') not in ['controller-deactivate','short-deadline','pause-gazebo'] or data['uuid']!=goal_uuid:raise ValueError('fault scope/UUID')
+   if not (execution and execution['fault']) and profile.get('fault') not in ['controller-deactivate','short-deadline','pause-gazebo'] or data['uuid']!=goal_uuid:raise ValueError('fault scope/UUID')
    if not navigation_ready or handle is None or not handle.accepted:raise RuntimeError('NOT_EXERCISED: no accepted ready goal')
    st=states(['controller_server'],deadline)
    if st['controller_server']['id']!=3:raise RuntimeError('NOT_EXERCISED: controller inactive')
@@ -291,9 +312,9 @@ def main():
    if not initial_sent:raise RuntimeError('initialpose not published')
    if node.get_node_names().count('bt_navigator')!=1 and not ns:raise RuntimeError('not unique navigator')
    endpoints={}
-   for t,owner in [('/cmd_vel_nav','controller_server'),('/cmd_vel_smoothed','velocity_smoother'),('/cmd_vel','collision_monitor')]:
+   for t,owner in ([('/cmd_vel_nav','controller_server'),('/cmd_vel_smoothed','velocity_smoother')] if execution else [('/cmd_vel_nav','controller_server'),('/cmd_vel_smoothed','velocity_smoother'),('/cmd_vel','collision_monitor')]):
     pubs=node.get_publishers_info_by_topic(topic(t));subs=node.get_subscriptions_info_by_topic(topic(t));endpoints[t]={'publishers':[x.node_name for x in pubs],'subscribers':[x.node_name for x in subs],'types':[x.topic_type for x in pubs]}
-    if not ns and (owner not in endpoints[t]['publishers'] or not subs or any(x.topic_type!='geometry_msgs/msg/Twist' for x in pubs)):raise RuntimeError('velocity chain '+t)
+    if not ns and (owner not in endpoints[t]['publishers'] or not subs or any(x.topic_type!=('geometry_msgs/msg/TwistStamped' if execution else 'geometry_msgs/msg/Twist') for x in pubs)):raise RuntimeError('velocity chain '+t)
    # Preserved P0-04 profile is already a verified short task; additionally reject lethal/unknown endpoint footprint cells.
    costs={};g=strict_json((run/'artifacts/goal.json').read_text())['pose']['pose']['position']
    for kind in ['global','local']:
@@ -377,10 +398,54 @@ def main():
    response=service(CancelGoal,'navigate_to_pose/_action/cancel_goal',req,deadline);d=message_to_ordereddict(response);action_record('cancel_response',d);wire('CANCEL_RESPONSE',d,rid);return d
   if op=='stop':
    if terminal is None:return {'observed':False,'reason':'terminal unknown'}
-   goal=strict_json((run/'artifacts/goal.json').read_text());p=strict_json((run/'runtime/all-parameters.json').read_text())['controller_server'];target=lastclock+8
+   goal=strict_json((run/'artifacts/goal.json').read_text());p=strict_json((run/'runtime/all-parameters.json').read_text())['controller_server']
+   if execution:
+    from tools.execution.stop_analysis import normal_behavior
+    report=normal_behavior(rows,actions,goal,p,execution["arrival_limits"]);write_json(run/'runtime/behavior.json',report);return report
+   target=lastclock+8
    wait(lambda:lastclock>=target,deadline,'post-terminal sim-time stop window')
    report=analyze(rows,actions,goal,p,arrival_policy=profile.get('p0_08',{}).get('arrival_policy','last_fresh'));write_json(run/'runtime/behavior.json',report);return report
+  if op=='execution_graph':
+   if not execution:raise ValueError('execution graph scope')
+   nsx=execution['namespace'];endpoints={}
+   chain=[('/cmd_vel_nav',['controller_server']+['behavior_server']*5,'geometry_msgs/msg/TwistStamped'),('/cmd_vel_smoothed',['velocity_smoother'],'geometry_msgs/msg/TwistStamped'),(nsx+'/candidate',['collision_monitor'],'geometry_msgs/msg/TwistStamped'),(nsx+'/final',['execution_gate'],'geometry_msgs/msg/Twist'),('/odom',['execution_bridge'],'nav_msgs/msg/Odometry'),('/clock',['execution_bridge'],'rosgraph_msgs/msg/Clock')]
+   def graph_good():
+    for t,owners,typ in chain:
+     pubs=node.get_publishers_info_by_topic(t);subs=node.get_subscriptions_info_by_topic(t)
+     details=lambda items:[{'node':x.node_name,'namespace':x.node_namespace,'type':x.topic_type,'gid':list(x.endpoint_gid),'qos':str(x.qos_profile)} for x in items]
+     endpoints[t]={'publishers':details(pubs),'subscribers':details(subs)}
+     if sorted(x.node_name for x in pubs)!=sorted(owners) or not subs or any(x.topic_type!=typ for x in pubs):return False
+    return not node.get_publishers_info_by_topic('/cmd_vel') and not node.get_subscriptions_info_by_topic('/cmd_vel') and 'docking_server' not in node.get_node_names()
+   try:wait(graph_good,deadline,'exact stamped/private graph qualification')
+   finally:write_json(run/'runtime/execution-graph-attempt.json',endpoints)
+   names=[nsx+'/execution_gate',nsx+'/execution_observer']
+   params={**strict_json((run/'runtime/all-parameters.json').read_text()),**params_snapshot(names,deadline,'execution-')}
+   for n in ['map_server','amcl',*navnodes,'local_costmap/local_costmap','global_costmap/global_costmap']:
+    if params[n].get('use_sim_time') is not True:raise RuntimeError('mixed navigation clock domain '+n)
+   for n in [nsx+'/execution_gate',nsx+'/execution_observer']:
+    if params[n].get('use_sim_time') is not False:raise RuntimeError('Gate/observer must use explicit source clock without implicit TimeSource '+n)
+   for n in ['controller_server','behavior_server','velocity_smoother','collision_monitor']:
+    if not params[n].get('enable_stamped_cmd_vel'):raise RuntimeError('stamped API not active '+n)
+   return {'endpoints':endpoints,'nodes':node.get_node_names_and_namespaces(),'parameters':params,'old_cmd_vel_endpoints':0,'docking_absent':True,'goal_owner':'cmr_worker only'}
+  if op=='execution_status':
+   if not execution:raise ValueError('scope')
+   wait(lambda:'gate_state' in latest and 'stop_report' in latest and '/cmd_vel' in latest,deadline,'gate subscriptions')
+   m=latest['/cmd_vel'][1]
+   return {'state':message_to_ordereddict(latest['gate_state'][1]),'stop':message_to_ordereddict(latest['stop_report'][1]),'final_nonzero':any(abs(getattr(getattr(m,a),b))>.001 for a in ['linear','angular'] for b in 'xyz')}
+  if op=='execution_stop':
+   if not execution:raise ValueError('scope')
+   from tools.execution.stop_analysis import evaluate
+   markers=[r for r in rows if r['kind']=='execution_marker' and r['data']['name']==data['marker']]
+   if not markers:raise RuntimeError('stop marker absent')
+   after=markers[-1]['receive_monotonic_s'];report=None
+   while time.monotonic()<deadline-.1:
+    pump();report=evaluate(rows,after,time.monotonic())
+    if all(report['checks'].values()):break
+   if report is None:raise RuntimeError('no stop budget')
+   report.update(marker=data['marker'],after_observer_monotonic_s=after,goal_terminal=terminal['data'] if terminal else None)
+   return report
   if op=='mark':
+   if execution:obs('execution_marker',data)
    wire(data['name'],data.get('data',{}),rid)
    if data['name'] in ('RECORDING_START','RECORDING_END'):
     if lastclock is None:raise RuntimeError('MARKER_CLOCK_MISSING')

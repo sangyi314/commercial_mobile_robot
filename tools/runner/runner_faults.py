@@ -15,18 +15,27 @@ def validate_policy(profile,fault):
  if profile['faults']!=([fault] if fault else []):raise ValueError('fault whitelist mismatch')
 
 class GazeboEvidence:
- def __init__(self,run,partition,log):
+ def __init__(self,run,partition,log,robot_only=False):
   from gz.transport13 import Node,NodeOptions
   from gz.msgs10.world_stats_pb2 import WorldStatistics
   from gz.msgs10.pose_v_pb2 import Pose_V
   from google.protobuf.json_format import MessageToDict
   options=NodeOptions();options.partition=partition;self.node=Node(options);self.run=Path(run);self.log=log;self.queue=queue.Queue();self.seq=0;self.latest={};self.records=[];self.file=(self.run/'runtime/p0-08-gazebo.jsonl').open('x');self.resume_due=None;self.owned_pause=False;self.resume_error=None;self.resume_wall=None
-  def callback(kind,msg):self.queue.put((kind,time.monotonic(),MessageToDict(msg,preserving_proto_field_name=True)))
+  if robot_only:self.queue=queue.Queue(maxsize=4096)
+  self.capture_error=None
+  def callback(kind,msg):
+   received=time.monotonic()
+   if robot_only and kind=='pose':
+    data={'header':MessageToDict(msg.header,preserving_proto_field_name=True),'pose':[MessageToDict(p,preserving_proto_field_name=True) for p in msg.pose if p.name=='turtlebot3_waffle']}
+   else:data=MessageToDict(msg,preserving_proto_field_name=True)
+   try:self.queue.put_nowait((kind,received,data))
+   except queue.Full:self.capture_error='GAZEBO_CAPTURE_OVERFLOW'
   self.node.subscribe(WorldStatistics,'/world/default/stats',lambda m:callback('stats',m));self.node.subscribe(Pose_V,'/world/default/pose/info',lambda m:callback('pose',m))
  def tick(self):
   while not self.queue.empty():
    kind,wall,msg=self.queue.get_nowait();self.seq+=1;r={'seq':self.seq,'kind':kind,'run_id':self.run.name,'clock_epoch':self.run.name+':sim0','receive_monotonic_s':wall,'protobuf':msg};self.records.append(r);self.latest[kind]=r;self.file.write(encode(r).decode())
   self.file.flush()
+  if getattr(self,'capture_error',None):raise RuntimeError(self.capture_error)
   if self.resume_due is not None and time.monotonic()>=self.resume_due:
    self.resume_due=None
    try:self.control(False);self.resume_wall=time.monotonic()

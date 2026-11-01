@@ -1,0 +1,1 @@
+{"version":1,"domain":72,"synthetic":true,"tick_ms":20,"lease_ms":300,"challenge_ms":100,"receive_age_ms":200,"source_age_ms":300,"clock_stall_ms":300,"stop_span_ns":3000000000,"fault_observation_wall_ms":600,"cases":["E01","E02","E03","E04","E05","E06","E07","E08","E09","E10","E11","E12","E13","E14","E15","E16"]}

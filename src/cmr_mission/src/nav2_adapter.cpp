@@ -57,7 +57,7 @@ void NavigationAdapter::tick(){if(!p->alive)return;auto node=p->node.lock();if(!
   if(e.kind==EffectKind::Send){if(p->fault)continue;for(const auto& pair:p->goals)if(!pair.second->terminal){p->fault=true;throw std::runtime_error("second unresolved adapter goal");}if(p->goals.size()>=8){for(auto it=p->goals.begin();it!=p->goals.end();){if(it->second->terminal)it=p->goals.erase(it);else ++it;}}
    auto g=std::make_shared<Impl::Goal>();g->effect=e;g->correlation=std::make_unique<ActionCorrelation>(p->config.epoch,e);p->goals[e.attempt]=g;
   }else if(found!=p->goals.end()){
-   auto g=found->second;if(e.kind==EffectKind::Revoke){p->emit(p->event(g,Kind::RevokeAck,"synthetic=true REVOKE_ACK"));if(!g->terminal)p->cancel(g);}else if(e.kind==EffectKind::CancelExact){if(!e.uuid.empty()&&!g->uuid.empty()&&e.uuid!=g->uuid){p->fault=true;continue;}p->cancel(g);}
+   auto g=found->second;if(e.kind==EffectKind::Revoke){if(p->config.synthetic_revoke)p->emit(p->event(g,Kind::RevokeAck,"synthetic=true REVOKE_ACK"));if(!g->terminal)p->cancel(g);}else if(e.kind==EffectKind::CancelExact){if(!e.uuid.empty()&&!g->uuid.empty()&&e.uuid!=g->uuid){p->fault=true;continue;}p->cancel(g);}
   }
  }
  for(auto& pair:p->goals){auto g=pair.second;if(g->terminal)continue;auto now=Clock::now();auto age=[&](Clock::time_point t){return std::chrono::duration_cast<std::chrono::milliseconds>(now-t).count();};

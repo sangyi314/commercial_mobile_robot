@@ -1,0 +1,20 @@
+string operation
+cmr_interfaces/ExecutionIdentity identity
+string request_id
+uint64 request_seq
+string lease_id
+string challenge
+bool old_goal_resolved
+---
+string code
+string state
+string reason
+string gate_epoch
+string clock_epoch
+string lease_id
+string challenge
+int64 deadline_gate_ms
+int64 remaining_ms
+uint64 control_seq
+uint64 generation
+int64 ros_ns

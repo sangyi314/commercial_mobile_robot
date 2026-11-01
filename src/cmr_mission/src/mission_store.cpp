@@ -83,7 +83,7 @@ Decision Store::apply(const Event& e){p->check();try{Tx tx(p->db);auto record=p-
  }catch(...){p->emergency();throw;}}
 void Store::dispatch(){p->check();if(!p->port)return;try{
  std::vector<Effect> effects;{Stmt q(p->db,"SELECT id,mission,operation,attempt,uuid,kind FROM operations WHERE status='INTENT' ORDER BY rowid");while(q.step())effects.push_back({q.text(0),q.text(1),q.text(2),q.text(3),q.text(4),static_cast<EffectKind>(sqlite3_column_int(q.value,5))});}
- for(const auto& e:effects){if(e.kind==EffectKind::Send){auto r=p->get(e.mission);if(!r || r->state==State::Paused || terminal(r->state) || r->phase!=Phase::SendPending || r->goal_terminal || r->operation!=e.operation || r->attempt!=e.attempt){Tx tx(p->db);Stmt q(p->db,"UPDATE operations SET status='UNCERTAIN' WHERE id=?");q.bind(1,e.id);q.step();tx.commit();continue;}}
+ for(const auto& e:effects){if(e.kind==EffectKind::Send||e.kind==EffectKind::SendAuthorized||e.kind==EffectKind::BeginLease){auto r=p->get(e.mission);if(!r || r->state==State::Paused || terminal(r->state) || r->phase!=Phase::SendPending || r->goal_terminal || r->operation!=e.operation || r->attempt!=e.attempt){Tx tx(p->db);Stmt q(p->db,"UPDATE operations SET status='UNCERTAIN' WHERE id=?");q.bind(1,e.id);q.step();tx.commit();continue;}}
  {Tx tx(p->db);Stmt q(p->db,"UPDATE operations SET status='DISPATCHING' WHERE id=? AND status='INTENT'");q.bind(1,e.id);q.step();tx.commit();}
  p->hit("dispatch-before-port");p->port->execute(e);p->hit("dispatch-after-port");
  {Tx tx(p->db);Stmt q(p->db,"UPDATE operations SET status='SENT' WHERE id=?");q.bind(1,e.id);q.step();tx.commit();}}

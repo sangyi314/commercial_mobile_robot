@@ -1,0 +1,15 @@
+cmr_interfaces/ExecutionIdentity identity
+string clock_epoch
+string lease_id
+string state
+string reason
+bool synthetic
+bool allowed
+int64 gate_steady_ms
+int64 ros_ns
+uint64 output_seq
+uint64 control_seq
+uint64 generation
+uint64 stamp_mutations
+geometry_msgs/Twist output
+string trigger

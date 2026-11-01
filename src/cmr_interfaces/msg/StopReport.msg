@@ -1,0 +1,15 @@
+cmr_interfaces/ExecutionIdentity identity
+string clock_epoch
+string lease_id
+uint64 generation
+bool synthetic
+string verdict
+string reason
+string c_boundary
+string evidence_ref
+int64 from_ros_ns
+int64 to_ros_ns
+int64 max_gap_ns
+uint64 samples
+float64 drift_m
+float64 yaw_drift_rad

@@ -2,7 +2,7 @@
 
 本目录区分当前操作说明、接口合同、设计依据与历史实测记录。源码和冻结输入决定程序行为；指南不替代预检，验收报告只对其声明的版本、Run 和范围有效。
 
-当前开发主线已转向 P1。P0-09仅完成README文档收尾，其余复现、验收与发布工作暂缓；没有v0.1正式发布。P1-01配送任务状态机是下一项开发工作，本次未开发P1代码。
+当前开发主线已转向 P1。P0-09仅完成README文档收尾，其余复现、验收与发布工作暂缓；没有v0.1正式发布。该句原属文档迁移时快照；当前P1-01/02及P1-03的实际交付见本文后部阶段入口，历史P0状态不据此升级。
 
 ## 从这里开始
 
@@ -93,3 +93,7 @@ P1-01补充：[首次终止意图覆盖修复](verification/p1-01-cancel-intent-
 ## P1-02 Action协议工程（2026-10-31）
 
 [Action合同](contracts/p1-action-v1.md)、[六模块导读与工程问答](design/p1-action-design.md)、[构建/协议/重放指南](guides/mission-action-tests.md)、[验收报告](verification/p1-02-action-20261031.md)。保留原Mission核心与SQLite，新增薄适配和隔离Fake Server。A01–A20分层结果、sanitizer与P0失败均以报告为准；不是Gazebo/物理停止或正式发布。
+
+## P1-03 运动授权与安全门控（2026-11-02）
+
+[执行合同](contracts/p1-execution-v1.md)、[停止证据合同](contracts/p1-stop-evidence-v1.md)、[所有权与事务设计](design/p1-execution-design.md)、[运行与四模块问答](guides/execution-gate.md)、[测试矩阵](verification/p1-03-test-matrix.md)、[本轮验收报告](verification/p1-03-un63b3ef.md)。真实Mission的synthetic sink与授权fixture的Gazebo载体分列；C消费者ACK、下游独立watchdog、实车与长期可靠性不推定通过。

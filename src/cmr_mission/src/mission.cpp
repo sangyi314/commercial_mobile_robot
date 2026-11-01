@@ -3,6 +3,7 @@
 #include <sstream>
 #include <iomanip>
 #include <stdexcept>
+#include <cmath>
 namespace cmr::mission {
 bool terminal(State s) { return s==State::Completed || s==State::Failed || s==State::Canceled; }
 const char* state_name(State s) {
@@ -25,7 +26,7 @@ Decision reduce(const Record& old, const Event& e) {
   n.phase=n.goal_terminal?Phase::StopPending:Phase::Uncertain;
  };
  auto clean=[&] {return n.goal_terminal && n.revoked && n.stopped && (!n.ever_sent || e.now<n.stop_until);};
- const bool nav=e.kind==Kind::CanceledResult || e.kind==Kind::Accepted || e.kind==Kind::Succeeded || e.kind==Kind::Aborted || e.kind==Kind::Rejected || e.kind==Kind::Stop || e.kind==Kind::RevokeAck || e.kind==Kind::Arrival || e.kind==Kind::CancelAck || e.kind==Kind::Feedback;
+ const bool nav=e.kind==Kind::ExecutionContext || e.kind==Kind::ExecutionBind || e.kind==Kind::ExecutionRenew || e.kind==Kind::ExecutionClock || e.kind==Kind::CanceledResult || e.kind==Kind::Accepted || e.kind==Kind::Succeeded || e.kind==Kind::Aborted || e.kind==Kind::Rejected || e.kind==Kind::Stop || e.kind==Kind::RevokeAck || e.kind==Kind::Arrival || e.kind==Kind::CancelAck || e.kind==Kind::Feedback;
  if(nav && (e.operation!=old.operation || e.attempt!=old.attempt || (e.kind!=Kind::Accepted && !old.uuid.empty() && e.uuid!=old.uuid))) {d.reason="OPERATION";return d;}
  switch(e.kind) {
  case Kind::Prepare:
@@ -46,7 +47,8 @@ Decision reduce(const Record& old, const Event& e) {
   if(old.goal_terminal) return d;
   if(e.kind!=Kind::Rejected && old.uuid.empty()) return d;
   n.goal_terminal=true;n.phase=Phase::StopPending;effect(EffectKind::Revoke);
-  if(e.kind!=Kind::Succeeded) pause("FAILED");break;
+  if(e.kind!=Kind::Succeeded) {pause("FAILED");}
+  break;
  case Kind::Cancel:
  case Kind::Fatal:
   if(!old.pending.empty()) {d.reason="TERMINATION_PENDING";return d;}
@@ -55,10 +57,26 @@ Decision reduce(const Record& old, const Event& e) {
   if(e.now<old.deadline || !old.pending.empty()) return d;
   pause("FAILED");break;
  case Kind::CancelAck: d.reason="ACK_ONLY";return d;
- case Kind::RevokeAck: if(old.revoked) return d; n.revoked=true;break;
- case Kind::Stop:
-  if(!e.synthetic || e.gate_epoch!=old.gate_epoch || e.clock_epoch!=old.clock_epoch || e.observed_from>=e.observed_to || e.observed_to>e.now || e.valid_until<=e.now || e.observed_from<old.last_now) {d.reason="STOP_EVIDENCE";return d;}
+ case Kind::RevokeAck: if(old.revoked) return d; if(old.gate_epoch!="synthetic-gate"&&(!e.execution_verified||e.gate_epoch!=old.gate_epoch||e.clock_epoch!=old.clock_epoch))return d; n.revoked=true;break;
+ case Kind::Stop: {
+  const bool offline=old.gate_epoch=="synthetic-gate"&&old.clock_epoch=="synthetic-clock";
+  const bool verified=e.execution_verified&&e.continuous_zero&&e.source_fresh&&e.source_from_ns>0&&e.source_from_ns>=e.revoke_ros_ns&&e.source_to_ns-e.source_from_ns>=3000000000LL&&e.source_samples>=5&&e.max_source_gap_ns>=0&&e.max_source_gap_ns<=500000000&&std::isfinite(e.drift_m)&&std::isfinite(e.yaw_drift_rad)&&e.drift_m>=0&&e.drift_m<=.02&&e.yaw_drift_rad>=0&&e.yaw_drift_rad<=.03&&!e.evidence_ref.empty();
+  if((offline?(!e.synthetic||e.observed_from>=e.observed_to||e.observed_to>e.now||e.observed_from<old.last_now):!verified)||e.gate_epoch!=old.gate_epoch||e.clock_epoch!=old.clock_epoch||e.valid_until<=e.now) {d.reason="STOP_EVIDENCE";return d;}
   n.stopped=true;n.stop_until=e.valid_until;break;
+ }
+ case Kind::ExecutionContext:
+  if(!e.execution_verified||e.gate_epoch.empty()||e.clock_epoch.empty()||!old.uuid.empty()||old.goal_terminal||!(old.phase==Phase::SendPending||old.state==State::Paused))return d;
+  n.gate_epoch=e.gate_epoch;n.clock_epoch=e.clock_epoch;n.stopped=false;n.stop_until=0;
+  effect(old.pending.empty()?EffectKind::BeginLease:EffectKind::Revoke);break;
+ case Kind::ExecutionBind:
+  if(!e.execution_verified||!old.pending.empty()||old.phase!=Phase::SendPending||old.goal_terminal||!old.uuid.empty()||old.gate_epoch=="synthetic-gate"||e.gate_epoch!=old.gate_epoch||e.clock_epoch!=old.clock_epoch)return d;
+  effect(EffectKind::SendAuthorized);break;
+ case Kind::ExecutionRenew:
+  if(!e.execution_verified||!old.pending.empty()||old.state==State::Paused||old.goal_terminal||old.gate_epoch=="synthetic-gate"||!(old.phase==Phase::SendPending||old.phase==Phase::Active))return d;
+  effect(EffectKind::RenewLease);break;
+ case Kind::ExecutionClock:
+  if(!e.execution_verified||e.gate_epoch!=old.gate_epoch||e.clock_epoch.empty()||e.clock_epoch==old.clock_epoch)return d;
+  n.clock_epoch=e.clock_epoch;n.stopped=false;n.stop_until=0;n.revoked=false;pause("FAILED");break;
  case Kind::Arrival: if(!old.goal_terminal || old.state==State::Paused) return d; n.arrived=true;break;
  case Kind::Resolve:
   if(!clean()) {d.reason="STOP_OR_GOAL_UNKNOWN";return d;}

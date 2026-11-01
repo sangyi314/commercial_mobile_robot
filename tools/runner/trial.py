@@ -52,6 +52,9 @@ def load_inputs(scenario,profile,method,identity):
  run_id(identity);p=yaml.safe_load(Path(profile).read_text());
  if 'synthetic_test' in p or 'test_namespace' in p:raise ValueError('synthetic profile cannot execute production runner')
  s=validate_run.load_strict(Path(scenario));validate_run.validate_structure(s,'scenario',scenario);validate_run.scenario_rules(s,Path(scenario))
+ if p.get('profile_version')==3:
+  from tools.execution.profile import validate
+  return validate(s,p,method,load_inputs,identity)
  if p.get('profile_version')==2:
   from tools.contracts.dynamic_contract import profile_inputs
   return profile_inputs(s,p,method,load_inputs,identity)
@@ -105,11 +108,21 @@ def main():
    plan['motion_timing']={k:p['dynamic_spec']['dynamic'][k] for k in ['trigger','delay_ns','period_ns','max_gap_ns','truth_gap_ns']}
    plan['snapshots']={'inputs':str(run/'artifacts'),'raw_gazebo':str(run/'runtime/gazebo-raw.jsonl'),'motion_commands':str(run/'runtime/motion-commands.jsonl')}
    plan['cleanup_order']=['quiesce/drain scene driver','close raw capture','navigation shutdown','recorder flush','localization/bridge/robot','gazebo stop','worker exit']
+  if p.get('execution_v1'):
+   plan['execution_v1']=p['execution_v1'];plan['processes']+=['execution-gate','execution-observer','authorization-fixture'];plan['authorization']='explicit simulation fixture; original worker is sole goal sender'
   if args.check:print(json.dumps(plan,ensure_ascii=False));return 0
  except Exception as exc:print(json.dumps({'preflight_rejected':str(exc)},ensure_ascii=False),file=sys.stderr);return 2
- try:lock=ProjectLock(ROOT/'evidence/env/p0-05-project.lock');lock.__enter__()
+ try:
+  if p.get('execution_v1'):
+   for process in Path('/proc').iterdir():
+    if not process.name.isdigit():continue
+    try:
+     argv=(process/'cmdline').read_bytes().split(b'\0');tokens=[Path(x.decode()).name for x in argv if x]
+     if any(tokens[i]=='gz' and tokens[i+1]=='sim' for i in range(len(tokens)-1)) or any(x in ['gz-sim-server','gz-sim-server8'] for x in tokens):raise RuntimeError('existing Gazebo process; refuse second server PID '+process.name)
+    except (PermissionError,FileNotFoundError,ProcessLookupError,UnicodeDecodeError):continue
+  lock=ProjectLock(ROOT/'evidence/env/p0-05-project.lock');lock.__enter__()
  except Exception as exc:print(str(exc),file=sys.stderr);return 2
- state=TrialState();manifest=None;link=None;supervisor=None;behavior=None;bagcheck=None;interrupted=False;manager_started=[];objects={};goal_deadline=None;eventfile=None;cleanup_evidence=[];dynamic=None;dynamic_report=None;gz=None;fault=None;failure_stop_report=None
+ state=TrialState();manifest=None;link=None;supervisor=None;behavior=None;bagcheck=None;interrupted=False;manager_started=[];objects={};goal_deadline=None;eventfile=None;cleanup_evidence=[];dynamic=None;dynamic_report=None;gz=None;fault=None;failure_stop_report=None;execution=None
  def log(kind,data):
   if eventfile and not eventfile.closed:eventfile.write(encode({'type':kind,'parent_monotonic_s':time.monotonic(),'run_id':args.run_id,'data':data}).decode());eventfile.flush()
   if kind=='PHASE':safe_print(kind,data,flush=True)
@@ -123,7 +136,9 @@ def main():
    data=e['data']['data'];state,_=reduce_event(state,{'type':'TERMINAL','action':data['action'],'uuid':data['uuid'],'deadline':goal_deadline},received)
   if e['type']=='CLOCK_JUMP':raise RuntimeError('clock jumped backwards')
   if e['type']=='INPUT_STALE':
-   if fault and fault.kind=='pause-gazebo':
+   if execution and execution.allow_clock_pause:
+    log('EXPECTED_EXECUTION_CLOCK_PAUSE',e)
+   elif fault and fault.kind=='pause-gazebo':
     fault.stale={'source_monotonic_s':e['source_monotonic_s'],'parent_monotonic_s':received,'ros_s':e['ros_s'],'data':e['data']};update({'type':'FAIL','code':'INPUT_STALE','detail':str(e['data']),'harness':'INTERRUPTED'})
    else:raise RuntimeError('navigation inputs stale '+str(e['data']))
  def wait_process(item,budget):
@@ -158,6 +173,11 @@ def main():
     atomic_write_new(run/'artifacts'/('dynamic_'+key+('.sdf' if key=='actor' else '.json')),Path(p['files']['dynamic_'+key]['path']).read_bytes())
    for role,ref in p['dynamic_profile']['executables'].items():
     atomic_write_new(run/'artifacts'/('cmr_'+role+'.binary'),Path(ref['path']).read_bytes())
+  if p.get('execution_v1'):
+   atomic_write_new(run/'artifacts/execution_bridge.yaml',Path(p['execution_v1']['bridge']).read_bytes())
+   for role,ref in p['execution_v1']['binaries'].items():
+    target=run/'artifacts'/(role+'.binary');atomic_write_new(target,Path(ref['path']).read_bytes());target.chmod(0o755)
+    if digest(target)!=ref['sha256']:raise RuntimeError('native binary snapshot mismatch '+role)
   if p.get('task_inputs'):atomic_write_new(run/'artifacts/task-inputs.json',Path(p['task_inputs']['path']).read_bytes())
   frozen=copy.deepcopy(p);frozen.update({'selected_method':args.method,'fault':args.fault,'ack_test_fault':args.ack_test_fault});write_json(run/'artifacts/profile.json',frozen)
   scene=copy.deepcopy(scenario);scene['scenario_revision']=args.run_id;scene['resources']['world']['path']=str(run/'artifacts/world.sdf');scene['task']['common_constraints_ref']['path']=str(run/'artifacts/constraints.json')
@@ -181,14 +201,18 @@ def main():
   work=DeadlineBudget(min(entry+p['budgets']['work'],time.monotonic()+p['budgets']['work']));startup=DeadlineBudget(min(entry+p['budgets']['startup'],work.end))
   display=supervisor.spawn('display-check',['xdpyinfo'],env,ROOT,critical=False);wait_process(display,startup.child(5))
   worker=supervisor.spawn('worker',[sys.executable,'-B',str(run/'artifacts/tools/navigation/nav_goal.py'),'--run-dir',str(run)],env,ROOT,ipc=True);objects['worker']=worker;link=WorkerLink(worker,args.run_id,log,supervisor,incoming)
-  rpc('graph',{},startup.child(5));phase('START_SIM')
+  rpc('graph',{},startup.child(5))
+  if p.get('execution_v1'):
+   from tools.execution.runner_gate import GateSession
+   execution=GateSession(supervisor,run,p,env,log,link,WorkerLink)
+  phase('START_SIM')
   genv=env.copy();genv.update(p['gazebo_environment']);objects['gazebo']=supervisor.spawn('gazebo',['gz','sim','-s','-r','-v','3','--render-engine-server','ogre',str(run/'artifacts/world.sdf')],genv,ROOT)
-  if p.get('p0_08'):
-   gz=GazeboEvidence(run,env['GZ_PARTITION'],log);link.hooks.append(gz.tick)
+  if p.get('p0_08') or execution:
+   gz=GazeboEvidence(run,env['GZ_PARTITION'],log,robot_only=bool(execution));link.hooks.append(gz.tick)
   sp=p['spawn'];spawn=supervisor.spawn('robot-spawn',['ros2','run','ros_gz_sim','create','-world','default','-file',str(run/'artifacts/robot.sdf'),'-name','turtlebot3_waffle','-x',str(sp['x']),'-y',str(sp['y']),'-z',str(sp['z'])],env,ROOT,critical=False);wait_process(spawn,startup.child(30))
   sim=Path('/opt/ros/jazzy/share/nav2_minimal_tb3_sim')
   objects['robot']=supervisor.spawn('robot',['/opt/ros/jazzy/lib/robot_state_publisher/robot_state_publisher','--ros-args','-p','use_sim_time:=true','-p','robot_description:='+(sim/'urdf/turtlebot3_waffle.urdf').read_text()],env,ROOT)
-  objects['bridge']=supervisor.spawn('bridge',['/opt/ros/jazzy/lib/ros_gz_bridge/parameter_bridge','--ros-args','-p','use_sim_time:=true','-p','expand_gz_topic_names:=true','-p','config_file:='+str(sim/'configs/turtlebot3_waffle_bridge.yaml')],env,ROOT)
+  objects['bridge']=supervisor.spawn('bridge',['/opt/ros/jazzy/lib/ros_gz_bridge/parameter_bridge','--ros-args',*(['-r','__node:=execution_bridge','-r','__ns:='+p['execution_v1']['namespace']] if execution else []),'-p','use_sim_time:=true','-p','expand_gz_topic_names:=true','-p','config_file:='+str(run/'artifacts/execution_bridge.yaml' if execution else sim/'configs/turtlebot3_waffle_bridge.yaml')],env,ROOT)
   if p.get('profile_version')==2:
    from tools.dynamic.runner_dynamic import DynamicSession
    dynamic=DynamicSession(supervisor,run,p,env,log,link,WorkerLink)
@@ -201,10 +225,11 @@ def main():
   rpc('manager',{'phase':'localization','command':'STARTUP'},startup.child(55))
   if args.fault=='withhold-initial-pose':rpc('withhold',{},startup.child(p['budgets']['fault_initialpose']))
   rpc('localize',{},startup.child(30))
-  objects['navigation']=supervisor.spawn('navigation',['ros2','launch','--noninteractive','nav2_bringup','navigation_launch.py',*common],env,ROOT);manager_started.append('navigation')
+  objects['navigation']=supervisor.spawn('navigation',['ros2','launch','--noninteractive',p['launch'].get('navigation_package','nav2_bringup'),p['launch']['navigation'],*common],env,ROOT);manager_started.append('navigation')
   rpc('manager',{'phase':'navigation','command':'STARTUP'},startup.child(60));phase('NAV_READY');rpc('nav_ready',{},startup.child(30));rpc('recorder',{'name':recorder_name,'topics':p['recording']['topics']},startup.child(15));update({'type':'READY'})
   if gz:gz.cold(p['spawn'],objects['gazebo'],env)
   if dynamic:dynamic.prepare(startup.child(15))
+  if execution:execution.prepare(startup)
   if p.get('mode')=='probe':
    dynamic.probe(work)
   else:
@@ -224,6 +249,8 @@ def main():
      nonlocal goal_deadline
      goal_deadline=value
     fault=FaultExercise(run,args.fault,uid,link,gz,work,lambda:state,update,set_deadline);fault.execute()
+   if execution and execution.e['fault']:
+    execution.exercise(uid,gz,work)
    while args.fault not in FAULTS and state.action=='UNKNOWN' and not state.timeout_decided and goalbudget.remaining()>0:link.pump()
    if state.action=='UNKNOWN' and args.fault not in FAULTS:
     if not state.timeout_decided:update({'type':'TIMEOUT'})
@@ -231,7 +258,10 @@ def main():
     while state.action=='UNKNOWN' and cancel.remaining()>0:link.pump()
    if dynamic and state.action=='SUCCEEDED':dynamic.wait_complete(work)
    phase('OBSERVE_STOP')
-   if state.action=='SUCCEEDED' and args.fault not in FAULTS:
+   if execution and execution.e['fault']:
+    failure_stop_report=execution.stop
+   elif state.action=='SUCCEEDED' and args.fault not in FAULTS:
+    if execution:execution.normal_stop(work)
     behavior=rpc('stop',{},work.child(p['budgets']['stop']))
     if not all(behavior['checks'].values()):raise RuntimeError('behavioral gate failed '+str(behavior['checks']))
     if dynamic:dynamic.cover_geometry_scope(work)
@@ -239,10 +269,14 @@ def main():
  except KeyboardInterrupt:
   interrupted=True;update({'type':'INTERRUPT'})
  except BaseException as exc:
+  if execution:execution.failure=str(exc)
   code='CONTROLLED_INITIALPOSE_TIMEOUT' if 'CONTROLLED_INITIALPOSE_TIMEOUT' in str(exc) else getattr(exc,'code',type(exc).__name__)
   update({'type':'FAIL','code':code,'detail':str(exc)})
  finally:
   if supervisor:
+   if execution and state.sends and not execution.stop and link:
+    try:failure_stop_report=execution.fail_close(gz,work)
+    except BaseException as exc:update({'type':'FAIL','code':'EXECUTION_ABNORMAL_STOP_UNKNOWN','detail':str(exc),'harness':'INTERRUPTED'})
    if p.get('p0_08') and state.sends and behavior is None and link:
     try:
      if gz and gz.owned_pause:
@@ -268,6 +302,11 @@ def main():
     emergency=objects.get('gazebo')
     if emergency:attempt('emergency_physics',lambda:supervisor.close(emergency,cleanup,grace=3));cleanup_ok=False
    if dynamic:attempt('dynamic_close',lambda:dynamic.close(cleanup))
+   if execution:
+    for item in supervisor.owned:
+     if item.process.poll() is not None:item.critical=False
+    if gz and gz.owned_pause:attempt('execution_pause_recovery',lambda:gz.control(False))
+    attempt('execution_close',lambda:execution.close(cleanup))
    if 'navigation' in manager_started and link:attempt('navigation_shutdown',lambda:rpc('shutdown_actual' if args.fault=='controller-deactivate' else 'manager',{'phase':'navigation','command':'SHUTDOWN','coordinate_manager':args.fault=='controller-deactivate'},cleanup.child(25 if args.fault=='controller-deactivate' else 12)))
    if 'navigation' in objects:attempt('navigation_exit',lambda:supervisor.close(objects['navigation'],cleanup,grace=5))
    if 'recorder' in objects:
@@ -280,9 +319,11 @@ def main():
     attempt('gazebo_evidence_close',gz.close);link.hooks.remove(gz.tick)
    if 'gazebo' in objects and not objects['gazebo'].closed:
     objects['gazebo'].critical=False
-    stop=supervisor.spawn('gazebo-stop',['gz','service','-s','/server_control','--reqtype','gz.msgs.ServerControl','--reptype','gz.msgs.Boolean','--timeout','3000','--req','stop: true'],env,ROOT,critical=False)
-    attempt('gazebo_stop_service',lambda:wait_process(stop,cleanup.child(5)))
-    attempt('gazebo_exit',lambda:supervisor.close(objects['gazebo'],cleanup,initial_signal=False,grace=8))
+    if not execution:
+     stop=supervisor.spawn('gazebo-stop',['gz','service','-s','/server_control','--reqtype','gz.msgs.ServerControl','--reptype','gz.msgs.Boolean','--timeout','3000','--req','stop: true'],env,ROOT,critical=False)
+     attempt('gazebo_stop_service',lambda:wait_process(stop,cleanup.child(5)))
+    else:log('GAZEBO_SHUTDOWN_POLICY',{'policy':'one owned SIGINT; no concurrent server_control stop','after_A_B_D':bool(execution.stop and all(execution.stop['checks'].values()))})
+    attempt('gazebo_exit',lambda:supervisor.close(objects['gazebo'],cleanup,initial_signal=bool(execution),grace=8))
    if link and 'worker' in objects:
     objects['worker'].critical=False;attempt('worker_exit_request',lambda:rpc('exit',{},cleanup.child(3)))
     attempt('worker_exit',lambda:supervisor.close(objects['worker'],cleanup,initial_signal=False,grace=3))
@@ -293,7 +334,7 @@ def main():
    write_json(run/'runtime/cleanup.json',{'ok':cleanup_ok,'operations':cleanup_evidence,'processes':[x.result for x in supervisor.owned],'remaining':[m for x in supervisor.owned for m in supervisor.members(x)]})
    final=DeadlineBudget.after(p['budgets']['finalize']);phase('INSPECT_BAG')
    if (run/'bag/metadata.yaml').exists():
-    inspect_item=supervisor.spawn('bag-inspection',[sys.executable,'-B',str(run/'artifacts/tools/runner/inspect_bag.py'),'--run-dir',str(run),'--output',str(run/'runtime/bag-check.json')],env,ROOT,critical=False)
+    inspect_item=supervisor.spawn('bag-inspection',[sys.executable,'-B',str(run/('artifacts/tools/execution/inspect_gate_bag.py' if execution else 'artifacts/tools/runner/inspect_bag.py')),'--run-dir',str(run),'--output',str(run/'runtime/bag-check.json')],env,ROOT,critical=False)
     # Worker has exited; inspector is a bounded, expected one-shot process.
     try:
      inspect_item.process.wait(timeout=final.require());supervisor.close(inspect_item,final,initial_signal=False,grace=.1);bagcheck=json.loads((run/'runtime/bag-check.json').read_text())
@@ -322,12 +363,14 @@ def main():
      candidate=finalize_record(manifest,digest(run/'manifest.json'),state,time.monotonic()-entry,artifacts,plugin,metrics);validate_run.validate_structure(candidate,'result',run/'result.json');write_json(run/'result.json',candidate);diagnostic=validate_run.validate_run_dir(run);write_json(run/'runtime/validation.json',diagnostic)
     except BaseException as exc:diagnostic={'status':'INVALID','error':str(exc)};write_json(run/'runtime/finalization-error.json',diagnostic)
    else:diagnostic={'status':'INCOMPLETE','error':'manifest snapshot failed before publication'}
+   gate_report=execution.report(cleanup_ok,bagcheck,diagnostic['status']) if execution else None
+   if execution:write_json(run/'runtime/execution-check.json',gate_report)
    passed=state.startup=='READY' and state.action=='SUCCEEDED' and state.harness=='COMPLETED' and state.cleanup=='SUCCEEDED' and behavior and all(behavior['checks'].values()) and bagcheck and bagcheck['valid'] and diagnostic['status']=='VALID'
    if args.fault in FAULTS:passed=False
    if dynamic:passed=passed and dynamic_report and dynamic_report.get('dynamic_recording_valid')
    probe_pass=bool(p.get('mode')=='probe' and state.startup=='READY' and state.action=='NOT_SENT' and state.harness=='COMPLETED' and state.cleanup=='SUCCEEDED' and bagcheck and bagcheck['valid'] and dynamic_report and dynamic_report.get('probe_pass') and diagnostic['status']=='VALID')
-   exitcode=130 if interrupted else (0 if passed or probe_pass else 3)
-   write_json(run/'runtime/runner-exit.json',{'exit':exitcode,'normal_pass':bool(passed),'purpose':p.get('mode','navigation_recording'),'probe_pass':probe_pass,'dynamic_recording_valid':dynamic_report.get('dynamic_recording_valid') if dynamic_report else None,'record_contract':diagnostic['status'],'bag_valid':bool(bagcheck and bagcheck['valid'])});safe_print(json.dumps({'run':str(run),'exit':exitcode,'status':{'startup':state.startup,'action':state.action,'harness':state.harness,'cleanup':state.cleanup}},ensure_ascii=False),flush=True)
+   exitcode=130 if interrupted else (0 if passed or probe_pass or (gate_report and gate_report['case_pass']) else 3)
+   write_json(run/'runtime/runner-exit.json',{'exit':exitcode,'normal_pass':bool(passed),'gate_case_pass':bool(gate_report and gate_report['case_pass']),'purpose':p.get('mode','navigation_recording'),'probe_pass':probe_pass,'dynamic_recording_valid':dynamic_report.get('dynamic_recording_valid') if dynamic_report else None,'record_contract':diagnostic['status'],'bag_valid':bool(bagcheck and bagcheck['valid'])});safe_print(json.dumps({'run':str(run),'exit':exitcode,'status':{'startup':state.startup,'action':state.action,'harness':state.harness,'cleanup':state.cleanup}},ensure_ascii=False),flush=True)
   else:exitcode=3
   lock.__exit__(None,None,None)
  return exitcode

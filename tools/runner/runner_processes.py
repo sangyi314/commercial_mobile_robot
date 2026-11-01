@@ -69,6 +69,17 @@ class ProcessSupervisor:
    for sig,seconds in [(signal.SIGTERM,1.5),(signal.SIGKILL,1.5)]:
     members=self.members(item)
     if not members:break
+    if sig==signal.SIGTERM:
+     diagnosis=[]
+     for owner in members:
+      threads=[]
+      try:
+       for task in (Path('/proc')/str(owner['pid'])/'task').iterdir():
+        try:threads.append({'tid':int(task.name),'comm':(task/'comm').read_text().strip(),'wchan':(task/'wchan').read_text().strip()})
+        except (OSError,ValueError):pass
+      except OSError:pass
+      diagnosis.append({'identity':owner,'threads':threads})
+     self.emit('PROCESS_GRACE_TIMEOUT',{'role':item.role,'owned_diagnostics':diagnosis})
     record['forced']=True
     for info in members:
      if budget.remaining()<=0:break

@@ -6,8 +6,8 @@
 namespace cmr::mission {
 enum class State { Accepted, Navigating, WaitHandover, Returning, Paused, Recovering, Completed, Failed, Canceled };
 enum class Phase { None, SendPending, Active, StopPending, Uncertain };
-enum class Kind { Prepare, Accepted, Succeeded, Aborted, Rejected, Cancel, CancelAck, RevokeAck, Stop, Arrival, Handover, Tick, Fatal, Recover, Retry, Resolve, Restart, Feedback, CanceledResult };
-enum class EffectKind { Send, CancelExact, Revoke };
+enum class Kind { Prepare, Accepted, Succeeded, Aborted, Rejected, Cancel, CancelAck, RevokeAck, Stop, Arrival, Handover, Tick, Fatal, Recover, Retry, Resolve, Restart, Feedback, CanceledResult, ExecutionBind, ExecutionRenew, ExecutionClock, ExecutionContext };
+enum class EffectKind { Send, CancelExact, Revoke, SendAuthorized, RenewLease, BeginLease };
 struct Effect { std::string id, mission, operation, attempt, uuid; EffectKind kind; };
 struct Record {
  MissionRequest request;
@@ -23,6 +23,10 @@ struct Event {
  std::uint64_t expected_version{0}; bool synthetic{true};
  std::string gate_epoch{"synthetic-gate"}, clock_epoch{"synthetic-clock"};
  std::int64_t observed_from{0}, observed_to{0}, valid_until{0};
+ // Internal verified ExecutionPort boundary; not supplied by MissionCommand or fixture.
+ bool execution_verified{false}, continuous_zero{false}, source_fresh{false};
+ std::int64_t source_from_ns{0},source_to_ns{0},revoke_ros_ns{0},max_source_gap_ns{0},source_received_steady_ns{0};
+ std::uint64_t source_samples{0},source_generation{0};double drift_m{0},yaw_drift_rad{0};std::string evidence_ref;
 };
 struct Decision { Record next; std::vector<Effect> effects; bool changed{false}; std::string reason; };
 bool terminal(State s);

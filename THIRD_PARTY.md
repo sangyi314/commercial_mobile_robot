@@ -34,3 +34,18 @@ ROS2官方测试参考：ros2/rclcpp 7c76a00345f304c7dd145975b872f7ec66a92c9d，
 独立实现：MissionCommand延后响应、ActionCorrelation、CMR Port队列/单调期限、Fake控制屏障、Python监督器与独立审计器；未增加Waypoint Follower/YASMIN运行依赖。详见docs/design/p1-action-design.md。
 
 P1-02测试监督器还直接调用系统rclpy与rosidl_runtime_py消息转换公共API，并使用rosgraph_msgs/Clock合成时钟；本机rclpy/client.py保留上游Apache-2.0声明，remove_pending_request仅作为公开接口调用，不复制实现。静态预检路径不导入这些ROS运行库。
+
+
+## 2026-11-01 — P1-03 来源与复用分类
+
+直接使用系统组件：Jazzy rclcpp 28.1.22、rclpy、rosidl、geometry/nav/rosgraph_msgs；Nav2 Smoother/Collision Monitor/Controller/Behavior 1.3.13；ros_gz_bridge 1.0.24；Gazebo Sim 8.15.0。均保留系统包及其许可证，不拷贝组件实现；CMR已有 cmr_core 轮速检查直接链接。Gazebo/ros_gz/Nav2 使用 Apache-2.0；完整许可证新增 third_party/licenses/Apache-2.0.txt。
+
+参考设计后独立实现（MIT）：Gate租约/挑战/单线程线性化/StopWindow/ExecutionPort/Runner扩展/测试。twist_mux a8225e2d9bf0171aac447c246376f0981defd17b，src/twist_mux.cpp、include/twist_mux/topic_handle.hpp，BSD-3-Clause；只参考锁、来源及超时，不链接或复制源码。Nav2 d5d768b7b38a05e7cfd2b6c693b786b402161bed：nav2_collision_monitor/src/collision_monitor_node.cpp、test/collision_monitor_node_test.cpp，nav2_velocity_smoother/src/velocity_smoother.cpp，nav2_controller/src/controller_server.cpp，nav2_bringup/launch/navigation_launch.py，Apache-2.0；借鉴保留来源stamp、消息/生命周期与非组合launch设计。原TimedBehavior每插件创建TwistPublisher的接口在本机头文件复核。
+
+配置适配：派生Nav2参数来源为项目冻结P0配置，Bridge来源为安装的Nav2 minimal TB3官方配置（Apache-2.0）；新profile逐字段记录原hash和派生hash。Navigation launch独立组装官方节点，移除docking。SDF只修改私有DiffDrive路由、world只添加SceneBroadcaster，不复制DiffDrive实现。上游 ros_gz 1.0.24 的 ros_gz_bridge/src/bridge_config.cpp 核实分离ROS/GZ端点；gz-sim8_8.15.0 的 src/systems/diff_drive/DiffDrive.cc 核实joint position里程计及无命令timeout，不能据此声称独立硬件保护。
+
+原始研究文件：evidence/env/p1-03-dev-xehwla33/upstream；本机安装API及运行参数优先于固定上游。未使用YASMIN/twist_mux替换现有Mission，没有整套复制第三方系统。
+
+P1-03 时间输入加固：另读 rclcpp tag28.1.22→commit3aa906a2c7ad13d1623b31a55731993f56538e72 的 rclcpp/src/rclcpp/time_source.cpp（Apache-2.0），确认隐式时钟线程及负时间转换异常边界。仅参考并配置公共 NodeOptions；CMR 时间字段验证与显式 Clock 处理独立实现，没有复制上游实现。原始源码保留在本轮 evidence。
+
+P1-03 DWB配置核对：Navigation2固定d5d768b7b38a05e7cfd2b6c693b786b402161bed 的 nav2_dwb_controller/dwb_critics/src/rotate_to_goal.cpp，Locus Robotics 2017 BSD-3-Clause，实际组件许可证区别于Nav2多数Apache-2.0文件。只研究并运行系统组件，未复制源码到CMR实现。确认FollowPath.xy_goal_tolerance由Critic独立读取后，将派生配置同步为0.18，与外层Goal checker一致；独立验收0.25不变。完整上游许可声明随原始研究文件保留。

@@ -4,7 +4,7 @@
 #include <rclcpp/rclcpp.hpp>
 #include <functional>
 namespace cmr::mission {
-struct AdapterConfig {std::string action,epoch;int readiness_ms{1500},accept_ms{1500},execute_ms{10000},cancel_ms{1000},collect_ms{3000};};
+struct AdapterConfig {std::string action,epoch;bool synthetic_revoke{true};int readiness_ms{1500},accept_ms{1500},execute_ms{10000},cancel_ms{1000},collect_ms{3000};};
 class NavigationAdapter final:public Port {
  struct Impl;std::shared_ptr<Impl> p;
  public:

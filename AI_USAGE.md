@@ -34,3 +34,10 @@ AI在用户授权下修复pause中首次终止意图，新增纯FSM/真实Runtim
 用户提供任务书、合同与无Gazebo/真实目标边界；AI负责上游实际源码/本机API核查、接口、薄适配、Fake、监督器、矩阵、故障排查与六模块教学文档。未重写Mission状态机；增量扩展导航CanceledResult和事件审计。个人理解、反例设计与正式放行仍待用户验收。
 
 原P1-01 16组基准重跑；当前OFF核心/关联17组及ASan/UBSan通过，ON colcon17组通过；真实ROS A01–A20分层结果和13案instrumented协议结果见docs/verification/p1-02-action-20261031.md。A11非法线协议只按共用适配边界单元报告。TSan空程序运行时也失败，P0布局23通过1冻结系统库哈希失败均保留，不宣称全仓库绿色。未commit/push/tag/release，未启动Gazebo/Bridge/Nav2栈或真实Gate。
+
+
+## 2026-11-01 — P1-03 工程实施
+
+用户授权全范围实施、逐步验证与受控Gazebo，要求保护P0、保留失败、不自动Git提交。AI完成基准重跑、固定上游/本机API核对、Gate/Observer/接口/真实ExecutionPort、独立分析器、原Runner的可选派生扩展、测试与教学文档。所有工程改动在Ubuntu原仓库，无Mac工程副本。纯核/协议/仿真及sanitizer结果以 docs/verification/p1-03-un63b3ef.md 的实际证据为准；真实Mission sink与授权fixture Gazebo分列。
+
+AI辅助不替代用户理解、人工代码审查和实际机器人安全放行；未作硬件认证，未进入P1-04，未commit/push/tag/release。失败及NOT_EXERCISED不得删除或改判。
