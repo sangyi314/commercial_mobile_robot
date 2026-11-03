@@ -54,3 +54,10 @@ Gate/Observer 的 use_sim_time 必须 false，且初始化后参数冻结；它�
 依据 rclcpp 28.1.22 的 rclcpp/src/rclcpp/time_source.cpp 实码：use_sim_time 可创建独立时钟 Executor/thread，set_clock 内构造 rclcpp::Time。CMR 明确校验 sec>=0、nanosec<1e9，再用有界 int64 算术转换；非法候选时间直接失效，初始 clock=0 保持禁止，运行后回零使 clock epoch 失效。不能让非法消息终止 Gate 后让下游保留非零。原始源码保存在本轮 evidence。
 
 独立到达验收保持0.25m/0.25rad；新派生 Goal checker 收紧为0.18m/0.20rad，留出停止与观测余量，不能以 Action SUCCEEDED 替代到达。只对本轮配送机器人模型保留全部 pose 样本与 world stats；P0 默认采集不变，队列溢出必须判失败。
+
+
+## P1-04跨段未授权取消补充（2026-11-02）
+
+Reset后的DISARMED可能保留上段lease标识用于审计；这不是新attempt的授权。ExecutionPort只从ARMED且allowed状态补认未知Begin结果，不能从DISARMED残留字段领用旧lease。新attempt在尚未Begin时被取消，Port仍先inspect并经owner持久绑定真实Gate/clock，再只发Revoke；允许已知NOT_SENT的PAUSED记录接收该迟到Context，绝不生成Begin。
+
+Gate仅在初始/经合格Reset的DISARMED中，允许同run/owner、old_goal_resolved、空lease的未授权Revoke绑定新attempt，并清空残留lease、进入STOPPING以重新收集D；不允许从旧运动未解析的STOPPING改绑。此扩展只产生禁止与零，不产生新运动权限。纯反例execution_unissued_cancel和真实协议早取消回归单列，P1-03原测试仍须回归。

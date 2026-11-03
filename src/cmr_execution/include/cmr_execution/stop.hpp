@@ -35,4 +35,44 @@ class StopWindow{
   r.verdict="STOPPED";r.reason="WINDOW_PROVEN";return r;
  }
 };
+
+// A second, independent BODY measurement stream. Never infer body velocity
+// from wheel twist or commands. Bracket the exact wheel window and measure
+// every consecutive body-pose displacement, including its left boundary.
+class BodyWindow {
+ StopConfig c;std::deque<Sample> q;
+ public:
+ void reset(){q.clear();}
+ void add(const Sample& s){
+  for(double x:{s.x,s.y,s.yaw,s.v,s.w})if(!std::isfinite(x)){reset();return;}
+  if(s.stamp<=0){reset();return;}
+  if(!q.empty()&&(!(q.back().binding==s.binding)||s.stamp<=q.back().stamp||s.received<q.back().received||s.stamp-q.back().stamp>c.gap||s.received-q.back().received>=c.fresh))reset();
+  q.push_back(s);while(q.size()>c.capacity)q.pop_front();
+ }
+ StopResult evaluate(Ms now,Ns ros,const Binding& expected,Ns from,Ns to)const{
+  StopResult r;r.reason="BODY_WINDOW_MISSING";r.from=from;r.to=to;
+  if(q.empty()||from<=0||to<=from||to-from<c.span)return r;
+  const auto& last=q.back();
+  if(now<last.received||now-last.received>=c.fresh||last.stamp>ros||ros-last.stamp>=c.gap){r.reason="BODY_STALE";return r;}
+  std::size_t left=q.size(),right=q.size();
+  for(std::size_t i=0;i<q.size();++i){if(q[i].stamp<=from)left=i;if(q[i].stamp>=to){right=i;break;}}
+  if(left==q.size()||right==q.size()||right<=left||right-left+1<c.samples)return r;
+  // Keep the sample immediately before `from`, even on an exact endpoint,
+  // so an incoming slip cannot disappear at a window boundary.
+  if(left>0)--left;
+  const auto& origin=q[left];r.samples=right-left+1;
+  for(std::size_t i=left;i<=right;++i){const auto& s=q[i];
+   if(!(s.binding==expected)){r.reason="BODY_IDENTITY";return r;}
+   r.drift=std::max(r.drift,std::hypot(s.x-origin.x,s.y-origin.y));r.yaw=std::max(r.yaw,std::abs(std::remainder(s.yaw-origin.yaw,2*cmr::pi)));
+   if(s.v>c.v||s.w>c.w){r.verdict="MOVING";r.reason="BODY_REPORTED_VELOCITY";return r;}
+   if(i==left)continue;
+   const auto& prev=q[i-1];const Ns gap=s.stamp-prev.stamp;r.max_gap=std::max(r.max_gap,gap);
+   if(gap<=0||gap>c.gap||s.received-prev.received<0||s.received-prev.received>=c.fresh){r.reason="BODY_GAP";return r;}
+   const double dt=static_cast<double>(gap)*1e-9;
+   if(std::hypot(s.x-prev.x,s.y-prev.y)/dt>c.v||std::abs(std::remainder(s.yaw-prev.yaw,2*cmr::pi))/dt>c.w){r.verdict="MOVING";r.reason="BODY_POSE_VELOCITY";return r;}
+  }
+  if(r.drift>c.drift||r.yaw>c.yaw){r.verdict="MOVING";r.reason="BODY_DRIFT";return r;}
+  r.verdict="STOPPED";r.reason="WINDOW_PROVEN_BODY_POSE";return r;
+ }
+};
 }

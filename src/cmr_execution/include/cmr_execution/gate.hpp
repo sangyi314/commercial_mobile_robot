@@ -61,7 +61,10 @@ class Gate{
   if(q.verb=="revoke"){
    if(!identifier(q.id)||q.seq==0)return fail("REQUEST_ID");
    if(last_revoke_&&last_revoke_->first.id==q.id)return last_revoke_->first==q?last_revoke_->second:fail("REQUEST_CONFLICT");
-   if(lease_.empty()&&!active_&&q.lease.empty()&&(!valid(identity_)||q.who==identity_)){identity_=q.who;trip("REVOKED_UNISSUED");}
+   // Retargeting an unissued revocation cannot authorize motion. DISARMED
+   // is reached only initially or by explicit qualified Reset, never expiry.
+   const bool unissued=!active_&&q.lease.empty()&&((lease_.empty()&&(!valid(identity_)||q.who==identity_))||(state_==State::Disarmed&&q.old_resolved));
+   if(unissued){identity_=q.who;lease_.clear();trip("REVOKED_UNISSUED");}
    else if(q.who!=identity_||q.lease!=lease_||lease_.empty())return fail("IDENTITY");
    if(active_)trip("REVOKED");
    auto r=fail("REVOKED");last_revoke_=std::make_pair(q,r);return r;

@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "map_version": "tb3map_2a284eba0a3a",
+  "station_version": "p104_stations_v1",
+  "map": {
+    "yaml_path": "/opt/ros/jazzy/share/nav2_bringup/maps/tb3_sandbox.yaml",
+    "yaml_sha256": "2a284eba0a3aa4a904bce71734c56a543e979899f1cf34daad6e8215e608b438",
+    "image_path": "/opt/ros/jazzy/share/nav2_bringup/maps/tb3_sandbox.pgm",
+    "image_sha256": "0103b9dfaa3b79592af71cc35d64f69cfbd3565d173160820ad8ef56cd27b3fc",
+    "metadata": {
+      "grid_sha256": "d175c19527a5405d92999fde31f8c894fde7c9265fdf587c8beeb9d7c128e041",
+      "height": 384,
+      "origin_x": -10.0,
+      "origin_y": -10.0,
+      "origin_yaw": 0.0,
+      "resolution": 0.05000000074505806,
+      "width": 384
+    }
+  },
+  "bt": {
+    "path": "/home/robot/commercial_mobile_robot/experiments/mission/p1-delivery/delivery-v1.bt.xml",
+    "sha256": "3b17ec44c9763854ad07dfc2761dd90ab07d447310e4cd9dfa2b37e6cc292c6d"
+  },
+  "bounds": {
+    "min_x": -10.0,
+    "max_x": 9.200000286102295,
+    "min_y": -10.0,
+    "max_y": 9.200000286102295
+  },
+  "stations": [
+    {
+      "station_id": "delivery",
+      "map_version": "tb3map_2a284eba0a3a",
+      "station_version": "p104_stations_v1",
+      "pose": {
+        "frame": "map",
+        "position": {
+          "x": -1.9568372509483436,
+          "y": 0.40347409679604745,
+          "z": 0.0
+        },
+        "orientation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.7024746319078363,
+          "w": 0.7117087828079331
+        }
+      }
+    },
+    {
+      "station_id": "home",
+      "map_version": "tb3map_2a284eba0a3a",
+      "station_version": "p104_stations_v1",
+      "pose": {
+        "frame": "map",
+        "position": {
+          "x": -2.0,
+          "y": -0.5,
+          "z": 0.0
+        },
+        "orientation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        }
+      }
+    },
+    {
+      "station_id": "midpoint",
+      "map_version": "tb3map_2a284eba0a3a",
+      "station_version": "p104_stations_v1",
+      "pose": {
+        "frame": "map",
+        "position": {
+          "x": -1.9784186254741718,
+          "y": -0.04826295160197627,
+          "z": 0.0
+        },
+        "orientation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        }
+      }
+    }
+  ]
+}

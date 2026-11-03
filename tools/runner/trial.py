@@ -52,6 +52,12 @@ def load_inputs(scenario,profile,method,identity):
  run_id(identity);p=yaml.safe_load(Path(profile).read_text());
  if 'synthetic_test' in p or 'test_namespace' in p:raise ValueError('synthetic profile cannot execute production runner')
  s=validate_run.load_strict(Path(scenario));validate_run.validate_structure(s,'scenario',scenario);validate_run.scenario_rules(s,Path(scenario))
+ if p.get('profile_version')==5:
+  from tools.reliability.plan import validate
+  return validate(s,p,method,load_inputs,identity)
+ if p.get('profile_version')==4:
+  from tools.delivery.profile import validate
+  return validate(s,p,method,load_inputs,identity)
  if p.get('profile_version')==3:
   from tools.execution.profile import validate
   return validate(s,p,method,load_inputs,identity)
@@ -92,13 +98,16 @@ def load_inputs(scenario,profile,method,identity):
  return p,s
 
 def main():
- ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--scenario',required=True);ap.add_argument('--method',choices=['mppi','dwb'],required=True);ap.add_argument('--profile',required=True);ap.add_argument('--run-id',required=True);ap.add_argument('--check',action='store_true');ap.add_argument('--fault',choices=['withhold-initial-pose',*FAULTS]);ap.add_argument('--ack-test-fault',action='store_true');args=ap.parse_args();entry=time.monotonic()
+ ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--scenario',required=True);ap.add_argument('--method',choices=['mppi','dwb'],required=True);ap.add_argument('--profile',required=True);ap.add_argument('--run-id',required=True);ap.add_argument('--check',action='store_true');ap.add_argument('--mission',action='store_true',help='explicit P1 delivery workflow; worker cannot send Goals');ap.add_argument('--fault',choices=['withhold-initial-pose',*FAULTS]);ap.add_argument('--ack-test-fault',action='store_true');args=ap.parse_args();entry=time.monotonic()
  try:
   if ROOT!=Path('/home/robot/commercial_mobile_robot'):raise ValueError('wrong project root')
   if bool(args.fault)!=args.ack_test_fault:raise ValueError('fault requires explicit acknowledgement and vice versa')
   p,scenario=load_inputs(args.scenario,args.profile,args.method,args.run_id)
   validate_policy(p,args.fault)
-  run=ROOT/'evidence/runs'/args.run_id
+  delivery=bool(p.get('delivery_v1'))
+  if delivery!=args.mission:raise ValueError('profile4 and explicit --mission must agree')
+  if delivery and args.fault:raise ValueError('delivery fault scope is frozen in its versioned case profile')
+  run=ROOT/('evidence/missions' if delivery else 'evidence/runs')/args.run_id
   if run.exists():raise FileExistsError('run directory already exists')
   plan={'run_id':args.run_id,'method':args.method,'scope':'simulation_only','run_directory':str(run),'processes':['worker','gazebo','robot_spawn','robot_state_publisher','bridge','recorder','localization','navigation'],'budgets':p['budgets'],'topics':p['recording']['topics'],'fault':args.fault,'plugin':p['methods'][args.method]['plugin'],'check_has_no_side_effects':True,'mode':p.get('mode','navigation_recording'),'sends_goal':p.get('mode')!='probe','raw_capture':'Gazebo sidecars; no truth ROS publication'}
   if p.get('profile_version')==2:
@@ -110,6 +119,8 @@ def main():
    plan['cleanup_order']=['quiesce/drain scene driver','close raw capture','navigation shutdown','recorder flush','localization/bridge/robot','gazebo stop','worker exit']
   if p.get('execution_v1'):
    plan['execution_v1']=p['execution_v1'];plan['processes']+=['execution-gate','execution-observer','authorization-fixture'];plan['authorization']='explicit simulation fixture; original worker is sole goal sender'
+  if delivery:
+   plan['processes']=[x for x in plan['processes'] if x!='authorization-fixture']+['mission'];plan['authorization']='real Mission ExecutionPort';plan['goal_owner']='Mission NavigationAdapter only';plan['worker_action_client']=False;plan['delivery_v1']=p['delivery_v1'];plan['human_confirmation_required']=p['delivery_v1']['case']=='G01';plan['raw_capture']='Gazebo sidecars plus private Oracle body_odom for independent stop qualification';plan['oracle_stop_assisted']=bool(p['delivery_v1'].get('stop_feedback',{}).get('oracle_stop_assisted'))
   if args.check:print(json.dumps(plan,ensure_ascii=False));return 0
  except Exception as exc:print(json.dumps({'preflight_rejected':str(exc)},ensure_ascii=False),file=sys.stderr);return 2
  try:
@@ -150,7 +161,7 @@ def main():
   supervisor.close(item,budget,initial_signal=False,grace=.1)
  def rpc(op,data,budget):return link.rpc(op,data,budget)
  try:
-  run.mkdir()
+  run.mkdir(parents=True)
   for d in ['artifacts','runtime','logs']:(run/d).mkdir()
   if os.environ.get('CMR_BATCH_ID'):
    write_json(run/'runtime/batch-association.json',{'batch_id':os.environ['CMR_BATCH_ID'],'attempt_id':os.environ['CMR_ATTEMPT_ID'],'slot_id':os.environ['CMR_SLOT_ID'],'run_id':args.run_id})
@@ -178,6 +189,11 @@ def main():
    for role,ref in p['execution_v1']['binaries'].items():
     target=run/'artifacts'/(role+'.binary');atomic_write_new(target,Path(ref['path']).read_bytes());target.chmod(0o755)
     if digest(target)!=ref['sha256']:raise RuntimeError('native binary snapshot mismatch '+role)
+  if delivery:
+   for role,ref in p['delivery_v1']['binaries'].items():
+    target=run/'artifacts'/(role+'.binary');atomic_write_new(target,Path(ref['path']).read_bytes());target.chmod(0o755)
+   atomic_write_new(run/'artifacts/delivery.bt.xml',Path(p['delivery_v1']['bt']['path']).read_bytes());atomic_write_new(run/'artifacts/stations-source.v1.json',Path(p['delivery_v1']['catalog_source']['path']).read_bytes());atomic_write_new(run/'artifacts/stations-input.v1.json',Path(p['delivery_v1']['catalog']['path']).read_bytes())
+   catalog=json.loads(Path(p['delivery_v1']['catalog']['path']).read_text());catalog['bt']['path']=str(run/'artifacts/delivery.bt.xml');write_json(run/'artifacts/stations.v1.json',catalog)
   if p.get('task_inputs'):atomic_write_new(run/'artifacts/task-inputs.json',Path(p['task_inputs']['path']).read_bytes())
   frozen=copy.deepcopy(p);frozen.update({'selected_method':args.method,'fault':args.fault,'ack_test_fault':args.ack_test_fault});write_json(run/'artifacts/profile.json',frozen)
   scene=copy.deepcopy(scenario);scene['scenario_revision']=args.run_id;scene['resources']['world']['path']=str(run/'artifacts/world.sdf');scene['task']['common_constraints_ref']['path']=str(run/'artifacts/constraints.json')
@@ -194,17 +210,26 @@ def main():
   artifacts=[]
   for i,f in enumerate(sorted(f for f in (run/'artifacts').rglob('*') if f.is_file())):
    kind={'scenario.yaml':'scenario','config.yaml':'config','constraints.json':'common_constraints','source.tgz':'source_snapshot'}.get(f.name,'other');artifacts.append({'id':'source_snapshot' if f.name=='source.tgz' else 'input_'+str(i),'path':str(f.relative_to(run)),'sha256':digest(f),'kind':kind})
-  manifest={'schema_version':1,'run_id':args.run_id,'record_origin':'real','scenario':{'scenario_id':scene['scenario_id'],'scenario_revision':scene['scenario_revision'],'spec_sha256':digest(run/'artifacts/scenario.yaml')},'source':{'git_commit':head,'dirty':bool(status),'snapshot_ref':'source_snapshot' if status else None},'baseline':{'method':args.method,'config_sha256':digest(run/'artifacts/config.yaml'),'expected_plugin':PLUGINS[args.method],'common_constraints_sha256':digest(run/'artifacts/constraints.json')},'environment':{'ros_distro':'jazzy','platform':os.uname().sysname+' '+os.uname().machine,'package_versions':p['packages'],'external_seed':None,'seed_scope':[],'controller_seed_controlled':False},'clock':{'clock_epoch':args.run_id+':sim0','started_at_utc':datetime.now(timezone.utc).isoformat().replace('+00:00','Z'),'sim_start_s':None},'artifacts':artifacts};write_json(run/'manifest.json',manifest)
-  check=validate_run.validate_run_dir(run);write_json(run/'runtime/pre-start-validation.json',check)
-  if check['status']!='INCOMPLETE':raise RuntimeError('manifest rejected '+str(check))
+  manifest={'schema_version':1,'run_id':args.run_id,'record_origin':'real','scenario':{'scenario_id':scene['scenario_id'],'scenario_revision':scene['scenario_revision'],'spec_sha256':digest(run/'artifacts/scenario.yaml')},'source':{'git_commit':head,'dirty':bool(status),'snapshot_ref':'source_snapshot' if status else None},'baseline':{'method':args.method,'config_sha256':digest(run/'artifacts/config.yaml'),'expected_plugin':PLUGINS[args.method],'common_constraints_sha256':digest(run/'artifacts/constraints.json')},'environment':{'ros_distro':'jazzy','platform':os.uname().sysname+' '+os.uname().machine,'package_versions':p['packages'],'external_seed':None,'seed_scope':[],'controller_seed_controlled':False},'clock':{'clock_epoch':args.run_id+':sim0','started_at_utc':datetime.now(timezone.utc).isoformat().replace('+00:00','Z'),'sim_start_s':None},'artifacts':artifacts}
+  if delivery:
+   manifest={'schema_version':1,'record_family':'cmr.delivery-session','session_id':args.run_id,'record_origin':'gazebo','case':p['delivery_v1']['case'],'controller':{'plugin':p['methods'][args.method]['plugin'],'primary':('nav2_mppi_controller::MPPIController' if args.method=='mppi' and p['methods'][args.method]['plugin']=='nav2_rotation_shim_controller::RotationShimController' else p['methods'][args.method]['plugin'])},'oracle_stop_assisted':bool(p['delivery_v1'].get('stop_feedback',{}).get('oracle_stop_assisted')),'method':args.method,'source':manifest['source'],'environment':manifest['environment'],'clock':manifest['clock'],'inputs':artifacts,'goal_owner':'Mission NavigationAdapter','lease_owner':'Mission ExecutionPort','C':'CONSUMER_ACK_UNKNOWN'};write_json(run/'mission-manifest.v1.json',manifest)
+  else:
+   write_json(run/'manifest.json',manifest);check=validate_run.validate_run_dir(run);write_json(run/'runtime/pre-start-validation.json',check)
+   if check['status']!='INCOMPLETE':raise RuntimeError('manifest rejected '+str(check))
   write_json(run/'runtime/environment.json',{k:env[k] for k in [*p['environment'],'GZ_PARTITION','DISPLAY','XAUTHORITY'] if k in env});write_json(run/'runtime/ownership.json',{'boot_id':Path('/proc/sys/kernel/random/boot_id').read_text().strip(),'parent_pid':os.getpid(),'token':supervisor.token})
   work=DeadlineBudget(min(entry+p['budgets']['work'],time.monotonic()+p['budgets']['work']));startup=DeadlineBudget(min(entry+p['budgets']['startup'],work.end))
   display=supervisor.spawn('display-check',['xdpyinfo'],env,ROOT,critical=False);wait_process(display,startup.child(5))
-  worker=supervisor.spawn('worker',[sys.executable,'-B',str(run/'artifacts/tools/navigation/nav_goal.py'),'--run-dir',str(run)],env,ROOT,ipc=True);objects['worker']=worker;link=WorkerLink(worker,args.run_id,log,supervisor,incoming)
+  worker=supervisor.spawn('worker',[sys.executable,'-B',str(run/'artifacts/tools/navigation/nav_goal.py'),'--run-dir',str(run),*(['--mission-observer'] if delivery else [])],env,ROOT,ipc=True);objects['worker']=worker;link=WorkerLink(worker,args.run_id,log,supervisor,incoming)
   rpc('graph',{},startup.child(5))
   if p.get('execution_v1'):
-   from tools.execution.runner_gate import GateSession
-   execution=GateSession(supervisor,run,p,env,log,link,WorkerLink)
+   if delivery:
+    from tools.delivery.session import DeliverySession
+    if p.get('reliability_v1'):
+     from tools.reliability.session import ReliabilitySession as DeliverySession
+    execution=DeliverySession(supervisor,run,p,env,log,link,WorkerLink)
+   else:
+    from tools.execution.runner_gate import GateSession
+    execution=GateSession(supervisor,run,p,env,log,link,WorkerLink)
   phase('START_SIM')
   genv=env.copy();genv.update(p['gazebo_environment']);objects['gazebo']=supervisor.spawn('gazebo',['gz','sim','-s','-r','-v','3','--render-engine-server','ogre',str(run/'artifacts/world.sdf')],genv,ROOT)
   if p.get('p0_08') or execution:
@@ -225,12 +250,14 @@ def main():
   rpc('manager',{'phase':'localization','command':'STARTUP'},startup.child(55))
   if args.fault=='withhold-initial-pose':rpc('withhold',{},startup.child(p['budgets']['fault_initialpose']))
   rpc('localize',{},startup.child(30))
-  objects['navigation']=supervisor.spawn('navigation',['ros2','launch','--noninteractive',p['launch'].get('navigation_package','nav2_bringup'),p['launch']['navigation'],*common],env,ROOT);manager_started.append('navigation')
+  objects['navigation']=supervisor.spawn('navigation',['ros2','launch','--noninteractive',p['launch'].get('navigation_package','nav2_bringup'),p['launch']['navigation'],*common,*(['disabled_goal_pose:='+p['execution_v1']['namespace']+'/disabled_goal_pose'] if delivery else [])],env,ROOT);manager_started.append('navigation')
   rpc('manager',{'phase':'navigation','command':'STARTUP'},startup.child(60));phase('NAV_READY');rpc('nav_ready',{},startup.child(30));rpc('recorder',{'name':recorder_name,'topics':p['recording']['topics']},startup.child(15));update({'type':'READY'})
   if gz:gz.cold(p['spawn'],objects['gazebo'],env)
   if dynamic:dynamic.prepare(startup.child(15))
   if execution:execution.prepare(startup)
-  if p.get('mode')=='probe':
+  if delivery:
+   phase('WAIT_RESULT');execution.execute(work,gz)
+  elif p.get('mode')=='probe':
    dynamic.probe(work)
   else:
    phase('SEND_ONCE');uid=uuid.uuid4().hex;write_json(run/'runtime/dispatch-intent.json',{'uuid':uid,'monotonic_s':time.monotonic()});update({'type':'DISPATCH','uuid':uid});goalbudget=work.child(p['budgets']['goal']);goal_deadline=goalbudget.end
@@ -301,6 +328,7 @@ def main():
     attempt('cancel',lambda:rpc('cancel',{},cleanup.child(5)))
     emergency=objects.get('gazebo')
     if emergency:attempt('emergency_physics',lambda:supervisor.close(emergency,cleanup,grace=3));cleanup_ok=False
+   if delivery and execution:attempt('delivery_safe_finish',lambda:execution.safe_finish(cleanup.child(20)))
    if dynamic:attempt('dynamic_close',lambda:dynamic.close(cleanup))
    if execution:
     for item in supervisor.owned:
@@ -334,7 +362,7 @@ def main():
    write_json(run/'runtime/cleanup.json',{'ok':cleanup_ok,'operations':cleanup_evidence,'processes':[x.result for x in supervisor.owned],'remaining':[m for x in supervisor.owned for m in supervisor.members(x)]})
    final=DeadlineBudget.after(p['budgets']['finalize']);phase('INSPECT_BAG')
    if (run/'bag/metadata.yaml').exists():
-    inspect_item=supervisor.spawn('bag-inspection',[sys.executable,'-B',str(run/('artifacts/tools/execution/inspect_gate_bag.py' if execution else 'artifacts/tools/runner/inspect_bag.py')),'--run-dir',str(run),'--output',str(run/'runtime/bag-check.json')],env,ROOT,critical=False)
+    inspect_item=supervisor.spawn('bag-inspection',[sys.executable,'-B',str(run/('artifacts/tools/delivery/inspect_delivery_bag.py' if delivery else ('artifacts/tools/execution/inspect_gate_bag.py' if execution else 'artifacts/tools/runner/inspect_bag.py'))),'--run-dir',str(run),'--output',str(run/'runtime/bag-check.json')],env,ROOT,critical=False)
     # Worker has exited; inspector is a bounded, expected one-shot process.
     try:
      inspect_item.process.wait(timeout=final.require());supervisor.close(inspect_item,final,initial_signal=False,grace=.1);bagcheck=json.loads((run/'runtime/bag-check.json').read_text())
@@ -351,7 +379,10 @@ def main():
    if fault:write_json(run/'runtime/fault-check.json',fault.report(cleanup_ok,bagcheck))
    phase('FINALIZE');write_json(run/'runtime/failures.json',{'first':state.ledger.first,'later':state.ledger.later});write_json(run/'runtime/timing.json',{'entry_monotonic_s':entry,'end_monotonic_s':time.monotonic(),'elapsed_monotonic_s':time.monotonic()-entry,'scope':'Whole supervisor session; not controller performance','clock_epoch':args.run_id+':sim0'})
    log('FINAL_STATE',{'startup':state.startup,'action':state.action,'harness':state.harness,'cleanup':state.cleanup});eventfile.close()
-   if manifest:
+   if manifest and delivery:
+    from tools.delivery.records import finalize_session
+    diagnostic=finalize_session(run,manifest,execution,cleanup_ok,bagcheck,state,entry)
+   elif manifest:
     artifacts=[]
     for f in sorted(run.rglob('*')):
      if not f.is_file() or not f.stat().st_size or f.name in ['manifest.json','result.json']:continue

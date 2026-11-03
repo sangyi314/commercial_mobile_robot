@@ -40,7 +40,7 @@ class GateNode:public rclcpp::Node{
   clock=create_subscription<rosgraph_msgs::msg::Clock>("clock",rclcpp::QoS(1).best_effort(),[this](rosgraph_msgs::msg::Clock::ConstSharedPtr m,const rclcpp::MessageInfo& info){if(!publisher_matches(*this,get_node_topics_interface()->resolve_topic_name("clock"),mode=="sink"?source:"execution_bridge",get_namespace(),info))return;gate->clock(checked_stamp(m->clock),now());});
   stop=create_subscription<Stop>("stop_report",qos,[this](Stop::ConstSharedPtr m,const rclcpp::MessageInfo& info){
    if(!publisher_matches(*this,get_node_topics_interface()->resolve_topic_name("stop_report"),report_node,get_namespace(),info))return;
-   if(m->lease_id!=gate->lease()||m->from_ros_ns<=0||m->max_gap_ns<0||m->drift_m<0||m->yaw_drift_rad<0||m->synthetic!=(mode=="sink")||m->verdict!="STOPPED"||m->samples<5||m->to_ros_ns-m->from_ros_ns<3000000000LL||m->max_gap_ns>500000000||m->to_ros_ns>gate->ros()||gate->ros()-m->to_ros_ns>=200000000||!std::isfinite(m->drift_m)||!std::isfinite(m->yaw_drift_rad)||m->drift_m>.02||m->yaw_drift_rad>.03)return;
+   if((mode=="simulation"&&m->reason!="WINDOW_PROVEN_BODY_POSE")||m->lease_id!=gate->lease()||m->from_ros_ns<=0||m->max_gap_ns<0||m->drift_m<0||m->yaw_drift_rad<0||m->synthetic!=(mode=="sink")||m->verdict!="STOPPED"||m->samples<5||m->to_ros_ns-m->from_ros_ns<3000000000LL||m->max_gap_ns>500000000||m->to_ros_ns>gate->ros()||gate->ros()-m->to_ros_ns>=200000000||!std::isfinite(m->drift_m)||!std::isfinite(m->yaw_drift_rad)||m->drift_m>.02||m->yaw_drift_rad>.03)return;
    gate->stationary(from(m->identity),m->clock_epoch,m->generation,now(),200);
   });
   service=create_service<Lease>("lease",[this](Lease::Request::SharedPtr q,Lease::Response::SharedPtr r){

@@ -16,7 +16,7 @@ struct ExecutionPort::Impl:std::enable_shared_from_this<Impl>{
  struct Context{Effect effect;x::Identity who;std::string clock,lease,stage{"INSPECT"};bool rpc{false},cancelled{false},has_grant{false},nav_sent{false},rejected{false},revoked{false},fault_reported{false};std::uint64_t generation{};x::Ns revoke_ros{},last_report_end{};Clock::time_point created{Clock::now()},retry{},valid_until{},last_stop{};std::optional<Effect> authorized;};
  struct Pending{std::int64_t request_id;Clock::time_point until;std::shared_ptr<Context> context;std::string operation;};
  ExecutionConfig config;rclcpp::Node::WeakPtr node;NavigationAdapter* navigation;NavigationAdapter::EventSink sink;rclcpp::Client<Lease>::SharedPtr client;rclcpp::Subscription<Status>::SharedPtr status_sub;rclcpp::Subscription<Report>::SharedPtr report_sub;
- std::mutex mutex;std::deque<Effect> commands;std::deque<Event> events;std::map<std::string,std::shared_ptr<Context>> contexts;std::map<std::uint64_t,Pending> pending;std::set<std::string> seen;std::atomic<bool> alive{true},fault{false};bool closing{false};std::uint64_t serial{0},token{0},event_seq{0};std::optional<Status> latest;Clock::time_point latest_at{};struct Authority{Status state;Clock::time_point received;};std::shared_ptr<const Authority> authority;struct ReceivedReport{Report report;Clock::time_point received;};std::optional<ReceivedReport> deferred_report;
+ std::mutex mutex;std::deque<Effect> commands;std::deque<Event> events;std::map<std::string,std::shared_ptr<Context>> contexts;std::map<std::uint64_t,Pending> pending;std::set<std::string> seen;std::atomic<bool> alive{true},fault{false};bool closing{false},reset_pending{false};std::uint64_t serial{0},token{0},event_seq{0};std::optional<Status> latest;Clock::time_point latest_at{};struct Authority{Status state;Clock::time_point received;};std::shared_ptr<const Authority> authority;struct ReceivedReport{Report report;Clock::time_point received;};std::optional<ReceivedReport> deferred_report;
  Event event(const std::shared_ptr<Context>& c,Kind kind,std::string detail){Event e;e.id="execution-"+config.owner+"-"+std::to_string(++event_seq);e.mission=c->effect.mission;e.epoch=config.owner;e.operation=c->effect.operation;e.attempt=c->effect.attempt;e.uuid=c->effect.uuid;e.kind=kind;e.gate_epoch=c->who.gate;e.clock_epoch=c->clock;e.synthetic=config.synthetic_observations;e.execution_verified=true;e.detail=std::move(detail);return e;}
  void emit(Event e){if(!alive)return;if(events.size()>=64){fault=true;std::cerr<<"EXECUTION_EVENT_OVERFLOW; no new authorization\n";return;}events.push_back(std::move(e));}
  void fail(const std::shared_ptr<Context>& c,const std::string& why){if(!c->fault_reported){c->fault_reported=true;emit(event(c,Kind::Fatal,"EXECUTION "+why));}c->cancelled=true;c->stage="REVOKE";}
@@ -34,6 +34,11 @@ struct ExecutionPort::Impl:std::enable_shared_from_this<Impl>{
    auto e=event(c,Kind::ExecutionContext,"GATE_CONTEXT epoch="+r.gate_epoch+" clock="+r.clock_epoch);e.id="execution-context-"+config.owner+"-"+c->effect.attempt;emit(e);return;
   }
   if(r.gate_epoch!=c->who.gate){fail(c,"GATE_RESTART");return;}
+  if(q->operation=="reset"){
+   if(r.code=="RESET_DISARMED"&&r.state=="DISARMED"){c->stage="RESET_DONE";reset_pending=false;emit(event(c,Kind::Feedback,"GATE_RESET_DISARMED; no new authority"));}
+   else{fail(c,"RESET_DENIED "+r.code);reset_pending=true;}
+   return;
+  }
   if(q->operation=="challenge_begin"||q->operation=="challenge_renew"){
    if(r.code=="CHALLENGE"){
     if(c->cancelled||closing){c->stage="REVOKE";return;}
@@ -62,13 +67,13 @@ struct ExecutionPort::Impl:std::enable_shared_from_this<Impl>{
   }
  }
  void state(const Status& s,const rclcpp::MessageInfo& info){auto owner=node.lock();if(!owner||!x::publisher_matches(*owner,config.ns+"/state","execution_gate",config.ns,info))return;latest=s;latest_at=Clock::now();std::atomic_store(&authority,std::make_shared<const Authority>(Authority{s,latest_at}));for(auto& pair:contexts){auto c=pair.second;if(x::from(s.identity)!=c->who||(!c->lease.empty()&&s.lease_id!=c->lease))continue;
-   if(c->lease.empty()&&!s.lease_id.empty()){c->lease=s.lease_id;c->has_grant=true;}
+   if(c->lease.empty()&&!s.lease_id.empty()&&s.allowed&&s.state=="ARMED"){c->lease=s.lease_id;c->has_grant=true;}
    if(!c->clock.empty()&&s.clock_epoch!=c->clock){c->clock=s.clock_epoch;c->revoked=false;auto e=event(c,Kind::ExecutionClock,"GATE_CLOCK_CHANGED");emit(e);c->cancelled=true;c->stage="REVOKE";}
    if(c->has_grant&&!s.allowed&&!c->cancelled){fail(c,"GATE_INVALIDATED "+s.reason);}
   }consume_report();}
  void report(const Report& r,const rclcpp::MessageInfo& info){auto owner=node.lock();if(!owner||!x::publisher_matches(*owner,config.ns+"/stop_report","execution_observer",config.ns,info))return;deferred_report=ReceivedReport{r,Clock::now()};consume_report();}
  void consume_report(){if(!deferred_report)return;auto now=Clock::now();if(now-deferred_report->received>=std::chrono::milliseconds(200)){deferred_report.reset();return;}const auto& r=deferred_report->report;for(auto& pair:contexts){auto c=pair.second;
-   if(!c->revoked||r.verdict!="STOPPED"||r.synthetic!=config.synthetic_observations||x::from(r.identity)!=c->who||r.lease_id!=c->lease||r.clock_epoch!=c->clock||r.generation!=c->generation||r.from_ros_ns<c->revoke_ros||r.to_ros_ns<=c->last_report_end||!latest||now-latest_at>=std::chrono::milliseconds(100)||latest->ros_ns<r.to_ros_ns||latest->ros_ns-r.to_ros_ns>=200000000||now-c->last_stop<std::chrono::milliseconds(50))continue;
+   if((!config.synthetic_observations&&r.reason!="WINDOW_PROVEN_BODY_POSE")||!c->revoked||r.verdict!="STOPPED"||r.synthetic!=config.synthetic_observations||x::from(r.identity)!=c->who||r.lease_id!=c->lease||r.clock_epoch!=c->clock||r.generation!=c->generation||r.from_ros_ns<c->revoke_ros||r.to_ros_ns<=c->last_report_end||!latest||now-latest_at>=std::chrono::milliseconds(100)||latest->ros_ns<r.to_ros_ns||latest->ros_ns-r.to_ros_ns>=200000000||now-c->last_stop<std::chrono::milliseconds(50))continue;
    Event e=event(c,Kind::Stop,"D_REPORT "+r.evidence_ref+" synthetic="+std::to_string(r.synthetic)+" generation="+std::to_string(r.generation)+" from="+std::to_string(r.from_ros_ns)+" to="+std::to_string(r.to_ros_ns));e.source_generation=r.generation;e.source_received_steady_ns=std::chrono::duration_cast<std::chrono::nanoseconds>(deferred_report->received.time_since_epoch()).count();e.continuous_zero=true;e.source_fresh=true;e.source_from_ns=r.from_ros_ns;e.source_to_ns=r.to_ros_ns;e.revoke_ros_ns=c->revoke_ros;e.max_source_gap_ns=r.max_gap_ns;e.source_samples=r.samples;e.drift_m=r.drift_m;e.yaw_drift_rad=r.yaw_drift_rad;e.evidence_ref=r.evidence_ref;e.valid_until=200; // owner converts receipt-relative lifetime; no cross-process steady subtraction
    c->last_report_end=r.to_ros_ns;c->last_stop=now;emit(std::move(e));deferred_report.reset();break;
   }}
@@ -93,7 +98,8 @@ void ExecutionPort::tick(){if(!p->alive)return;
  for(const auto& e:batch){if(!p->seen.insert(e.id).second)continue;if(p->seen.size()>4096){p->fault=true;throw std::runtime_error("execution effect capacity");}
   if(e.kind==EffectKind::Send){if(p->closing||p->fault)continue;if(p->contexts.size()>=64){p->fault=true;throw std::runtime_error("execution context capacity; restart under recovery policy");}auto c=std::make_shared<Impl::Context>();c->effect=e;c->who={p->config.run,"",p->config.owner,e.mission,e.operation,e.attempt};p->contexts[e.attempt]=c;continue;}
   auto it=p->contexts.find(e.attempt);if(it==p->contexts.end())continue;auto c=it->second;if(!e.uuid.empty())c->effect.uuid=e.uuid;
-  if(e.kind==EffectKind::BeginLease){c->stage=c->cancelled?"REVOKE":"BEGIN";}
+  if(e.kind==EffectKind::ResetLease){c->cancelled=true;c->stage="RESET";p->reset_pending=true;}
+  else if(e.kind==EffectKind::BeginLease){c->stage=c->cancelled?"REVOKE":"BEGIN";}
   else if(e.kind==EffectKind::SendAuthorized){
    if(c->cancelled||p->closing){p->not_sent(c);continue;}
    if(!c->nav_sent){c->authorized=e;c->stage="READY_TO_SEND";}
@@ -106,7 +112,8 @@ void ExecutionPort::tick(){if(!p->alive)return;
    else if(p->latest&&p->latest->allowed&&p->latest->lease_id==c->lease&&x::from(p->latest->identity)==c->who&&now-p->latest_at<std::chrono::milliseconds(100)){auto send=*c->authorized;send.kind=EffectKind::Send;p->navigation->execute(send);c->nav_sent=true;c->authorized.reset();c->stage="ACTIVE";}
   }
   if(c->rpc||now<c->retry)continue;
-  if(c->stage=="INSPECT")p->send(c,p->request(c,"inspect"));
+  if((c->stage=="INSPECT"&&!p->reset_pending)||(c->stage=="REVOKE"&&c->who.gate.empty()))p->send(c,p->request(c,"inspect"));
+  else if(c->stage=="RESET")p->send(c,p->request(c,"reset"));
   else if(c->stage=="BEGIN")p->send(c,p->request(c,"challenge_begin"));
   else if(c->stage=="REVOKE"&&!c->who.gate.empty())p->send(c,p->request(c,"revoke"));
   if(!c->has_grant&&!c->cancelled&&now-c->created>std::chrono::seconds(6))p->fail(c,"BEGIN_BUDGET");

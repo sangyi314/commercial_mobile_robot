@@ -97,3 +97,15 @@ P1-01补充：[首次终止意图覆盖修复](verification/p1-01-cancel-intent-
 ## P1-03 运动授权与安全门控（2026-11-02）
 
 [执行合同](contracts/p1-execution-v1.md)、[停止证据合同](contracts/p1-stop-evidence-v1.md)、[所有权与事务设计](design/p1-execution-design.md)、[运行与四模块问答](guides/execution-gate.md)、[测试矩阵](verification/p1-03-test-matrix.md)、[本轮验收报告](verification/p1-03-un63b3ef.md)。真实Mission的synthetic sink与授权fixture的Gazebo载体分列；C消费者ACK、下游独立watchdog、实车与长期可靠性不推定通过。
+
+## P1-04 配送集成（实施与验收分层）
+
+- [Runner合同](contracts/p1-runner-v1.md)
+- [持久FIFO合同](contracts/p1-queue-v1.md)
+- [集成设计](design/p1-delivery-integration.md)
+- [源码学习与复现](guides/delivery-mission.md)
+- [早期实施与阻塞检查点](verification/p1-04-sdkcx3w5.md)
+
+- [最新工程检查点：G02–G06通过，G01本人待验](verification/p1-04-stopfix-ds6qdezr.md)
+- [本人G01交接步骤](guides/p1-04-human-handover.md)
+- [本人批准的Oracle停车边界](adr/p1-oracle-stop-20261103.md)

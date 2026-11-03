@@ -31,7 +31,15 @@ StopResult window(int mode){StopWindow w;auto b=binding();for(int i=0;i<=30;++i)
  w.add(s);}
  return w.evaluate(mode==8?3300:mode==9?4000:3000,4000000000,b);}
 int main(int argc,char** argv){try{ck(argc==2,"case required");std::string c=argv[1];
- if(c=="identity"){
+ if(c=="body"){
+  auto b=binding();BodyWindow body;
+  for(int i=0;i<=200;++i){Sample s;s.binding=b;s.stamp=1000000000LL+i*20000000LL;s.received=i*20;body.add(s);}
+  ck(body.evaluate(4000,5000000000LL,b,1500000000LL,4900000000LL).verdict=="STOPPED","manual stationary body window");
+  ck(body.evaluate(4300,5000000000LL,b,1500000000LL,4900000000LL).verdict=="STOP_UNKNOWN","stale body feedback");
+  ck(body.evaluate(4000,5000000000LL,b,1500000000LL,std::numeric_limits<Ns>::min()).verdict=="STOP_UNKNOWN","invalid body interval without signed overflow");
+  for(int mode=0;mode<5;++mode){BodyWindow bad;for(int i=0;i<=200;++i){Sample s;s.binding=b;s.stamp=1000000000LL+i*20000000LL;s.received=i*20;if(mode==0)s.x=i*.00021728959472378048;if(mode==1)s.yaw=i*.001;if(mode==2&&i==180)s.x=NAN;if(mode==3&&i==180)s.stamp-=20000000;if(mode==4&&i==180)s.binding.generation++;bad.add(s);}ck(bad.evaluate(4000,5000000000LL,b,1500000000LL,4900000000LL).verdict!="STOPPED","wheel-zero cannot hide body motion/nonfinite/replay/epoch");}
+  ck(window(0).verdict=="STOPPED","old wheel-only condition qualifies; new independent body rejection matters");
+ }else if(c=="identity"){
   Fixture f;ck(f.g.tick(1).u[0]==0,"default zero");auto q=Request{"begin","b","","",id(),1,true};q.who.owner="wrong";ck(f.g.issue(q,1).code=="IDENTITY","wrong owner");q.who=id();q.who.gate="old";ck(f.g.issue(q,1).code=="IDENTITY","old gate");q.who=id();q.who.run="other";ck(f.g.issue(q,1).code=="IDENTITY","wrong run");
  }else if(c=="normal"){
   Fixture f;auto r=f.arm();ck(r.deadline==301,"manual deadline");ck(f.g.tick(1).u[0]==0,"Begin alone no motion");f.advance(1);ck(f.input(.12,.15),"candidate");auto d=f.g.tick(f.now);ck(d.u[0]==.12&&d.u[5]==.15,"exact original values");
@@ -57,6 +65,11 @@ int main(int argc,char** argv){try{ck(argc==2,"case required");std::string c=arg
   StopWindow w;Sample s;s.binding=binding();s.stamp=1;s.output_fresh=true;w.add(s);ck(w.evaluate(0,1,binding()).verdict=="STOP_UNKNOWN","short window unknown");
  }else if(c=="reset"){
   Fixture f;f.arm();f.advance(1);f.input();f.g.control(f.revoke(),2);Request reset{"reset","reset1",f.lease,"",id(),101,true};ck(f.g.control(reset,2).code=="RESET_UNQUALIFIED","no stop proof no reset");f.g.stationary(id(),f.g.clock_epoch(),f.g.generation(),2,200);ck(f.g.control(reset,2).code=="RESET_DISARMED","qualified reset only disarms");ck(f.g.tick(2).u[0]==0,"no cached candidate after Reset");bool rejected=false;try{Config invalid;invalid.lease=0;Gate g(invalid,"run","gate","owner");}catch(const std::invalid_argument&){rejected=true;}ck(rejected,"invalid config");
+ }else if(c=="unissued_cancel"){
+  Fixture f;f.arm();f.advance(1);f.input();f.g.control(f.revoke(),2);auto next=id();next.operation="m.return";next.attempt="m.return.0";Request cancel{"revoke","return-never-granted","","",next,102,true};ck(f.g.control(cancel,2).code=="IDENTITY","cannot retarget unresolved STOPPING lease");
+  f.g.stationary(id(),f.g.clock_epoch(),f.g.generation(),2,200);Request reset{"reset","reset-before-return",f.lease,"",id(),101,true};ck(f.g.control(reset,2).code=="RESET_DISARMED","old Goal/D explicitly resolved");
+  ck(f.g.control(cancel,2).code=="REVOKED"&&f.g.identity()==next&&f.g.lease().empty(),"bind new unissued cancellation for independent D");ck(!f.g.active()&&f.g.tick(2).u[0]==0,"unissued revoke never authorizes or reuses cache");
+  auto renew=f.renew();ck(f.g.control(renew,2).code!="RENEWED","old lease never revived");
  }else if(c=="time_format"){
   for(Ns stamp:{Ns(-1),Ns(0),std::numeric_limits<Ns>::min()}){Fixture f;f.arm();f.advance(1);f.input();Candidate bad;bad.u={.1,0,0,0,0,0};bad.frame="base_footprint";bad.stamp=stamp;ck(!f.g.candidate(bad,f.now,f.now)&&!f.g.active()&&f.g.tick(f.now).u[0]==0,"invalid source stamp fail closed");}
   for(Ns stamp:{Ns(-1),Ns(0)}){Fixture f;f.arm();f.advance(1);f.input();auto old=f.g.clock_epoch();f.g.clock(stamp,f.now);ck(!f.g.active()&&f.g.clock_epoch()!=old&&f.g.tick(f.now).u[0]==0,"invalid clock invalidates epoch");f.advance(1);ck(!f.g.active(),"clock recovery cannot authorize");}

@@ -26,6 +26,8 @@ class OwnedProcess:
  critical:bool=True
  closed:bool=False
  result:dict|None=None
+ expected_exits:tuple=(0,-signal.SIGINT)
+ expected_exit_reason:str|None=None
 class ProcessSupervisor:
  def __init__(self,run,emit=lambda *x:None):
   self.run=Path(run);self.emit=emit;self.token=uuid.uuid4().hex;self.owned=[]
@@ -36,6 +38,12 @@ class ProcessSupervisor:
   birth=identity(proc.pid);birth['ownership_token']=childenv['CMR_OWNERSHIP_TOKEN'];item=OwnedProcess(role,proc,birth,out,critical);self.owned.append(item)
   self.emit('PROCESS_STARTED',{'role':role,'argv':argv,'cwd':str(cwd),'identity':birth,'monotonic_s':time.monotonic(),'log':str(out.name),'environment':{k:childenv[k] for k in ['ROS_DOMAIN_ID','GZ_PARTITION','RMW_IMPLEMENTATION','ROS_AUTOMATIC_DISCOVERY_RANGE','LD_PRELOAD','CMR_OWNERSHIP_TOKEN'] if k in childenv}})
   return item
+ def expect_mission_fault_exit(self,item,reason):
+  # P0 defaults are unchanged. Only an explicitly declared, still-running
+  # P1-04 G06 Mission fault may expect SIGKILL; teardown escalation still fails.
+  if not any(x is item for x in self.owned) or item.closed or item.role!='mission' or item.process.poll() is not None or not reason.startswith('G06:') or len(reason)<8:raise ValueError('invalid predeclared Mission fault')
+  item.expected_exits=(-signal.SIGKILL,);item.expected_exit_reason=reason
+  self.emit('EXPECTED_MISSION_FAULT_EXIT',{'role':item.role,'identity':item.birth,'exit':-signal.SIGKILL,'reason':reason,'declared_before_exit':True})
  def members(self,item):
   result=[]
   for p in Path('/proc').iterdir():
@@ -91,7 +99,8 @@ class ProcessSupervisor:
     except subprocess.TimeoutExpired:record['errors'].append('leader wait timeout')
   except (OSError,RuntimeError) as exc:record['errors'].append(str(exc))
   record['remaining']=self.members(item);record['exit']=item.process.poll()
-  record['ok']=not record['forced'] and not record['remaining'] and not record['errors'] and record['exit'] in (0,-signal.SIGINT)
+  record['ok']=not record['forced'] and not record['remaining'] and not record['errors'] and record['exit'] in item.expected_exits
+  record['expected_exits']=list(item.expected_exits);record['expected_exit_reason']=item.expected_exit_reason
   item.logfile.flush();item.logfile.close();item.closed=True;item.result=record;self.emit('PROCESS_CLOSED',record);return record
  def assert_critical(self,except_roles=()):
   for item in self.owned:

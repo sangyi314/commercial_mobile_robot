@@ -41,12 +41,13 @@ struct NavigationAdapter::Impl:std::enable_shared_from_this<NavigationAdapter::I
 };
 
 NavigationAdapter::NavigationAdapter(rclcpp::Node::SharedPtr node,AdapterConfig config,EventSink sink):p(std::make_shared<Impl>()){
- if(config.action.rfind("/cmr_test/",0)!=0||config.epoch.empty()||config.readiness_ms<=0||config.accept_ms<=0||config.execute_ms<=0||config.cancel_ms<=0||config.collect_ms<=0)throw std::runtime_error("invalid adapter config");
+ if((config.simulation?(config.action!="/navigate_to_pose"||!getenv("ROS_DOMAIN_ID")||std::string(getenv("ROS_DOMAIN_ID"))!="71"):config.action.rfind("/cmr_test/",0)!=0)||config.epoch.empty()||config.readiness_ms<=0||config.accept_ms<=0||config.execute_ms<=0||config.cancel_ms<=0||config.collect_ms<=0)throw std::runtime_error("invalid adapter config");
  p->node=node;p->config=std::move(config);p->sink=std::move(sink);p->client=rclcpp_action::create_client<Action>(node,p->config.action);
 }
 NavigationAdapter::~NavigationAdapter(){stop();}
 void NavigationAdapter::execute(const Effect& e){std::lock_guard<std::mutex> lock(p->mutex);if(!p->alive || p->fault)throw std::runtime_error("adapter disarmed");if(p->commands.size()>=32){p->fault=true;throw std::runtime_error("adapter command overflow");}p->commands.push_back(e);}
 bool NavigationAdapter::faulted()const{return p->fault;}
+bool NavigationAdapter::ready()const{return p->alive&&p->client->action_server_is_ready();}
 void NavigationAdapter::begin_shutdown(){p->closing=true;}
 void NavigationAdapter::stop(){if(!p||!p->alive.exchange(false))return;for(auto& pair:p->goals)if(pair.second->handle)p->client->stop_callbacks(pair.second->handle);p->critical.clear();std::cout<<"ADAPTER_CLOSED feedback_dropped="<<p->feedback_dropped<<std::endl;}
 void NavigationAdapter::tick(){if(!p->alive)return;auto node=p->node.lock();if(!node)return;
@@ -71,12 +72,18 @@ void NavigationAdapter::tick(){if(!p->alive)return;auto node=p->node.lock();if(!
     }
     if(providers>1){g->terminal=true;p->fault=true;p->emit(p->event(g,Kind::Rejected,"ISOLATION_EXTRA_SERVER count="+std::to_string(providers)));continue;}
 
-    g->dispatched=true;g->sent=now;Action::Goal goal;goal.pose.header.frame_id="map";goal.pose.header.stamp=node->now();goal.pose.pose.orientation.w=1.0;goal.pose.pose.position.x=g->effect.operation.find(".return")!=std::string::npos?0.0:1.0;
+    Action::Goal goal;goal.pose.header.frame_id="map";goal.pose.pose.orientation.w=1.0;goal.pose.pose.position.x=g->effect.operation.find(".return")!=std::string::npos?0.0:1.0;
+    try{if(p->config.goal_payload_required&&g->effect.navigation_payload.empty())throw std::runtime_error("frozen target required");if(!g->effect.navigation_payload.empty()){
+     const auto payload=strict_json(g->effect.navigation_payload);const auto target=payload.at("target");checked_pose(target);const auto bt=payload.at("bt");if(file_sha256(bt.at("path"))!=bt.at("sha256"))throw std::runtime_error("BT resource changed");
+     goal.pose.header.frame_id=target.at("frame");goal.pose.pose.position.x=target.at("position").at("x");goal.pose.pose.position.y=target.at("position").at("y");goal.pose.pose.position.z=0;goal.pose.pose.orientation.x=0;goal.pose.pose.orientation.y=0;goal.pose.pose.orientation.z=target.at("orientation").at("z");goal.pose.pose.orientation.w=target.at("orientation").at("w");goal.behavior_tree=bt.at("path");
+    }}catch(const std::exception& error){g->terminal=true;p->emit(p->event(g,Kind::Rejected,std::string("NOT_SENT TARGET_INVALID ")+error.what()));continue;}
+    g->dispatched=true;g->sent=now;goal.pose.header.stamp=rclcpp::Time(p->config.source_now_ns?p->config.source_now_ns():node->now().nanoseconds());
+    std::cout<<"NAV_DISPATCH "<<Json{{"mission",g->effect.mission},{"operation",g->effect.operation},{"attempt",g->effect.attempt},{"effect",g->effect.id},{"target_x",goal.pose.pose.position.x},{"target_y",goal.pose.pose.position.y},{"quaternion_z",goal.pose.pose.orientation.z},{"quaternion_w",goal.pose.pose.orientation.w},{"bt",goal.behavior_tree}}.dump()<<std::endl;
     auto weak=std::weak_ptr<Impl>(p);Client::SendGoalOptions opts;
     opts.goal_response_callback=[weak,g](Handle::SharedPtr handle){if(auto self=weak.lock();self&&self->alive){self->expire_before_callback(g,true);if(!handle){g->terminal=true;self->emit(self->event(g,Kind::Rejected,"ACTION_REJECTED"));return;}g->handle=handle;g->uuid=uuid(handle->get_goal_id());g->accepted=true;self->correlated(g,self->event(g,Kind::Accepted,"ACTION_ACCEPTED"));if(g->cancel_pending)self->cancel(g);}};
-    opts.feedback_callback=[weak,g](Handle::SharedPtr handle,std::shared_ptr<const Action::Feedback> feedback){if(auto self=weak.lock();self&&self->alive){if(!g->accepted||uuid(handle->get_goal_id())!=g->uuid)return;self->emit(self->event(g,Kind::Feedback,"FEEDBACK remaining="+std::to_string(feedback->distance_remaining)),false);}};
+    opts.feedback_callback=[weak,g](Handle::SharedPtr handle,std::shared_ptr<const Action::Feedback> feedback){if(auto self=weak.lock();self&&self->alive){if(!g->accepted||uuid(handle->get_goal_id())!=g->uuid)return;self->emit(self->event(g,Kind::Feedback,"FEEDBACK remaining="+std::to_string(feedback->distance_remaining)+" internal_recoveries="+std::to_string(feedback->number_of_recoveries)),false);}};
     opts.result_callback=[weak,g](const Handle::WrappedResult& result){if(auto self=weak.lock();self&&self->alive){self->expire_before_callback(g,false);const auto id=uuid(result.goal_id);if(!g->uuid.empty()&&id!=g->uuid){self->emit(self->event(g,g->terminal?Kind::Feedback:Kind::Fatal,"UUID_CONFLICT"));return;}Kind kind=Kind::Fatal;switch(result.code){case rclcpp_action::ResultCode::SUCCEEDED:kind=Kind::Succeeded;break;case rclcpp_action::ResultCode::ABORTED:kind=Kind::Aborted;break;case rclcpp_action::ResultCode::CANCELED:kind=Kind::CanceledResult;break;default:break;}
-      auto e=self->event(g,kind,"ACTION_RESULT code="+std::to_string(static_cast<int>(result.code)));e.uuid=id;
+      auto e=self->event(g,kind,"ACTION_RESULT code="+std::to_string(static_cast<int>(result.code)));e.uuid=id;if(auto node=self->node.lock())e.source_to_ns=self->config.source_now_ns?self->config.source_now_ns():node->now().nanoseconds();
       self->correlated(g,std::move(e));
     }};
     std::cout<<"SEND_CALL "<<g->effect.id<<std::endl;
