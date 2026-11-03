@@ -17,7 +17,11 @@ def run_id(value):
  if not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_-]{0,95}',value):raise ValueError('unsafe run_id')
  return value
 
-def digest(path):return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+def digest(path):
+ h=hashlib.sha256()
+ with Path(path).open('rb') as f:
+  for block in iter(lambda:f.read(1024*1024),b''):h.update(block)
+ return h.hexdigest()
 def within(root,path):
  root=Path(root).resolve();p=Path(path).resolve()
  if p==root or root not in p.parents:raise ValueError('path escapes root or names directory root')

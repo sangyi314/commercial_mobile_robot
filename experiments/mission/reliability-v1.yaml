@@ -1,0 +1,446 @@
+schema_version: 1
+scope: P1 Oracle assisted Gazebo only; sensor_only_E2=false
+run_id_candidate_id_config_id_distinct: true
+seed_set:
+- 1
+- 2
+- 3
+- 4
+- 5
+- 6
+- 7
+- 8
+- 9
+- 10
+- 11
+- 12
+- 13
+- 14
+- 15
+- 16
+- 17
+- 18
+- 19
+- 20
+operations_per_seed: 200
+statuses:
+- PASS
+- FAIL
+- NOT_EXECUTED
+- NOT_EXERCISED
+- BLOCKED
+- INVALID_EVIDENCE
+matrix:
+- case_id: R01
+  name: 正常完整配送
+  levels:
+  - L2
+  initial_state: fresh isolated session or test DB; no unknown old owner
+  qualification: READY+initial stationary
+  injection: none
+  expected: COMPLETED; source synthetic unless actual human
+  budget:
+    L0_test_timeout_s: 180
+    L1_test_timeout_s: 90
+    L2_task_ms: 240000
+    lease_ms: 300
+    stop_window_s: 3
+    R16_wall_s: null
+  existing_mapping_to_verify: G01D,D01,G02,G05
+  raw_evidence: []
+  actual: NOT_EXECUTED
+  continue_rule: all declared required layers pass; failed injection => NOT_EXERCISED
+  cleanup: original supervisor PID+start_ticks+ownership token only
+- case_id: R02
+  name: 运动中取消
+  levels:
+  - L1
+  - L2
+  initial_state: fresh isolated session or test DB; no unknown old owner
+  qualification: matching ACTIVE UUID and wheel+body displacement>=.05m/fresh<200ms
+  injection: real cancel request
+  expected: CANCELED after terminal+A/B/D; pause schedule
+  budget:
+    L0_test_timeout_s: 180
+    L1_test_timeout_s: 90
+    L2_task_ms: 240000
+    lease_ms: 300
+    stop_window_s: 3
+    R16_wall_s: null
+  existing_mapping_to_verify: D03,G03
+  raw_evidence: []
+  actual: NOT_EXECUTED
+  continue_rule: all declared required layers pass; failed injection => NOT_EXERCISED
+  cleanup: original supervisor PID+start_ticks+ownership token only
+- case_id: R03
+  name: 交接超时
+  levels:
+  - L0
+  - L2
+  initial_state: fresh isolated session or test DB; no unknown old owner
+  qualification: qualified WAIT_HANDOVER
+  injection: withhold confirmation until frozen handover_ms
+  expected: FAILED, no return Goal, not handed over
+  budget:
+    L0_test_timeout_s: 180
+    L1_test_timeout_s: 90
+    L2_task_ms: 240000
+    lease_ms: 300
+    stop_window_s: 3
+    R16_wall_s: null
+  existing_mapping_to_verify: mission_delivery_expire,D04,G04
+  raw_evidence: []
+  actual: NOT_EXECUTED
+  continue_rule: all declared required layers pass; failed injection => NOT_EXERCISED
+  cleanup: original supervisor PID+start_ticks+ownership token only
+- case_id: R04
+  name: 重复与冲突
+  levels:
+  - L0
+  - L1
+  - L2
+  initial_state: fresh isolated session or test DB; no unknown old owner
+  qualification: persistent active/queued/terminal registration
+  injection: same ID same/different canonical content
+  expected: EXISTING or CONFLICT, no new Goal
+  budget:
+    L0_test_timeout_s: 180
+    L1_test_timeout_s: 90
+    L2_task_ms: 240000
+    lease_ms: 300
+    stop_window_s: 3
+    R16_wall_s: null
+  existing_mapping_to_verify: mission_admission_*,D06,G05
+  raw_evidence: []
+  actual: NOT_EXECUTED
+  continue_rule: all declared required layers pass; failed injection => NOT_EXERCISED
+  cleanup: original supervisor PID+start_ticks+ownership token only
+- case_id: R05
+  name: Owner死亡重启
+  levels:
+  - L0
+  - L1
+  - L2
+  initial_state: fresh isolated session or test DB; no unknown old owner
+  qualification: matching UUID actually moving; owned pid/start ticks
+  injection: owned Mission SIGKILL, supervised restart
+  expected: LEASE_EXPIRED, stationary before restart; PAUSED/UNCERTAIN, waiting retained
+  budget:
+    L0_test_timeout_s: 180
+    L1_test_timeout_s: 90
+    L2_task_ms: 240000
+    lease_ms: 300
+    stop_window_s: 3
+    R16_wall_s: null
+  existing_mapping_to_verify: mission_crash_windows,D09,G06
+  raw_evidence: []
+  actual: NOT_EXECUTED
+  continue_rule: all declared required layers pass; failed injection => NOT_EXERCISED
+  cleanup: original supervisor PID+start_ticks+ownership token only
+- case_id: R06
+  name: 拒绝/接受超时/迟接受
+  levels:
+  - L1
+  initial_state: fresh isolated session or test DB; no unknown old owner
+  qualification: isolated real NavigateToPose protocol
+  injection: FakeControl reject/delay barrier
+  expected: unknown occupies slot, late accepted exact cancel
+  budget:
+    L0_test_timeout_s: 180
+    L1_test_timeout_s: 90
+    L2_task_ms: 240000
+    lease_ms: 300
+    stop_window_s: 3
+    R16_wall_s: null
+  existing_mapping_to_verify: A04,A08,A10,D11
+  raw_evidence: []
+  actual: NOT_EXECUTED
+  continue_rule: all declared required layers pass; failed injection => NOT_EXERCISED
+  cleanup: original supervisor PID+start_ticks+ownership token only
+- case_id: R07
+  name: 结果取消竞态
+  levels:
+  - L0
+  - L1
+  initial_state: fresh isolated session or test DB; no unknown old owner
+  qualification: controlled owner barrier; native UUID
+  injection: success/cancel order and cancel response loss
+  expected: one terminal decision; cancel ACK separate from stop
+  budget:
+    L0_test_timeout_s: 180
+    L1_test_timeout_s: 90
+    L2_task_ms: 240000
+    lease_ms: 300
+    stop_window_s: 3
+    R16_wall_s: null
+  existing_mapping_to_verify: mission_termination_*,A06,A07,A09
+  raw_evidence: []
+  actual: NOT_EXECUTED
+  continue_rule: all declared required layers pass; failed injection => NOT_EXERCISED
+  cleanup: original supervisor PID+start_ticks+ownership token only
+- case_id: R08
+  name: Server消失恢复
+  levels:
+  - L1
+  initial_state: fresh isolated session or test DB; no unknown old owner
+  qualification: one actual accepted/pending Goal
+  injection: owned Fake Server exit/restart
+  expected: no resend, unknown retained
+  budget:
+    L0_test_timeout_s: 180
+    L1_test_timeout_s: 90
+    L2_task_ms: 240000
+    lease_ms: 300
+    stop_window_s: 3
+    R16_wall_s: null
+  existing_mapping_to_verify: A12,D11/server_loss
+  raw_evidence: []
+  actual: NOT_EXECUTED
+  continue_rule: all declared required layers pass; failed injection => NOT_EXERCISED
+  cleanup: original supervisor PID+start_ticks+ownership token only
+- case_id: R09
+  name: SQLite故障崩溃
+  levels:
+  - L0
+  - L1
+  initial_state: fresh isolated session or test DB; no unknown old owner
+  qualification: dedicated test DB
+  injection: writer BEGIN IMMEDIATE/ABORT trigger, before/after commit fork exit86
+  expected: failed transaction no acceptance/dispatch; no replay after restart
+  budget:
+    L0_test_timeout_s: 180
+    L1_test_timeout_s: 90
+    L2_task_ms: 240000
+    lease_ms: 300
+    stop_window_s: 3
+    R16_wall_s: null
+  existing_mapping_to_verify: mission_store_contract,mission_delivery_fault,mission_delivery_crash_windows,A16
+  raw_evidence: []
+  actual: NOT_EXECUTED
+  continue_rule: all declared required layers pass; failed injection => NOT_EXERCISED
+  cleanup: original supervisor PID+start_ticks+ownership token only
+- case_id: R10
+  name: 有限FIFO并发
+  levels:
+  - L0
+  - L1
+  - L2
+  initial_state: fresh isolated session or test DB; no unknown old owner
+  qualification: capacity4 plus active slot
+  injection: 11 concurrent service futures; promotion/cancel barriers
+  expected: 3 remaining accepted,4full,3existing,1conflict; FIFO atomic
+  budget:
+    L0_test_timeout_s: 180
+    L1_test_timeout_s: 90
+    L2_task_ms: 240000
+    lease_ms: 300
+    stop_window_s: 3
+    R16_wall_s: null
+  existing_mapping_to_verify: mission_delivery_*,D06,D07,D08,G05
+  raw_evidence: []
+  actual: NOT_EXECUTED
+  continue_rule: all declared required layers pass; failed injection => NOT_EXERCISED
+  cleanup: original supervisor PID+start_ticks+ownership token only
+- case_id: R11
+  name: 旧身份租约
+  levels:
+  - L0
+  - L1
+  initial_state: fresh isolated session or test DB; no unknown old owner
+  qualification: current identity/epoch with new attempt
+  injection: old UUID/epoch/seq/lease/challenge and cached velocity
+  expected: reject old authority; no stale callback mutation
+  budget:
+    L0_test_timeout_s: 180
+    L1_test_timeout_s: 90
+    L2_task_ms: 240000
+    lease_ms: 300
+    stop_window_s: 3
+    R16_wall_s: null
+  existing_mapping_to_verify: mission_action_correlation,execution_identity,execution_idempotence,A11(adapter-unit+ROS),E04,E05
+  raw_evidence: []
+  actual: NOT_EXECUTED
+  continue_rule: all declared required layers pass; failed injection => NOT_EXERCISED
+  cleanup: original supervisor PID+start_ticks+ownership token only
+- case_id: R12
+  name: 停车缺失陈旧矛盾
+  levels:
+  - L0
+  - L1
+  initial_state: fresh isolated session or test DB; no unknown old owner
+  qualification: exact consumed generation/from/to
+  injection: stop stream missing, zero twist moving pose, stale/gap
+  expected: STOP_UNKNOWN; never use later good window
+  budget:
+    L0_test_timeout_s: 180
+    L1_test_timeout_s: 90
+    L2_task_ms: 240000
+    lease_ms: 300
+    stop_window_s: 3
+    R16_wall_s: null
+  existing_mapping_to_verify: execution_stop_bad,execution_body,test_body_stop_ros,D12
+  raw_evidence: []
+  actual: NOT_EXECUTED
+  continue_rule: all declared required layers pass; failed injection => NOT_EXERCISED
+  cleanup: original supervisor PID+start_ticks+ownership token only
+- case_id: R13
+  name: 时钟异常
+  levels:
+  - L0
+  - L1
+  initial_state: fresh isolated session or test DB; no unknown old owner
+  qualification: explicit Clock with wall watchdog
+  injection: pause/rollback/malformed clock and stale receipt
+  expected: revoke/latch with steady deadline; no auto rearm
+  budget:
+    L0_test_timeout_s: 180
+    L1_test_timeout_s: 90
+    L2_task_ms: 240000
+    lease_ms: 300
+    stop_window_s: 3
+    R16_wall_s: null
+  existing_mapping_to_verify: execution_clock,execution_time_format,A14,E06,E10
+  raw_evidence: []
+  actual: NOT_EXECUTED
+  continue_rule: all declared required layers pass; failed injection => NOT_EXERCISED
+  cleanup: original supervisor PID+start_ticks+ownership token only
+- case_id: R14
+  name: 有界恢复
+  levels:
+  - L0
+  - L1
+  initial_state: fresh isolated session or test DB; no unknown old owner
+  qualification: terminal failure + revoked + stop + remaining task budget
+  injection: two ABORTED, timeout/BT waits
+  expected: one shared extra attempt, fixed total deadline
+  budget:
+    L0_test_timeout_s: 180
+    L1_test_timeout_s: 90
+    L2_task_ms: 240000
+    lease_ms: 300
+    stop_window_s: 3
+    R16_wall_s: null
+  existing_mapping_to_verify: mission_state_timelines,D14; physical persistent obstacle
+    NOT_EXERCISED
+  raw_evidence: []
+  actual: NOT_EXECUTED
+  continue_rule: all declared required layers pass; failed injection => NOT_EXERCISED
+  cleanup: original supervisor PID+start_ticks+ownership token only
+- case_id: R15
+  name: Runner记录清理异常
+  levels:
+  - L0
+  - L1
+  initial_state: fresh isolated session or test DB; no unknown old owner
+  qualification: closed raw evidence and owned child process
+  injection: bad hash/missing raw/synthetic-as-human/exit7
+  expected: reject evidence; cleanup own only; business/harness distinct
+  budget:
+    L0_test_timeout_s: 180
+    L1_test_timeout_s: 90
+    L2_task_ms: 240000
+    lease_ms: 300
+    stop_window_s: 3
+    R16_wall_s: null
+  existing_mapping_to_verify: D16,test_delivery_audit_exit,test_reliability
+  raw_evidence: []
+  actual: NOT_EXECUTED
+  continue_rule: all declared required layers pass; failed injection => NOT_EXERCISED
+  cleanup: original supervisor PID+start_ticks+ownership token only
+- case_id: R16
+  name: 连续3600秒
+  levels:
+  - L2
+  initial_state: fresh isolated session or test DB; no unknown old owner
+  qualification: qualified short300s + R01-R05 + supervised frozen candidate
+  injection: fixed20 order schedule / 60s opportunities / no destructive owner fault
+  expected: all planned orders accounted; >=10 total COMPLETED with at least one in
+    each third; no invariant violation; raw audit
+  budget:
+    L0_test_timeout_s: 180
+    L1_test_timeout_s: 90
+    L2_task_ms: 240000
+    lease_ms: 300
+    stop_window_s: 3
+    R16_wall_s: 3600
+  existing_mapping_to_verify: run_reliability.py, profile5
+  raw_evidence: []
+  actual: NOT_EXECUTED
+  continue_rule: all declared required layers pass; failed injection => NOT_EXERCISED
+  cleanup: original supervisor PID+start_ticks+ownership token only
+random_collections:
+- name: queue-model
+  seeds:
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+  - 15
+  - 16
+  - 17
+  - 18
+  - 19
+  - 20
+  operations_per_seed: 200
+- name: handover-model
+  seeds:
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+  - 15
+  - 16
+  - 17
+  - 18
+  - 19
+  - 20
+  operations_per_seed: 200
+- name: sqlite-stale-restart-v2
+  seeds:
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+  - 15
+  - 16
+  - 17
+  - 18
+  - 19
+  operations_per_seed: 200
+  prng: std::mt19937 / modulo27
+  faults:
+  - actual bounded SQLite BUSY
+  - restart no resend
+  - stale UUID
+  - stale attempt

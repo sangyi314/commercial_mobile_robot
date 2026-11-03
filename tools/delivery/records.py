@@ -3,6 +3,7 @@
 import json,sqlite3,hashlib,shlex,fcntl
 from contextlib import ExitStack,closing
 from pathlib import Path
+from tools.runner.runner_core import digest
 STATES=['ACCEPTED','NAVIGATING','WAIT_HANDOVER','RETURNING','PAUSED','RECOVERING','COMPLETED','FAILED','CANCELED']
 PHASES=['NONE','SEND_PENDING','ACTIVE','STOP_PENDING','UNCERTAIN']
 TERMINAL={'COMPLETED','FAILED','CANCELED'}
@@ -97,7 +98,7 @@ def validate_references(root,refs):
   path=(root/ref['path']).resolve()
   if not path.is_relative_to(root):errors.append('reference escapes session');continue
   if not path.is_file() or not path.stat().st_size:errors.append('missing '+ref['path']);continue
-  actual=hashlib.sha256(path.read_bytes()).hexdigest()
+  actual=digest(path)
   if actual!=ref['sha256']:errors.append('wrong hash '+ref['path'])
  return errors
 
@@ -134,12 +135,22 @@ def audit_session(root,recompute_bag=True):
  required={'mission-manifest.v1.json','mission-events.jsonl','queue-ledger.v1.json','artifacts/profile.json','artifacts/stations.v1.json','artifacts/delivery.bt.xml','runtime/mission.db','runtime/cleanup.json','runtime/worker-mode.json','runtime/execution-graph.json','runtime/bag-check.json','runtime/delivery-case.json','runtime/observations.jsonl','runtime/p0-08-gazebo.jsonl','bag/metadata.yaml','logs/mission.log'}
  if not required.issubset(set(names)) or len(names)!=len(set(names)) or not any(n.endswith('.mcap') for n in names):errors.append('missing or duplicate required raw artifact')
  errors+=validate_references(root,refs)
+ inputs=manifest.get('inputs',[]);input_names=[r['path'] for r in inputs]
+ if not inputs or len(input_names)!=len(set(input_names)):errors.append('missing/duplicate frozen input references')
+ errors+=['frozen input: '+e for e in validate_references(root,inputs)]
  if manifest.get('record_origin')!='gazebo' or result.get('synthetic_observations') is not False:errors.append('evidence layer')
  worker=json.loads((root/'runtime/worker-mode.json').read_text())
  if worker.get('action_client_created') is not False or worker.get('mode')!='mission_observer':errors.append('second worker Goal owner')
  if (root/'logs/action-client.jsonl').read_text().strip():errors.append('worker sent/canceled a Goal')
  db=audit_database(root/'runtime/mission.db');errors+=db['errors']
+ from itertools import zip_longest
+ with (root/'mission-events.jsonl').open() as exported:
+  for expected,line in zip_longest(db['events'],exported):
+   try:actual=json.loads(line) if line is not None else None
+   except ValueError:actual=None
+   if expected!=actual:errors.append('mission event export/SQLite mismatch');break
  if db['records']!=result.get('missions'):errors.append('result does not match persisted final records')
+ if result.get('unique_admitted')!=db['unique_admitted'] or result.get('submit_calls')!=db['submit_calls']:errors.append('result counters/SQLite mismatch')
  if any(r['state']=='COMPLETED' and not r['handed_over'] for r in db['records'].values()):errors.append('completion without handover')
  profile=json.loads((root/'artifacts/profile.json').read_text());case=profile['delivery_v1']['case']
  if case!=manifest['case'] or case!=result['case']:errors.append('case identity')
@@ -157,7 +168,7 @@ def audit_session(root,recompute_bag=True):
  business=expected_business(case,db,profile.get("reliability_v1"))
  if profile.get("reliability_v1"):
   from tools.reliability.audit import audit_data
-  errors += ["reliability: "+e for e in audit_data(root,db,json.loads((root/"runtime/bag-check.json").read_text()))["errors"]
+  errors += ["reliability: "+e for e in audit_data(root,db,json.loads((root/"runtime/bag-check.json").read_text()))["errors"]]
  if business!=result.get('expected_business_result'):errors.append('business claim mismatch')
  bag=json.loads((root/'runtime/bag-check.json').read_text())
  if recompute_bag:

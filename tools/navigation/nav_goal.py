@@ -473,6 +473,12 @@ def main():
    return {'endpoints':endpoints,'nodes':node.get_node_names_and_namespaces(),'parameters':params,'old_cmd_vel_endpoints':0,'docking_absent':True,'goal_owner':'Mission NavigationAdapter; worker observer has no ActionClient' if mission_observer else 'cmr_worker only',**({'oracle_stop_assisted':True,'body_feedback_scope':'independent stop evaluator and readonly recorders only; no Nav2 subscription'} if body_policy.get('required') else {})}
   if op=='execution_status':
    if not execution:raise ValueError('scope')
+   if profile.get('reliability_v1'):
+    for key in ['gate_state','stop_report','/cmd_vel','clock','odom','body_odom']:
+     if key not in latest or not 0<=time.monotonic()-latest[key][0]<.2:raise RuntimeError('reliability observation stale '+key)
+    for name,expected,namespace in [(execution['namespace']+'/final','execution_gate',execution['namespace']),(execution['namespace']+'/candidate','collision_monitor','/')]:
+     pubs=node.get_publishers_info_by_topic(name)
+     if len(pubs)!=1 or pubs[0].node_name!=expected or pubs[0].node_namespace!=namespace:raise RuntimeError('unqualified velocity publisher '+name)
    wait(lambda:'gate_state' in latest and 'stop_report' in latest and '/cmd_vel' in latest,deadline,'gate subscriptions')
    m=latest['/cmd_vel'][1]
    return {'state':message_to_ordereddict(latest['gate_state'][1]),'stop':message_to_ordereddict(latest['stop_report'][1]),'final_nonzero':any(abs(getattr(getattr(m,a),b))>.001 for a in ['linear','angular'] for b in 'xyz')}

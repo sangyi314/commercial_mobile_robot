@@ -98,6 +98,16 @@ if(BUILD_TESTING)
   add_test(NAME mission_execution_${mode} COMMAND execution_logic_test ${mode} ${CMAKE_BINARY_DIR}/execution-${mode})
  endforeach()
 endif()
+# Reliability v2 retains the original fixed seeds and original suite unchanged,
+# with a distinct binary/artifact root for real SQLITE_BUSY and stale identities.
+if(BUILD_TESTING)
+ add_executable(reliability_interleaving_test test/interleaving_test.cpp)
+ target_compile_definitions(reliability_interleaving_test PRIVATE CMR_RELIABILITY_RANDOM=1)
+ target_link_libraries(reliability_interleaving_test PRIVATE mission_store)
+ add_test(NAME mission_reliability_interleaving COMMAND reliability_interleaving_test ${CMAKE_BINARY_DIR}/reliability-interleaving-artifacts)
+ set_tests_properties(mission_reliability_interleaving PROPERTIES TIMEOUT 180)
+endif()
+
 if(CMR_MISSION_BUILD_ROS)
  find_package(ament_cmake REQUIRED)
  find_package(rclcpp REQUIRED)

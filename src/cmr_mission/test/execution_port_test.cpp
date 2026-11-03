@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 #include "cmr_mission/execution_port.hpp"
+#include "cmr_mission/effect_sequence.hpp"
 #include <unistd.h>
 #include <cmr_interfaces/srv/execution_lease.hpp>
 #include <thread>
@@ -36,6 +37,19 @@ int main(int argc,char** argv){
    rclcpp::executors::SingleThreadedExecutor executor;executor.add_node(node);auto until=std::chrono::steady_clock::now()+std::chrono::seconds(4);
    while(std::chrono::steady_clock::now()<until&&revoked==0){port.tick();executor.spin_some(std::chrono::milliseconds(5));std::this_thread::sleep_for(std::chrono::milliseconds(1));}
    check(inspected==1&&contexts==1&&revoked==1&&begun==0,"early cancel must inspect then revoke; never Begin or send Goal");port.stop();adapter.stop();executor.cancel();executor.remove_node(node);
+  }
+  {
+   AdapterConfig cfg;cfg.epoch="owner";cfg.action=ns+"/unused_action";
+   NavigationAdapter adapter(node,cfg,[](Event){return true;});
+   ExecutionPort port(node,{"run","owner",ns,true},adapter,[](Event){return true;});
+   port.execute({"m:1:0","m","m.out","m.out.0","",EffectKind::Send});port.tick();
+   for(unsigned n=1;n<=5000;++n){Effect e{"m:"+std::to_string(n)+":4","m","m.out","m.out.0","",EffectKind::RenewLease};check(renew_effect_sequence(e)==n,"canonical receipt version");port.execute(e);port.tick();}
+   port.execute({"m:1:4","m","m.out","m.out.0","",EffectKind::RenewLease});port.tick();
+   check(!port.faulted(),"5000 renew receipts must not exhaust structural dedup history");
+   for(const std::string id:{"m:0:4","m:01:4","m:1x:4","other:1:4","m:18446744073709551616:4","m:1:0"}){
+    bool rejected=false;try{renew_effect_sequence({id,"m","m.out","m.out.0","",EffectKind::RenewLease});}catch(const std::invalid_argument&){rejected=true;}check(rejected,"malformed renew ID rejected");
+   }
+   port.stop();adapter.stop();
   }
   node.reset();rclcpp::shutdown();std::cout<<"PASS bounded port overload and fail-closed latch; API unit, no Action Server/Goal\n";return 0;
  }catch(const std::exception& e){std::cerr<<e.what()<<"\n";rclcpp::shutdown();return 1;}

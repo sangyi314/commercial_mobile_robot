@@ -104,3 +104,13 @@ v4沿用官方Shim→MPPI，设置rotate_to_heading_once=true，GoalCritic.cost_
 
 
 P1-04最终检查点（2026-11-03）：实际采用p104-mppi-short-leg-v4（已安装Nav2 Rotation Shim→MPPI，once=true、GoalCritic权重20、primary GoalAngle关闭）及本人批准的Oracle辅助停车。G02 r07、G03/G04 r11、G05/G06 r10独立审计5/5通过；v2/v3及此前失败全部保留，G01本人未执行，P1-04仍PARTIAL。具体源代码、复用、参数与证据见docs/verification/p1-04-stopfix-ds6qdezr.md。未复制第三方控制器源码进工程运行模块。
+
+## P1-05可靠性验证（2026-11-03）
+
+复读实际ROS28.1.22 single_threaded_executor.hpp（Apache-2.0）、Nav2 1.3.13安装BT、既有固定d5d768b7b38a05e7cfd2b6c693b786b402161bed源码和测试、SQLite官方wal.html。CMR可靠性计划/资源采样/独立模型/驱动/流式审计为独立MIT实现，复用既有CMR与已安装ROS/Nav2/Gazebo/system SQLite，不复制第三方源码、不新增系统框架。原上游版权和许可证文件全部保留。证据见evidence/env/p1-05-dev-b1sg_5gd/research.md。元数据兼容性另审计，候选不等于正式发布许可放行。
+
+P1-05增补：AI独立实现RenewLease规范effect序号解析和每attempt单调回执，保留原一次性effect去重及上限；修复Delivery service默认QoS10与11并发不匹配，采用本机Jazzy公共Services QoS接口，显式depth64与既有pending64一致。保留原D06失败、5000回执/格式反例及新候选实际协议/L2重测；无上游源码复制。
+
+P1-05 r07录制修复：本机rosbag2/ros2bag/mcap_vendor0.26.11，官方ros2/rosbag2 tag0.26.11 commit cb8fa198b93bfed90e2417b52b8645fb9ef89c2b（Apache2），研究SequentialWriter、mcap_storage.cpp的YAML转换及实际test_mcap_storage.cpp。默认ROS双缓存100MiB和MCAP chunk使文件mtime不代表订阅健康；仅profile5显式max-cache-size=0、MCAP noChunking=true、enableDataCRC=true，不降低三秒文件进展门槛，P0及profile4录制不变。数据CRC保留，文件可见增长不等于掉电fsync保证。短测r06失败与原MCAP保留；新候选重跑。窗口失败也单独记录已开始/中止和真实steady时长，不拼接。成熟组件直接使用，CMR参数和监控独立适配，无上游实现复制。源码/测试/许可在evidence/env/p1-05-dev-b1sg_5gd/upstream-recording-r07。
+
+MCAP传递组件核对：rosbag2 mcap_vendor0.26.11的CMake实际取foxglove/mcap releases/cpp/v1.3.1，核心MIT而非笼统Apache-2.0；保留third_party/licenses/mcap-1.3.1-MIT.txt及官方tag核对证据。本项目直接调用安装rosbag2插件，没有拷贝MCAP实现或将系统库改许可。P0 cmr_core/cmr_sim包元数据Apache-2.0与根MIT声明的范围仍待作者审查；历史P0元数据不自动改写，正式发布阻断，见本轮license-metadata-audit.json。

@@ -194,6 +194,7 @@ def main():
     target=run/'artifacts'/(role+'.binary');atomic_write_new(target,Path(ref['path']).read_bytes());target.chmod(0o755)
    atomic_write_new(run/'artifacts/delivery.bt.xml',Path(p['delivery_v1']['bt']['path']).read_bytes());atomic_write_new(run/'artifacts/stations-source.v1.json',Path(p['delivery_v1']['catalog_source']['path']).read_bytes());atomic_write_new(run/'artifacts/stations-input.v1.json',Path(p['delivery_v1']['catalog']['path']).read_bytes())
    catalog=json.loads(Path(p['delivery_v1']['catalog']['path']).read_text());catalog['bt']['path']=str(run/'artifacts/delivery.bt.xml');write_json(run/'artifacts/stations.v1.json',catalog)
+  if p.get('reliability_v1'):atomic_write_new(run/'artifacts/reliability-mcap.yaml',Path(p['reliability_v1']['storage']['path']).read_bytes())
   if p.get('task_inputs'):atomic_write_new(run/'artifacts/task-inputs.json',Path(p['task_inputs']['path']).read_bytes())
   frozen=copy.deepcopy(p);frozen.update({'selected_method':args.method,'fault':args.fault,'ack_test_fault':args.ack_test_fault});write_json(run/'artifacts/profile.json',frozen)
   scene=copy.deepcopy(scenario);scene['scenario_revision']=args.run_id;scene['resources']['world']['path']=str(run/'artifacts/world.sdf');scene['task']['common_constraints_ref']['path']=str(run/'artifacts/constraints.json')
@@ -233,7 +234,7 @@ def main():
   phase('START_SIM')
   genv=env.copy();genv.update(p['gazebo_environment']);objects['gazebo']=supervisor.spawn('gazebo',['gz','sim','-s','-r','-v','3','--render-engine-server','ogre',str(run/'artifacts/world.sdf')],genv,ROOT)
   if p.get('p0_08') or execution:
-   gz=GazeboEvidence(run,env['GZ_PARTITION'],log,robot_only=bool(execution));link.hooks.append(gz.tick)
+   gz=GazeboEvidence(run,env['GZ_PARTITION'],log,robot_only=bool(execution),history_limit=2000 if p.get("reliability_v1") else None);link.hooks.append(gz.tick)
   sp=p['spawn'];spawn=supervisor.spawn('robot-spawn',['ros2','run','ros_gz_sim','create','-world','default','-file',str(run/'artifacts/robot.sdf'),'-name','turtlebot3_waffle','-x',str(sp['x']),'-y',str(sp['y']),'-z',str(sp['z'])],env,ROOT,critical=False);wait_process(spawn,startup.child(30))
   sim=Path('/opt/ros/jazzy/share/nav2_minimal_tb3_sim')
   objects['robot']=supervisor.spawn('robot',['/opt/ros/jazzy/lib/robot_state_publisher/robot_state_publisher','--ros-args','-p','use_sim_time:=true','-p','robot_description:='+(sim/'urdf/turtlebot3_waffle.urdf').read_text()],env,ROOT)
@@ -243,7 +244,9 @@ def main():
    dynamic=DynamicSession(supervisor,run,p,env,log,link,WorkerLink)
   phase('SENSOR_READY');rpc('sensors',{},startup.child(35));phase('START_RECORDER')
   recorder_name='cmr_recorder_'+args.run_id.replace('-','_')
-  objects['recorder']=supervisor.spawn('recorder',['ros2','bag','record','--storage','mcap','--output',str(run/'bag'),'--use-sim-time','--node-name',recorder_name,'--qos-profile-overrides-path',str(run/'artifacts/recording_qos.yaml'),'--include-hidden-topics','--topics',*p['recording']['topics']],env,ROOT)
+  from tools.reliability.plan import recording_args
+  recorder_options=recording_args(p,run)
+  objects['recorder']=supervisor.spawn('recorder',['ros2','bag','record','--storage','mcap','--output',str(run/'bag'),'--use-sim-time','--node-name',recorder_name,'--qos-profile-overrides-path',str(run/'artifacts/recording_qos.yaml'),*recorder_options,'--include-hidden-topics','--topics',*p['recording']['topics']],env,ROOT)
   rpc('recorder',{'name':recorder_name,'topics':['/clock','/tf','/tf_static','/scan','/odom','/initialpose','/cmr_experiment/events']},startup.child(15));rpc('mark',{'name':'RECORDING_START'},startup.child(3))
   common=['params_file:='+str(run/'artifacts/config.yaml'),'use_sim_time:=true','autostart:=false','use_composition:=False','use_respawn:=False']
   phase('LOCALIZE');objects['localization']=supervisor.spawn('localization',['ros2','launch','--noninteractive','nav2_bringup','localization_launch.py',*common,'map:='+p['files']['map_yaml']['path']],env,ROOT);manager_started.append('localization')

@@ -10,9 +10,13 @@ from tools.execution.stop_analysis import evaluate,yaw
 from tools.runner.runner_core import write_json
 def lines(p):return [json.loads(x) for x in p.read_text().splitlines() if x]
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+def iter_lines(path):
+ with Path(path).open() as stream:
+  for line in stream:
+   if line.strip():yield json.loads(line)
 def world_window(run,window):
  samples=[]
- for row in lines(run/'runtime/p0-08-gazebo.jsonl'):
+ for row in iter_lines(run/'runtime/p0-08-gazebo.jsonl'):
   if row['kind']!='pose':continue
   assert row['run_id']==run.name and row['clock_epoch']==run.name+':sim0'
   m=row['protobuf'];s=m.get('header',{}).get('stamp',{});t=int(s.get('sec',0))+int(s.get('nsec',0))*1e-9

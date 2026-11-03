@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 #include "cmr_mission/execution_port.hpp"
+#include "cmr_mission/effect_sequence.hpp"
 #include <cmr_execution/ros_convert.hpp>
 #include <cmr_interfaces/msg/gate_state.hpp>
 #include <cmr_interfaces/msg/stop_report.hpp>
@@ -13,7 +14,7 @@
 namespace cmr::mission {
 namespace x=cmr::execution;using Lease=cmr_interfaces::srv::ExecutionLease;using Status=cmr_interfaces::msg::GateState;using Report=cmr_interfaces::msg::StopReport;using Clock=std::chrono::steady_clock;
 struct ExecutionPort::Impl:std::enable_shared_from_this<Impl>{
- struct Context{Effect effect;x::Identity who;std::string clock,lease,stage{"INSPECT"};bool rpc{false},cancelled{false},has_grant{false},nav_sent{false},rejected{false},revoked{false},fault_reported{false};std::uint64_t generation{};x::Ns revoke_ros{},last_report_end{};Clock::time_point created{Clock::now()},retry{},valid_until{},last_stop{};std::optional<Effect> authorized;};
+ struct Context{Effect effect;x::Identity who;std::string clock,lease,stage{"INSPECT"};bool rpc{false},cancelled{false},has_grant{false},nav_sent{false},rejected{false},revoked{false},fault_reported{false};std::uint64_t generation{},last_renew_version{};x::Ns revoke_ros{},last_report_end{};Clock::time_point created{Clock::now()},retry{},valid_until{},last_stop{};std::optional<Effect> authorized;};
  struct Pending{std::int64_t request_id;Clock::time_point until;std::shared_ptr<Context> context;std::string operation;};
  ExecutionConfig config;rclcpp::Node::WeakPtr node;NavigationAdapter* navigation;NavigationAdapter::EventSink sink;rclcpp::Client<Lease>::SharedPtr client;rclcpp::Subscription<Status>::SharedPtr status_sub;rclcpp::Subscription<Report>::SharedPtr report_sub;
  std::mutex mutex;std::deque<Effect> commands;std::deque<Event> events;std::map<std::string,std::shared_ptr<Context>> contexts;std::map<std::uint64_t,Pending> pending;std::set<std::string> seen;std::atomic<bool> alive{true},fault{false};bool closing{false},reset_pending{false};std::uint64_t serial{0},token{0},event_seq{0};std::optional<Status> latest;Clock::time_point latest_at{};struct Authority{Status state;Clock::time_point received;};std::shared_ptr<const Authority> authority;struct ReceivedReport{Report report;Clock::time_point received;};std::optional<ReceivedReport> deferred_report;
@@ -95,7 +96,17 @@ void ExecutionPort::tick(){if(!p->alive)return;
  std::deque<Effect> batch;{std::lock_guard<std::mutex> l(p->mutex);batch.swap(p->commands);}
  // Revoke queued in the same batch wins over still-unissued navigation sends.
  for(const auto& e:batch)if(e.kind==EffectKind::Revoke){auto it=p->contexts.find(e.attempt);if(it!=p->contexts.end())it->second->cancelled=true;}
- for(const auto& e:batch){if(!p->seen.insert(e.id).second)continue;if(p->seen.size()>4096){p->fault=true;throw std::runtime_error("execution effect capacity");}
+ for(const auto& e:batch){
+   if(e.kind==EffectKind::RenewLease){
+    const auto context=p->contexts.find(e.attempt);
+    if(context==p->contexts.end()||context->second->cancelled)continue;
+    auto c=context->second;
+    if(e.mission!=c->effect.mission||e.operation!=c->effect.operation){p->fault=true;throw std::runtime_error("renew effect scope");}
+    const auto version=renew_effect_sequence(e);
+    if(version<=c->last_renew_version)continue;
+    c->last_renew_version=version;
+   }else if(!p->seen.insert(e.id).second)continue;
+   if(p->seen.size()>4096){p->fault=true;throw std::runtime_error("execution effect capacity");}
   if(e.kind==EffectKind::Send){if(p->closing||p->fault)continue;if(p->contexts.size()>=64){p->fault=true;throw std::runtime_error("execution context capacity; restart under recovery policy");}auto c=std::make_shared<Impl::Context>();c->effect=e;c->who={p->config.run,"",p->config.owner,e.mission,e.operation,e.attempt};p->contexts[e.attempt]=c;continue;}
   auto it=p->contexts.find(e.attempt);if(it==p->contexts.end())continue;auto c=it->second;if(!e.uuid.empty())c->effect.uuid=e.uuid;
   if(e.kind==EffectKind::ResetLease){c->cancelled=true;c->stage="RESET";p->reset_pending=true;}

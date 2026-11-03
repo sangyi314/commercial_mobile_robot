@@ -66,7 +66,7 @@ class MissionNode:public rclcpp::Node {
  DeliveryApi::Response delivery_response(Store& s,const std::string& id,DeliveryReply reply){DeliveryApi::Response out;out.code=reply.code;out.mission_id=id;auto reg=reply.registration?reply.registration:s.registration(id);if(reg){out.queue_state=reg->queue_state;out.queue_seq=reg->queue_seq;}out.schedule_paused=s.queue_snapshot().at("schedule_paused");auto r=reply.record?reply.record:(reg?reg->record:std::optional<Record>{});if(r){out.state=state_name(r->state);out.state_version=r->version;out.operation_id=r->operation;out.attempt_id=r->attempt;out.goal_uuid=r->uuid;out.handover_id=r->handover_id;out.handover_entry_version=r->handover_version;out.handed_over=r->handed_over;out.handover_source=r->handover_source;out.task_remaining_ms=r->restart_suspended?0:std::max<std::int64_t>(0,r->deadline-now_ms());out.handover_remaining_ms=std::max<std::int64_t>(0,r->handover_until-now_ms());}
   out.detail=Json{{"queue",s.queue_snapshot()},{"duplicate",reply.duplicate},{"record",r?Json(encode(*r)):Json(nullptr)},{"battery","unavailable"},{"synthetic_observations",delivery_synthetic}}.dump();return out;
  }
- void start_delivery_api(){delivery_api=create_service<DeliveryApi>("delivery",[this](std::shared_ptr<rmw_request_id_t> h,DeliveryApi::Request::SharedPtr q){
+ void start_delivery_api(){auto delivery_qos=rmw_qos_profile_services_default;delivery_qos.depth=64;delivery_api=create_service<DeliveryApi>("delivery",[this](std::shared_ptr<rmw_request_id_t> h,DeliveryApi::Request::SharedPtr q){
    const auto receive=++seq;std::cout<<"DELIVERY_RX "<<Json{{"receive_seq",receive},{"operation",q->operation},{"mission_id",q->mission_id},{"command_id",q->command_id},{"handover_id",q->handover_id},{"source",q->source},{"map_version",q->map_version},{"station_version",q->station_version}}.dump()<<std::endl;
    if(closing||delivery_requests.size()>=64){DeliveryApi::Response out;out.code=closing?"CLOSED":"OVERLOADED";std::cout<<"DELIVERY_REPLY "<<Json{{"receive_seq",receive},{"code",out.code}}.dump()<<std::endl;delivery_api->send_response(*h,out);return;}
    try{delivery_requests.push_back({h,receive,runtime->call([this,q](Store& s){DeliveryApi::Response out;try{
@@ -82,7 +82,7 @@ class MissionNode:public rclcpp::Node {
     s.dispatch();auto response=delivery_response(s,q->mission_id,reply);std::cout<<"DELIVERY_DECISION "<<Json{{"operation",q->operation},{"mission_id",q->mission_id},{"command_id",q->command_id},{"code",response.code},{"state",response.state},{"version",response.state_version},{"queue_state",response.queue_state},{"handover_source",response.handover_source}}.dump()<<std::endl;return response;
    }catch(const std::exception& error){out.code="STORAGE_ERROR";out.detail=error.what();return out;}})});}
    catch(const std::exception& error){DeliveryApi::Response out;out.code="OVERLOADED";out.detail=error.what();delivery_api->send_response(*h,out);}
-  });}
+  },delivery_qos);}
 
  void start_node(){
   const bool test_mode=declare_parameter("test_mode",false);delivery_synthetic=test_mode;const auto workflow=declare_parameter<std::string>("workflow_mode","legacy");delivery_mode=workflow=="delivery";if(workflow!="legacy"&&workflow!="delivery")throw std::runtime_error("invalid workflow_mode");

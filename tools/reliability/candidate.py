@@ -12,7 +12,18 @@ def sha(path):
 def source_manifest(root=PROJECT_ROOT):
  raw=subprocess.check_output(['git','ls-files','--cached','--others','--exclude-standard','-z'],cwd=root).decode().split('\0')
  return [{'path':n,'sha256':sha(root/n),'size':(root/n).stat().st_size} for n in sorted(set(raw)) if n and Path(n).parts[0] not in ['evidence','build','install','log','.git','.cache'] and (root/n).is_file()]
+def runtime_manifest(root=PROJECT_ROOT):
+ # Pure filesystem inventory for --check: no Git command or subprocess.
+ files=[]
+ for folder in ['src','tools','tests']:
+  for p in (root/folder).rglob('*'):
+   if p.is_file() and '__pycache__' not in p.parts and p.suffix not in ['.pyc','.pyo'] and p.name!='.DS_Store':
+    files.append({'path':str(p.relative_to(root)),'sha256':sha(p)})
+ return sorted(files,key=lambda x:x['path'])
 def source_id(rows):return hashlib.sha256(json.dumps(rows,sort_keys=True,separators=(',',':')).encode()).hexdigest()
+def candidate_identity(source,binaries,external):
+ value={'source_id':source,'binaries':binaries,'external_files':external}
+ return hashlib.sha256(json.dumps(value,sort_keys=True,separators=(',',':')).encode()).hexdigest()
 def freeze(output,prefix=None):
  out=Path(output).resolve();out.mkdir(parents=True,exist_ok=False);rows=source_manifest();identity=source_id(rows)
  (out/'source.patch').write_bytes(subprocess.check_output(['git','diff','--binary'],cwd=PROJECT_ROOT))
@@ -28,5 +39,19 @@ def freeze(output,prefix=None):
     p=Path(prefix).resolve()/pkg/'lib'/pkg/name
     if not p.is_file():raise ValueError('binary missing '+str(p))
     binaries.append({'path':str(p),'sha256':sha(p)})
- result={'version':1,'candidate_id':identity,'files':rows,'commands':commands,'binaries':binaries,'source_archive_sha256':sha(out/'source.tar.gz'),'scope':'Engineering development candidate; acceptance status is separate','oracle_stop_assisted':True,'sensor_only_E2':False}
+ external=set()
+ for pattern in ['lib/*rosbag2*.so*','lib/*mppi*.so*','lib/*rotation_shim*.so*','lib/*collision_monitor*.so*','opt/gz_sim_vendor/lib/*diff-drive-system.so*','opt/gz_sim_vendor/lib/*odometry-publisher-system.so*']:
+  external.update(p.resolve() for p in Path('/opt/ros/jazzy').glob(pattern) if p.is_file())
+ for pkg,name in [('nav2_controller','controller_server'),('nav2_planner','planner_server'),('nav2_velocity_smoother','velocity_smoother'),('nav2_collision_monitor','collision_monitor'),('nav2_bt_navigator','bt_navigator'),('ros_gz_bridge','parameter_bridge')]:
+  path=Path('/opt/ros/jazzy/lib')/pkg/name
+  if path.is_file():external.add(path.resolve())
+ for ref in binaries:
+  proc=subprocess.run(['ldd',ref['path']],capture_output=True,text=True,timeout=10)
+  if proc.returncode:raise ValueError('dynamic dependency inventory failed')
+  for line in proc.stdout.splitlines():
+   if '=>' in line:
+    value=line.split('=>',1)[1].strip().split()[0]
+    if value.startswith('/') and Path(value).is_file():external.add(Path(value).resolve())
+ external=[{'path':str(path),'sha256':sha(path)} for path in sorted(external)]
+ result={'version':1,'source_id':identity,'candidate_id':candidate_identity(identity,binaries,external),'external_files':external,'files':rows,'commands':commands,'binaries':binaries,'source_archive_sha256':sha(out/'source.tar.gz'),'scope':'Engineering development candidate; acceptance status is separate','oracle_stop_assisted':True,'sensor_only_E2':False}
  (out/'candidate.json').write_text(json.dumps(result,indent=2));return result

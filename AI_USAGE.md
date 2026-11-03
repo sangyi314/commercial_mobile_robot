@@ -92,3 +92,17 @@ v4沿用官方Shim→MPPI，设置rotate_to_heading_once=true，GoalCritic.cost_
 
 
 P1-04最终检查点（2026-11-03）：实际采用p104-mppi-short-leg-v4（已安装Nav2 Rotation Shim→MPPI，once=true、GoalCritic权重20、primary GoalAngle关闭）及本人批准的Oracle辅助停车。G02 r07、G03/G04 r11、G05/G06 r10独立审计5/5通过；v2/v3及此前失败全部保留，G01本人未执行，P1-04仍PARTIAL。具体源代码、复用、参数与证据见docs/verification/p1-04-stopfix-ds6qdezr.md。未复制第三方控制器源码进工程运行模块。
+
+## P1-05（2026-11-03，本轮实施中）
+
+AI辅助只读接收、原始失败核对、真实G01等待/超时及本人授权后的G01D代理交接（source=synthetic）、可靠性profile/CLI、原Runner业务扩展、缓存/流式处理、独立FIFO和交接模型、资源及时间/守恒审计、测试与文档。未冒写本人human、个人理解或最终放行；保留Oracle辅助停车范围和历史失败。代码/协议/仿真/一小时分别以最终verification列的实际证据为准。无自动commit/push/tag/release，无P2。
+
+P1-05增补：AI独立实现RenewLease规范effect序号解析和每attempt单调回执，保留原一次性effect去重及上限；修复Delivery service默认QoS10与11并发不匹配，采用本机Jazzy公共Services QoS接口，显式depth64与既有pending64一致。保留原D06失败、5000回执/格式反例及新候选实际协议/L2重测；无上游源码复制。
+
+P1-05 r07录制修复：本机rosbag2/ros2bag/mcap_vendor0.26.11，官方ros2/rosbag2 tag0.26.11 commit cb8fa198b93bfed90e2417b52b8645fb9ef89c2b（Apache2），研究SequentialWriter、mcap_storage.cpp的YAML转换及实际test_mcap_storage.cpp。默认ROS双缓存100MiB和MCAP chunk使文件mtime不代表订阅健康；仅profile5显式max-cache-size=0、MCAP noChunking=true、enableDataCRC=true，不降低三秒文件进展门槛，P0及profile4录制不变。数据CRC保留，文件可见增长不等于掉电fsync保证。短测r06失败与原MCAP保留；新候选重跑。窗口失败也单独记录已开始/中止和真实steady时长，不拼接。成熟组件直接使用，CMR参数和监控独立适配，无上游实现复制。源码/测试/许可在evidence/env/p1-05-dev-b1sg_5gd/upstream-recording-r07。
+
+## P1-05 b1sg_5gd 交付范围
+AI辅助研究、C++续租幂等/服务QoS修复、可靠性驱动/独立参考模型/原始证据审计、固定seed与实际协议/仿真测试、同机新目录构建、文档与候选包。原始失败与重测均保留；未自动Git发布。用户明确授权代交接，记录synthetic；不代签human G01或本人理解。正式3600秒因用户当前无法监督而未启动，状态PARTIAL_1H_NOT_COMPLETED。MCAP仅使用系统安装组件，保留MIT许可；未复制上游业务框架。
+
+## 2026-11-04 P1-05正式一小时
+用户最新明确指令“现在开始正式一小时”后，AI核对冻结源码/产物/先决证据和无残留进程，通过原Runner执行一次3600.003655758秒连续会话，synthetic代交接20单；闭合后独立SQLite/MCAP/Gazebo确切窗口审计通过。运行期间未修改源码、输入或阈值；仅新增监督/运行/审计记录。测试后新增验收补充文档和包，不覆盖旧失败/延期/partial包、不代签本人理解或发布、不自动提交Git或进入P2。

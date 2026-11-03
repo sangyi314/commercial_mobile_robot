@@ -111,7 +111,7 @@ def consumed_evidence(events):
   r=ev['record'];key=(ev['mission_id'],r['attempt'],r['uuid'],r['gate_epoch'],r['clock_epoch'])
   if ev['kind']==8:stops[key]=ev
   if ev['kind']==9:arrivals[key]=ev
-  if ev['kind']==15:
+  if ev['kind'] in [13,15]:
    if r['ever_sent']:consumed_stops[ev['persistent_seq']]=stops.get(key)
    if r['arrived'] and r['goal_succeeded'] and key in arrivals and arrivals[key] not in consumed_arrivals:consumed_arrivals.append(arrivals[key])
  return consumed_stops,consumed_arrivals
@@ -129,6 +129,21 @@ def exact_stop_report(reports,event,record):
   return report
  return None
 
+def declared_windows(events):
+ stops,arrivals=consumed_evidence(events);windows=[]
+ for event in list(stops.values())+arrivals:
+  if event is None:continue
+  if event['kind']==8:
+   match=re.search(r' generation=(\d+) from=(\d+) to=(\d+)(?:$| )',event['identity'])
+   if match:_,lo,hi=map(int,match.groups())
+   else:continue
+  else:
+   d=json.loads(event['identity'].split(' detail=',1)[1]);lo,hi=d['from_ns'],d['to_ns']
+  windows.append((lo*1e-9-1.,hi*1e-9+1.))
+ return windows
+
+def within_windows(value,windows):return any(lo<=value<=hi for lo,hi in windows)
+
 def inspect(run):
  import rosbag2_py,tf2_py,yaml
  from rclpy.time import Time
@@ -137,6 +152,7 @@ def inspect(run):
  from rosidl_runtime_py.utilities import get_message
  from rosidl_runtime_py.convert import message_to_ordereddict as dic
  run=Path(run);p=json.loads((run/'artifacts/profile.json').read_text());ns=p['execution_v1']['namespace'];db=audit_database(run/'runtime/mission.db');errors=list(db['errors'])
+ windows=declared_windows(db['events']) if p.get('reliability_v1') else None
  if p.get('profile_version') not in [4,5] or p['delivery_v1'].get('synthetic_observations') is not False:raise ValueError('wrong delivery evidence layer')
  md=yaml.safe_load((run/'bag/metadata.yaml').read_text())['rosbag2_bagfile_information']
  if not md['relative_file_paths']:raise ValueError('empty bag')
@@ -147,7 +163,12 @@ def inspect(run):
  types={x.name:x.type for x in reader.get_all_topics_and_types()};classes={k:get_message(v) for k,v in types.items()};counts={};rows=[];poses=[];events=[];statuses={};maps_good=0;source=0.;seq=0;buffer=tf2_py.BufferCore(Duration(seconds=1200))
  stamp=lambda t:t.sec+t.nanosec*1e-9
  while reader.has_next():
-  topic,raw,bagtime=reader.read_next();seq+=1;counts[topic]=counts.get(topic,0)+1;m=deserialize_message(raw,classes[topic]);kind=None;d=None
+  topic,raw,bagtime=reader.read_next();seq+=1;counts[topic]=counts.get(topic,0)+1
+  if windows is not None:
+   used=['/clock','/tf','/tf_static','/map','/odom',ns+'/body_odom',ns+'/final',ns+'/state',ns+'/stop_report','/navigate_to_pose/_action/status','/cmr_experiment/events']
+   if topic not in used:continue
+   if topic in ['/tf','/odom',ns+'/body_odom',ns+'/final',ns+'/stop_report'] and not within_windows(source,windows):continue
+  m=deserialize_message(raw,classes[topic]);kind=None;d=None
   if topic=='/clock':
    now=stamp(m.clock)
    if now<source:errors.append('source clock rollback at '+str(seq))
@@ -174,8 +195,9 @@ def inspect(run):
   elif topic=='/cmr_experiment/events':
    e=json.loads(m.data);events.append(e)
    if e.get('run_id')!=run.name:errors.append('event session identity')
-  if kind:rows.append({'kind':kind,'data':d,'source_s':source,'line':seq})
-  if topic in ['/tf','/odom'] and source>0:
+  if kind=='gate_state' and not d['allowed'] and any(abs(d['output'][a][b])>.001 for a in ['linear','angular'] for b in 'xyz'):errors.append('forbidden Gate published nonzero')
+  if kind and (windows is None or within_windows(source,windows)):rows.append({'kind':kind,'data':d,'source_s':source,'line':seq})
+  if topic in ['/tf','/odom'] and source>0 and (windows is None or within_windows(source,windows)):
    try:
     tr=buffer.lookup_transform_core('map','base_footprint',Time());t=stamp(tr.header.stamp);pos=tr.transform.translation;q=tr.transform.rotation
     if 0<=source-t<.2:poses.append({'data':{'stamp_s':t,'position':[pos.x,pos.y,pos.z],'quaternion_xyzw':[q.x,q.y,q.z,q.w]},'line':seq})
@@ -210,7 +232,7 @@ def inspect(run):
   if kind==9 and event in consumed_arrivals:
    detail=json.loads(event['identity'].split(' detail=',1)[1]);target=snapshots[record['mission_id']]['return' if record['returning'] else 'outbound']['pose'];a=arrival_window(poses,detail,record,target);a['event_seq']=event['persistent_seq'];arrivals.append(a)
    if not a['valid']:errors.append('independent arrival window '+record['attempt'])
-  if kind==15 and record['ever_sent']:
+  if kind in [13,15] and record['ever_sent']:
    consumed=consumed_stops.get(event['persistent_seq']);rep=exact_stop_report(reports,consumed,record)
    proof=stop_window(rows,rep) if rep is not None else None
    if proof is None or not proof['valid']:errors.append('independent exact consumed A/B/D '+record['attempt'])
@@ -228,7 +250,11 @@ def inspect(run):
    candidate=next((v for rep in matching if (v:=stop_window(rows,rep))['valid']),None)
    if candidate:proofs.append(candidate)
    else:errors.append('owner loss raw A/B/D must follow actual expiry and precede restart; initial/old stop forbidden')
- observations=[json.loads(line) for line in (run/'runtime/observations.jsonl').read_text().splitlines()]
+ observations=[]
+ with (run/'runtime/observations.jsonl').open() as stream:
+  for line in stream:
+   row=json.loads(line)
+   if windows is None or within_windows(row.get('ros_now_s',-1),windows):observations.append(row)
  if p['delivery_v1'].get('stop_feedback',{}).get('required'):
   for proof in proofs:
    report=next(r for r in reports if r['line']==proof['report_line'])

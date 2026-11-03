@@ -78,7 +78,7 @@ Decision reduce(const Record& old, const Event& e) {
   effect(EffectKind::RenewLease);break;
  case Kind::ExecutionClock:
   if(!e.execution_verified||e.gate_epoch!=old.gate_epoch||e.clock_epoch.empty()||e.clock_epoch==old.clock_epoch)return d;
-  n.clock_epoch=e.clock_epoch;n.stopped=false;n.stop_until=0;n.revoked=false;n.retry_eligible=false;pause("FAILED");break;
+  n.clock_epoch=e.clock_epoch;n.stopped=false;n.stop_until=0;n.revoked=false;pause("FAILED");break;
  case Kind::Arrival:
   if(!old.goal_terminal || old.state==State::Paused) return d;
   if(old.delivery_managed&&(!old.goal_succeeded||!e.arrival_verified||!e.source_fresh||e.gate_epoch!=old.gate_epoch||e.clock_epoch!=old.clock_epoch||e.source_from_ns<old.terminal_ros_ns||e.valid_until<=e.now)) {d.reason="ARRIVAL_EVIDENCE";return d;}

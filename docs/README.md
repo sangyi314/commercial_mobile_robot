@@ -109,3 +109,15 @@ P1-01补充：[首次终止意图覆盖修复](verification/p1-01-cancel-intent-
 - [最新工程检查点：G02–G06通过，G01本人待验](verification/p1-04-stopfix-ds6qdezr.md)
 - [本人G01交接步骤](guides/p1-04-human-handover.md)
 - [本人批准的Oracle停车边界](adr/p1-oracle-stop-20261103.md)
+
+- P1-05实施合同：contracts/p1-reliability-v1.md；学习/运行入口：guides/p1-reliability.md；本人代理交接准入例外：adr/p1-delegated-handover-20261103.md。最终验收状态以verification/p1-05-b1sg_5gd.md为准（报告尚在实施中）。
+
+### P1-05 本轮交付（2026-11-03）
+
+- [验收与未完成项](verification/p1-05-b1sg_5gd.md)：PARTIAL_1H_NOT_COMPLETED；正式一小时未执行，未发布。
+- [学习与运行](guides/p1-reliability.md)、[可靠性合同](contracts/p1-reliability-v1.md)、[代交接准入ADR](adr/p1-delegated-handover-20261103.md)。
+- v0.2 development package / 证据索引在Ubuntu evidence/env/p1-05-dev-b1sg_5gd/package-final；不等同工程版A验收通过。
+
+### P1-05 正式一小时补充（2026-11-04）
+
+[正式一小时报告](verification/p1-05-1h-20261104-q7w4nag2.md)：连续3600.004秒、20/20单、40个Goal及停车窗独立审计通过；工程候选CANDIDATE_READY_USER_REVIEW_PENDING。此前partial记录保留为历史，个人验收与许可范围审查仍待完成。

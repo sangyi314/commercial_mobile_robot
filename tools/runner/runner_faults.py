@@ -15,14 +15,14 @@ def validate_policy(profile,fault):
  if profile['faults']!=([fault] if fault else []):raise ValueError('fault whitelist mismatch')
 
 class GazeboEvidence:
- def __init__(self,run,partition,log,robot_only=False):
+ def __init__(self,run,partition,log,robot_only=False,history_limit=None):
   from gz.transport13 import Node,NodeOptions
   from gz.msgs10.world_stats_pb2 import WorldStatistics
   from gz.msgs10.pose_v_pb2 import Pose_V
   from google.protobuf.json_format import MessageToDict
   options=NodeOptions();options.partition=partition;self.node=Node(options);self.run=Path(run);self.log=log;self.queue=queue.Queue();self.seq=0;self.latest={};self.records=[];self.file=(self.run/'runtime/p0-08-gazebo.jsonl').open('x');self.resume_due=None;self.owned_pause=False;self.resume_error=None;self.resume_wall=None
   if robot_only:self.queue=queue.Queue(maxsize=4096)
-  self.capture_error=None
+  self.capture_error=None;self.history_limit=history_limit
   def callback(kind,msg):
    received=time.monotonic()
    if robot_only and kind=='pose':
@@ -34,6 +34,7 @@ class GazeboEvidence:
  def tick(self):
   while not self.queue.empty():
    kind,wall,msg=self.queue.get_nowait();self.seq+=1;r={'seq':self.seq,'kind':kind,'run_id':self.run.name,'clock_epoch':self.run.name+':sim0','receive_monotonic_s':wall,'protobuf':msg};self.records.append(r);self.latest[kind]=r;self.file.write(encode(r).decode())
+   if self.history_limit and len(self.records)>self.history_limit:del self.records[:len(self.records)-self.history_limit]
   self.file.flush()
   if getattr(self,'capture_error',None):raise RuntimeError(self.capture_error)
   if self.resume_due is not None and time.monotonic()>=self.resume_due:

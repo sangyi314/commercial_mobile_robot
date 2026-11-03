@@ -36,7 +36,7 @@ def main():
  class Case(prior.Case):
   def __init__(self,root,config=None):
    self.root=root;root.mkdir(parents=True,exist_ok=False);self.bin=prefix/'cmr_mission/lib/cmr_mission';self.name='p104_'+uuid.uuid4().hex[:10];self.ns='/cmr_test/'+self.name;self.action=self.ns+'/navigate_to_pose';self.config=config or {};self.procs=[];self.seq=0;self.records=[];self.node=rclpy.create_node('execution_sink',namespace=self.ns);self.db=root/'mission.db';self.server=None;self.mission=None
-   self.api=self.node.create_client(MissionCommand,self.ns+'/command');self.fixture=self.node.create_client(SyntheticEvent,self.ns+'/synthetic_event');self.control=self.node.create_client(FakeControl,self.ns+'/control');self.delivery=self.node.create_client(DeliveryCommand,self.ns+'/delivery');self.lease=self.node.create_client(ExecutionLease,self.ns+'/lease');self.scan_graph()
+   self.api=self.node.create_client(MissionCommand,self.ns+'/command');self.fixture=self.node.create_client(SyntheticEvent,self.ns+'/synthetic_event');self.control=self.node.create_client(FakeControl,self.ns+'/control');self.delivery=self.node.create_client(DeliveryCommand,self.ns+'/delivery',qos_profile=QoSProfile(depth=64,reliability=ReliabilityPolicy.RELIABLE,durability=DurabilityPolicy.VOLATILE));self.lease=self.node.create_client(ExecutionLease,self.ns+'/lease');self.scan_graph()
    self.state=None;self.report=None;self.held=Twist();self.x=0.;self.source_on=True;self.odom_on=True;self.tf_on=True;self.clock_ns=10000000000;self.started=time.monotonic();self.last_tick=self.started
    rel=QoSProfile(depth=10,reliability=ReliabilityPolicy.RELIABLE);durable=QoSProfile(depth=1,reliability=ReliabilityPolicy.RELIABLE,durability=DurabilityPolicy.TRANSIENT_LOCAL)
    self.clock_pub=self.node.create_publisher(Clock,self.ns+'/clock',rel);self.candidate_pub=self.node.create_publisher(TwistStamped,self.ns+'/candidate',rel);self.odom_pub=self.node.create_publisher(Odometry,self.ns+'/odom',rel);self.tf_pub=self.node.create_publisher(TFMessage,self.ns+'/tf',100);self.map_pub=self.node.create_publisher(OccupancyGrid,self.ns+'/map',durable);self.amcl_pub=self.node.create_publisher(PoseWithCovarianceStamped,self.ns+'/amcl_pose',durable);self.scan_pub=self.node.create_publisher(LaserScan,self.ns+'/scan',rel)
@@ -71,7 +71,7 @@ def main():
   def start_delivery_node(self,epoch=None,tag='mission'):
    params={'workflow_mode':'delivery','test_mode':True,'use_sim_time':False,'execution_mode':'gate','execution_run_id':self.name,'execution_namespace':self.ns,'action_name':self.action,'database':str(self.db),'process_epoch':epoch or self.name,'station_catalog':str(self.catalog.resolve()),'task_ms':60000,'handover_ms':10000,'execute_ms':15000};params.update(self.config)
    self.mission=self.start_native('cmr_mission','mission_node',params,tag)
-   if tag!='mission':self.node.destroy_client(self.delivery);self.delivery=self.node.create_client(DeliveryCommand,self.ns+'/delivery')
+   if tag!='mission':self.node.destroy_client(self.delivery);self.delivery=self.node.create_client(DeliveryCommand,self.ns+'/delivery',qos_profile=QoSProfile(depth=64,reliability=ReliabilityPolicy.RELIABLE,durability=DurabilityPolicy.VOLATILE))
    self.wait_service(self.delivery);self.wait(lambda:self.state is not None)
    # Cold discovery and post-SIGKILL graph entries do not prove a usable reply
    # endpoint. Only answered idempotent queries qualify the owner; never retry
