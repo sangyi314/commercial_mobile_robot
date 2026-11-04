@@ -7,50 +7,154 @@
 #include <iostream>
 #include <stdexcept>
 using namespace cmr::mission;
-static void check(bool v,const char* s){if(!v)throw std::runtime_error(s);}
-int main(int argc,char** argv){
- rclcpp::init(argc,argv);
- try{
-  auto ns="/cmr_test/port_capacity_"+std::to_string(getpid());
-  auto node=std::make_shared<rclcpp::Node>("port_capacity",ns);
-  {
-   AdapterConfig cfg;cfg.epoch="owner";cfg.action=ns+"/unused_action";
-   NavigationAdapter adapter(node,cfg,[](Event){return true;});
-   ExecutionPort port(node,{"run","owner",ns,true},adapter,[](Event){return true;});
-   Effect e;e.mission="m";e.operation="m.out";e.attempt="m.out.0";e.kind=EffectKind::Send;
-   for(int i=0;i<32;++i){e.id=std::to_string(i);port.execute(e);}
-   bool rejected=false;try{e.id="overflow";port.execute(e);}catch(const std::runtime_error&){rejected=true;}
-   check(rejected&&port.faulted(),"queue overflow must latch failure");
-   port.tick();check(port.faulted(),"draining must not clear failure");
-   rejected=false;try{e.id="late-send";port.execute(e);}catch(const std::runtime_error&){rejected=true;}
-   check(rejected,"late send cannot recover failed port");
-   e.kind=EffectKind::Revoke;e.id="emergency";port.execute(e);port.tick();
-   port.begin_shutdown();port.stop();adapter.stop();
+
+static void check(bool v, const char *s) {
+  if (!v) {
+    throw std::runtime_error(s);
   }
-  {
-   using Lease=cmr_interfaces::srv::ExecutionLease;int inspected=0,revoked=0,begun=0,contexts=0;
-   auto service=node->create_service<Lease>(ns+"/lease",[&](Lease::Request::SharedPtr q,Lease::Response::SharedPtr r){r->gate_epoch="unit-gate";r->clock_epoch="unit-clock";r->ros_ns=1000000000;
-    if(q->operation=="inspect"){++inspected;r->code="STATUS";r->state="DISARMED";}else if(q->operation=="revoke"){++revoked;r->code="REVOKED";r->state="STOPPING";}else{++begun;r->code="DENIED";r->state="DISARMED";}});
-   AdapterConfig cfg;cfg.epoch="owner";cfg.action=ns+"/unused_action";NavigationAdapter adapter(node,cfg,[](Event){return true;});ExecutionPort* handle=nullptr;
-   ExecutionPort port(node,{"run","owner",ns,true},adapter,[&](Event e){if(e.kind==Kind::ExecutionContext){++contexts;Effect r{"after-context","m","m.out","m.out.0","",EffectKind::Revoke};handle->execute(r);}return true;});handle=&port;
-   port.execute({"reserve","m","m.out","m.out.0","",EffectKind::Send});port.execute({"cancel-before-inspect","m","m.out","m.out.0","",EffectKind::Revoke});
-   rclcpp::executors::SingleThreadedExecutor executor;executor.add_node(node);auto until=std::chrono::steady_clock::now()+std::chrono::seconds(4);
-   while(std::chrono::steady_clock::now()<until&&revoked==0){port.tick();executor.spin_some(std::chrono::milliseconds(5));std::this_thread::sleep_for(std::chrono::milliseconds(1));}
-   check(inspected==1&&contexts==1&&revoked==1&&begun==0,"early cancel must inspect then revoke; never Begin or send Goal");port.stop();adapter.stop();executor.cancel();executor.remove_node(node);
+}
+
+int main(int argc, char **argv) {
+  rclcpp::init(argc, argv);
+  try {
+    auto ns = "/cmr_test/port_capacity_" + std::to_string(getpid());
+    auto node = std::make_shared<rclcpp::Node>("port_capacity", ns);
+    {
+      AdapterConfig cfg;
+      cfg.epoch = "owner";
+      cfg.action = ns + "/unused_action";
+      NavigationAdapter adapter(node, cfg, [](Event) { return true; });
+      ExecutionPort port(node, {"run", "owner", ns, true}, adapter, [](Event) { return true; });
+      Effect e;
+      e.mission = "m";
+      e.operation = "m.out";
+      e.attempt = "m.out.0";
+      e.kind = EffectKind::Send;
+      for (int i = 0; i < 32; ++i) {
+        e.id = std::to_string(i);
+        port.execute(e);
+      }
+      bool rejected = false;
+      try {
+        e.id = "overflow";
+        port.execute(e);
+      } catch (const std::runtime_error &) {
+        rejected = true;
+      }
+      check(rejected && port.faulted(), "queue overflow must latch failure");
+      port.tick();
+      check(port.faulted(), "draining must not clear failure");
+      rejected = false;
+      try {
+        e.id = "late-send";
+        port.execute(e);
+      } catch (const std::runtime_error &) {
+        rejected = true;
+      }
+      check(rejected, "late send cannot recover failed port");
+      e.kind = EffectKind::Revoke;
+      e.id = "emergency";
+      port.execute(e);
+      port.tick();
+      port.begin_shutdown();
+      port.stop();
+      adapter.stop();
+    }
+    {
+      using Lease = cmr_interfaces::srv::ExecutionLease;
+      int inspected = 0;
+      int revoked = 0;
+      int begun = 0;
+      int contexts = 0;
+      auto service = node->create_service<Lease>(
+          ns + "/lease", [&](Lease::Request::SharedPtr q, Lease::Response::SharedPtr r) {
+            r->gate_epoch = "unit-gate";
+            r->clock_epoch = "unit-clock";
+            r->ros_ns = 1000000000;
+            if (q->operation == "inspect") {
+              ++inspected;
+              r->code = "STATUS";
+              r->state = "DISARMED";
+            } else if (q->operation == "revoke") {
+              ++revoked;
+              r->code = "REVOKED";
+              r->state = "STOPPING";
+            } else {
+              ++begun;
+              r->code = "DENIED";
+              r->state = "DISARMED";
+            }
+          });
+      AdapterConfig cfg;
+      cfg.epoch = "owner";
+      cfg.action = ns + "/unused_action";
+      NavigationAdapter adapter(node, cfg, [](Event) { return true; });
+      ExecutionPort *handle = nullptr;
+      ExecutionPort port(node, {"run", "owner", ns, true}, adapter, [&](Event e) {
+        if (e.kind == Kind::ExecutionContext) {
+          ++contexts;
+          Effect r{"after-context", "m", "m.out", "m.out.0", "", EffectKind::Revoke};
+          handle->execute(r);
+        }
+        return true;
+      });
+      handle = &port;
+      port.execute({"reserve", "m", "m.out", "m.out.0", "", EffectKind::Send});
+      port.execute({"cancel-before-inspect", "m", "m.out", "m.out.0", "", EffectKind::Revoke});
+      rclcpp::executors::SingleThreadedExecutor executor;
+      executor.add_node(node);
+      auto until = std::chrono::steady_clock::now() + std::chrono::seconds(4);
+      while (std::chrono::steady_clock::now() < until && revoked == 0) {
+        port.tick();
+        executor.spin_some(std::chrono::milliseconds(5));
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+      }
+      check(inspected == 1 && contexts == 1 && revoked == 1 && begun == 0,
+            "early cancel must inspect then revoke; never Begin or send Goal");
+      port.stop();
+      adapter.stop();
+      executor.cancel();
+      executor.remove_node(node);
+    }
+    {
+      AdapterConfig cfg;
+      cfg.epoch = "owner";
+      cfg.action = ns + "/unused_action";
+      NavigationAdapter adapter(node, cfg, [](Event) { return true; });
+      ExecutionPort port(node, {"run", "owner", ns, true}, adapter, [](Event) { return true; });
+      port.execute({"m:1:0", "m", "m.out", "m.out.0", "", EffectKind::Send});
+      port.tick();
+      for (unsigned n = 1; n <= 5000; ++n) {
+        Effect e{"m:" + std::to_string(n) + ":4", "m", "m.out", "m.out.0", "",
+                 EffectKind::RenewLease};
+        check(renew_effect_sequence(e) == n, "canonical receipt version");
+        port.execute(e);
+        port.tick();
+      }
+      port.execute({"m:1:4", "m", "m.out", "m.out.0", "", EffectKind::RenewLease});
+      port.tick();
+      check(!port.faulted(), "5000 renew receipts must not exhaust structural dedup history");
+      for (const std::string id :
+           {"m:0:4", "m:01:4", "m:1x:4", "other:1:4", "m:18446744073709551616:4", "m:1:0"}) {
+        bool rejected = false;
+        try {
+          renew_effect_sequence({id, "m", "m.out", "m.out.0", "", EffectKind::RenewLease});
+        } catch (const std::invalid_argument &) {
+          rejected = true;
+        }
+        check(rejected, "malformed renew ID rejected");
+      }
+      port.stop();
+      adapter.stop();
+    }
+    node.reset();
+    rclcpp::shutdown();
+    std::cout
+        << "PASS bounded port overload and fail-closed latch; API unit, no Action Server/Goal\n";
+    return 0;
+  } catch (const std::exception &e) {
+    std::cerr << e.what() << "\n";
+    rclcpp::shutdown();
+    return 1;
   }
-  {
-   AdapterConfig cfg;cfg.epoch="owner";cfg.action=ns+"/unused_action";
-   NavigationAdapter adapter(node,cfg,[](Event){return true;});
-   ExecutionPort port(node,{"run","owner",ns,true},adapter,[](Event){return true;});
-   port.execute({"m:1:0","m","m.out","m.out.0","",EffectKind::Send});port.tick();
-   for(unsigned n=1;n<=5000;++n){Effect e{"m:"+std::to_string(n)+":4","m","m.out","m.out.0","",EffectKind::RenewLease};check(renew_effect_sequence(e)==n,"canonical receipt version");port.execute(e);port.tick();}
-   port.execute({"m:1:4","m","m.out","m.out.0","",EffectKind::RenewLease});port.tick();
-   check(!port.faulted(),"5000 renew receipts must not exhaust structural dedup history");
-   for(const std::string id:{"m:0:4","m:01:4","m:1x:4","other:1:4","m:18446744073709551616:4","m:1:0"}){
-    bool rejected=false;try{renew_effect_sequence({id,"m","m.out","m.out.0","",EffectKind::RenewLease});}catch(const std::invalid_argument&){rejected=true;}check(rejected,"malformed renew ID rejected");
-   }
-   port.stop();adapter.stop();
-  }
-  node.reset();rclcpp::shutdown();std::cout<<"PASS bounded port overload and fail-closed latch; API unit, no Action Server/Goal\n";return 0;
- }catch(const std::exception& e){std::cerr<<e.what()<<"\n";rclcpp::shutdown();return 1;}
 }
