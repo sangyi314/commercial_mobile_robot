@@ -10,7 +10,7 @@
 #include <iostream>
 #include <thread>
 #include <algorithm>
-
+ 
 namespace cmr::mission {
 namespace {
 struct Db {
