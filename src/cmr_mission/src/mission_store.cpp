@@ -14,17 +14,17 @@
 namespace cmr::mission {
 namespace {
 struct Db {
-  sqlite3 *value{};
+  sqlite3 *connection{};
 
   ~Db() {
-    if (value) {
-      sqlite3_close_v2(value);
+    if (connection) {
+      sqlite3_close_v2(connection);
     }
   }
 
   void sql(const std::string &s) {
     char *err = nullptr;
-    int rc = sqlite3_exec(value, s.c_str(), nullptr, nullptr, &err);
+    int rc = sqlite3_exec(connection, s.c_str(), nullptr, nullptr, &err);
     std::string message = err ? err : "";
     sqlite3_free(err);
     if (rc != SQLITE_OK) {
@@ -34,18 +34,18 @@ struct Db {
 };
 
 struct Stmt {
-  sqlite3_stmt *value{};
-  sqlite3 *db;
+  sqlite3_stmt *statement{};
+  sqlite3 *connection;
 
-  Stmt(Db &d, const char *q) : db(d.value) {
-    if (sqlite3_prepare_v2(db, q, -1, &value, nullptr) != SQLITE_OK) {
-      throw std::runtime_error(sqlite3_errmsg(db));
+  Stmt(Db &d, const char *q) : connection(d.connection) {
+    if (sqlite3_prepare_v2(connection, q, -1, &statement, nullptr) != SQLITE_OK) {
+      throw std::runtime_error(sqlite3_errmsg(connection));
     }
   }
 
   ~Stmt() {
-    if (value) {
-      int rc = sqlite3_finalize(value);
+    if (statement) {
+      int rc = sqlite3_finalize(statement);
       if (rc != SQLITE_OK) {
         std::cerr << "statement finalize: " << rc << '\n';
       }
@@ -56,25 +56,25 @@ struct Stmt {
   Stmt &operator=(const Stmt &) = delete;
 
   void bind(int i, const std::string &s) {
-    if (sqlite3_bind_text(value, i, s.c_str(), static_cast<int>(s.size()), SQLITE_TRANSIENT)
+    if (sqlite3_bind_text(statement, i, s.c_str(), static_cast<int>(s.size()), SQLITE_TRANSIENT)
         != SQLITE_OK) {
       throw std::runtime_error("bind error");
     }
   }
 
   bool step() {
-    int rc = sqlite3_step(value);
+    int rc = sqlite3_step(statement);
     if (rc == SQLITE_ROW) {
       return true;
     }
     if (rc == SQLITE_DONE) {
       return false;
     }
-    throw std::runtime_error(sqlite3_errmsg(db));
+    throw std::runtime_error(sqlite3_errmsg(connection));
   }
 
   std::string text(int i) {
-    const auto *c = sqlite3_column_text(value, i);
+    const auto *c = sqlite3_column_text(statement, i);
     return c ? reinterpret_cast<const char *>(c) : "";
   }
 };
@@ -210,13 +210,13 @@ struct Store::Impl {
   bool paused() {
     Stmt q(db, "SELECT schedule_paused FROM manager WHERE singleton=1");
     q.step();
-    return sqlite3_column_int(q.value, 0) != 0;
+    return sqlite3_column_int(q.statement, 0) != 0;
   }
 
   bool held() {
     Stmt q(db, "SELECT active IS NOT NULL FROM manager WHERE singleton=1");
     q.step();
-    return sqlite3_column_int(q.value, 0) != 0;
+    return sqlite3_column_int(q.statement, 0) != 0;
   }
 
   std::optional<Registration> registration(const std::string &id) {
@@ -226,7 +226,7 @@ struct Store::Impl {
       return {};
     }
     return Registration{decode(q.text(0)).request, strict_json(q.text(1)), q.text(2),
-                        static_cast<std::uint64_t>(sqlite3_column_int64(q.value, 3)), get(id)};
+                        static_cast<std::uint64_t>(sqlite3_column_int64(q.statement, 3)), get(id)};
   }
 
   void queue_event(const std::string &id, const std::string &kind, const std::string &detail) {
@@ -238,7 +238,7 @@ struct Store::Impl {
     Json envelope = {{"detail", detail},
                      {"owner_epoch", epoch},
                      {"owner_now_ms", now()},
-                     {"fsm_high_water_seq", sqlite3_column_int64(high.value, 0)}};
+                     {"fsm_high_water_seq", sqlite3_column_int64(high.statement, 0)}};
     q.bind(3, envelope.dump());
     q.step();
   }
@@ -254,7 +254,7 @@ struct Store::Impl {
     Stmt q(db, "UPDATE manager SET active=? WHERE singleton=1 AND active IS NULL");
     q.bind(1, n.request.mission_id);
     q.step();
-    if (sqlite3_changes(db.value) != 1) {
+    if (sqlite3_changes(db.connection) != 1) {
       throw std::runtime_error("active slot race");
     }
     Stmt u(db, "UPDATE registrations SET queue_state='ACTIVE' WHERE mission=? AND queue_state "
@@ -349,12 +349,12 @@ Store::Store(const std::string &name, const std::string &epoch, Port *port, Hook
     }
   }
   p->lock.acquire(input.string() + ".owner.lock");
-  if (sqlite3_open_v2(input.c_str(), &p->db.value,
+  if (sqlite3_open_v2(input.c_str(), &p->db.connection,
                       SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE | SQLITE_OPEN_NOMUTEX, nullptr)
       != SQLITE_OK) {
     throw std::runtime_error("open database");
   }
-  sqlite3_busy_timeout(p->db.value, 100);
+  sqlite3_busy_timeout(p->db.connection, 100);
   p->epoch = epoch;
   p->port = port;
   p->hook = std::move(hook);
@@ -369,7 +369,7 @@ Store::Store(const std::string &name, const std::string &epoch, Port *port, Hook
   {
     Stmt q(p->db, "PRAGMA user_version");
     q.step();
-    version = sqlite3_column_int(q.value, 0);
+    version = sqlite3_column_int(q.statement, 0);
   }
   if (version != 0 && version != 1 && version != 2) {
     throw std::runtime_error("unsupported schema");
@@ -380,7 +380,7 @@ Store::Store(const std::string &name, const std::string &epoch, Port *port, Hook
   if (version == 0) {
     Stmt q(p->db, "SELECT count(*) FROM sqlite_master WHERE type='table'");
     q.step();
-    if (sqlite3_column_int(q.value, 0) != 0) {
+    if (sqlite3_column_int(q.statement, 0) != 0) {
       throw std::runtime_error("unversioned database");
     }
   }
@@ -388,7 +388,7 @@ Store::Store(const std::string &name, const std::string &epoch, Port *port, Hook
   {
     Stmt q(p->db, "PRAGMA foreign_keys");
     q.step();
-    if (sqlite3_column_int(q.value, 0) != 1) {
+    if (sqlite3_column_int(q.statement, 0) != 1) {
       throw std::runtime_error("foreign keys disabled");
     }
   }
@@ -402,7 +402,7 @@ Store::Store(const std::string &name, const std::string &epoch, Port *port, Hook
   {
     Stmt q(p->db, "PRAGMA synchronous");
     q.step();
-    if (sqlite3_column_int(q.value, 0) != 2) {
+    if (sqlite3_column_int(q.statement, 0) != 2) {
       throw std::runtime_error("not FULL");
     }
   }
@@ -492,7 +492,7 @@ std::optional<Record> Store::get(const std::string &id) {
 std::optional<Record> Store::active() {
   p->check();
   Stmt q(p->db, "SELECT active FROM manager WHERE singleton=1");
-  if (!q.step() || sqlite3_column_type(q.value, 0) == SQLITE_NULL) {
+  if (!q.step() || sqlite3_column_type(q.statement, 0) == SQLITE_NULL) {
     return std::nullopt;
   }
   return p->get(q.text(0));
@@ -509,7 +509,7 @@ Admission Store::submit(const MissionRequest &r) {
     {
       Stmt q(p->db, "SELECT active IS NOT NULL FROM manager");
       q.step();
-      c.active_slot_held = sqlite3_column_int(q.value, 0) != 0;
+      c.active_slot_held = sqlite3_column_int(q.statement, 0) != 0;
     }
     auto a = decide_admission(r, c);
     if (a == Admission::CreateIntent) {
@@ -607,7 +607,7 @@ void Store::dispatch() {
           "SELECT id,mission,operation,attempt,uuid,kind FROM operations WHERE status='INTENT' ORDER BY rowid");
       while (q.step()) {
         effects.push_back({q.text(0), q.text(1), q.text(2), q.text(3), q.text(4),
-                           static_cast<EffectKind>(sqlite3_column_int(q.value, 5))});
+                           static_cast<EffectKind>(sqlite3_column_int(q.statement, 5))});
       }
     }
     for (auto e : effects) {
@@ -699,7 +699,7 @@ DeliveryReply Store::register_delivery(const MissionRequest &request, const Json
       {
         Stmt q(p->db, "SELECT count(*) FROM registrations WHERE queue_state='WAITING'");
         q.step();
-        waiting = static_cast<std::size_t>(sqlite3_column_int64(q.value, 0));
+        waiting = static_cast<std::size_t>(sqlite3_column_int64(q.statement, 0));
       }
       const bool direct = !p->held() && !p->paused() && waiting == 0;
       if (!direct && (p->options.queue_capacity == 0 || waiting >= p->options.queue_capacity)) {
@@ -805,7 +805,7 @@ Json Store::queue_snapshot() {
   Stmt q(p->db, "SELECT mission,queue_seq,queue_state FROM registrations ORDER BY queue_seq");
   while (q.step()) {
     out["orders"].push_back({{"mission_id", q.text(0)},
-                             {"queue_seq", sqlite3_column_int64(q.value, 1)},
+                             {"queue_seq", sqlite3_column_int64(q.statement, 1)},
                              {"queue_state", q.text(2)}});
   }
   return out;
