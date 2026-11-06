@@ -175,7 +175,7 @@ struct Store::Impl {
     q.bind(6, std::to_string(r.version));
     q.bind(7, encode(d.next));
     q.step();
-  }
+  } 
 
   void effects(const std::vector<Effect> &effects) {
     for (const auto &e : effects) {
