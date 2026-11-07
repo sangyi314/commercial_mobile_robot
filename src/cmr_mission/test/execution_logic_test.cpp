@@ -138,7 +138,7 @@ int main(int argc, char **argv) {
     e = ev(r, Kind::Resolve, 13);
     ck(apply(e).changed && r.state == State::Canceled, "only complete proof releases");
     if (store) {
-      ck(!store->active(), "persisted slot released");
+      ck(!store->get_active_record(), "persisted slot released");
       int counts[6] = {};
       sqlite3 *db{};
       ck(sqlite3_open_v2((std::string(argv[2]) + "/mission.db").c_str(), &db, SQLITE_OPEN_READONLY,

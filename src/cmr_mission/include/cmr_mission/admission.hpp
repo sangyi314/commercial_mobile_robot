@@ -25,7 +25,7 @@ enum class Admission { Invalid, InvalidContext, Existing, Conflict, Busy, Create
 // The store must look up the request ID before invoking this function.
 struct AdmissionContext {
   std::optional<MissionRequest> existing;
-  bool active_slot_held{false};
+  bool has_active_mission{false};
 };
 
 inline bool valid_identifier(const std::string &value) {
@@ -75,7 +75,7 @@ inline Admission decide_admission(const MissionRequest &request, const Admission
     return same_business_content(request, *context.existing) ? Admission::Existing
                                                              : Admission::Conflict;
   }
-  return context.active_slot_held ? Admission::Busy : Admission::CreateIntent;
+  return context.has_active_mission ? Admission::Busy : Admission::CreateIntent;
 }
 
 } // namespace cmr::mission

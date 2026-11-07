@@ -52,7 +52,7 @@ void run(const std::string &name) {
     for (int n = 0; n < 100; ++n) {
       check(decide_admission(a, c) == Admission::Existing, "duplicate precedes busy");
     }
-    c.active_slot_held = false;
+    c.has_active_mission = false;
     check(decide_admission(a, c) == Admission::Existing, "terminal lookup remains existing");
     check(c.existing->created_at_unix_ms == 1, "first audit time retained");
   } else if (name == "conflict") {
@@ -84,7 +84,7 @@ void run(const std::string &name) {
     const auto before = c.existing->delivery_station;
     a.delivery_station = "changed";
     check(decide_admission(a, c) == Admission::Conflict, "conflict");
-    check(c.active_slot_held && c.existing->delivery_station == before, "no context mutation");
+    check(c.has_active_mission && c.existing->delivery_station == before, "no context mutation");
     check(a.delivery_station == "changed", "no request mutation");
   } else if (name == "permutations") {
     // Frozen held-slot snapshot: exhaustive query order invariance, NOT a runtime concurrency test.

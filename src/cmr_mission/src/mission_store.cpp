@@ -140,7 +140,7 @@ struct Store::Impl {
     }
   }
 
-  void hit(const std::string &s) {
+  void invoke_hook(const std::string &s) {
     if (hook) {
       hook(s);
     }
@@ -489,7 +489,7 @@ std::optional<Record> Store::get_record_from_id(const std::string &mission_id) {
   return p->get_record_from_id(mission_id);
 }
 
-std::optional<Record> Store::active() {
+std::optional<Record> Store::get_active_record() {
   p->check();
   Stmt q(p->db, "SELECT active FROM manager WHERE singleton=1");
   if (!q.step() || sqlite3_column_type(q.statement, 0) == SQLITE_NULL) {
@@ -509,7 +509,7 @@ Admission Store::submit(const MissionRequest &r) {
     {
       Stmt q(p->db, "SELECT active IS NOT NULL FROM manager");
       q.step();
-      c.active_slot_held = sqlite3_column_int(q.statement, 0) != 0;
+      c.has_active_mission = sqlite3_column_int(q.statement, 0) != 0;
     }
     auto a = decide_admission(r, c);
     if (a == Admission::CreateIntent) {
@@ -525,10 +525,10 @@ Admission Store::submit(const MissionRequest &r) {
       e.mission_id = r.mission_id;
       e.epoch = p->epoch;
       p->audit(n, e, {n, {}, true, "ACCEPTED"});
-      p->hit("submit-before-commit");
+      p->invoke_hook("submit-before-commit");
     }
     tx.commit();
-    p->hit("submit-after-commit");
+    p->invoke_hook("submit-after-commit");
     return a;
   } catch (...) {
     p->emergency();
@@ -583,9 +583,9 @@ Decision Store::apply(const Event &e) {
         }
       }
     }
-    p->hit(terminal(d.next.state) ? "terminal-before-commit" : "event-before-commit");
+    p->invoke_hook(terminal(d.next.state) ? "terminal-before-commit" : "event-before-commit");
     tx.commit();
-    p->hit(terminal(d.next.state) ? "terminal-after-commit" : "event-after-commit");
+    p->invoke_hook(terminal(d.next.state) ? "terminal-after-commit" : "event-after-commit");
     return d;
   } catch (...) {
     p->emergency();
@@ -646,9 +646,9 @@ void Store::dispatch() {
       }
       // DISPATCHING is durable before the external call. A crash leaves uncertainty,
       // rather than silently replaying an action that may already have reached the port.
-      p->hit("dispatch-before-port");
+      p->invoke_hook("dispatch-before-port");
       p->port->execute(e);
-      p->hit("dispatch-after-port");
+      p->invoke_hook("dispatch-after-port");
       {
         Tx tx(p->db);
         Stmt q(p->db, "UPDATE operations SET status='SENT' WHERE id=?");
@@ -725,9 +725,9 @@ DeliveryReply Store::register_delivery(const MissionRequest &request, const Json
     }
     p->queue_event(request.mission_id, "SUBMIT",
                    Json{{"code", reply.code}, {"duplicate", reply.duplicate}}.dump());
-    p->hit("delivery-submit-before-commit");
+    p->invoke_hook("delivery-submit-before-commit");
     tx.commit();
-    p->hit("delivery-submit-after-commit");
+    p->invoke_hook("delivery-submit-after-commit");
     return reply;
   } catch (...) {
     p->emergency();
@@ -765,9 +765,9 @@ DeliveryReply Store::promote() {
         }
       }
     }
-    p->hit("promote-before-commit");
+    p->invoke_hook("promote-before-commit");
     tx.commit();
-    p->hit("promote-after-commit");
+    p->invoke_hook("promote-after-commit");
     return reply;
   } catch (...) {
     p->emergency();
@@ -862,9 +862,9 @@ DeliveryReply Store::cancel_delivery(const std::string &mission_id, const std::s
       p->db.sql("UPDATE manager SET schedule_paused=1 WHERE singleton=1");
     }
     p->remember(mission_id, command_id, content, reply);
-    p->hit("delivery-cancel-before-commit");
+    p->invoke_hook("delivery-cancel-before-commit");
     tx.commit();
-    p->hit("delivery-cancel-after-commit");
+    p->invoke_hook("delivery-cancel-after-commit");
     reply.registration = p->registration(mission_id);
     return reply;
   } catch (...) {
@@ -926,7 +926,7 @@ DeliveryReply Store::confirm_handover(const std::string &mission_id, const std::
           if (d.changed) {
             commit_deadline =
                 std::min({r.deadline, r.handover_until, r.stop_until, r.arrival_until});
-            p->hit("handover-before-commit");
+            p->invoke_hook("handover-before-commit");
             if (p->now() >= r.deadline || p->now() >= r.handover_until || p->now() >= r.stop_until
                 || p->now() >= r.arrival_until || !p->options.eligible(reg->snapshot)) {
               expired_at_commit = true;
@@ -945,7 +945,7 @@ DeliveryReply Store::confirm_handover(const std::string &mission_id, const std::
           expired_at_commit = true;
         } else {
           tx.commit();
-          p->hit("handover-after-commit");
+          p->invoke_hook("handover-after-commit");
           return reply;
         }
       }

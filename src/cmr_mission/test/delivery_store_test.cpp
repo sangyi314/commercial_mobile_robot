@@ -269,7 +269,7 @@ void races(Fixture &f) {
   auto c = runtime.call([](Store &s) { return s.cancel_delivery("q1", "cancel2"); });
   ck(p.get().code == "PROMOTED" && c.get().code == "CANCEL_PENDING",
      "promote first uses active cancel");
-  auto r = call([](Store &s) { return s.active(); });
+  auto r = call([](Store &s) { return s.get_active_record(); });
   ck(r && r->pending == "CANCELED", "active retained until resolve");
 }
 
@@ -311,7 +311,7 @@ void fault(Fixture &f) {
   } catch (const std::runtime_error &) {
   }
   Store s(f.db(), "recover", nullptr, {}, f.options());
-  ck(!s.registration("m") && !s.active(), "failed commit not accepted");
+  ck(!s.registration("m") && !s.get_active_record(), "failed commit not accepted");
 }
 
 void mismatch(Fixture &f) {
@@ -529,7 +529,7 @@ void crash_windows(Fixture &parent) {
              "lost response replay survives process exit");
         }
       }
-      if (auto r = recovered.active()) {
+      if (auto r = recovered.get_active_record()) {
         ck(r->restart_suspended && r->state == State::Paused, "no automatic restarted motion");
       }
       ck(count(f.db(), "SELECT count(*) FROM operations WHERE status='INTENT'") == 0,
@@ -633,7 +633,7 @@ void seeds(const fs::path &root, unsigned first = 1, unsigned last = 20) {
       } else {
         code = s.schedule(false).code;
       }
-      auto a = s.active();
+      auto a = s.get_active_record();
       if (a && a->pending == "CANCELED" && !a->ever_sent) {
         f.apply(s, a->request.mission_id, Kind::Resolve);
       }

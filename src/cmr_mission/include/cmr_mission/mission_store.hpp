@@ -48,7 +48,7 @@ public:
   Store &operator=(const Store &) = delete;
   Admission submit(const MissionRequest &);
   std::optional<Record> get_record_from_id(const std::string &);
-  std::optional<Record> active(); // owner-only persisted slot lookup, including shutdown
+  std::optional<Record> get_active_record(); // owner-only persisted slot lookup, including shutdown
   Decision apply(const Event &);
   void dispatch();
   DeliveryReply register_delivery(const MissionRequest &, const Json &snapshot);

@@ -139,7 +139,7 @@ public:
   }
 
   Decision delivery_drive(Store &s) {
-    auto active = s.active();
+    auto active = s.get_active_record();
     if (!active) {
       if (!closing) {
         s.promote();
@@ -419,7 +419,7 @@ private:
     if (delivery_mode) {
       delivery_drive(s);
     } else if (gate_mode) {
-      auto r = s.active();
+      auto r = s.get_active_record();
       if (r && r->state == State::Paused && !r->pending.empty() && r->goal_terminal && r->revoked
           && r->stopped && e.now < r->stop_until && stop_generations.count(r->attempt)
           && execution->evidence_current(*r, stop_generations[r->attempt])) {
@@ -802,7 +802,7 @@ public:
             if (delivery_mode) {
               delivery_drive(s);
             }
-            auto r = s.active();
+            auto r = s.get_active_record();
             if (!r) {
               return Decision{};
             }
@@ -879,7 +879,7 @@ public:
     }
     try {
       events.push_back(runtime->call([this](Store &s) {
-        auto r = s.active();
+        auto r = s.get_active_record();
         if (!r) {
           return Decision{};
         }
