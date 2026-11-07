@@ -1,0 +1,9 @@
+CompileFlags:
+  CompilationDatabase: build/editor
+---
+# Standalone parsing can borrow candidate_relay.cpp, which lacks these two includes.
+# Colcon commands run from build/editor/<package>.
+If:
+  PathMatch: src/cmr_execution/include/cmr_execution/ros_convert[.]hpp
+CompileFlags:
+  Add: [-isystem, ../install/cmr_core/include, -isystem, ../install/cmr_interfaces/include/cmr_interfaces]

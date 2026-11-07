@@ -12,6 +12,7 @@
         "/usr/include/**"
       ],
       "name": "ros2",
+      "compileCommands": ["${workspaceFolder}/build/editor/compile_commands.json"],
       "intelliSenseMode": "gcc-arm64",
       "compilerPath": "/usr/bin/gcc",
       "cStandard": "gnu11",

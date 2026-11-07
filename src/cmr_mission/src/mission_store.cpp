@@ -330,26 +330,26 @@ struct Store::Impl {
   }
 };
 
-Store::Store(const std::string &name, const std::string &epoch, Port *port, Hook hook,
+Store::Store(const std::string &db_path, const std::string &epoch, Port *port, Hook hook,
              StoreOptions options)
     : p(std::make_unique<Impl>()) {
   if (!valid_identifier(epoch)) {
     throw std::runtime_error("invalid process epoch");
   }
   namespace fs = std::filesystem;
-  fs::path input = fs::absolute(name).lexically_normal();
-  if (fs::weakly_canonical(input) != input || fs::is_symlink(input)) {
+  fs::path normalized_db_path = fs::absolute(db_path).lexically_normal();
+  if (fs::weakly_canonical(normalized_db_path) != normalized_db_path || fs::is_symlink(normalized_db_path)) {
     throw std::runtime_error("path aliases unsupported");
   }
-  if (fs::exists(input)) {
+  if (fs::exists(normalized_db_path)) {
     struct stat st {};
 
-    if (stat(input.c_str(), &st) || st.st_nlink != 1) {
+    if (stat(normalized_db_path.c_str(), &st) || st.st_nlink != 1) {
       throw std::runtime_error("DB hardlinks unsupported");
     }
   }
-  p->lock.acquire(input.string() + ".owner.lock");
-  if (sqlite3_open_v2(input.c_str(), &p->db.connection,
+  p->lock.acquire(normalized_db_path.string() + ".owner.lock");
+  if (sqlite3_open_v2(normalized_db_path.c_str(), &p->db.connection,
                       SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE | SQLITE_OPEN_NOMUTEX, nullptr)
       != SQLITE_OK) {
     throw std::runtime_error("open database");
