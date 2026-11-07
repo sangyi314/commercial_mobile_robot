@@ -146,7 +146,7 @@ struct Store::Impl {
     }
   }
 
-  std::optional<Record> get(const std::string &mission_id) {
+  std::optional<Record> get_record_from_id(const std::string &mission_id) {
     Stmt q(db, "SELECT record FROM missions WHERE id=?");
     q.bind(1, mission_id);
     if (!q.step()) {
@@ -226,7 +226,7 @@ struct Store::Impl {
       return {};
     }
     return Registration{decode(q.text(0)).request, strict_json(q.text(1)), q.text(2),
-                        static_cast<std::uint64_t>(sqlite3_column_int64(q.statement, 3)), get(mission_id)};
+                        static_cast<std::uint64_t>(sqlite3_column_int64(q.statement, 3)), get_record_from_id(mission_id)};
   }
 
   void queue_event(const std::string &mission_id, const std::string &kind, const std::string &detail) {
@@ -461,7 +461,7 @@ Store::Store(const std::string &db_path, const std::string &epoch, Port *port, H
       throw std::runtime_error("multiple active missions");
     }
     for (const auto &mission_id : ids) {
-      auto r = *p->get(mission_id);
+      auto r = *p->get_record_from_id(mission_id);
       Event e;
       e.id = "restart-" + epoch;
       e.mission_id = mission_id;
@@ -486,7 +486,7 @@ Store::~Store() = default;
 
 std::optional<Record> Store::get(const std::string &mission_id) {
   p->check();
-  return p->get(mission_id);
+  return p->get_record_from_id(mission_id);
 }
 
 std::optional<Record> Store::active() {
@@ -495,7 +495,7 @@ std::optional<Record> Store::active() {
   if (!q.step() || sqlite3_column_type(q.statement, 0) == SQLITE_NULL) {
     return std::nullopt;
   }
-  return p->get(q.text(0));
+  return p->get_record_from_id(q.text(0));
 }
 
 Admission Store::submit(const MissionRequest &r) {
@@ -503,7 +503,7 @@ Admission Store::submit(const MissionRequest &r) {
   try {
     Tx tx(p->db);
     AdmissionContext c;
-    if (auto found = p->get(r.mission_id)) {
+    if (auto found = p->get_record_from_id(r.mission_id)) {
       c.existing = found->request;
     }
     {
@@ -540,7 +540,7 @@ Decision Store::apply(const Event &e) {
   p->check();
   try {
     Tx tx(p->db);
-    auto record = p->get(e.mission_id);
+    auto record = p->get_record_from_id(e.mission_id);
     if (!record) {
       tx.commit();
       return {Record{}, {}, false, "UNKNOWN_MISSION"};
@@ -626,7 +626,7 @@ void Store::dispatch() {
       }
       if (e.kind == EffectKind::Send || e.kind == EffectKind::SendAuthorized
           || e.kind == EffectKind::BeginLease) {
-        auto r = p->get(e.mission);
+        auto r = p->get_record_from_id(e.mission);
         if (!r || r->state == State::Paused || terminal(r->state) || r->phase != Phase::SendPending
             || r->goal_terminal || r->operation != e.operation || r->attempt != e.attempt) {
           Tx tx(p->db);
@@ -953,7 +953,7 @@ DeliveryReply Store::confirm_handover(const std::string &mission_id, const std::
     // A late commit guard is a business rejection, not a storage fault. The old
     // transaction has rolled back; persist a rejection, never a return intention.
     Tx tx(p->db);
-    DeliveryReply reply{"HANDOVER_EXPIRED_BEFORE_COMMIT", p->registration(mission_id), p->get(mission_id), false};
+    DeliveryReply reply{"HANDOVER_EXPIRED_BEFORE_COMMIT", p->registration(mission_id), p->get_record_from_id(mission_id), false};
     p->remember(mission_id, command_id, content, reply);
     tx.commit();
     return reply;
