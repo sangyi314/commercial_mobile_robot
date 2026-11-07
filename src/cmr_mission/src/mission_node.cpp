@@ -102,7 +102,7 @@ public:
     Event e;
     e.kind = kind;
     e.id = std::move(id);
-    e.mission = r.request.mission_id;
+    e.mission_id = r.request.mission_id;
     e.epoch = r.epoch;
     e.operation = r.operation;
     e.attempt = r.attempt;
@@ -384,7 +384,7 @@ private:
   Decision apply_callback(Store &s, Event &e) {
     // Correlate identity and consume the original receipt-relative evidence lifetime.
     e.now = now_ms();
-    if (auto current = s.get(e.mission)) {
+    if (auto current = s.get(e.mission_id)) {
       e = scope_callback(std::move(e), *current);
       if (gate_mode && e.uuid.empty()) {
         e.uuid = current->uuid;
@@ -396,7 +396,7 @@ private:
                                - std::chrono::nanoseconds(e.source_received_steady_ns))
                                .count();
       e.valid_until = e.now + 200 - elapsed;
-      auto record = s.get(e.mission);
+      auto record = s.get(e.mission_id);
       if (e.source_received_steady_ns <= 0 || elapsed < 0 || elapsed >= 200 || !record
           || !execution->evidence_current(*record, e.source_generation)) {
         e.source_fresh = false;

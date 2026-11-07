@@ -23,7 +23,7 @@ int main() {
     current.state = State::Returning;
     Event diagnostic;
     diagnostic.id = "old-fatal";
-    diagnostic.mission = "m";
+    diagnostic.mission_id = "m";
     diagnostic.epoch = "epoch";
     diagnostic.operation = "out";
     diagnostic.attempt = "out0";
@@ -36,7 +36,7 @@ int main() {
     Event e;
     e.id = "e";
     e.epoch = "epoch";
-    e.mission = "m";
+    e.mission_id = "m";
     e.operation = "out";
     e.attempt = "out0";
     e.uuid = "u";

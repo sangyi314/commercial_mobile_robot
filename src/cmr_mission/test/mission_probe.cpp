@@ -110,7 +110,7 @@ int main(int argc, char **argv) {
       auto r = *s.get("m");
       Event e;
       e.id = "event-" + std::to_string(++count);
-      e.mission = "m";
+      e.mission_id = "m";
       e.epoch = r.epoch;
       e.operation = r.operation;
       e.attempt = r.attempt;

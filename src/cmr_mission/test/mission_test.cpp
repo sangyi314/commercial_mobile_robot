@@ -20,7 +20,7 @@ Record initial() {
 Event event(const Record &r, Kind k) {
   Event e;
   e.id = std::to_string(r.version) + "e";
-  e.mission = r.request.mission_id;
+  e.mission_id = r.request.mission_id;
   e.epoch = r.epoch;
   e.operation = r.operation;
   e.attempt = r.attempt;

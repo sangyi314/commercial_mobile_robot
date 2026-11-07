@@ -168,7 +168,7 @@ void random_run(const std::string &root, unsigned seed, const std::string &repla
     } else if (auto r = store->get("m")) {
       Event e;
       e.id = "random-" + std::to_string(step);
-      e.mission = "m";
+      e.mission_id = "m";
       e.epoch = r->epoch;
       e.operation = r->operation;
       e.attempt = r->attempt;

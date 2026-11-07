@@ -66,7 +66,7 @@ struct NavigationAdapter::Impl : std::enable_shared_from_this<NavigationAdapter:
   Event event(const std::shared_ptr<Goal> &g, Kind kind, std::string detail) {
     Event e;
     e.id = "ros-" + config.epoch + "-" + std::to_string(++seq);
-    e.mission = g->effect.mission;
+    e.mission_id = g->effect.mission;
     e.epoch = config.epoch;
     e.operation = g->effect.operation;
     e.attempt = g->effect.attempt;

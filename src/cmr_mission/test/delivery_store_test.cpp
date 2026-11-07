@@ -87,7 +87,7 @@ struct Fixture {
     e.kind = kind;
     e.id = "test-" + std::to_string(++time);
     e.now = time;
-    e.mission = r.request.mission_id;
+    e.mission_id = r.request.mission_id;
     e.epoch = r.epoch;
     e.operation = r.operation;
     e.attempt = r.attempt;

@@ -38,7 +38,7 @@ public:
   }
 
   std::vector<Event> push(Event e) {
-    if (e.epoch != epoch || e.mission != mission || e.operation != operation
+    if (e.epoch != epoch || e.mission_id != mission || e.operation != operation
         || e.attempt != attempt) {
       ++discarded;
       return {};

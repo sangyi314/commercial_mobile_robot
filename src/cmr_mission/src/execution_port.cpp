@@ -90,7 +90,7 @@ struct ExecutionPort::Impl : std::enable_shared_from_this<Impl> {
   Event event(const std::shared_ptr<Context> &c, Kind kind, std::string detail) {
     Event e;
     e.id = "execution-" + config.owner + "-" + std::to_string(++event_seq);
-    e.mission = c->effect.mission;
+    e.mission_id = c->effect.mission;
     e.epoch = config.owner;
     e.operation = c->effect.operation;
     e.attempt = c->effect.attempt;

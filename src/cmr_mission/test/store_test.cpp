@@ -67,7 +67,7 @@ int main(int argc, char **argv) {
       Event e;
       e.id = "prepare";
       e.kind = Kind::Prepare;
-      e.mission = "m";
+      e.mission_id = "m";
       e.epoch = "e";
       e.now = 1;
       ck(s.apply(e).changed, "prepare");
@@ -90,10 +90,10 @@ int main(int argc, char **argv) {
       s.submit(req());
       Event e;
       e.id = "unknown";
-      e.mission = "absent";
+      e.mission_id = "absent";
       ck(s.apply(e).reason == "UNKNOWN_MISSION", "unknown input not storage fault");
       e.id = "p";
-      e.mission = "m";
+      e.mission_id = "m";
       e.epoch = "e";
       e.kind = Kind::Prepare;
       e.now = 1;

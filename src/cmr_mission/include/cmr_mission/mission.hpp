@@ -125,7 +125,7 @@ struct Record {
 struct Event {
   // Mission/operation identity and event metadata.
   std::string id;
-  std::string mission;
+  std::string mission_id;
   std::string epoch;
   std::string operation;
   std::string attempt;

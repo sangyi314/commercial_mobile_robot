@@ -15,7 +15,7 @@ void ck(bool b, const char *why) {
 Event ev(const Record &r, Kind k, int n) {
   Event e;
   e.id = "e" + std::to_string(n);
-  e.mission = r.request.mission_id;
+  e.mission_id = r.request.mission_id;
   e.epoch = r.epoch;
   e.operation = r.operation;
   e.attempt = r.attempt;

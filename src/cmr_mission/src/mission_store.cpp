@@ -263,7 +263,7 @@ struct Store::Impl {
     u.step();
     Event e;
     e.id = "activate";
-    e.mission = n.request.mission_id;
+    e.mission_id = n.request.mission_id;
     e.epoch = epoch;
     e.now = now();
     audit(n, e, {n, {}, true, "ACTIVATED"});
@@ -464,7 +464,7 @@ Store::Store(const std::string &name, const std::string &epoch, Port *port, Hook
       auto r = *p->get(id);
       Event e;
       e.id = "restart-" + epoch;
-      e.mission = id;
+      e.mission_id = id;
       e.epoch = r.epoch;
       e.kind = Kind::Restart;
       auto d = reduce(r, e);
@@ -522,7 +522,7 @@ Admission Store::submit(const MissionRequest &r) {
       q.step();
       Event e;
       e.id = "submit";
-      e.mission = r.mission_id;
+      e.mission_id = r.mission_id;
       e.epoch = p->epoch;
       p->audit(n, e, {n, {}, true, "ACCEPTED"});
       p->hit("submit-before-commit");
@@ -540,7 +540,7 @@ Decision Store::apply(const Event &e) {
   p->check();
   try {
     Tx tx(p->db);
-    auto record = p->get(e.mission);
+    auto record = p->get(e.mission_id);
     if (!record) {
       tx.commit();
       return {Record{}, {}, false, "UNKNOWN_MISSION"};
@@ -548,7 +548,7 @@ Decision Store::apply(const Event &e) {
     auto r = *record;
     {
       Stmt q(p->db, "SELECT kind,identity FROM events WHERE mission=? AND event_id=?");
-      q.bind(1, e.mission);
+      q.bind(1, e.mission_id);
       q.bind(2, e.id);
       if (q.step()) {
         const auto identity = q.text(1);
@@ -570,13 +570,13 @@ Decision Store::apply(const Event &e) {
       p->effects(d.effects);
       if (terminal(d.next.state)) {
         Stmt q(p->db, "UPDATE manager SET active=NULL WHERE active=?");
-        q.bind(1, e.mission);
+        q.bind(1, e.mission_id);
         q.step();
         if (p->options.delivery) {
           Stmt u(p->db, "UPDATE registrations SET queue_state='FINISHED' WHERE mission=?");
-          u.bind(1, e.mission);
+          u.bind(1, e.mission_id);
           u.step();
-          p->queue_event(e.mission, "FINISHED", state_name(d.next.state));
+          p->queue_event(e.mission_id, "FINISHED", state_name(d.next.state));
           if (d.next.state != State::Completed) {
             p->db.sql("UPDATE manager SET schedule_paused=1 WHERE singleton=1");
           }
@@ -843,7 +843,7 @@ DeliveryReply Store::cancel_delivery(const std::string &id, const std::string &c
       auto r = *reg->record;
       Event e;
       e.id = "delivery-cancel-" + command;
-      e.mission = id;
+      e.mission_id = id;
       e.epoch = r.epoch;
       e.operation = r.operation;
       e.attempt = r.attempt;
@@ -912,7 +912,7 @@ DeliveryReply Store::confirm_handover(const std::string &id, const std::string &
         } else {
           Event e;
           e.id = "handover-" + command;
-          e.mission = id;
+          e.mission_id = id;
           e.epoch = r.epoch;
           e.operation = r.operation;
           e.attempt = r.attempt;

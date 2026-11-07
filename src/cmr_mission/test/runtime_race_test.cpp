@@ -18,7 +18,7 @@ Event ev(Record r, Kind k, std::string id) {
   Event e;
   e.id = id;
   e.kind = k;
-  e.mission = "m";
+  e.mission_id = "m";
   e.epoch = r.epoch;
   e.operation = r.operation;
   e.attempt = r.attempt;

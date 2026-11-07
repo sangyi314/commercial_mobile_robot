@@ -46,7 +46,7 @@ const char *state_name(State s) {
 Decision reduce(const Record &old, const Event &e) {
   Decision d{old, {}, false, "ILLEGAL_EVENT"};
   auto &n = d.next;
-  if (e.id.empty() || e.mission != old.request.mission_id || e.epoch != old.epoch) {
+  if (e.id.empty() || e.mission_id != old.request.mission_id || e.epoch != old.epoch) {
     d.reason = "IDENTITY";
     return d;
   }
