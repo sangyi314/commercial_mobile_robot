@@ -146,9 +146,9 @@ struct Store::Impl {
     }
   }
 
-  std::optional<Record> get(const std::string &id) {
+  std::optional<Record> get(const std::string &mission_id) {
     Stmt q(db, "SELECT record FROM missions WHERE id=?");
-    q.bind(1, id);
+    q.bind(1, mission_id);
     if (!q.step()) {
       return {};
     }
@@ -219,19 +219,19 @@ struct Store::Impl {
     return sqlite3_column_int(q.statement, 0) != 0;
   }
 
-  std::optional<Registration> registration(const std::string &id) {
+  std::optional<Registration> registration(const std::string &mission_id) {
     Stmt q(db, "SELECT request,snapshot,queue_state,queue_seq FROM registrations WHERE mission=?");
-    q.bind(1, id);
+    q.bind(1, mission_id);
     if (!q.step()) {
       return {};
     }
     return Registration{decode(q.text(0)).request, strict_json(q.text(1)), q.text(2),
-                        static_cast<std::uint64_t>(sqlite3_column_int64(q.statement, 3)), get(id)};
+                        static_cast<std::uint64_t>(sqlite3_column_int64(q.statement, 3)), get(mission_id)};
   }
 
-  void queue_event(const std::string &id, const std::string &kind, const std::string &detail) {
+  void queue_event(const std::string &mission_id, const std::string &kind, const std::string &detail) {
     Stmt q(db, "INSERT INTO queue_events(mission,kind,detail) VALUES(?,?,?)");
-    q.bind(1, id);
+    q.bind(1, mission_id);
     q.bind(2, kind);
     Stmt high(db, "SELECT COALESCE(max(seq),0) FROM events");
     high.step();
@@ -270,16 +270,16 @@ struct Store::Impl {
     queue_event(n.request.mission_id, "ACTIVATED", "owner transaction; no Goal yet");
   }
 
-  std::optional<DeliveryReply> cached(const std::string &id, const std::string &command,
+  std::optional<DeliveryReply> cached(const std::string &mission_id, const std::string &command_id,
                                       const std::string &content) {
     Stmt q(db, "SELECT content,decision FROM command_decisions WHERE mission=? AND command_id=?");
-    q.bind(1, id);
-    q.bind(2, command); 
+    q.bind(1, mission_id);
+    q.bind(2, command_id); 
     if (!q.step()) {
       return {};
     }
     if (q.text(0) != content) {
-      return DeliveryReply{"COMMAND_CONFLICT", registration(id), {}, true};
+      return DeliveryReply{"COMMAND_CONFLICT", registration(mission_id), {}, true};
     }
     auto j = strict_json(q.text(1));
     DeliveryReply r;
@@ -288,11 +288,11 @@ struct Store::Impl {
     if (j.contains("record")) {
       r.record = decode(j.at("record"));
     }
-    r.registration = registration(id);
+    r.registration = registration(mission_id);
     return r;
   }
 
-  void remember(const std::string &id, const std::string &command, const std::string &content,
+  void remember(const std::string &mission_id, const std::string &command_id, const std::string &content,
                 const DeliveryReply &r) {
     Json j = {{"code", r.code}};
     if (r.record) {
@@ -300,13 +300,13 @@ struct Store::Impl {
     }
     Stmt q(db,
            "INSERT INTO command_decisions(mission,command_id,content,decision) VALUES(?,?,?,?)");
-    q.bind(1, id);
-    q.bind(2, command);
+    q.bind(1, mission_id);
+    q.bind(2, command_id);
     q.bind(3, content);
     q.bind(4, j.dump());
     q.step();
-    queue_event(id, "COMMAND",
-                Json{{"command_id", command}, {"content", content}, {"decision", j}}.dump());
+    queue_event(mission_id, "COMMAND",
+                Json{{"command_id", command_id}, {"content", content}, {"decision", j}}.dump());
   }
 
   void emergency() noexcept {
@@ -460,11 +460,11 @@ Store::Store(const std::string &name, const std::string &epoch, Port *port, Hook
     if (ids.size() > 1) {
       throw std::runtime_error("multiple active missions");
     }
-    for (const auto &id : ids) {
-      auto r = *p->get(id);
+    for (const auto &mission_id : ids) {
+      auto r = *p->get(mission_id);
       Event e;
       e.id = "restart-" + epoch;
-      e.mission_id = id;
+      e.mission_id = mission_id;
       e.epoch = r.epoch;
       e.kind = Kind::Restart;
       auto d = reduce(r, e);
@@ -484,9 +484,9 @@ Store::Store(const std::string &name, const std::string &epoch, Port *port, Hook
 
 Store::~Store() = default;
 
-std::optional<Record> Store::get(const std::string &id) {
+std::optional<Record> Store::get(const std::string &mission_id) {
   p->check();
-  return p->get(id);
+  return p->get(mission_id);
 }
 
 std::optional<Record> Store::active() {
@@ -663,9 +663,9 @@ void Store::dispatch() {
   }
 }
 
-std::optional<Registration> Store::registration(const std::string &id) {
+std::optional<Registration> Store::registration(const std::string &mission_id) {
   p->delivery_check();
-  return p->registration(id);
+  return p->registration(mission_id);
 }
 
 DeliveryReply Store::register_delivery(const MissionRequest &request, const Json &snapshot) {
@@ -811,21 +811,21 @@ Json Store::queue_snapshot() {
   return out;
 }
 
-DeliveryReply Store::cancel_delivery(const std::string &id, const std::string &command) {
+DeliveryReply Store::cancel_delivery(const std::string &mission_id, const std::string &command_id) {
   p->delivery_check();
-  if (!valid_identifier(command)) {
+  if (!valid_identifier(command_id)) {
     return {"INVALID_COMMAND_ID", {}, {}, false};
   }
   const std::string content = "cancel";
   try {
     Tx tx(p->db);
-    if (auto known = p->cached(id, command, content)) {
-      p->queue_event(id, "COMMAND_RETRY", known->code);
+    if (auto known = p->cached(mission_id, command_id, content)) {
+      p->queue_event(mission_id, "COMMAND_RETRY", known->code);
       tx.commit();
       return *known;
     }
     DeliveryReply reply;
-    auto reg = p->registration(id);
+    auto reg = p->registration(mission_id);
     reply.registration = reg;
     if (!reg) {
       reply.code = "NOT_FOUND";
@@ -833,17 +833,17 @@ DeliveryReply Store::cancel_delivery(const std::string &id, const std::string &c
       Stmt q(
           p->db,
           "UPDATE registrations SET queue_state='CANCELED' WHERE mission=? AND queue_state='WAITING'");
-      q.bind(1, id);
+      q.bind(1, mission_id);
       q.step();
-      p->queue_event(id, "QUEUE_CANCELED", command);
+      p->queue_event(mission_id, "QUEUE_CANCELED", command_id);
       reply.code = "QUEUE_CANCELED";
     } else if (reg->queue_state == "CANCELED" || reg->queue_state == "FINISHED") {
       reply.code = "ALREADY_TERMINAL";
     } else {
       auto r = *reg->record;
       Event e;
-      e.id = "delivery-cancel-" + command;
-      e.mission_id = id;
+      e.id = "delivery-cancel-" + command_id;
+      e.mission_id = mission_id;
       e.epoch = r.epoch;
       e.operation = r.operation;
       e.attempt = r.attempt;
@@ -861,11 +861,11 @@ DeliveryReply Store::cancel_delivery(const std::string &id, const std::string &c
       reply.record = d.next;
       p->db.sql("UPDATE manager SET schedule_paused=1 WHERE singleton=1");
     }
-    p->remember(id, command, content, reply);
+    p->remember(mission_id, command_id, content, reply);
     p->hit("delivery-cancel-before-commit");
     tx.commit();
     p->hit("delivery-cancel-after-commit");
-    reply.registration = p->registration(id);
+    reply.registration = p->registration(mission_id);
     return reply;
   } catch (...) {
     p->emergency();
@@ -873,11 +873,11 @@ DeliveryReply Store::cancel_delivery(const std::string &id, const std::string &c
   }
 }
 
-DeliveryReply Store::confirm_handover(const std::string &id, const std::string &command,
+DeliveryReply Store::confirm_handover(const std::string &mission_id, const std::string &command_id,
                                       const std::string &token, std::uint64_t version,
                                       const std::string &source, bool evidence) {
   p->delivery_check();
-  if (!valid_identifier(command) || !valid_identifier(token)
+  if (!valid_identifier(command_id) || !valid_identifier(token)
       || (source != "human" && source != "synthetic")) {
     return {"INVALID_HANDOVER", {}, {}, false};
   }
@@ -892,13 +892,13 @@ DeliveryReply Store::confirm_handover(const std::string &id, const std::string &
     std::int64_t commit_deadline = 0;
     {
       Tx tx(p->db);
-      if (auto known = p->cached(id, command, content)) {
-        p->queue_event(id, "COMMAND_RETRY", known->code);
+      if (auto known = p->cached(mission_id, command_id, content)) {
+        p->queue_event(mission_id, "COMMAND_RETRY", known->code);
         tx.commit();
         return *known;
       }
       DeliveryReply reply;
-      auto reg = p->registration(id);
+      auto reg = p->registration(mission_id);
       reply.registration = reg;
       if (!reg || !reg->record) {
         reply.code = "NOT_ACTIVE";
@@ -911,8 +911,8 @@ DeliveryReply Store::confirm_handover(const std::string &id, const std::string &
           reply.code = "EVIDENCE_UNQUALIFIED";
         } else {
           Event e;
-          e.id = "handover-" + command;
-          e.mission_id = id;
+          e.id = "handover-" + command_id;
+          e.mission_id = mission_id;
           e.epoch = r.epoch;
           e.operation = r.operation;
           e.attempt = r.attempt;
@@ -940,7 +940,7 @@ DeliveryReply Store::confirm_handover(const std::string &id, const std::string &
         }
       }
       if (!expired_at_commit) {
-        p->remember(id, command, content, reply);
+        p->remember(mission_id, command_id, content, reply);
         if (commit_deadline && p->now() >= commit_deadline) {
           expired_at_commit = true;
         } else {
@@ -953,8 +953,8 @@ DeliveryReply Store::confirm_handover(const std::string &id, const std::string &
     // A late commit guard is a business rejection, not a storage fault. The old
     // transaction has rolled back; persist a rejection, never a return intention.
     Tx tx(p->db);
-    DeliveryReply reply{"HANDOVER_EXPIRED_BEFORE_COMMIT", p->registration(id), p->get(id), false};
-    p->remember(id, command, content, reply);
+    DeliveryReply reply{"HANDOVER_EXPIRED_BEFORE_COMMIT", p->registration(mission_id), p->get(mission_id), false};
+    p->remember(mission_id, command_id, content, reply);
     tx.commit();
     return reply;
   } catch (...) {

@@ -69,8 +69,8 @@ int main(int argc, char **argv) {
     struct Access {
       Runtime &runtime;
 
-      std::optional<Record> get(std::string id) {
-        return runtime.call([id](Store &s) { return s.get(id); }).get();
+      std::optional<Record> get(std::string mission_id) {
+        return runtime.call([mission_id](Store &s) { return s.get(mission_id); }).get();
       }
 
       Admission submit(MissionRequest q) {

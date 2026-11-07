@@ -17,8 +17,8 @@ void ck(bool b, const char *s) {
   }
 }
 
-MissionRequest request(std::string id = "m") {
-  return {1, id, "a", "b", "map", "stations", 1};
+MissionRequest request(std::string mission_id = "m") {
+  return {1, mission_id, "a", "b", "map", "stations", 1};
 }
 
 struct Sink : Port {

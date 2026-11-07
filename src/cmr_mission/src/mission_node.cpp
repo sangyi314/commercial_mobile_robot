@@ -249,11 +249,11 @@ public:
     return {};
   }
 
-  DeliveryApi::Response delivery_response(Store &s, const std::string &id, DeliveryReply reply) {
+  DeliveryApi::Response delivery_response(Store &s, const std::string &mission_id, DeliveryReply reply) {
     DeliveryApi::Response out;
     out.code = reply.code;
-    out.mission_id = id;
-    auto reg = reply.registration ? reply.registration : s.registration(id);
+    out.mission_id = mission_id;
+    auto reg = reply.registration ? reply.registration : s.registration(mission_id);
     if (reg) {
       out.queue_state = reg->queue_state;
       out.queue_seq = reg->queue_seq;

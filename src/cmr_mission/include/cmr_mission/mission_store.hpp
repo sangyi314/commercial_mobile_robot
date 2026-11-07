@@ -53,8 +53,8 @@ public:
   void dispatch();
   DeliveryReply register_delivery(const MissionRequest &, const Json &snapshot);
   std::optional<Registration> registration(const std::string &);
-  DeliveryReply cancel_delivery(const std::string &id, const std::string &command_id);
-  DeliveryReply confirm_handover(const std::string &id, const std::string &command_id,
+  DeliveryReply cancel_delivery(const std::string &mission_id, const std::string &command_id);
+  DeliveryReply confirm_handover(const std::string &mission_id, const std::string &command_id,
                                  const std::string &handover_id, std::uint64_t handover_version,
                                  const std::string &source, bool current_evidence);
   DeliveryReply promote();

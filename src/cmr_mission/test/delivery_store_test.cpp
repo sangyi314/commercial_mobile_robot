@@ -65,8 +65,8 @@ struct Fixture {
     snapshot = StationCatalog((root / "catalog.json").string()).freeze(request("active"));
   }
 
-  MissionRequest request(std::string id) {
-    return {1, std::move(id), "a", "b", "map", "stations", 1};
+  MissionRequest request(std::string mission_id) {
+    return {1, std::move(mission_id), "a", "b", "map", "stations", 1};
   }
 
   StoreOptions options(std::size_t cap = 4) {
@@ -106,8 +106,8 @@ struct Fixture {
     return e;
   }
 
-  void apply(Store &s, const std::string &id, Kind kind) {
-    auto r = *s.get(id);
+  void apply(Store &s, const std::string &mission_id, Kind kind) {
+    auto r = *s.get(mission_id);
     auto e = event(r, kind);
     if (kind == Kind::Accepted) {
       e.uuid = "uuid-" + r.attempt;
@@ -120,25 +120,25 @@ struct Fixture {
     s.dispatch();
   }
 
-  void leg(Store &s, const std::string &id, bool first = true) {
+  void leg(Store &s, const std::string &mission_id, bool first = true) {
     if (first) {
-      apply(s, id, Kind::Prepare);
+      apply(s, mission_id, Kind::Prepare);
     }
     for (auto k : {Kind::Accepted, Kind::Succeeded, Kind::RevokeAck, Kind::Stop, Kind::Arrival,
                    Kind::Resolve}) {
-      apply(s, id, k);
+      apply(s, mission_id, k);
     }
   }
 
-  void complete(Store &s, const std::string &id) {
-    leg(s, id);
-    auto r = *s.get(id);
+  void complete(Store &s, const std::string &mission_id) {
+    leg(s, mission_id);
+    auto r = *s.get(mission_id);
     auto q =
-        s.confirm_handover(id, "handover1", r.handover_id, r.handover_version, "synthetic", true);
+        s.confirm_handover(mission_id, "handover1", r.handover_id, r.handover_version, "synthetic", true);
     ck(q.code == "CONFIRMED", "handover");
     s.dispatch();
-    leg(s, id, false);
-    ck(s.get(id)->state == State::Completed, "completed");
+    leg(s, mission_id, false);
+    ck(s.get(mission_id)->state == State::Completed, "completed");
   }
 };
 
@@ -405,13 +405,13 @@ void catalog_cases(Fixture &f) {
 
 void long_identity(Fixture &f) {
   Store s(f.db(), "e", nullptr, {}, f.options());
-  const auto id = std::string(64, 'm');
-  ck(s.register_delivery(f.request(id), f.snapshot).code == "ACCEPTED",
+  const auto mission_id = std::string(64, 'm');
+  ck(s.register_delivery(f.request(mission_id), f.snapshot).code == "ACCEPTED",
      "maximum Mission ID accepted");
-  f.leg(s, id);
-  auto r = *s.get(id);
+  f.leg(s, mission_id);
+  auto r = *s.get(mission_id);
   ck(valid_identifier(r.handover_id), "handover token stays within API identifier bounds");
-  ck(s.confirm_handover(id, "confirm", r.handover_id, r.handover_version, "synthetic", true).code
+  ck(s.confirm_handover(mission_id, "confirm", r.handover_id, r.handover_version, "synthetic", true).code
          == "CONFIRMED",
      "64 byte mission can confirm handover");
 }
@@ -621,13 +621,13 @@ void seeds(const fs::path &root, unsigned first = 1, unsigned last = 20) {
     std::mt19937 gen(seed);
     std::ofstream trace(f.root / "replay.jsonl");
     for (int i = 0; i < 200; ++i) {
-      auto id = "id" + std::to_string(gen() % 8);
+      auto mission_id = "id" + std::to_string(gen() % 8);
       auto op = gen() % 5;
       std::string code;
       if (op < 2) {
-        code = s.register_delivery(f.request(id), f.snapshot).code;
+        code = s.register_delivery(f.request(mission_id), f.snapshot).code;
       } else if (op == 2) {
-        code = s.cancel_delivery(id, "cmd" + std::to_string(i)).code;
+        code = s.cancel_delivery(mission_id, "cmd" + std::to_string(i)).code;
       } else if (op == 3) {
         code = s.promote().code;
       } else {
@@ -651,7 +651,7 @@ void seeds(const fs::path &root, unsigned first = 1, unsigned last = 20) {
       ck(waiting <= 4 && count(f.db(), "SELECT count(*) FROM missions WHERE terminal=0") <= 1,
          "capacity and slot invariant");
       trace << Json{{"seed", seed},     {"receive_order", i}, {"operation", op},
-                    {"mission_id", id}, {"decision", code},   {"queue", q}}
+                    {"mission_id", mission_id}, {"decision", code},   {"queue", q}}
                    .dump()
             << '\n';
     }
