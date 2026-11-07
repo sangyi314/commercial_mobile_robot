@@ -104,7 +104,7 @@ void store(const std::string &dir) {
       Runtime rt(path, "first", 16, &sink);
       rt.call([](Store &s) { s.submit(request()); }).get();
       auto apply = [&](Kind k, std::string id) {
-        return rt.call([=](Store &s) { return s.apply(event(*s.get("m"), k, id)); }).get();
+        return rt.call([=](Store &s) { return s.apply(event(*s.get_record_from_id("m"), k, id)); }).get();
       };
       apply(Kind::Prepare, "prepare");
       rt.call([](Store &s) { s.dispatch(); }).get();
@@ -120,16 +120,16 @@ void store(const std::string &dir) {
     }
     {
       Runtime rt(path, "restart", 16, &sink);
-      auto record = *rt.call([](Store &s) { return s.get("m"); }).get();
+      auto record = *rt.call([](Store &s) { return s.get_record_from_id("m"); }).get();
       check(record.pending == "CANCELED", "persisted cancellation lost");
       auto apply = [&](Kind k, std::string id) {
-        return rt.call([=](Store &s) { return s.apply(event(*s.get("m"), k, id)); }).get();
+        return rt.call([=](Store &s) { return s.apply(event(*s.get_record_from_id("m"), k, id)); }).get();
       };
       check(!apply(Kind::Recover, "post-restart-recover").changed, "restart allowed recovery");
       apply(Kind::RevokeAck, "restart-revoke");
       apply(Kind::Stop, "restart-stop");
       apply(Kind::Resolve, "resolve");
-      check(rt.call([](Store &s) { return s.get("m")->state; }).get() == State::Canceled,
+      check(rt.call([](Store &s) { return s.get_record_from_id("m")->state; }).get() == State::Canceled,
             "persisted final state");
       rt.call([](Store &s) { s.dispatch(); }).get();
       check(sink.sends == 1, "restart replayed send");
@@ -158,11 +158,11 @@ void races(const std::string &dir) {
                  "owner", 16, &sink);
       rt.call([](Store &s) {
           s.submit(request());
-          s.apply(event(*s.get("m"), Kind::Prepare, "prepare"));
+          s.apply(event(*s.get_record_from_id("m"), Kind::Prepare, "prepare"));
           s.dispatch();
-          s.apply(event(*s.get("m"), Kind::Accepted, "accepted"));
+          s.apply(event(*s.get_record_from_id("m"), Kind::Accepted, "accepted"));
         }).get();
-      const auto snapshot = *rt.call([](Store &s) { return s.get("m"); }).get();
+      const auto snapshot = *rt.call([](Store &s) { return s.get_record_from_id("m"); }).get();
       std::mutex mutex;
       std::condition_variable cv;
       int ready = 0;
@@ -201,20 +201,20 @@ void races(const std::string &dir) {
       first.get();
       second.get();
       const auto expected = cancel_first ? "CANCELED" : "FAILED";
-      auto record = *rt.call([](Store &s) { return s.get("m"); }).get();
+      auto record = *rt.call([](Store &s) { return s.get_record_from_id("m"); }).get();
       check(record.pending == expected, "ordered concurrent first intent overwritten");
       rt.call([](Store &s) {
-          s.apply(event(*s.get("m"), Kind::RevokeAck, "revoke"));
-          s.apply(event(*s.get("m"), Kind::Stop, "stop"));
+          s.apply(event(*s.get_record_from_id("m"), Kind::RevokeAck, "revoke"));
+          s.apply(event(*s.get_record_from_id("m"), Kind::Stop, "stop"));
         }).get();
       const auto recovery = rt.call([](Store &s) {
-                                return s.apply(event(*s.get("m"), Kind::Recover, "recover"));
+                                return s.apply(event(*s.get_record_from_id("m"), Kind::Recover, "recover"));
                               }).get();
       check(recovery.changed == !static_cast<bool>(cancel_first),
             "ordered recovery eligibility incorrect");
       if (cancel_first) {
         rt.call([](Store &s) {
-            s.apply(event(*s.get("m"), Kind::Retry, "retry"));
+            s.apply(event(*s.get_record_from_id("m"), Kind::Retry, "retry"));
             s.dispatch();
           }).get();
         check(sink.sends == 1, "race caused second send");

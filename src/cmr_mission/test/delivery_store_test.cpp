@@ -107,7 +107,7 @@ struct Fixture {
   }
 
   void apply(Store &s, const std::string &mission_id, Kind kind) {
-    auto r = *s.get(mission_id);
+    auto r = *s.get_record_from_id(mission_id);
     auto e = event(r, kind);
     if (kind == Kind::Accepted) {
       e.uuid = "uuid-" + r.attempt;
@@ -132,13 +132,13 @@ struct Fixture {
 
   void complete(Store &s, const std::string &mission_id) {
     leg(s, mission_id);
-    auto r = *s.get(mission_id);
+    auto r = *s.get_record_from_id(mission_id);
     auto q =
         s.confirm_handover(mission_id, "handover1", r.handover_id, r.handover_version, "synthetic", true);
     ck(q.code == "CONFIRMED", "handover");
     s.dispatch();
     leg(s, mission_id, false);
-    ck(s.get(mission_id)->state == State::Completed, "completed");
+    ck(s.get_record_from_id(mission_id)->state == State::Completed, "completed");
   }
 };
 
@@ -180,7 +180,7 @@ void fairness(Fixture &f) {
   auto p = s.promote();
   ck(p.code == "PROMOTED" && p.record->request.mission_id == "q0", "FIFO head");
   ck(s.cancel_delivery("new", "cancel_new").code == "QUEUE_CANCELED", "waiting cancel");
-  ck(s.get("q0")->pending.empty(), "queue cancel cannot touch active");
+  ck(s.get_record_from_id("q0")->pending.empty(), "queue cancel cannot touch active");
   ck(s.register_delivery(f.request("new"), f.snapshot).code == "EXISTING",
      "canceled registration permanent");
 }
@@ -196,7 +196,7 @@ void handover(Fixture &f) {
   Store s(f.db(), "e", nullptr, {}, f.options());
   s.register_delivery(f.request("m"), f.snapshot);
   f.leg(s, "m");
-  auto r = *s.get("m");
+  auto r = *s.get_record_from_id("m");
   ck(s.confirm_handover("m", "wrong", r.handover_id, r.handover_version + 1, "human", true).code
          == "HANDOVER_IDENTITY",
      "wrong entry version");
@@ -204,7 +204,7 @@ void handover(Fixture &f) {
          == "EVIDENCE_UNQUALIFIED",
      "live evidence");
   auto a = s.confirm_handover("m", "ok", r.handover_id, r.handover_version, "synthetic", true);
-  ck(a.code == "CONFIRMED" && s.get("m")->handover_source == "synthetic", "confirmed source enum");
+  ck(a.code == "CONFIRMED" && s.get_record_from_id("m")->handover_source == "synthetic", "confirmed source enum");
   auto b = s.confirm_handover("m", "ok", r.handover_id, r.handover_version, "synthetic", false);
   ck(b.code == "CONFIRMED" && b.duplicate, "lost response idempotent");
   ck(s.confirm_handover("m", "ok", r.handover_id, r.handover_version, "human", true).code
@@ -223,22 +223,22 @@ void expire(Fixture &f) {
       f.db(), "e", nullptr,
       [&](const std::string &hook) {
         if (hook == "handover-before-commit") {
-          f.time = s.get("m")->handover_until;
+          f.time = s.get_record_from_id("m")->handover_until;
         }
       },
       o);
   s.register_delivery(f.request("m"), f.snapshot);
   f.leg(s, "m");
-  auto r = *s.get("m");
+  auto r = *s.get_record_from_id("m");
   auto a = s.confirm_handover("m", "expire", r.handover_id, r.handover_version, "synthetic", true);
   ck(a.code == "HANDOVER_EXPIRED_BEFORE_COMMIT", "exact commit deadline");
-  ck(!s.get("m")->handed_over && count(f.db(), "SELECT count(*) FROM operations WHERE kind=0") == 1,
+  ck(!s.get_record_from_id("m")->handed_over && count(f.db(), "SELECT count(*) FROM operations WHERE kind=0") == 1,
      "no return before commit");
-  auto tick = f.event(*s.get("m"), Kind::Tick);
+  auto tick = f.event(*s.get_record_from_id("m"), Kind::Tick);
   ck(s.apply(tick).changed, "handover timeout");
   ck(s.cancel_delivery("m", "late_cancel").code == "CANCEL_PENDING",
      "first writer timeout stays failed");
-  ck(s.get("m")->pending == "FAILED", "timeout priority");
+  ck(s.get_record_from_id("m")->pending == "FAILED", "timeout priority");
 }
 
 void races(Fixture &f) {
@@ -283,8 +283,8 @@ void restart(Fixture &f) {
     f.apply(s, "m", Kind::Prepare);
   }
   Store s(f.db(), "new", nullptr, {}, f.options());
-  ck(s.get("m")->state == State::Paused && s.get("m")->phase == Phase::Uncertain
-         && s.get("m")->restart_suspended,
+  ck(s.get_record_from_id("m")->state == State::Paused && s.get_record_from_id("m")->phase == Phase::Uncertain
+         && s.get_record_from_id("m")->restart_suspended,
      "restart uncertain and cannot resume old deadlines");
   ck(s.registration("q")->queue_seq == order && s.queue_snapshot()["schedule_paused"] == true,
      "order and pause");
@@ -321,7 +321,7 @@ void mismatch(Fixture &f) {
   s.schedule(true);
   f.eligible = false;
   ck(s.promote().code == "HEAD_INPUT_MISMATCH" && s.queue_snapshot()["schedule_paused"] == true
-         && !s.get("q"),
+         && !s.get_record_from_id("q"),
      "head freeze guard");
 }
 
@@ -409,7 +409,7 @@ void long_identity(Fixture &f) {
   ck(s.register_delivery(f.request(mission_id), f.snapshot).code == "ACCEPTED",
      "maximum Mission ID accepted");
   f.leg(s, mission_id);
-  auto r = *s.get(mission_id);
+  auto r = *s.get_record_from_id(mission_id);
   ck(valid_identifier(r.handover_id), "handover token stays within API identifier bounds");
   ck(s.confirm_handover(mission_id, "confirm", r.handover_id, r.handover_version, "synthetic", true).code
          == "CONFIRMED",
@@ -424,7 +424,7 @@ void handover_cancel(Fixture &parent) {
                      .call([&](Store &s) {
                        s.register_delivery(f.request("m"), f.snapshot);
                        f.leg(s, "m");
-                       return *s.get("m");
+                       return *s.get_record_from_id("m");
                      })
                      .get();
     std::promise<void> release;
@@ -447,7 +447,7 @@ void handover_cancel(Fixture &parent) {
     ck(cancel.get().code == "CANCEL_PENDING", "cancel decided");
     ck(confirm.get().code == (confirm_first ? "CONFIRMED" : "REJECTED"),
        "handover/cancel transaction order");
-    auto current = owner.call([](Store &s) { return *s.get("m"); }).get();
+    auto current = owner.call([](Store &s) { return *s.get_record_from_id("m"); }).get();
     ck(current.handed_over == confirm_first && current.pending == "CANCELED",
        "committed delivery fact survives cancel");
     ck(count(f.db(), "SELECT count(*) FROM operations WHERE kind=0") == (confirm_first ? 2 : 1),
@@ -484,7 +484,7 @@ void crash_windows(Fixture &parent) {
           if (action == "handover") {
             store.register_delivery(f.request("m"), f.snapshot);
             f.leg(store, "m");
-            auto r = *store.get("m");
+            auto r = *store.get_record_from_id("m");
             token = r.handover_id;
             version = r.handover_version;
             std::ofstream(f.root / "confirmation.json")
@@ -512,11 +512,11 @@ void crash_windows(Fixture &parent) {
       if (action == "submit") {
         ck(bool(recovered.registration("m")) == after, "submit transaction atomic");
       } else if (action == "promote") {
-        ck(bool(recovered.get("m")) == after, "promotion atomic");
+        ck(bool(recovered.get_record_from_id("m")) == after, "promotion atomic");
         ck(recovered.registration("m")->queue_state == (after ? "ACTIVE" : "WAITING"),
            "queue promotion durable");
       } else {
-        auto r = *recovered.get("m");
+        auto r = *recovered.get_record_from_id("m");
         ck(r.handed_over == after && intents == (after ? 2 : 1),
            "handover fact and return intent commit together");
         if (after) {
@@ -550,7 +550,7 @@ void handover_seeds(const fs::path &root) {
     Store s(f.db(), "seed_owner", nullptr, {}, f.options());
     s.register_delivery(f.request("m"), f.snapshot);
     f.leg(s, "m");
-    const auto baseline = *s.get("m");
+    const auto baseline = *s.get_record_from_id("m");
     Record r = baseline;
     std::mt19937 random(seed);
     int return_intents = 0;

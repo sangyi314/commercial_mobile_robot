@@ -484,7 +484,7 @@ Store::Store(const std::string &db_path, const std::string &epoch, Port *port, H
 
 Store::~Store() = default;
 
-std::optional<Record> Store::get(const std::string &mission_id) {
+std::optional<Record> Store::get_record_from_id(const std::string &mission_id) {
   p->check();
   return p->get_record_from_id(mission_id);
 }

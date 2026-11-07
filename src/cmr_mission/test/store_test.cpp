@@ -78,7 +78,7 @@ int main(int argc, char **argv) {
     }
     {
       Store s(path, "restart", &sink);
-      auto m = *s.get("m");
+      auto m = *s.get_record_from_id("m");
       ck(m.state == State::Paused && m.phase == Phase::Uncertain, "paused restart");
       s.dispatch();
       ck(sink.sends == 1, "no replay");
@@ -98,7 +98,7 @@ int main(int argc, char **argv) {
       e.kind = Kind::Prepare;
       e.now = 1;
       s.apply(e);
-      auto m = *s.get("m");
+      auto m = *s.get_record_from_id("m");
       e.id = "a";
       e.operation = m.operation;
       e.attempt = m.attempt;
@@ -124,7 +124,7 @@ int main(int argc, char **argv) {
     }
     {
       Store s(fail, "restart");
-      ck(!s.get("m"), "rollback task and slot");
+      ck(!s.get_record_from_id("m"), "rollback task and slot");
     }
     auto busy = std::string(argv[1]) + "/busy.db";
     {
@@ -144,7 +144,7 @@ int main(int argc, char **argv) {
     }
     {
       Store s(busy, "afterbusy");
-      ck(!s.get("m"), "busy did not accept");
+      ck(!s.get_record_from_id("m"), "busy did not accept");
     }
     auto ro = std::string(argv[1]) + "/readonly.db";
     { Store s(ro, "e"); }

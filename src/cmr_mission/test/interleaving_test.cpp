@@ -165,7 +165,7 @@ void random_run(const std::string &root, unsigned seed, const std::string &repla
       store = std::make_unique<Store>(path, "e" + std::to_string(++epoch), &sink);
       ck(sink.sends == sends, "fault recovery resent Goal");
       trace << step << " op=24 SQLITE_BUSY_HIT=1 recovery_no_send=1" << std::endl;
-    } else if (auto r = store->get("m")) {
+    } else if (auto r = store->get_record_from_id("m")) {
       Event e;
       e.id = "random-" + std::to_string(step);
       e.mission_id = "m";
@@ -207,7 +207,7 @@ void random_run(const std::string &root, unsigned seed, const std::string &repla
       }
       const auto before = *r;
       store->apply(e);
-      const auto after = *store->get("m");
+      const auto after = *store->get_record_from_id("m");
       if (!before.goal_terminal && after.goal_terminal) {
         sink.active_attempts.erase(before.attempt);
       }
@@ -221,10 +221,10 @@ void random_run(const std::string &root, unsigned seed, const std::string &repla
     }
     store->dispatch();
     old_sends = sink.sends;
-    if (auto record = store->get("m")) {
+    if (auto record = store->get_record_from_id("m")) {
       trace << step << " op=" << op << " " << encode(*record) << std::endl;
     }
-    if (auto r = store->get("m")) {
+    if (auto r = store->get_record_from_id("m")) {
       const int held = scalar(path, "SELECT count(*) FROM manager WHERE active='m'");
       if (!r->goal_terminal || !r->revoked || !r->stopped) {
         ck(held == 1, "I5 released unresolved motion");
@@ -248,7 +248,7 @@ void random_run(const std::string &root, unsigned seed, const std::string &repla
               "SELECT count(*) FROM (SELECT id,count(*) n FROM operations GROUP BY id HAVING n>1)")
            == 0,
        "duplicate intent");
-    const auto observed = store->get("m");
+    const auto observed = store->get_record_from_id("m");
     ledger
         << Json{{"seed", seed},
                 {"receive_order", step},

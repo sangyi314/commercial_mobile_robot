@@ -48,7 +48,7 @@ int main(int argc, char **argv) {
     if (mode == "store") {
       store = std::make_unique<Store>(std::string(argv[2]) + "/mission.db", "owner", &port);
       ck(store->submit(r.request) == Admission::CreateIntent, "submit");
-      r = *store->get("m");
+      r = *store->get_record_from_id("m");
     }
     auto apply = [&](Event e) {
       auto d = store ? store->apply(e) : reduce(r, e);
@@ -163,7 +163,7 @@ int main(int argc, char **argv) {
     if (store) {
       MissionRequest early = {1, "early", "a", "b", "map", "stations", 1};
       ck(store->submit(early) == Admission::CreateIntent, "early submit");
-      r = *store->get("early");
+      r = *store->get_record_from_id("early");
     } else {
       r = Record{};
       r.request = {1, "early", "a", "b", "map", "stations", 1};

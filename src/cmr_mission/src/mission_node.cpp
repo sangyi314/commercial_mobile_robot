@@ -341,7 +341,7 @@ public:
                      } else if (q->operation == "resume_schedule") {
                        reply = s.schedule(true);
                      } else if (q->operation == "handover") {
-                       auto record = s.get(q->mission_id);
+                       auto record = s.get_record_from_id(q->mission_id);
                        reply = s.confirm_handover(q->mission_id, q->command_id, q->handover_id,
                                                   q->handover_entry_version, q->source,
                                                   record && delivery_evidence(*record));
@@ -384,7 +384,7 @@ private:
   Decision apply_callback(Store &s, Event &e) {
     // Correlate identity and consume the original receipt-relative evidence lifetime.
     e.now = now_ms();
-    if (auto current = s.get(e.mission_id)) {
+    if (auto current = s.get_record_from_id(e.mission_id)) {
       e = scope_callback(std::move(e), *current);
       if (gate_mode && e.uuid.empty()) {
         e.uuid = current->uuid;
@@ -396,7 +396,7 @@ private:
                                - std::chrono::nanoseconds(e.source_received_steady_ns))
                                .count();
       e.valid_until = e.now + 200 - elapsed;
-      auto record = s.get(e.mission_id);
+      auto record = s.get_record_from_id(e.mission_id);
       if (e.source_received_steady_ns <= 0 || elapsed < 0 || elapsed >= 200 || !record
           || !execution->evidence_current(*record, e.source_generation)) {
         e.source_fresh = false;
@@ -458,7 +458,7 @@ private:
                    return response;
                  }
                  if (q->operation == "submit") {
-                   if (!s.get(q->mission_id)
+                   if (!s.get_record_from_id(q->mission_id)
                        && (q->delivery_station != "a" || q->return_station != "b"
                            || q->map_version != "map" || q->station_version != "stations")) {
                      response.code = "INVALID_STATION_VERSION";
@@ -475,7 +475,7 @@ private:
                      if (gate_mode) {
                        stop_generations.clear();
                      }
-                     auto r = *s.get(q->mission_id);
+                     auto r = *s.get_record_from_id(q->mission_id);
                      auto e = ev(r, Kind::Prepare, "prepare-" + epoch + "-" + q->mission_id);
                      s.apply(e);
                      s.dispatch();
@@ -487,7 +487,7 @@ private:
                      response.code = "INVALID_COMMAND_ID";
                      return response;
                    }
-                   auto record = s.get(q->mission_id);
+                   auto record = s.get_record_from_id(q->mission_id);
                    if (!record) {
                      response.code = "NOT_FOUND";
                      return response;
@@ -508,7 +508,7 @@ private:
                    response.code = "INVALID_OPERATION";
                    return response;
                  }
-                 if (auto record = s.get(q->mission_id)) {
+                 if (auto record = s.get_record_from_id(q->mission_id)) {
                    fill(response, *record);
                  } else if (q->operation == "query") {
                    response.code = "NOT_FOUND";
@@ -565,7 +565,7 @@ private:
                                   response.code = "FIXTURE_STOP_PROHIBITED";
                                   return response;
                                 }
-                                auto record = s.get(q->mission_id);
+                                auto record = s.get_record_from_id(q->mission_id);
                                 if (!record) {
                                   response.code = "NOT_FOUND";
                                   return response;

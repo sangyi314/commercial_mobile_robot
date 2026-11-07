@@ -41,11 +41,11 @@ int main(int argc, char **argv) {
       Runtime rt(std::string(argv[1]) + "/order" + std::to_string(order) + ".db", "e");
       rt.call([](Store &s) { s.submit(req()); }).get();
       auto apply = [&](Kind k, std::string id) {
-        return rt.call([=](Store &s) { return s.apply(ev(*s.get("m"), k, id)); }).get();
+        return rt.call([=](Store &s) { return s.apply(ev(*s.get_record_from_id("m"), k, id)); }).get();
       };
       apply(Kind::Prepare, "p");
       apply(Kind::Accepted, "a");
-      auto snapshot = *rt.call([](Store &s) { return s.get("m"); }).get();
+      auto snapshot = *rt.call([](Store &s) { return s.get_record_from_id("m"); }).get();
       std::mutex mutex;
       std::condition_variable cv;
       int ready = 0;
@@ -88,7 +88,7 @@ int main(int argc, char **argv) {
       apply(Kind::RevokeAck, "revoked");
       apply(Kind::Stop, "stop");
       apply(Kind::Resolve, "resolve");
-      ck(rt.call([](Store &s) { return s.get("m")->state; }).get() == State::Canceled,
+      ck(rt.call([](Store &s) { return s.get_record_from_id("m")->state; }).get() == State::Canceled,
          "cancel wins before final completion");
       std::cout << "PASS runtime ordered cancel/success " << order << '\n';
     }
@@ -130,7 +130,7 @@ int main(int argc, char **argv) {
       close.join();
       ck(accepted != rejected, "close race resolves future");
       Store inspect(path, "verify");
-      ck(inspect.get("m").has_value() == accepted, "ack is committed; rejected no mission");
+      ck(inspect.get_record_from_id("m").has_value() == accepted, "ack is committed; rejected no mission");
     }
     std::cout << "PASS close/submit 20 barrier races\n";
     return 0;

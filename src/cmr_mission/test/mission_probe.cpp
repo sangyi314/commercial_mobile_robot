@@ -70,7 +70,7 @@ int main(int argc, char **argv) {
       Runtime &runtime;
 
       std::optional<Record> get(std::string mission_id) {
-        return runtime.call([mission_id](Store &s) { return s.get(mission_id); }).get();
+        return runtime.call([mission_id](Store &s) { return s.get_record_from_id(mission_id); }).get();
       }
 
       Admission submit(MissionRequest q) {
