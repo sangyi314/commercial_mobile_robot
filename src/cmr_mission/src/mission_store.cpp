@@ -274,7 +274,7 @@ struct Store::Impl {
                                       const std::string &content) {
     Stmt q(db, "SELECT content,decision FROM command_decisions WHERE mission=? AND command_id=?");
     q.bind(1, id);
-    q.bind(2, command);
+    q.bind(2, command); 
     if (!q.step()) {
       return {};
     }
