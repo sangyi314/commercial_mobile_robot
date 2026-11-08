@@ -89,7 +89,7 @@ void concurrent(const std::string &root) {
         cv.notify_all();
         cv.wait(l, [&] { return go; });
       }
-      result = rt.call([q](Store &s) { return s.submit(q); }).get();
+      result = rt.call([q](Store &s) { return s.submit_legacy(q); }).get();
     };
     std::thread x(run, false, std::ref(a)), y(run, true, std::ref(b));
     {
@@ -135,7 +135,7 @@ void random_run(const std::string &root, unsigned seed, const std::string &repla
       if (op == 1) {
         q.return_station = "conflict";
       }
-      store->submit(q);
+      store->submit_legacy(q);
     } else if (op == 23) {
       store.reset();
       store = std::make_unique<Store>(path, "e" + std::to_string(++epoch), &sink);
@@ -150,7 +150,7 @@ void random_run(const std::string &root, unsigned seed, const std::string &repla
          "fault writer lock");
       bool hit = false;
       try {
-        store->submit(request("injected-new"));
+        store->submit_legacy(request("injected-new"));
       } catch (const std::exception &) {
         hit = true;
       }

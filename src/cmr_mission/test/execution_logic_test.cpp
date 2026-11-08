@@ -47,7 +47,7 @@ int main(int argc, char **argv) {
     r.epoch = "owner";
     if (mode == "store") {
       store = std::make_unique<Store>(std::string(argv[2]) + "/mission.db", "owner", &port);
-      ck(store->submit(r.request) == Admission::CreateIntent, "submit");
+      ck(store->submit_legacy(r.request) == Admission::CreateIntent, "submit");
       r = *store->get_record_from_id("m");
     }
     auto apply = [&](Event e) {
@@ -162,7 +162,7 @@ int main(int argc, char **argv) {
     // NOT_SENT, then late Gate context. It must bind only to revoke, never Begin.
     if (store) {
       MissionRequest early = {1, "early", "a", "b", "map", "stations", 1};
-      ck(store->submit(early) == Admission::CreateIntent, "early submit");
+      ck(store->submit_legacy(early) == Admission::CreateIntent, "early submit");
       r = *store->get_record_from_id("early");
     } else {
       r = Record{};

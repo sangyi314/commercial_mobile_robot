@@ -39,7 +39,7 @@ int main(int argc, char **argv) {
     std::filesystem::create_directories(argv[1]);
     for (int order = 0; order < 2; ++order) {
       Runtime rt(std::string(argv[1]) + "/order" + std::to_string(order) + ".db", "e");
-      rt.call([](Store &s) { s.submit(req()); }).get();
+      rt.call([](Store &s) { s.submit_legacy(req()); }).get();
       auto apply = [&](Kind k, std::string id) {
         return rt.call([=](Store &s) { return s.apply(ev(*s.get_record_from_id("m"), k, id)); }).get();
       };
@@ -83,7 +83,7 @@ int main(int argc, char **argv) {
       ck(a.get().changed && b.get().changed, "both ordered events applied");
       auto q = req();
       q.mission_id = "new";
-      ck(rt.call([q](Store &s) { return s.submit(q); }).get() == Admission::Busy,
+      ck(rt.call([q](Store &s) { return s.submit_legacy(q); }).get() == Admission::Busy,
          "pending stop holds slot");
       apply(Kind::RevokeAck, "revoked");
       apply(Kind::Stop, "stop");
@@ -111,7 +111,7 @@ int main(int argc, char **argv) {
         wait();
         try {
           accepted =
-              rt.call([](Store &s) { return s.submit(req()); }).get() == Admission::CreateIntent;
+              rt.call([](Store &s) { return s.submit_legacy(req()); }).get() == Admission::CreateIntent;
         } catch (const std::runtime_error &e) {
           rejected = std::string(e.what()) == "CLOSED";
         }

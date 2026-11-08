@@ -79,15 +79,15 @@ struct Stmt {
   }
 };
 
-struct Tx {
+struct Transaction {
   Db &db;
   bool done{false};
 
-  explicit Tx(Db &d) : db(d) {
+  explicit Transaction(Db &d) : db(d) {
     db.sql("BEGIN IMMEDIATE");
   }
 
-  ~Tx() {
+  ~Transaction() {
     if (!done) {
       try {
         db.sql("ROLLBACK");
@@ -155,7 +155,7 @@ struct Store::Impl {
     return decode(q.text(0));
   }
 
-  void save(const Record &r) {
+  void save_mission(const Record &r) {
     Stmt q(db, "INSERT INTO missions(id,record,terminal) VALUES(?,?,?) ON CONFLICT(id) DO UPDATE "
                "SET record=excluded.record,terminal=excluded.terminal");
     q.bind(1, r.request.mission_id);
@@ -219,7 +219,7 @@ struct Store::Impl {
     return sqlite3_column_int(q.statement, 0) != 0;
   }
 
-  std::optional<Registration> registration(const std::string &mission_id) {
+  std::optional<Registration> get_registration_from_id(const std::string &mission_id) {
     Stmt q(db, "SELECT request,snapshot,queue_state,queue_seq FROM registrations WHERE mission=?");
     q.bind(1, mission_id);
     if (!q.step()) {
@@ -250,7 +250,7 @@ struct Store::Impl {
     n.delivery_managed = true;
     n.deadline = now() + options.task_ms;
     n.handover_budget = options.handover_ms;
-    save(n);
+    save_mission(n);
     Stmt q(db, "UPDATE manager SET active=? WHERE singleton=1 AND active IS NULL");
     q.bind(1, n.request.mission_id);
     q.step();
@@ -279,22 +279,22 @@ struct Store::Impl {
       return {};
     }
     if (q.text(0) != content) {
-      return DeliveryReply{"COMMAND_CONFLICT", registration(mission_id), {}, true};
+      return DeliveryReply{"COMMAND_CONFLICT", get_registration_from_id(mission_id), {}, true};
     }
     auto j = strict_json(q.text(1));
     DeliveryReply r;
-    r.code = j.at("code");
+    r.result_code = j.at("code");
     r.duplicate = true;
     if (j.contains("record")) {
       r.record = decode(j.at("record"));
     }
-    r.registration = registration(mission_id);
+    r.registration = get_registration_from_id(mission_id);
     return r;
   }
 
   void remember(const std::string &mission_id, const std::string &command_id, const std::string &content,
                 const DeliveryReply &r) {
-    Json j = {{"code", r.code}};
+    Json j = {{"code", r.result_code}};
     if (r.record) {
       j["record"] = encode(*r.record);
     }
@@ -407,7 +407,7 @@ Store::Store(const std::string &db_path, const std::string &epoch, Port *port, H
     }
   }
   // Schema initialization and restart reconciliation share this original transaction.
-  Tx tx(p->db);
+  Transaction tx(p->db);
   if (version == 0) {
     p->db.sql("CREATE TABLE missions(id TEXT PRIMARY KEY,record TEXT NOT NULL,terminal INTEGER "
               "NOT NULL CHECK(terminal IN(0,1))); CREATE TABLE manager(singleton INTEGER PRIMARY "
@@ -469,7 +469,7 @@ Store::Store(const std::string &db_path, const std::string &epoch, Port *port, H
       e.kind = Kind::Restart;
       auto d = reduce(r, e);
       d.next.epoch = epoch;
-      p->save(d.next);
+      p->save_mission(d.next);
       p->audit(r, e, d);
     }
   }
@@ -498,10 +498,10 @@ std::optional<Record> Store::get_active_record() {
   return p->get_record_from_id(q.text(0));
 }
 
-Admission Store::submit(const MissionRequest &r) {
+Admission Store::submit_legacy(const MissionRequest &r) {
   p->check();
   try {
-    Tx tx(p->db);
+    Transaction tx(p->db);
     AdmissionContext c;
     if (auto found = p->get_record_from_id(r.mission_id)) {
       c.existing = found->request;
@@ -516,7 +516,7 @@ Admission Store::submit(const MissionRequest &r) {
       Record n;
       n.request = r;
       n.epoch = p->epoch;
-      p->save(n);
+      p->save_mission(n);
       Stmt q(p->db, "UPDATE manager SET active=? WHERE singleton=1 AND active IS NULL");
       q.bind(1, r.mission_id);
       q.step();
@@ -539,7 +539,7 @@ Admission Store::submit(const MissionRequest &r) {
 Decision Store::apply(const Event &e) {
   p->check();
   try {
-    Tx tx(p->db);
+    Transaction tx(p->db);
     auto record = p->get_record_from_id(e.mission_id);
     if (!record) {
       tx.commit();
@@ -566,7 +566,7 @@ Decision Store::apply(const Event &e) {
     auto d = reduce(r, e);
     p->audit(r, e, d);
     if (d.changed) {
-      p->save(d.next);
+      p->save_mission(d.next);
       p->effects(d.effects);
       if (terminal(d.next.state)) {
         Stmt q(p->db, "UPDATE manager SET active=NULL WHERE active=?");
@@ -613,7 +613,7 @@ void Store::dispatch() {
     for (auto e : effects) {
       if (p->options.delivery
           && (e.kind == EffectKind::Send || e.kind == EffectKind::SendAuthorized)) {
-        auto r = p->registration(e.mission);
+        auto r = p->get_registration_from_id(e.mission);
         if (!r) {
           throw std::runtime_error("missing frozen registration");
         }
@@ -629,7 +629,7 @@ void Store::dispatch() {
         auto r = p->get_record_from_id(e.mission);
         if (!r || r->state == State::Paused || terminal(r->state) || r->phase != Phase::SendPending
             || r->goal_terminal || r->operation != e.operation || r->attempt != e.attempt) {
-          Tx tx(p->db);
+          Transaction tx(p->db);
           Stmt q(p->db, "UPDATE operations SET status='UNCERTAIN' WHERE id=?");
           q.bind(1, e.id);
           q.step();
@@ -638,7 +638,7 @@ void Store::dispatch() {
         }
       }
       {
-        Tx tx(p->db);
+        Transaction tx(p->db);
         Stmt q(p->db, "UPDATE operations SET status='DISPATCHING' WHERE id=? AND status='INTENT'");
         q.bind(1, e.id);
         q.step();
@@ -650,7 +650,7 @@ void Store::dispatch() {
       p->port->execute(e);
       p->invoke_hook("dispatch-after-port");
       {
-        Tx tx(p->db);
+        Transaction tx(p->db);
         Stmt q(p->db, "UPDATE operations SET status='SENT' WHERE id=?");
         q.bind(1, e.id);
         q.step();
@@ -663,12 +663,12 @@ void Store::dispatch() {
   }
 }
 
-std::optional<Registration> Store::registration(const std::string &mission_id) {
+std::optional<Registration> Store::get_registration_from_id(const std::string &mission_id) {
   p->delivery_check();
-  return p->registration(mission_id);
+  return p->get_registration_from_id(mission_id);
 }
 
-DeliveryReply Store::register_delivery(const MissionRequest &request, const Json &snapshot) {
+DeliveryReply Store::submit_delivery(const MissionRequest &request, const Json &snapshot) {
   p->delivery_check();
   if (validate(request) != Validation::Valid) {
     return {"INVALID", {}, {}, false};
@@ -686,14 +686,14 @@ DeliveryReply Store::register_delivery(const MissionRequest &request, const Json
     return {"INVALID_SNAPSHOT", {}, {}, false};
   }
   try {
-    Tx tx(p->db);
+    Transaction tx(p->db);
     DeliveryReply reply;
-    if (auto r = p->registration(request.mission_id)) {
+    if (auto r = p->get_registration_from_id(request.mission_id)) {
       reply = {same_business_content(request, r->request) && snapshot == r->snapshot ? "EXISTING"
                                                                                      : "CONFLICT",
                r, r->record, true};
     } else if (!p->options.eligible(snapshot)) {
-      reply.code = "INPUT_UNQUALIFIED";
+      reply.result_code = "INPUT_UNQUALIFIED";
     } else {
       std::size_t waiting = 0;
       {
@@ -703,28 +703,28 @@ DeliveryReply Store::register_delivery(const MissionRequest &request, const Json
       }
       const bool direct = !p->held() && !p->paused() && waiting == 0;
       if (!direct && (p->options.queue_capacity == 0 || waiting >= p->options.queue_capacity)) {
-        reply.code = p->options.queue_capacity == 0 ? "BUSY" : "QUEUE_FULL";
+        reply.result_code = p->options.queue_capacity == 0 ? "BUSY" : "QUEUE_FULL";
       } else {
-        Record blob;
-        blob.request = request;
+        Record registration_record;
+        registration_record.request = request;
         Stmt q(p->db,
                "INSERT INTO registrations(mission,request,snapshot,queue_state) VALUES(?,?,?,?)");
         q.bind(1, request.mission_id);
-        q.bind(2, encode(blob));
+        q.bind(2, encode(registration_record));
         q.bind(3, snapshot.dump());
         q.bind(4, direct ? "ACTIVE" : "WAITING");
         q.step();
-        auto r = *p->registration(request.mission_id);
+        auto r = *p->get_registration_from_id(request.mission_id);
         if (direct) {
           p->activate(r);
         }
-        reply.code = direct ? "ACCEPTED" : "QUEUED";
-        reply.registration = p->registration(request.mission_id);
+        reply.result_code = direct ? "ACCEPTED" : "QUEUED";
+        reply.registration = p->get_registration_from_id(request.mission_id);
         reply.record = reply.registration->record;
       }
     }
     p->queue_event(request.mission_id, "SUBMIT",
-                   Json{{"code", reply.code}, {"duplicate", reply.duplicate}}.dump());
+                   Json{{"code", reply.result_code}, {"duplicate", reply.duplicate}}.dump());
     p->invoke_hook("delivery-submit-before-commit");
     tx.commit();
     p->invoke_hook("delivery-submit-after-commit");
@@ -738,29 +738,29 @@ DeliveryReply Store::register_delivery(const MissionRequest &request, const Json
 DeliveryReply Store::promote() {
   p->delivery_check();
   try {
-    Tx tx(p->db);
+    Transaction tx(p->db);
     DeliveryReply reply;
     if (p->held()) {
-      reply.code = "BUSY";
+      reply.result_code = "BUSY";
     } else if (p->paused()) {
-      reply.code = "SCHEDULE_PAUSED";
+      reply.result_code = "SCHEDULE_PAUSED";
     } else {
       Stmt q(
           p->db,
           "SELECT mission FROM registrations WHERE queue_state='WAITING' ORDER BY queue_seq LIMIT 1");
       if (!q.step()) {
-        reply.code = "EMPTY";
+        reply.result_code = "EMPTY";
       } else {
-        auto r = *p->registration(q.text(0));
+        auto r = *p->get_registration_from_id(q.text(0));
         if (!p->options.eligible(r.snapshot)) {
           p->db.sql("UPDATE manager SET schedule_paused=1 WHERE singleton=1");
           p->queue_event(r.request.mission_id, "HEAD_INPUT_MISMATCH",
                          "original frozen resource required");
-          reply.code = "HEAD_INPUT_MISMATCH";
+          reply.result_code = "HEAD_INPUT_MISMATCH";
         } else {
           p->activate(r);
-          reply.code = "PROMOTED";
-          reply.registration = p->registration(r.request.mission_id);
+          reply.result_code = "PROMOTED";
+          reply.registration = p->get_registration_from_id(r.request.mission_id);
           reply.record = reply.registration->record;
         }
       }
@@ -778,16 +778,16 @@ DeliveryReply Store::promote() {
 DeliveryReply Store::schedule(bool resume) {
   p->delivery_check();
   try {
-    Tx tx(p->db);
+    Transaction tx(p->db);
     DeliveryReply reply;
     if (resume && p->held()) {
-      reply.code = "ACTIVE_UNRESOLVED";
+      reply.result_code = "ACTIVE_UNRESOLVED";
     } else {
       p->db.sql(std::string("UPDATE manager SET schedule_paused=") + (resume ? "0" : "1")
                 + " WHERE singleton=1");
       p->queue_event("", resume ? "SCHEDULE_RESUMED" : "SCHEDULE_PAUSED",
                      "explicit owner command; not Goal/stop evidence");
-      reply.code = resume ? "RESUMED" : "PAUSED";
+      reply.result_code = resume ? "RESUMED" : "PAUSED";
     }
     tx.commit();
     return reply;
@@ -818,17 +818,17 @@ DeliveryReply Store::cancel_delivery(const std::string &mission_id, const std::s
   }
   const std::string content = "cancel";
   try {
-    Tx tx(p->db);
+    Transaction tx(p->db);
     if (auto known = p->cached(mission_id, command_id, content)) {
-      p->queue_event(mission_id, "COMMAND_RETRY", known->code);
+      p->queue_event(mission_id, "COMMAND_RETRY", known->result_code);
       tx.commit();
       return *known;
     }
     DeliveryReply reply;
-    auto reg = p->registration(mission_id);
+    auto reg = p->get_registration_from_id(mission_id);
     reply.registration = reg;
     if (!reg) {
-      reply.code = "NOT_FOUND";
+      reply.result_code = "NOT_FOUND";
     } else if (reg->queue_state == "WAITING") {
       Stmt q(
           p->db,
@@ -836,9 +836,9 @@ DeliveryReply Store::cancel_delivery(const std::string &mission_id, const std::s
       q.bind(1, mission_id);
       q.step();
       p->queue_event(mission_id, "QUEUE_CANCELED", command_id);
-      reply.code = "QUEUE_CANCELED";
+      reply.result_code = "QUEUE_CANCELED";
     } else if (reg->queue_state == "CANCELED" || reg->queue_state == "FINISHED") {
-      reply.code = "ALREADY_TERMINAL";
+      reply.result_code = "ALREADY_TERMINAL";
     } else {
       auto r = *reg->record;
       Event e;
@@ -854,10 +854,10 @@ DeliveryReply Store::cancel_delivery(const std::string &mission_id, const std::s
       auto d = reduce(r, e);
       p->audit(r, e, d);
       if (d.changed) {
-        p->save(d.next);
+        p->save_mission(d.next);
         p->effects(d.effects);
       }
-      reply.code = d.changed || d.reason == "TERMINATION_PENDING" ? "CANCEL_PENDING" : "REJECTED";
+      reply.result_code = d.changed || d.reason == "TERMINATION_PENDING" ? "CANCEL_PENDING" : "REJECTED";
       reply.record = d.next;
       p->db.sql("UPDATE manager SET schedule_paused=1 WHERE singleton=1");
     }
@@ -865,7 +865,7 @@ DeliveryReply Store::cancel_delivery(const std::string &mission_id, const std::s
     p->invoke_hook("delivery-cancel-before-commit");
     tx.commit();
     p->invoke_hook("delivery-cancel-after-commit");
-    reply.registration = p->registration(mission_id);
+    reply.registration = p->get_registration_from_id(mission_id);
     return reply;
   } catch (...) {
     p->emergency();
@@ -891,24 +891,24 @@ DeliveryReply Store::confirm_handover(const std::string &mission_id, const std::
     bool expired_at_commit = false;
     std::int64_t commit_deadline = 0;
     {
-      Tx tx(p->db);
+      Transaction tx(p->db);
       if (auto known = p->cached(mission_id, command_id, content)) {
-        p->queue_event(mission_id, "COMMAND_RETRY", known->code);
+        p->queue_event(mission_id, "COMMAND_RETRY", known->result_code);
         tx.commit();
         return *known;
       }
       DeliveryReply reply;
-      auto reg = p->registration(mission_id);
+      auto reg = p->get_registration_from_id(mission_id);
       reply.registration = reg;
       if (!reg || !reg->record) {
-        reply.code = "NOT_ACTIVE";
+        reply.result_code = "NOT_ACTIVE";
       } else {
         auto r = *reg->record;
         reply.record = r;
         if (r.handover_id != token || r.handover_version != version) {
-          reply.code = "HANDOVER_IDENTITY";
+          reply.result_code = "HANDOVER_IDENTITY";
         } else if (!evidence || !p->options.eligible(reg->snapshot)) {
-          reply.code = "EVIDENCE_UNQUALIFIED";
+          reply.result_code = "EVIDENCE_UNQUALIFIED";
         } else {
           Event e;
           e.id = "handover-" + command_id;
@@ -922,7 +922,7 @@ DeliveryReply Store::confirm_handover(const std::string &mission_id, const std::
           e.now = p->now();
           e.detail = source;
           auto d = reduce(r, e);
-          reply.code = d.changed ? "CONFIRMED" : "REJECTED";
+          reply.result_code = d.changed ? "CONFIRMED" : "REJECTED";
           if (d.changed) {
             commit_deadline =
                 std::min({r.deadline, r.handover_until, r.stop_until, r.arrival_until});
@@ -932,7 +932,7 @@ DeliveryReply Store::confirm_handover(const std::string &mission_id, const std::
               expired_at_commit = true;
             } else {
               p->audit(r, e, d);
-              p->save(d.next);
+              p->save_mission(d.next);
               p->effects(d.effects);
               reply.record = d.next;
             }
@@ -952,8 +952,8 @@ DeliveryReply Store::confirm_handover(const std::string &mission_id, const std::
     }
     // A late commit guard is a business rejection, not a storage fault. The old
     // transaction has rolled back; persist a rejection, never a return intention.
-    Tx tx(p->db);
-    DeliveryReply reply{"HANDOVER_EXPIRED_BEFORE_COMMIT", p->registration(mission_id), p->get_record_from_id(mission_id), false};
+    Transaction tx(p->db);
+    DeliveryReply reply{"HANDOVER_EXPIRED_BEFORE_COMMIT", p->get_registration_from_id(mission_id), p->get_record_from_id(mission_id), false};
     p->remember(mission_id, command_id, content, reply);
     tx.commit();
     return reply;

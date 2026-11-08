@@ -74,7 +74,7 @@ int main(int argc, char **argv) {
       }
 
       Admission submit(MissionRequest q) {
-        return runtime.call([q](Store &s) { return s.submit(q); }).get();
+        return runtime.call([q](Store &s) { return s.submit_legacy(q); }).get();
       }
 
       Decision apply(Event e) {

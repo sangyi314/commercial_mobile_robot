@@ -102,7 +102,7 @@ void store(const std::string &dir) {
     Sink sink;
     {
       Runtime rt(path, "first", 16, &sink);
-      rt.call([](Store &s) { s.submit(request()); }).get();
+      rt.call([](Store &s) { s.submit_legacy(request()); }).get();
       auto apply = [&](Kind k, std::string id) {
         return rt.call([=](Store &s) { return s.apply(event(*s.get_record_from_id("m"), k, id)); }).get();
       };
@@ -157,7 +157,7 @@ void races(const std::string &dir) {
                      + std::to_string(cancel_first) + ".db",
                  "owner", 16, &sink);
       rt.call([](Store &s) {
-          s.submit(request());
+          s.submit_legacy(request());
           s.apply(event(*s.get_record_from_id("m"), Kind::Prepare, "prepare"));
           s.dispatch();
           s.apply(event(*s.get_record_from_id("m"), Kind::Accepted, "accepted"));

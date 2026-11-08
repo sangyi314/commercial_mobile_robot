@@ -135,7 +135,7 @@ struct Fixture {
     auto r = *s.get_record_from_id(mission_id);
     auto q =
         s.confirm_handover(mission_id, "handover1", r.handover_id, r.handover_version, "synthetic", true);
-    ck(q.code == "CONFIRMED", "handover");
+    ck(q.result_code == "CONFIRMED", "handover");
     s.dispatch();
     leg(s, mission_id, false);
     ck(s.get_record_from_id(mission_id)->state == State::Completed, "completed");
@@ -156,62 +156,62 @@ long count(const std::string &path, const char *sql) {
 
 void capacity(Fixture &f) {
   Store s(f.db(), "e", nullptr, {}, f.options());
-  ck(s.register_delivery(f.request("active"), f.snapshot).code == "ACCEPTED", "active");
+  ck(s.submit_delivery(f.request("active"), f.snapshot).result_code == "ACCEPTED", "active");
   for (int n = 0; n < 4; ++n) {
-    ck(s.register_delivery(f.request("q" + std::to_string(n)), f.snapshot).code == "QUEUED",
+    ck(s.submit_delivery(f.request("q" + std::to_string(n)), f.snapshot).result_code == "QUEUED",
        "queue4");
   }
-  ck(s.register_delivery(f.request("fifth"), f.snapshot).code == "QUEUE_FULL", "fifth");
-  ck(s.register_delivery(f.request("q0"), f.snapshot).code == "EXISTING", "duplicate before full");
+  ck(s.submit_delivery(f.request("fifth"), f.snapshot).result_code == "QUEUE_FULL", "fifth");
+  ck(s.submit_delivery(f.request("q0"), f.snapshot).result_code == "EXISTING", "duplicate before full");
   auto bad = f.snapshot;
   bad["outbound"]["pose"]["position"]["x"] = 2;
-  ck(s.register_delivery(f.request("q0"), bad).code == "CONFLICT", "snapshot conflict");
-  ck(!s.registration("q0")->record, "waiting is not mission");
+  ck(s.submit_delivery(f.request("q0"), bad).result_code == "CONFLICT", "snapshot conflict");
+  ck(!s.get_registration_from_id("q0")->record, "waiting is not mission");
   ck(count(f.db(), "SELECT count(*) FROM missions WHERE terminal=0") == 1, "one active");
 }
 
 void fairness(Fixture &f) {
   Store s(f.db(), "e", nullptr, {}, f.options());
-  s.register_delivery(f.request("active"), f.snapshot);
-  s.register_delivery(f.request("q0"), f.snapshot);
+  s.submit_delivery(f.request("active"), f.snapshot);
+  s.submit_delivery(f.request("q0"), f.snapshot);
   f.complete(s, "active");
-  ck(s.register_delivery(f.request("new"), f.snapshot).code == "QUEUED",
+  ck(s.submit_delivery(f.request("new"), f.snapshot).result_code == "QUEUED",
      "new cannot jump empty slot");
   auto p = s.promote();
-  ck(p.code == "PROMOTED" && p.record->request.mission_id == "q0", "FIFO head");
-  ck(s.cancel_delivery("new", "cancel_new").code == "QUEUE_CANCELED", "waiting cancel");
+  ck(p.result_code == "PROMOTED" && p.record->request.mission_id == "q0", "FIFO head");
+  ck(s.cancel_delivery("new", "cancel_new").result_code == "QUEUE_CANCELED", "waiting cancel");
   ck(s.get_record_from_id("q0")->pending.empty(), "queue cancel cannot touch active");
-  ck(s.register_delivery(f.request("new"), f.snapshot).code == "EXISTING",
+  ck(s.submit_delivery(f.request("new"), f.snapshot).result_code == "EXISTING",
      "canceled registration permanent");
 }
 
 void zero(Fixture &f) {
   Store s(f.db(), "e", nullptr, {}, f.options(0));
-  s.register_delivery(f.request("a1"), f.snapshot);
-  ck(s.register_delivery(f.request("a2"), f.snapshot).code == "BUSY", "capacity0 BUSY");
-  ck(s.register_delivery(f.request("a1"), f.snapshot).code == "EXISTING", "capacity0 duplicate");
+  s.submit_delivery(f.request("a1"), f.snapshot);
+  ck(s.submit_delivery(f.request("a2"), f.snapshot).result_code == "BUSY", "capacity0 BUSY");
+  ck(s.submit_delivery(f.request("a1"), f.snapshot).result_code == "EXISTING", "capacity0 duplicate");
 }
 
 void handover(Fixture &f) {
   Store s(f.db(), "e", nullptr, {}, f.options());
-  s.register_delivery(f.request("m"), f.snapshot);
+  s.submit_delivery(f.request("m"), f.snapshot);
   f.leg(s, "m");
   auto r = *s.get_record_from_id("m");
-  ck(s.confirm_handover("m", "wrong", r.handover_id, r.handover_version + 1, "human", true).code
+  ck(s.confirm_handover("m", "wrong", r.handover_id, r.handover_version + 1, "human", true).result_code
          == "HANDOVER_IDENTITY",
      "wrong entry version");
-  ck(s.confirm_handover("m", "noD", r.handover_id, r.handover_version, "human", false).code
+  ck(s.confirm_handover("m", "noD", r.handover_id, r.handover_version, "human", false).result_code
          == "EVIDENCE_UNQUALIFIED",
      "live evidence");
   auto a = s.confirm_handover("m", "ok", r.handover_id, r.handover_version, "synthetic", true);
-  ck(a.code == "CONFIRMED" && s.get_record_from_id("m")->handover_source == "synthetic", "confirmed source enum");
+  ck(a.result_code == "CONFIRMED" && s.get_record_from_id("m")->handover_source == "synthetic", "confirmed source enum");
   auto b = s.confirm_handover("m", "ok", r.handover_id, r.handover_version, "synthetic", false);
-  ck(b.code == "CONFIRMED" && b.duplicate, "lost response idempotent");
-  ck(s.confirm_handover("m", "ok", r.handover_id, r.handover_version, "human", true).code
+  ck(b.result_code == "CONFIRMED" && b.duplicate, "lost response idempotent");
+  ck(s.confirm_handover("m", "ok", r.handover_id, r.handover_version, "human", true).result_code
          == "COMMAND_CONFLICT",
      "command content conflict");
   f.leg(s, "m", false);
-  ck(s.confirm_handover("m", "ok", r.handover_id, r.handover_version, "synthetic", false).code
+  ck(s.confirm_handover("m", "ok", r.handover_id, r.handover_version, "synthetic", false).result_code
          == "CONFIRMED",
      "stable original decision after terminal");
   ck(count(f.db(), "SELECT count(*) FROM operations WHERE kind=0") == 2, "only two send intents");
@@ -227,16 +227,16 @@ void expire(Fixture &f) {
         }
       },
       o);
-  s.register_delivery(f.request("m"), f.snapshot);
+  s.submit_delivery(f.request("m"), f.snapshot);
   f.leg(s, "m");
   auto r = *s.get_record_from_id("m");
   auto a = s.confirm_handover("m", "expire", r.handover_id, r.handover_version, "synthetic", true);
-  ck(a.code == "HANDOVER_EXPIRED_BEFORE_COMMIT", "exact commit deadline");
+  ck(a.result_code == "HANDOVER_EXPIRED_BEFORE_COMMIT", "exact commit deadline");
   ck(!s.get_record_from_id("m")->handed_over && count(f.db(), "SELECT count(*) FROM operations WHERE kind=0") == 1,
      "no return before commit");
   auto tick = f.event(*s.get_record_from_id("m"), Kind::Tick);
   ck(s.apply(tick).changed, "handover timeout");
-  ck(s.cancel_delivery("m", "late_cancel").code == "CANCEL_PENDING",
+  ck(s.cancel_delivery("m", "late_cancel").result_code == "CANCEL_PENDING",
      "first writer timeout stays failed");
   ck(s.get_record_from_id("m")->pending == "FAILED", "timeout priority");
 }
@@ -246,7 +246,7 @@ void races(Fixture &f) {
   auto call = [&](auto fn) { return runtime.call(fn).get(); };
   call([&](Store &s) {
     s.schedule(false);
-    return s.register_delivery(f.request("q0"), f.snapshot);
+    return s.submit_delivery(f.request("q0"), f.snapshot);
   });
   // Owner barrier fixes receive order before release: cancel wins promotion.
   std::promise<void> release;
@@ -257,17 +257,17 @@ void races(Fixture &f) {
   auto promote = runtime.call([](Store &s) { return s.promote(); });
   release.set_value();
   held.get();
-  ck(cancel.get().code == "QUEUE_CANCELED" && resume.get().code == "RESUMED"
-         && promote.get().code == "EMPTY",
+  ck(cancel.get().result_code == "QUEUE_CANCELED" && resume.get().result_code == "RESUMED"
+         && promote.get().result_code == "EMPTY",
      "cancel first");
   call([&](Store &s) {
     s.schedule(false);
-    return s.register_delivery(f.request("q1"), f.snapshot);
+    return s.submit_delivery(f.request("q1"), f.snapshot);
   });
   call([](Store &s) { return s.schedule(true); });
   auto p = runtime.call([](Store &s) { return s.promote(); });
   auto c = runtime.call([](Store &s) { return s.cancel_delivery("q1", "cancel2"); });
-  ck(p.get().code == "PROMOTED" && c.get().code == "CANCEL_PENDING",
+  ck(p.get().result_code == "PROMOTED" && c.get().result_code == "CANCEL_PENDING",
      "promote first uses active cancel");
   auto r = call([](Store &s) { return s.get_active_record(); });
   ck(r && r->pending == "CANCELED", "active retained until resolve");
@@ -277,18 +277,18 @@ void restart(Fixture &f) {
   std::uint64_t order = 0;
   {
     Store s(f.db(), "e", nullptr, {}, f.options());
-    s.register_delivery(f.request("m"), f.snapshot);
-    s.register_delivery(f.request("q"), f.snapshot);
-    order = s.registration("q")->queue_seq;
+    s.submit_delivery(f.request("m"), f.snapshot);
+    s.submit_delivery(f.request("q"), f.snapshot);
+    order = s.get_registration_from_id("q")->queue_seq;
     f.apply(s, "m", Kind::Prepare);
   }
   Store s(f.db(), "new", nullptr, {}, f.options());
   ck(s.get_record_from_id("m")->state == State::Paused && s.get_record_from_id("m")->phase == Phase::Uncertain
          && s.get_record_from_id("m")->restart_suspended,
      "restart uncertain and cannot resume old deadlines");
-  ck(s.registration("q")->queue_seq == order && s.queue_snapshot()["schedule_paused"] == true,
+  ck(s.get_registration_from_id("q")->queue_seq == order && s.queue_snapshot()["schedule_paused"] == true,
      "order and pause");
-  ck(s.promote().code == "BUSY" && s.schedule(true).code == "ACTIVE_UNRESOLVED",
+  ck(s.promote().result_code == "BUSY" && s.schedule(true).result_code == "ACTIVE_UNRESOLVED",
      "no automatic restart motion");
   ck(count(f.db(), "SELECT count(*) FROM operations WHERE status='INTENT'") == 0,
      "no replay intents");
@@ -304,23 +304,23 @@ void fault(Fixture &f) {
           }
         },
         f.options());
-    s.register_delivery(f.request("m"), f.snapshot);
+    s.submit_delivery(f.request("m"), f.snapshot);
     throw std::logic_error("not injected");
   } catch (const std::logic_error &) {
     throw;
   } catch (const std::runtime_error &) {
   }
   Store s(f.db(), "recover", nullptr, {}, f.options());
-  ck(!s.registration("m") && !s.get_active_record(), "failed commit not accepted");
+  ck(!s.get_registration_from_id("m") && !s.get_active_record(), "failed commit not accepted");
 }
 
 void mismatch(Fixture &f) {
   Store s(f.db(), "e", nullptr, {}, f.options());
   s.schedule(false);
-  s.register_delivery(f.request("q"), f.snapshot);
+  s.submit_delivery(f.request("q"), f.snapshot);
   s.schedule(true);
   f.eligible = false;
-  ck(s.promote().code == "HEAD_INPUT_MISMATCH" && s.queue_snapshot()["schedule_paused"] == true
+  ck(s.promote().result_code == "HEAD_INPUT_MISMATCH" && s.queue_snapshot()["schedule_paused"] == true
          && !s.get_record_from_id("q"),
      "head freeze guard");
 }
@@ -328,7 +328,7 @@ void mismatch(Fixture &f) {
 void schema(Fixture &f) {
   {
     Store old(f.db(), "e");
-    old.submit(f.request("old"));
+    old.submit_legacy(f.request("old"));
   }
   auto before = file_sha256(f.db());
   bool refused = false;
@@ -406,12 +406,12 @@ void catalog_cases(Fixture &f) {
 void long_identity(Fixture &f) {
   Store s(f.db(), "e", nullptr, {}, f.options());
   const auto mission_id = std::string(64, 'm');
-  ck(s.register_delivery(f.request(mission_id), f.snapshot).code == "ACCEPTED",
+  ck(s.submit_delivery(f.request(mission_id), f.snapshot).result_code == "ACCEPTED",
      "maximum Mission ID accepted");
   f.leg(s, mission_id);
   auto r = *s.get_record_from_id(mission_id);
   ck(valid_identifier(r.handover_id), "handover token stays within API identifier bounds");
-  ck(s.confirm_handover(mission_id, "confirm", r.handover_id, r.handover_version, "synthetic", true).code
+  ck(s.confirm_handover(mission_id, "confirm", r.handover_id, r.handover_version, "synthetic", true).result_code
          == "CONFIRMED",
      "64 byte mission can confirm handover");
 }
@@ -422,7 +422,7 @@ void handover_cancel(Fixture &parent) {
     Runtime owner(f.db(), "race", 32, nullptr, {}, f.options());
     auto setup = owner
                      .call([&](Store &s) {
-                       s.register_delivery(f.request("m"), f.snapshot);
+                       s.submit_delivery(f.request("m"), f.snapshot);
                        f.leg(s, "m");
                        return *s.get_record_from_id("m");
                      })
@@ -444,8 +444,8 @@ void handover_cancel(Fixture &parent) {
     }
     release.set_value();
     blocked.get();
-    ck(cancel.get().code == "CANCEL_PENDING", "cancel decided");
-    ck(confirm.get().code == (confirm_first ? "CONFIRMED" : "REJECTED"),
+    ck(cancel.get().result_code == "CANCEL_PENDING", "cancel decided");
+    ck(confirm.get().result_code == (confirm_first ? "CONFIRMED" : "REJECTED"),
        "handover/cancel transaction order");
     auto current = owner.call([](Store &s) { return *s.get_record_from_id("m"); }).get();
     ck(current.handed_over == confirm_first && current.pending == "CANCELED",
@@ -478,11 +478,11 @@ void crash_windows(Fixture &parent) {
               f.options());
           if (action == "promote") {
             store.schedule(false);
-            store.register_delivery(f.request("m"), f.snapshot);
+            store.submit_delivery(f.request("m"), f.snapshot);
             store.schedule(true);
           }
           if (action == "handover") {
-            store.register_delivery(f.request("m"), f.snapshot);
+            store.submit_delivery(f.request("m"), f.snapshot);
             f.leg(store, "m");
             auto r = *store.get_record_from_id("m");
             token = r.handover_id;
@@ -492,7 +492,7 @@ void crash_windows(Fixture &parent) {
           }
           armed = true;
           if (action == "submit") {
-            store.register_delivery(f.request("m"), f.snapshot);
+            store.submit_delivery(f.request("m"), f.snapshot);
           } else if (action == "promote") {
             store.promote();
           } else {
@@ -510,10 +510,10 @@ void crash_windows(Fixture &parent) {
       Store recovered(f.db(), "new_owner", nullptr, {}, f.options());
       ck(recovered.queue_snapshot()["schedule_paused"] == true, "restart pauses scheduling");
       if (action == "submit") {
-        ck(bool(recovered.registration("m")) == after, "submit transaction atomic");
+        ck(bool(recovered.get_registration_from_id("m")) == after, "submit transaction atomic");
       } else if (action == "promote") {
         ck(bool(recovered.get_record_from_id("m")) == after, "promotion atomic");
-        ck(recovered.registration("m")->queue_state == (after ? "ACTIVE" : "WAITING"),
+        ck(recovered.get_registration_from_id("m")->queue_state == (after ? "ACTIVE" : "WAITING"),
            "queue promotion durable");
       } else {
         auto r = *recovered.get_record_from_id("m");
@@ -525,7 +525,7 @@ void crash_windows(Fixture &parent) {
           in >> q;
           auto reply = recovered.confirm_handover("m", "lost_reply", q["id"], q["version"],
                                                   "synthetic", false);
-          ck(reply.code == "CONFIRMED" && reply.duplicate,
+          ck(reply.result_code == "CONFIRMED" && reply.duplicate,
              "lost response replay survives process exit");
         }
       }
@@ -548,7 +548,7 @@ void handover_seeds(const fs::path &root) {
   for (unsigned seed = 1; seed <= 20; ++seed) {
     Fixture f(root / std::to_string(seed));
     Store s(f.db(), "seed_owner", nullptr, {}, f.options());
-    s.register_delivery(f.request("m"), f.snapshot);
+    s.submit_delivery(f.request("m"), f.snapshot);
     f.leg(s, "m");
     const auto baseline = *s.get_record_from_id("m");
     Record r = baseline;
@@ -625,13 +625,13 @@ void seeds(const fs::path &root, unsigned first = 1, unsigned last = 20) {
       auto op = gen() % 5;
       std::string code;
       if (op < 2) {
-        code = s.register_delivery(f.request(mission_id), f.snapshot).code;
+        code = s.submit_delivery(f.request(mission_id), f.snapshot).result_code;
       } else if (op == 2) {
-        code = s.cancel_delivery(mission_id, "cmd" + std::to_string(i)).code;
+        code = s.cancel_delivery(mission_id, "cmd" + std::to_string(i)).result_code;
       } else if (op == 3) {
-        code = s.promote().code;
+        code = s.promote().result_code;
       } else {
-        code = s.schedule(false).code;
+        code = s.schedule(false).result_code;
       }
       auto a = s.get_active_record();
       if (a && a->pending == "CANCELED" && !a->ever_sent) {

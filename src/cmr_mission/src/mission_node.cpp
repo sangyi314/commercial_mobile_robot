@@ -150,7 +150,7 @@ public:
     if (!r.delivery_managed || r.restart_suspended) {
       return {};
     }
-    auto registration = s.registration(r.request.mission_id);
+    auto registration = s.get_registration_from_id(r.request.mission_id);
     if (!registration) {
       throw std::runtime_error("active delivery registration absent");
     }
@@ -251,9 +251,9 @@ public:
 
   DeliveryApi::Response delivery_response(Store &s, const std::string &mission_id, DeliveryReply reply) {
     DeliveryApi::Response out;
-    out.code = reply.code;
+    out.code = reply.result_code;
     out.mission_id = mission_id;
-    auto reg = reply.registration ? reply.registration : s.registration(mission_id);
+    auto reg = reply.registration ? reply.registration : s.get_registration_from_id(mission_id);
     if (reg) {
       out.queue_state = reg->queue_state;
       out.queue_seq = reg->queue_seq;
@@ -329,11 +329,11 @@ public:
                          out.detail = e.what();
                          return out;
                        }
-                       reply = s.register_delivery(request, frozen);
+                       reply = s.submit_delivery(request, frozen);
                      } else if (q->operation == "query") {
-                       reply.code = s.registration(q->mission_id) ? "FOUND" : "NOT_FOUND";
+                       reply.result_code = s.get_registration_from_id(q->mission_id) ? "FOUND" : "NOT_FOUND";
                      } else if (q->operation == "queue") {
-                       reply.code = "QUEUE";
+                       reply.result_code = "QUEUE";
                      } else if (q->operation == "cancel") {
                        reply = s.cancel_delivery(q->mission_id, q->command_id);
                      } else if (q->operation == "pause_schedule") {
@@ -467,7 +467,7 @@ private:
                    MissionRequest request{q->schema_version,    q->mission_id,  q->delivery_station,
                                           q->return_station,    q->map_version, q->station_version,
                                           q->created_at_unix_ms};
-                   const auto decision = s.submit(request);
+                   const auto decision = s.submit_legacy(request);
                    static const char *codes[] = {
                        "INVALID", "INVALID_CONTEXT", "EXISTING", "CONFLICT", "BUSY", "ACCEPTED"};
                    response.code = codes[static_cast<int>(decision)];

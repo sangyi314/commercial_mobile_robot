@@ -29,7 +29,7 @@ struct Registration {
 };
 
 struct DeliveryReply {
-  std::string code;
+  std::string result_code;
   std::optional<Registration> registration;
   std::optional<Record> record;
   bool duplicate{false};
@@ -46,13 +46,13 @@ public:
   ~Store();
   Store(const Store &) = delete;
   Store &operator=(const Store &) = delete;
-  Admission submit(const MissionRequest &);
+  Admission submit_legacy(const MissionRequest &);
   std::optional<Record> get_record_from_id(const std::string &);
   std::optional<Record> get_active_record(); // owner-only persisted slot lookup, including shutdown
   Decision apply(const Event &);
   void dispatch();
-  DeliveryReply register_delivery(const MissionRequest &, const Json &snapshot);
-  std::optional<Registration> registration(const std::string &);
+  DeliveryReply submit_delivery(const MissionRequest &, const Json &snapshot);
+  std::optional<Registration> get_registration_from_id(const std::string &);
   DeliveryReply cancel_delivery(const std::string &mission_id, const std::string &command_id);
   DeliveryReply confirm_handover(const std::string &mission_id, const std::string &command_id,
                                  const std::string &handover_id, std::uint64_t handover_version,

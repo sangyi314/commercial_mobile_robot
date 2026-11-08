@@ -49,14 +49,14 @@ int main(int argc, char **argv) {
     Sink sink;
     {
       Store s(path, "e", &sink);
-      ck(s.submit(req()) == Admission::CreateIntent, "accept");
-      ck(s.submit(req()) == Admission::Existing, "duplicate");
+      ck(s.submit_legacy(req()) == Admission::CreateIntent, "accept");
+      ck(s.submit_legacy(req()) == Admission::Existing, "duplicate");
       auto q = req();
       q.return_station = "x";
-      ck(s.submit(q) == Admission::Conflict, "conflict");
+      ck(s.submit_legacy(q) == Admission::Conflict, "conflict");
       q = req();
       q.mission_id = "new";
-      ck(s.submit(q) == Admission::Busy, "busy");
+      ck(s.submit_legacy(q) == Admission::Busy, "busy");
       bool locked = false;
       try {
         Store other(path, "other");
@@ -87,7 +87,7 @@ int main(int argc, char **argv) {
     {
       Sink receiver;
       Store s(stale, "e", &receiver);
-      s.submit(req());
+      s.submit_legacy(req());
       Event e;
       e.id = "unknown";
       e.mission_id = "absent";
@@ -116,7 +116,7 @@ int main(int argc, char **argv) {
           "CREATE TRIGGER fail BEFORE INSERT ON events BEGIN SELECT RAISE(ABORT,'controlled failure'); END;");
       bool thrown = false;
       try {
-        s.submit(req());
+        s.submit_legacy(req());
       } catch (...) {
         thrown = true;
       }
@@ -134,7 +134,7 @@ int main(int argc, char **argv) {
       ck(sqlite3_exec(db, "BEGIN IMMEDIATE", nullptr, nullptr, nullptr) == 0, "lock writer");
       bool failed = false;
       try {
-        s.submit(req());
+        s.submit_legacy(req());
       } catch (...) {
         failed = true;
       }
@@ -152,7 +152,7 @@ int main(int argc, char **argv) {
     bool readonly = false;
     try {
       Store s(ro, "e2");
-      s.submit(req());
+      s.submit_legacy(req());
     } catch (...) {
       readonly = true;
     }
