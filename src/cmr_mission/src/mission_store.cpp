@@ -874,16 +874,16 @@ DeliveryReply Store::cancel_delivery(const std::string &mission_id, const std::s
 }
 
 DeliveryReply Store::confirm_handover(const std::string &mission_id, const std::string &command_id,
-                                      const std::string &token, std::uint64_t version,
+                                      const std::string &handover_id, std::uint64_t version,
                                       const std::string &source, bool evidence) {
   p->delivery_check();
-  if (!valid_identifier(command_id) || !valid_identifier(token)
+  if (!valid_identifier(command_id) || !valid_identifier(handover_id)
       || (source != "human" && source != "synthetic")) {
     return {"INVALID_HANDOVER", {}, {}, false};
   }
   const std::string content = Json{
       {"operation", "handover"},
-      {"handover_id", token},
+      {"handover_id", handover_id},
       {"entry_version", version},
       {"source", source}}.dump();
   // Recheck evidence/deadlines within the original handover transaction.
@@ -905,7 +905,7 @@ DeliveryReply Store::confirm_handover(const std::string &mission_id, const std::
       } else {
         auto r = *reg->record;
         reply.record = r;
-        if (r.handover_id != token || r.handover_version != version) {
+        if (r.handover_id != handover_id || r.handover_version != version) {
           reply.result_code = "HANDOVER_IDENTITY";
         } else if (!evidence || !p->options.eligible(reg->snapshot)) {
           reply.result_code = "EVIDENCE_UNQUALIFIED";

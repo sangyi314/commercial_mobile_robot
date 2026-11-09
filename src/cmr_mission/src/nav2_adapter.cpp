@@ -14,9 +14,9 @@
 
 namespace cmr::mission {
 namespace {
-using Action = nav2_msgs::action::NavigateToPose;
-using Client = rclcpp_action::Client<Action>;
-using Handle = rclcpp_action::ClientGoalHandle<Action>;
+using NavigateToPose = nav2_msgs::action::NavigateToPose;
+using NavClient = rclcpp_action::Client<NavigateToPose>;
+using NavGoalHandle = rclcpp_action::ClientGoalHandle<NavigateToPose>;
 using Clock = std::chrono::steady_clock;
 
 std::string uuid(const rclcpp_action::GoalUUID &id) {
@@ -31,7 +31,7 @@ std::string uuid(const rclcpp_action::GoalUUID &id) {
 struct NavigationAdapter::Impl : std::enable_shared_from_this<NavigationAdapter::Impl> {
   struct Goal {
     Effect effect;
-    Handle::SharedPtr handle;
+    NavGoalHandle::SharedPtr handle;
     std::string uuid;
     Clock::time_point created{Clock::now()};
     Clock::time_point sent{};
@@ -49,7 +49,7 @@ struct NavigationAdapter::Impl : std::enable_shared_from_this<NavigationAdapter:
   };
 
   rclcpp::Node::WeakPtr node;
-  Client::SharedPtr client;
+  NavClient::SharedPtr client;
   AdapterConfig config;
   EventSink sink;
   std::mutex mutex;
@@ -133,7 +133,7 @@ struct NavigationAdapter::Impl : std::enable_shared_from_this<NavigationAdapter:
     g->cancel_time = Clock::now();
     auto weak = weak_from_this();
     try {
-      client->async_cancel_goal(g->handle, [weak, g](Client::CancelResponse::SharedPtr response) {
+      client->async_cancel_goal(g->handle, [weak, g](NavClient::CancelResponse::SharedPtr response) {
         if (auto self = weak.lock(); self && self->alive) {
           g->cancel_ack = true;
           self->emit(
@@ -161,7 +161,7 @@ NavigationAdapter::NavigationAdapter(rclcpp::Node::SharedPtr node, AdapterConfig
   p->node = node;
   p->config = std::move(config);
   p->sink = std::move(sink);
-  p->client = rclcpp_action::create_client<Action>(node, p->config.action);
+  p->client = rclcpp_action::create_client<NavigateToPose>(node, p->config.action);
 }
 
 NavigationAdapter::~NavigationAdapter() {
@@ -313,7 +313,7 @@ void NavigationAdapter::tick() {
         }
 
         // Construct and validate the frozen target before marking the Goal dispatched.
-        Action::Goal goal;
+        NavigateToPose::Goal goal;
         goal.pose.header.frame_id = "map";
         goal.pose.pose.orientation.w = 1.0;
         goal.pose.pose.position.x =
@@ -363,10 +363,10 @@ void NavigationAdapter::tick() {
                          .dump()
                   << std::endl;
         auto weak = std::weak_ptr<Impl>(p);
-        Client::SendGoalOptions opts;
+        NavClient::SendGoalOptions opts;
 
         // Callback correlation keeps Action identity and event ordering separate from the FSM.
-        opts.goal_response_callback = [weak, g](Handle::SharedPtr handle) {
+        opts.goal_response_callback = [weak, g](NavGoalHandle::SharedPtr handle) {
           if (auto self = weak.lock(); self && self->alive) {
             self->expire_before_callback(g, true);
             if (!handle) {
@@ -383,8 +383,8 @@ void NavigationAdapter::tick() {
             }
           }
         };
-        opts.feedback_callback = [weak, g](Handle::SharedPtr handle,
-                                           std::shared_ptr<const Action::Feedback> feedback) {
+        opts.feedback_callback = [weak, g](NavGoalHandle::SharedPtr handle,
+                                           std::shared_ptr<const NavigateToPose::Feedback> feedback) {
           if (auto self = weak.lock(); self && self->alive) {
             if (!g->accepted || uuid(handle->get_goal_id()) != g->uuid) {
               return;
@@ -397,7 +397,7 @@ void NavigationAdapter::tick() {
                 false);
           }
         };
-        opts.result_callback = [weak, g](const Handle::WrappedResult &result) {
+        opts.result_callback = [weak, g](const NavGoalHandle::WrappedResult &result) {
           if (auto self = weak.lock(); self && self->alive) {
             self->expire_before_callback(g, false);
             const auto id = uuid(result.goal_id);
