@@ -63,7 +63,7 @@ struct NavigationAdapter::Impl : std::enable_shared_from_this<NavigationAdapter:
   std::uint64_t feedback_dropped{0};
   bool closing{false};
 
-  Event event(const std::shared_ptr<Goal> &g, Kind kind, std::string detail) {
+  Event make_event(const std::shared_ptr<Goal> &g, Kind kind, std::string detail) {
     Event e;
     e.id = "ros-" + config.epoch + "-" + std::to_string(++seq);
     e.mission_id = g->effect.mission;
@@ -99,7 +99,7 @@ struct NavigationAdapter::Impl : std::enable_shared_from_this<NavigationAdapter:
     auto ready = g->correlation->push(std::move(e));
     if (g->correlation->fault) {
       fault = true;
-      emit(event(g, Kind::Fatal, "CORRELATION_FAULT"));
+      emit(make_event(g, Kind::Fatal, "CORRELATION_FAULT"));
       return;
     }
     for (auto &r : ready) {
@@ -120,7 +120,7 @@ struct NavigationAdapter::Impl : std::enable_shared_from_this<NavigationAdapter:
         || deadline_elapsed(elapsed, config.execute_ms)) {
       g->timed_out = true;
       g->cancel_pending = true;
-      emit(event(g, Kind::Fatal, acceptance ? "LATE_ACCEPT_TIMEOUT" : "LATE_EXECUTION_TIMEOUT"));
+      emit(make_event(g, Kind::Fatal, acceptance ? "LATE_ACCEPT_TIMEOUT" : "LATE_EXECUTION_TIMEOUT"));
     }
   }
 
@@ -137,13 +137,13 @@ struct NavigationAdapter::Impl : std::enable_shared_from_this<NavigationAdapter:
         if (auto self = weak.lock(); self && self->alive) {
           g->cancel_ack = true;
           self->emit(
-              self->event(g, Kind::CancelAck,
+              self->make_event(g, Kind::CancelAck,
                           "CANCEL_RESPONSE code=" + std::to_string(response->return_code)
                               + " count=" + std::to_string(response->goals_canceling.size())));
         }
       });
     } catch (const std::exception &e) {
-      emit(event(g, Kind::Fatal, std::string("CANCEL_UNKNOWN ") + e.what()));
+      emit(make_event(g, Kind::Fatal, std::string("CANCEL_UNKNOWN ") + e.what()));
     }
   }
 };
@@ -259,7 +259,7 @@ void NavigationAdapter::tick() {
       auto g = found->second;
       if (e.kind == EffectKind::Revoke) {
         if (p->config.synthetic_revoke) {
-          p->emit(p->event(g, Kind::RevokeAck, "synthetic=true REVOKE_ACK"));
+          p->emit(p->make_event(g, Kind::RevokeAck, "synthetic=true REVOKE_ACK"));
         }
         if (!g->terminal) {
           p->cancel(g);
@@ -287,7 +287,7 @@ void NavigationAdapter::tick() {
     if (!g->dispatched) {
       if (p->closing) {
         g->terminal = true;
-        p->emit(p->event(g, Kind::Rejected, "NOT_SENT SHUTDOWN"));
+        p->emit(p->make_event(g, Kind::Rejected, "NOT_SENT SHUTDOWN"));
         continue;
       }
       if (p->client->action_server_is_ready()) {
@@ -307,7 +307,7 @@ void NavigationAdapter::tick() {
         if (providers > 1) {
           g->terminal = true;
           p->fault = true;
-          p->emit(p->event(g, Kind::Rejected,
+          p->emit(p->make_event(g, Kind::Rejected,
                            "ISOLATION_EXTRA_SERVER count=" + std::to_string(providers)));
           continue;
         }
@@ -343,7 +343,7 @@ void NavigationAdapter::tick() {
         } catch (const std::exception &error) {
           g->terminal = true;
           p->emit(
-              p->event(g, Kind::Rejected, std::string("NOT_SENT TARGET_INVALID ") + error.what()));
+              p->make_event(g, Kind::Rejected, std::string("NOT_SENT TARGET_INVALID ") + error.what()));
           continue;
         }
         g->dispatched = true;
@@ -371,13 +371,13 @@ void NavigationAdapter::tick() {
             self->expire_before_callback(g, true);
             if (!handle) {
               g->terminal = true;
-              self->emit(self->event(g, Kind::Rejected, "ACTION_REJECTED"));
+              self->emit(self->make_event(g, Kind::Rejected, "ACTION_REJECTED"));
               return;
             }
             g->handle = handle;
             g->uuid = uuid(handle->get_goal_id());
             g->accepted = true;
-            self->correlated(g, self->event(g, Kind::Accepted, "ACTION_ACCEPTED"));
+            self->correlated(g, self->make_event(g, Kind::Accepted, "ACTION_ACCEPTED"));
             if (g->cancel_pending) {
               self->cancel(g);
             }
@@ -390,7 +390,7 @@ void NavigationAdapter::tick() {
               return;
             }
             self->emit(
-                self->event(g, Kind::Feedback,
+                self->make_event(g, Kind::Feedback,
                             "FEEDBACK remaining=" + std::to_string(feedback->distance_remaining)
                                 + " internal_recoveries="
                                 + std::to_string(feedback->number_of_recoveries)),
@@ -403,7 +403,7 @@ void NavigationAdapter::tick() {
             const auto id = uuid(result.goal_id);
             if (!g->uuid.empty() && id != g->uuid) {
               self->emit(
-                  self->event(g, g->terminal ? Kind::Feedback : Kind::Fatal, "UUID_CONFLICT"));
+                  self->make_event(g, g->terminal ? Kind::Feedback : Kind::Fatal, "UUID_CONFLICT"));
               return;
             }
             Kind kind = Kind::Fatal;
@@ -420,7 +420,7 @@ void NavigationAdapter::tick() {
             default:
               break;
             }
-            auto e = self->event(
+            auto e = self->make_event(
                 g, kind, "ACTION_RESULT code=" + std::to_string(static_cast<int>(result.code)));
             e.uuid = id;
             if (auto node = self->node.lock()) {
@@ -435,28 +435,28 @@ void NavigationAdapter::tick() {
           p->client->async_send_goal(goal, opts);
         } catch (const std::exception &ex) {
           g->timed_out = true;
-          p->emit(p->event(g, Kind::Fatal, std::string("SEND_UNKNOWN ") + ex.what()));
+          p->emit(p->make_event(g, Kind::Fatal, std::string("SEND_UNKNOWN ") + ex.what()));
         }
       } else if (age(g->created) >= p->config.readiness_ms) {
         g->terminal = true;
-        p->emit(p->event(g, Kind::Rejected, "NOT_SENT READINESS_TIMEOUT"));
+        p->emit(p->make_event(g, Kind::Rejected, "NOT_SENT READINESS_TIMEOUT"));
       }
     } else if (!g->timed_out
                && ((!g->accepted && age(g->sent) >= p->config.accept_ms)
                    || (g->accepted && age(g->sent) >= p->config.execute_ms))) {
       g->timed_out = true;
       g->cancel_pending = true;
-      p->emit(p->event(g, Kind::Fatal, g->accepted ? "EXECUTION_TIMEOUT" : "ACCEPT_TIMEOUT"));
+      p->emit(p->make_event(g, Kind::Fatal, g->accepted ? "EXECUTION_TIMEOUT" : "ACCEPT_TIMEOUT"));
       p->cancel(g);
     }
     if (g->cancel_sent && !g->cancel_ack && !g->cancel_timeout
         && age(g->cancel_time) >= p->config.cancel_ms) {
       g->cancel_timeout = true;
-      p->emit(p->event(g, Kind::Fatal, "CANCEL_ACK_TIMEOUT"));
+      p->emit(p->make_event(g, Kind::Fatal, "CANCEL_ACK_TIMEOUT"));
     }
     if (g->cancel_sent && !g->collection_timeout && age(g->cancel_time) >= p->config.collect_ms) {
       g->collection_timeout = true;
-      p->emit(p->event(g, Kind::Fatal, "TERMINAL_COLLECTION_TIMEOUT"));
+      p->emit(p->make_event(g, Kind::Fatal, "TERMINAL_COLLECTION_TIMEOUT"));
     }
   }
 }
