@@ -1,0 +1,31 @@
+/**:
+  ros__parameters:
+    use_sim_time: true
+    frequency: 30.0
+    sensor_timeout: 0.1
+    two_d_mode: true
+    world_frame: odom
+    odom_frame: odom
+    map_frame: map
+    base_link_frame: base_footprint
+    publish_tf: false
+    publish_acceleration: false
+    use_control: false
+    predict_to_current_time: false
+    reset_on_time_jump: true
+    smooth_lagged_data: false
+    odom0: wheel_odom
+    odom0_config: [false, false, false, false, false, false,
+                   true, false, false, false, false, false,
+                   false, false, false]
+    odom0_differential: false
+    odom0_relative: false
+    odom0_queue_size: 5
+    imu0: imu_validated
+    imu0_config: [false, false, false, false, false, false,
+                  false, false, false, false, false, true,
+                  false, false, false]
+    imu0_differential: false
+    imu0_relative: false
+    imu0_queue_size: 5
+    imu0_remove_gravitational_acceleration: false

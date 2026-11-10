@@ -1,0 +1,14 @@
+string<=128 schema_version
+string<=128 context_id
+string<=128 clock_epoch
+string<=128 odom_epoch
+string<=64 frame_id
+string<=64 source_level
+string<=64 execution_mode
+string<=256 source_id
+string<=36 producer_session
+uint64 sequence
+string<=128 map_version
+string<=128 localization_version
+string<=64 config_hash
+string<=64 model_version

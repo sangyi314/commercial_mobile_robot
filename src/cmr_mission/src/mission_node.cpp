@@ -29,8 +29,8 @@ static void signal_handler(int) {
 class MissionNode : public rclcpp::Node {
   Clock::time_point start = Clock::now();
   std::string epoch;
-  bool delivery_mode = false;
-  bool delivery_synthetic = false;
+  bool delivery_mode = true;
+  bool test_mode = false;
   std::unique_ptr<StationCatalog> catalog;
   std::unique_ptr<DeliveryMonitor> monitor;
 
@@ -53,8 +53,8 @@ class MissionNode : public rclcpp::Node {
   std::unique_ptr<NavigationAdapter> adapter;
   std::unique_ptr<ExecutionPort> execution;
   bool gate_mode = false;
-  std::string execution_run;
-  std::string execution_ns;
+  std::string execution_run_id;
+  std::string execution_namespace;
   std::optional<std::future<Decision>> health;
   Clock::time_point health_at{};
   std::atomic<bool> health_fault{false};
@@ -181,6 +181,17 @@ public:
       return apply(Kind::Prepare, "prepare");
     }
     if (!closing && !healthy && r.ever_sent && r.state != State::Paused && r.pending.empty()) {
+      const auto h = monitor ? monitor->snapshot() : nullptr;
+      std::cerr << "DELIVERY_HEALTH_REJECTION "
+                << Json{{"mission", r.request.mission_id},
+                        {"snapshot_age_ms", h ? now_ms() - h->now_ms : -1},
+                        {"monitor_reason", h ? h->reason : "ABSENT"},
+                        {"health_fault", health_fault.load()},
+                        {"execution_fault", execution && execution->faulted()},
+                        {"adapter_fault", adapter && adapter->faulted()},
+                        {"catalog_current", catalog && catalog->resources_current()}}
+                       .dump()
+                << std::endl;
       return apply(Kind::Fatal, "input_health_failed");
     }
     if (r.state == State::Paused && !r.pending.empty() && !r.ever_sent && r.goal_terminal
@@ -213,13 +224,13 @@ public:
         auto e = ev(r, Kind::Arrival, "arrival-" + epoch + "-" + std::to_string(r.version));
         e.arrival_verified = true;
         e.source_fresh = true;
-        e.synthetic = delivery_synthetic;
+        e.synthetic = test_mode;
         e.gate_epoch = r.gate_epoch;
         e.clock_epoch = r.clock_epoch;
         e.source_from_ns = a.from_ns;
         e.source_to_ns = a.to_ns;
         e.valid_until = std::min(r.stop_until, h->now_ms + 200);
-        e.detail = Json{{"type", "ARRIVED"},       {"synthetic", delivery_synthetic},
+        e.detail = Json{{"type", "ARRIVED"},       {"synthetic", test_mode},
                         {"from_ns", a.from_ns},    {"to_ns", a.to_ns},
                         {"samples", a.samples},    {"position_error", a.position_error},
                         {"yaw_error", a.yaw_error}}
@@ -278,7 +289,7 @@ public:
                       {"duplicate", reply.duplicate},
                       {"record", r ? Json(encode(*r)) : Json(nullptr)},
                       {"battery", "unavailable"},
-                      {"synthetic_observations", delivery_synthetic}}
+                      {"synthetic_observations", test_mode}}
                      .dump();
     return out;
   }
@@ -627,16 +638,13 @@ private:
   }
 
 public:
-  void start_node() {
+  void initialize() {
     // Declare and validate the frozen configuration before constructing runtime owners.
-    const bool test_mode = declare_parameter("test_mode", false);
-    delivery_synthetic = test_mode;
-    const auto workflow = declare_parameter<std::string>("workflow_mode", "legacy");
+    test_mode = declare_parameter("test_mode", false);
+    const auto station_catalog = declare_parameter<std::string>("station_catalog", "");
+    const auto workflow =
+    declare_parameter<std::string>("workflow_mode", "delivery");
     delivery_mode = workflow == "delivery";
-    if (workflow != "legacy" && workflow != "delivery") {
-      throw std::runtime_error("invalid workflow_mode");
-    }
-    const auto catalog_path = declare_parameter<std::string>("station_catalog", "");
     const auto queue_capacity = declare_parameter("queue_capacity", 4);
     const auto task_ms = declare_parameter("task_ms", 240000);
     const auto handover_ms = declare_parameter("handover_ms", 120000);
@@ -644,25 +652,25 @@ public:
     const auto db = declare_parameter<std::string>("database", "");
     epoch = declare_parameter<std::string>("process_epoch", "");
     mailbox = static_cast<std::size_t>(declare_parameter("mailbox_capacity", 16));
-    const auto execution_mode = declare_parameter<std::string>("execution_mode", "fixture");
+    const auto execution_mode = declare_parameter<std::string>("execution_mode", "gate");
     gate_mode = execution_mode == "gate";
-    execution_run = declare_parameter<std::string>("execution_run_id", "");
-    execution_ns = declare_parameter<std::string>("execution_namespace", get_namespace());
+    execution_run_id = declare_parameter<std::string>("execution_run_id", "");
+    execution_namespace = declare_parameter<std::string>("execution_namespace", get_namespace());
     if (execution_mode != "fixture" && execution_mode != "gate") {
       throw std::runtime_error("invalid execution mode");
     }
-    if (gate_mode && (!valid_identifier(execution_run) || execution_ns != get_namespace())) {
+    if (gate_mode && (!valid_identifier(execution_run_id) || execution_namespace != get_namespace())) {
       throw std::runtime_error("execution run/namespace mismatch");
     }
-    AdapterConfig c;
-    c.synthetic_revoke = !gate_mode;
-    c.action = action;
-    c.epoch = epoch;
-    c.readiness_ms = declare_parameter("readiness_ms", 1500);
-    c.accept_ms = declare_parameter("accept_ms", 1500);
-    c.execute_ms = declare_parameter("execute_ms", 10000);
-    c.cancel_ms = declare_parameter("cancel_ms", 1000);
-    c.collect_ms = declare_parameter("collect_ms", 3000);
+    AdapterConfig config;
+    config.synthetic_revoke = !gate_mode;
+    config.action = action;
+    config.epoch = epoch;
+    config.readiness_ms = declare_parameter("readiness_ms", 1500);
+    config.accept_ms = declare_parameter("accept_ms", 1500);
+    config.execute_ms = declare_parameter("execute_ms", 10000);
+    config.cancel_ms = declare_parameter("cancel_ms", 1000);
+    config.collect_ms = declare_parameter("collect_ms", 3000);
     const std::set<std::string> allowed = {
         "workflow_mode",  "station_catalog",  "queue_capacity",     "task_ms",
         "handover_ms",    "test_mode",        "action_name",        "database",
@@ -685,18 +693,18 @@ public:
     if (delivery_mode) {
       if (!gate_mode || !domain || std::string(domain) != (test_mode ? "72" : "71")
           || (test_mode ? action.rfind("/cmr_test/", 0) != 0 : action != "/navigate_to_pose")
-          || catalog_path.empty() || queue_capacity < 0 || queue_capacity > 64
+          || station_catalog.empty() || queue_capacity < 0 || queue_capacity > 64
           || get_parameter("use_sim_time").as_bool()) {
         throw std::runtime_error("invalid explicit delivery domain/catalog/clock configuration");
       }
-      catalog = std::make_unique<StationCatalog>(catalog_path);
+      catalog = std::make_unique<StationCatalog>(station_catalog);
       monitor = std::make_unique<DeliveryMonitor>(
           shared_from_this(), *catalog,
-          DeliveryMonitorConfig{execution_run, epoch, execution_ns,
-                                test_mode ? execution_ns : std::string(""), action, test_mode});
-      c.simulation = !test_mode;
-      c.goal_payload_required = true;
-      c.source_now_ns = [this] { return monitor->source_time(); };
+          DeliveryMonitorConfig{execution_run_id, epoch, execution_namespace,
+                                test_mode ? execution_namespace : std::string(""), action, test_mode});
+      config.simulation = !test_mode;
+      config.goal_payload_required = true;
+      config.source_now_ns = [this] { return monitor->source_time(); };
     } else if (!domain || std::string(domain) != "72" || action.rfind("/cmr_test/", 0) != 0) {
       throw std::runtime_error("invalid isolated test configuration");
     }
@@ -716,11 +724,11 @@ public:
         return false;
       }
     };
-    adapter = std::make_unique<NavigationAdapter>(shared_from_this(), c, sink);
+    adapter = std::make_unique<NavigationAdapter>(shared_from_this(), config, sink);
     if (gate_mode) {
       execution = std::make_unique<ExecutionPort>(
           shared_from_this(),
-          ExecutionConfig{execution_run, epoch, execution_ns, delivery_synthetic}, *adapter, sink);
+          ExecutionConfig{execution_run_id, epoch, execution_namespace, test_mode}, *adapter, sink);
     }
     StoreOptions store_options;
     if (delivery_mode) {
@@ -750,7 +758,7 @@ public:
             return r;
           });
     }
-    std::cout << "MISSION_READY epoch=" << epoch << " synthetic=" << delivery_synthetic
+    std::cout << "MISSION_READY epoch=" << epoch << " synthetic=" << test_mode
               << " delivery=" << delivery_mode << std::endl;
   }
 
@@ -908,7 +916,7 @@ public:
     if (execution) {
       execution->stop();
     }
-    adapter->stop();
+    adapter->finalize_shutdown();
     runtime->close();
     poll();
     std::cout << "MISSION_CLOSED requests=" << requests.size() << " events=" << events.size()
@@ -924,7 +932,7 @@ int main(int argc, char **argv) {
   std::signal(SIGTERM, signal_handler);
   try {
     auto node = std::make_shared<MissionNode>();
-    node->start_node();
+    node->initialize();
     rclcpp::executors::SingleThreadedExecutor executor;
     executor.add_node(node);
     while (rclcpp::ok() && !interrupted) {

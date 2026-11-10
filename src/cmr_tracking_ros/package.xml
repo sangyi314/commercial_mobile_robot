@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>cmr_tracking_ros</name>
+  <version>0.1.0</version>
+  <description>ROS adapters for CMR P2-01 estimation.</description>
+  <maintainer email="sangyi31415926@gmail.com">Sang Yi</maintainer>
+  <license>MIT</license>
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <depend>cmr_execution</depend>
+  <depend>cmr_interfaces</depend>
+  <depend>cmr_tracking</depend>
+  <depend>nav_msgs</depend>
+  <depend>nlohmann-json-dev</depend>
+  <depend>rclcpp</depend>
+  <depend>rosgraph_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>std_srvs</depend>
+  <depend>tf2</depend>
+  <depend>tf2_msgs</depend>
+  <exec_depend>ament_index_python</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+  <exec_depend>robot_localization</exec_depend>
+  <test_depend>gtest</test_depend>
+  <export><build_type>ament_cmake</build_type></export>
+</package>

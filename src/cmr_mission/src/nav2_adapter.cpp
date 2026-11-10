@@ -165,7 +165,7 @@ NavigationAdapter::NavigationAdapter(rclcpp::Node::SharedPtr node, AdapterConfig
 }
 
 NavigationAdapter::~NavigationAdapter() {
-  stop();
+  finalize_shutdown();
 }
 
 void NavigationAdapter::execute(const Effect &e) {
@@ -192,7 +192,7 @@ void NavigationAdapter::begin_shutdown() {
   p->closing = true;
 }
 
-void NavigationAdapter::stop() {
+void NavigationAdapter::finalize_shutdown() {
   if (!p || !p->alive.exchange(false)) {
     return;
   }

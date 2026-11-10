@@ -58,7 +58,7 @@ int main(int argc, char **argv) {
       port.tick();
       port.begin_shutdown();
       port.stop();
-      adapter.stop();
+      adapter.finalize_shutdown();
     }
     {
       using Lease = cmr_interfaces::srv::ExecutionLease;
@@ -112,7 +112,7 @@ int main(int argc, char **argv) {
       check(inspected == 1 && contexts == 1 && revoked == 1 && begun == 0,
             "early cancel must inspect then revoke; never Begin or send Goal");
       port.stop();
-      adapter.stop();
+      adapter.finalize_shutdown();
       executor.cancel();
       executor.remove_node(node);
     }
@@ -145,7 +145,7 @@ int main(int argc, char **argv) {
         check(rejected, "malformed renew ID rejected");
       }
       port.stop();
-      adapter.stop();
+      adapter.finalize_shutdown();
     }
     node.reset();
     rclcpp::shutdown();

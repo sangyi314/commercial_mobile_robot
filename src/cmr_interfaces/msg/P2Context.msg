@@ -1,0 +1,17 @@
+uint8 OK=0
+uint8 DEGRADED=1
+uint8 INVALID=2
+string<=128 schema_version
+string<=128 context_id
+string<=128 authority_session
+string<=128 mode
+string<=128 run_id
+string<=128 gate_epoch
+string<=128 clock_epoch
+string<=128 odom_epoch
+string<=128 localization_version
+string<=128 map_version
+string<=64 config_hash
+uint64 sequence
+uint8 health
+string<=64 reason

@@ -98,7 +98,7 @@ def load_inputs(scenario,profile,method,identity):
  return p,s
 
 def main():
- ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--scenario',required=True);ap.add_argument('--method',choices=['mppi','dwb'],required=True);ap.add_argument('--profile',required=True);ap.add_argument('--run-id',required=True);ap.add_argument('--check',action='store_true');ap.add_argument('--mission',action='store_true',help='explicit P1 delivery workflow; worker cannot send Goals');ap.add_argument('--fault',choices=['withhold-initial-pose',*FAULTS]);ap.add_argument('--ack-test-fault',action='store_true');args=ap.parse_args();entry=time.monotonic()
+ ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--scenario',required=True);ap.add_argument('--method',choices=['mppi','dwb'],required=True);ap.add_argument('--profile',required=True);ap.add_argument('--run-id',required=True);ap.add_argument('--check',action='store_true');ap.add_argument('--mission',action='store_true',help='explicit P1 delivery workflow; worker cannot send Goals');ap.add_argument('--fault',choices=['withhold-initial-pose',*FAULTS]);ap.add_argument('--ack-test-fault',action='store_true');ap.add_argument('--p2-profile',help='optional validated P2-01 profile');args=ap.parse_args();entry=time.monotonic()
  try:
   if ROOT!=Path('/home/robot/commercial_mobile_robot'):raise ValueError('wrong project root')
   if bool(args.fault)!=args.ack_test_fault:raise ValueError('fault requires explicit acknowledgement and vice versa')
@@ -107,6 +107,10 @@ def main():
   delivery=bool(p.get('delivery_v1'))
   if delivery!=args.mission:raise ValueError('profile4 and explicit --mission must agree')
   if delivery and args.fault:raise ValueError('delivery fault scope is frozen in its versioned case profile')
+  if args.p2_profile:
+   if p.get('reliability_v1'):raise ValueError('P2 experiment cannot change reliability freeze')
+   from tools.p2 import runner_profile as p2
+   p2.apply(p,args.profile,args.p2_profile,args.run_id)
   run=ROOT/('evidence/missions' if delivery else 'evidence/runs')/args.run_id
   if run.exists():raise FileExistsError('run directory already exists')
   plan={'run_id':args.run_id,'method':args.method,'scope':'simulation_only','run_directory':str(run),'processes':['worker','gazebo','robot_spawn','robot_state_publisher','bridge','recorder','localization','navigation'],'budgets':p['budgets'],'topics':p['recording']['topics'],'fault':args.fault,'plugin':p['methods'][args.method]['plugin'],'check_has_no_side_effects':True,'mode':p.get('mode','navigation_recording'),'sends_goal':p.get('mode')!='probe','raw_capture':'Gazebo sidecars; no truth ROS publication'}
@@ -121,6 +125,9 @@ def main():
    plan['execution_v1']=p['execution_v1'];plan['processes']+=['execution-gate','execution-observer','authorization-fixture'];plan['authorization']='explicit simulation fixture; original worker is sole goal sender'
   if delivery:
    plan['processes']=[x for x in plan['processes'] if x!='authorization-fixture']+['mission'];plan['authorization']='real Mission ExecutionPort';plan['goal_owner']='Mission NavigationAdapter only';plan['worker_action_client']=False;plan['delivery_v1']=p['delivery_v1'];plan['human_confirmation_required']=p['delivery_v1']['case']=='G01';plan['raw_capture']='Gazebo sidecars plus private Oracle body_odom for independent stop qualification';plan['oracle_stop_assisted']=bool(p['delivery_v1'].get('stop_feedback',{}).get('oracle_stop_assisted'))
+  if args.p2_profile:
+   plan['p2_v1']=p['p2_v1']
+   if p['p2_v1']['mode']!='calibration':plan['processes'].append('p2-estimation')
   if args.check:print(json.dumps(plan,ensure_ascii=False));return 0
  except Exception as exc:print(json.dumps({'preflight_rejected':str(exc)},ensure_ascii=False),file=sys.stderr);return 2
  try:
@@ -175,8 +182,12 @@ def main():
      desktop=dict(x.split('=',1) for x in (proc/'environ').read_bytes().decode().split('\0') if '=' in x)
      for k in ['DISPLAY','XAUTHORITY']:env[k]=desktop[k]
    except (PermissionError,FileNotFoundError,ProcessLookupError):pass
-  for key,name in [('world','world.sdf'),('robot','robot.sdf'),('goal','goal.json'),('initialpose','initialpose.json'),('constraints','constraints.json')]:atomic_write_new(run/'artifacts'/name,Path(p['files'][key]['path']).read_bytes())
-  atomic_write_new(run/'artifacts/config.yaml',Path(p['methods'][args.method]['config']).read_bytes());atomic_write_new(run/'artifacts/recording_qos.yaml',Path(p['recording']['qos']).read_bytes())
+  for key,name in [('world','world.sdf'),('robot','robot.sdf'),('goal','goal.json'),('initialpose','initialpose.json'),('constraints','constraints.json')]:
+   if key!='robot' or not args.p2_profile:
+    atomic_write_new(run/'artifacts'/name,Path(p['files'][key]['path']).read_bytes())
+  nav_config=Path(p['methods'][args.method]['config']).read_bytes()
+  if args.p2_profile:p2.snapshot(run,p)
+  atomic_write_new(run/'artifacts/recording_qos.yaml',Path(p['recording']['qos']).read_bytes())
   from tools.runner.archive import snapshot_code
   snapshot_code(run)
   if p.get('profile_version')==2:
@@ -185,7 +196,8 @@ def main():
    for role,ref in p['dynamic_profile']['executables'].items():
     atomic_write_new(run/'artifacts'/('cmr_'+role+'.binary'),Path(ref['path']).read_bytes())
   if p.get('execution_v1'):
-   atomic_write_new(run/'artifacts/execution_bridge.yaml',Path(p['execution_v1']['bridge']).read_bytes())
+   if not p.get('p2_bridge'):
+    atomic_write_new(run/'artifacts/execution_bridge.yaml',Path(p['execution_v1']['bridge']).read_bytes())
    for role,ref in p['execution_v1']['binaries'].items():
     target=run/'artifacts'/(role+'.binary');atomic_write_new(target,Path(ref['path']).read_bytes());target.chmod(0o755)
     if digest(target)!=ref['sha256']:raise RuntimeError('native binary snapshot mismatch '+role)
@@ -193,7 +205,13 @@ def main():
    for role,ref in p['delivery_v1']['binaries'].items():
     target=run/'artifacts'/(role+'.binary');atomic_write_new(target,Path(ref['path']).read_bytes());target.chmod(0o755)
    atomic_write_new(run/'artifacts/delivery.bt.xml',Path(p['delivery_v1']['bt']['path']).read_bytes());atomic_write_new(run/'artifacts/stations-source.v1.json',Path(p['delivery_v1']['catalog_source']['path']).read_bytes());atomic_write_new(run/'artifacts/stations-input.v1.json',Path(p['delivery_v1']['catalog']['path']).read_bytes())
-   catalog=json.loads(Path(p['delivery_v1']['catalog']['path']).read_text());catalog['bt']['path']=str(run/'artifacts/delivery.bt.xml');write_json(run/'artifacts/stations.v1.json',catalog)
+   catalog=json.loads(Path(p['delivery_v1']['catalog']['path']).read_text());catalog['bt']['path']=str(run/'artifacts/delivery.bt.xml')
+   if args.p2_profile and p['p2_v1']['maneuver']!='delivery':
+    config=yaml.safe_load(nav_config)
+    p2.configure_motion(run,p,catalog,config)
+    nav_config=yaml.safe_dump(config).encode()
+   write_json(run/'artifacts/stations.v1.json',catalog)
+  atomic_write_new(run/'artifacts/config.yaml',nav_config)
   if p.get('reliability_v1'):atomic_write_new(run/'artifacts/reliability-mcap.yaml',Path(p['reliability_v1']['storage']['path']).read_bytes())
   if p.get('task_inputs'):atomic_write_new(run/'artifacts/task-inputs.json',Path(p['task_inputs']['path']).read_bytes())
   frozen=copy.deepcopy(p);frozen.update({'selected_method':args.method,'fault':args.fault,'ack_test_fault':args.ack_test_fault});write_json(run/'artifacts/profile.json',frozen)
@@ -234,11 +252,19 @@ def main():
   phase('START_SIM')
   genv=env.copy();genv.update(p['gazebo_environment']);objects['gazebo']=supervisor.spawn('gazebo',['gz','sim','-s','-r','-v','3','--render-engine-server','ogre',str(run/'artifacts/world.sdf')],genv,ROOT)
   if p.get('p0_08') or execution:
-   gz=GazeboEvidence(run,env['GZ_PARTITION'],log,robot_only=bool(execution),history_limit=2000 if p.get("reliability_v1") else None);link.hooks.append(gz.tick)
+   gz=GazeboEvidence(run,env['GZ_PARTITION'],log,robot_only=bool(execution),history_limit=2000 if (p.get("reliability_v1") or args.p2_profile) else None);link.hooks.append(gz.tick)
   sp=p['spawn'];spawn=supervisor.spawn('robot-spawn',['ros2','run','ros_gz_sim','create','-world','default','-file',str(run/'artifacts/robot.sdf'),'-name','turtlebot3_waffle','-x',str(sp['x']),'-y',str(sp['y']),'-z',str(sp['z'])],env,ROOT,critical=False);wait_process(spawn,startup.child(30))
   sim=Path('/opt/ros/jazzy/share/nav2_minimal_tb3_sim')
   objects['robot']=supervisor.spawn('robot',['/opt/ros/jazzy/lib/robot_state_publisher/robot_state_publisher','--ros-args','-p','use_sim_time:=true','-p','robot_description:='+(sim/'urdf/turtlebot3_waffle.urdf').read_text()],env,ROOT)
   objects['bridge']=supervisor.spawn('bridge',['/opt/ros/jazzy/lib/ros_gz_bridge/parameter_bridge','--ros-args',*(['-r','__node:=execution_bridge','-r','__ns:='+p['execution_v1']['namespace']] if execution else []),'-p','use_sim_time:=true','-p','expand_gz_topic_names:=true','-p','config_file:='+str(run/'artifacts/execution_bridge.yaml' if execution else sim/'configs/turtlebot3_waffle_bridge.yaml')],env,ROOT)
+  if args.p2_profile and p['p2_v1'].get('fault_test'):
+   objects['p2-fault-proxy']=p2.start_fault_proxy(supervisor,run,p,env,ROOT)
+  if args.p2_profile and p['p2_v1']['mode']!='calibration':
+   objects['p2-estimation']=p2.start_estimation(supervisor,run,p,env,ROOT)
+  if args.p2_profile:
+   from tools.p2.resources import ResourceSampler
+   p2_resources=ResourceSampler(run,supervisor,gz)
+   link.hooks.append(p2_resources.tick)
   if p.get('profile_version')==2:
    from tools.dynamic.runner_dynamic import DynamicSession
    dynamic=DynamicSession(supervisor,run,p,env,log,link,WorkerLink)
@@ -255,10 +281,14 @@ def main():
   rpc('localize',{},startup.child(30))
   objects['navigation']=supervisor.spawn('navigation',['ros2','launch','--noninteractive',p['launch'].get('navigation_package','nav2_bringup'),p['launch']['navigation'],*common,*(['disabled_goal_pose:='+p['execution_v1']['namespace']+'/disabled_goal_pose'] if delivery else [])],env,ROOT);manager_started.append('navigation')
   rpc('manager',{'phase':'navigation','command':'STARTUP'},startup.child(60));phase('NAV_READY');rpc('nav_ready',{},startup.child(30));rpc('recorder',{'name':recorder_name,'topics':p['recording']['topics']},startup.child(15));update({'type':'READY'})
+  if args.p2_profile and 'p2-estimation' in objects:
+   dump=supervisor.spawn('p2-ekf-parameters',[sys.executable,'-B',str(ROOT/'tools/p2/capture_ekf_parameters.py'),'--run',str(run),'--output',str(run/'runtime/p2-ekf-parameters.json')],env,ROOT,critical=False)
+   wait_process(dump,startup.child(10))
   if gz:gz.cold(p['spawn'],objects['gazebo'],env)
   if dynamic:dynamic.prepare(startup.child(15))
   if execution:execution.prepare(startup)
   if delivery:
+   if args.p2_profile:p2.observe_hold(p['p2_v1']['hold_sim_seconds'],run,link,gz,work)
    phase('WAIT_RESULT');execution.execute(work,gz)
   elif p.get('mode')=='probe':
    dynamic.probe(work)
@@ -344,7 +374,7 @@ def main():
     if link:attempt('recording_end_marker',lambda:rpc('mark',{'name':'RECORDING_END'},cleanup.child(2)))
     attempt('recorder_exit',lambda:supervisor.close(objects['recorder'],cleanup,grace=8))
    if 'localization' in manager_started and link:attempt('localization_shutdown',lambda:rpc('manager',{'phase':'localization','command':'SHUTDOWN'},cleanup.child(10)))
-   for role in ['localization','bridge','robot']:
+   for role in ['localization','p2-estimation','p2-fault-proxy','bridge','robot']:
     if role in objects:attempt(role+'_exit',lambda role=role:supervisor.close(objects[role],cleanup,grace=3))
    if gz:
     attempt('gazebo_evidence_close',gz.close);link.hooks.remove(gz.tick)

@@ -30,7 +30,7 @@ public:
   void execute(const Effect &) override; // owner thread: queues only
   void tick();                           // executor thread only
   void begin_shutdown();                 // executor: prohibit new sends while collecting old goals
-  void stop();                           // executor no longer executes callbacks after this
+  void finalize_shutdown();                           // executor no longer executes callbacks after this
   bool faulted() const;
   bool ready() const;
 };

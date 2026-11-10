@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>cmr_tracking</name>
+  <version>0.1.0</version>
+  <description>ROS-independent CMR perception contracts.</description>
+  <maintainer email="sangyi31415926@gmail.com">Sang Yi</maintainer>
+  <license>MIT</license>
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <depend>eigen</depend>
+  <test_depend>gtest</test_depend>
+  <export><build_type>ament_cmake</build_type></export>
+</package>
