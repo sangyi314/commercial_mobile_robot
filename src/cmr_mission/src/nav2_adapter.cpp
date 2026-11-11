@@ -258,9 +258,6 @@ void NavigationAdapter::tick() {
     } else if (found != p->goals.end()) {
       auto g = found->second;
       if (e.kind == EffectKind::Revoke) {
-        if (p->config.synthetic_revoke) {
-          p->emit(p->make_event(g, Kind::RevokeAck, "synthetic=true REVOKE_ACK"));
-        }
         if (!g->terminal) {
           p->cancel(g);
         }
@@ -314,32 +311,23 @@ void NavigationAdapter::tick() {
 
         // Construct and validate the frozen target before marking the Goal dispatched.
         NavigateToPose::Goal goal;
-        goal.pose.header.frame_id = "map";
-        goal.pose.pose.orientation.w = 1.0;
-        goal.pose.pose.position.x =
-            g->effect.operation.find(".return") != std::string::npos ? 0.0 : 1.0;
         try {
-          if (p->config.goal_payload_required && g->effect.navigation_payload.empty()) {
-            throw std::runtime_error("frozen target required");
+          const auto payload = strict_json(g->effect.navigation_payload);
+          const auto target = payload.at("target");
+          checked_pose(target);
+          const auto bt = payload.at("bt");
+          if (file_sha256(bt.at("path")) != bt.at("sha256")) {
+            throw std::runtime_error("BT resource changed");
           }
-          if (!g->effect.navigation_payload.empty()) {
-            const auto payload = strict_json(g->effect.navigation_payload);
-            const auto target = payload.at("target");
-            checked_pose(target);
-            const auto bt = payload.at("bt");
-            if (file_sha256(bt.at("path")) != bt.at("sha256")) {
-              throw std::runtime_error("BT resource changed");
-            }
-            goal.pose.header.frame_id = target.at("frame");
-            goal.pose.pose.position.x = target.at("position").at("x");
-            goal.pose.pose.position.y = target.at("position").at("y");
-            goal.pose.pose.position.z = 0;
-            goal.pose.pose.orientation.x = 0;
-            goal.pose.pose.orientation.y = 0;
-            goal.pose.pose.orientation.z = target.at("orientation").at("z");
-            goal.pose.pose.orientation.w = target.at("orientation").at("w");
-            goal.behavior_tree = bt.at("path");
-          }
+          goal.pose.header.frame_id = target.at("frame");
+          goal.pose.pose.position.x = target.at("position").at("x");
+          goal.pose.pose.position.y = target.at("position").at("y");
+          goal.pose.pose.position.z = 0;
+          goal.pose.pose.orientation.x = 0;
+          goal.pose.pose.orientation.y = 0;
+          goal.pose.pose.orientation.z = target.at("orientation").at("z");
+          goal.pose.pose.orientation.w = target.at("orientation").at("w");
+          goal.behavior_tree = bt.at("path");
         } catch (const std::exception &error) {
           g->terminal = true;
           p->emit(

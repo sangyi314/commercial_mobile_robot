@@ -24,7 +24,7 @@ class DeliverySession:
  def mark(self,name,data,budget):return self.link.rpc('mark',{'name':name,'data':data},budget.child(3))
  def start_owner(self,budget,restart=False):
   epoch=self.e['owner_epoch']+('_restart' if restart else '')
-  params={'workflow_mode':'delivery','test_mode':False,'use_sim_time':False,'execution_mode':'gate','execution_run_id':self.run.name,'execution_namespace':self.e['namespace'],'process_epoch':epoch,'action_name':'/navigate_to_pose','station_catalog':str(self.run/'artifacts/stations.v1.json'),'database':str(self.run/'runtime/mission.db'),'queue_capacity':4,'task_ms':self.d['policy']['task_ms'],'handover_ms':self.d['policy']['handover_ms'],'execute_ms':150000}
+  params={'test_mode':False,'use_sim_time':False,'execution_run_id':self.run.name,'execution_namespace':self.e['namespace'],'process_epoch':epoch,'action_name':'/navigate_to_pose','station_catalog':str(self.run/'artifacts/stations.v1.json'),'database':str(self.run/'runtime/mission.db'),'queue_capacity':4,'task_ms':self.d['policy']['task_ms'],'handover_ms':self.d['policy']['handover_ms'],'execute_ms':150000}
   argv=[str(self.run/'artifacts/mission_node.binary'),'--ros-args','-r','__ns:='+self.e['namespace']]
   for k,v in params.items():argv+=['-p',k+':='+(str(v).lower() if isinstance(v,bool) else str(v))]
   self.owner=self.supervisor.spawn('mission-restarted' if restart else 'mission',argv,self.env,self.run.parents[2])

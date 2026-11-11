@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: MIT
 """Isolated execution protocol tests; --check never creates nodes/processes/DB/output."""
-import argparse,json,os,sys,time,uuid,signal,subprocess,hashlib,math,sqlite3
+import argparse,json,os,sys,time,uuid,signal,subprocess,hashlib,math,sqlite3,traceback
 from pathlib import Path
+if __package__ in (None,''):
+ from runpy import run_path
+ run_path(str(Path(__file__).resolve().parents[1]/'__init__.py'))['bootstrap']()
 
 def check(args):
  suite=json.loads(Path(args.suite).read_text());prefix=Path(args.install_prefix).resolve();out=Path(args.output_dir)
@@ -23,16 +26,15 @@ def main():
  from nav_msgs.msg import Odometry
  from rosgraph_msgs.msg import Clock
  from cmr_interfaces.msg import ExecutionIdentity,GateState,StopReport
- from cmr_interfaces.srv import ExecutionLease,MissionCommand,SyntheticEvent,FakeControl
+ from cmr_interfaces.srv import ExecutionLease
  from rosidl_runtime_py.convert import message_to_ordereddict as dic
- import run_protocol_tests as prior
- prior.rclpy=rclpy;prior.MissionCommand=MissionCommand;prior.SyntheticEvent=SyntheticEvent;prior.FakeControl=FakeControl;prior.message_to_ordereddict=dic
+ from tools.mission.mission_harness import DeliveryCase, ProcessCase
  rclpy.init();out.mkdir(parents=True,exist_ok=False)
  (out/'manifest.json').write_text(json.dumps({'suite':suite,'suite_sha256':hashlib.sha256(Path(args.suite).read_bytes()).hexdigest(),'prefix':str(prefix),'supervisor_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),'synthetic':True,'domain':72},indent=2))
- class Case(prior.Case):
+ class Case(ProcessCase):
   def __init__(self,root,label,config=None):
    self.root=root;root.mkdir(parents=True,exist_ok=False);self.prefix=prefix;self.bin=prefix/'cmr_mission/lib/cmr_mission';self.name='p103_'+uuid.uuid4().hex[:12]+'_'+label;self.ns='/cmr_test/'+self.name;self.action=self.ns+'/navigate_to_pose';self.config=config or {};self.procs=[];self.seq=0;self.records=[];self.node=rclpy.create_node('execution_sink',namespace=self.ns);self.db=root/'mission.db';self.server=None;self.mission=None
-   self.api=self.node.create_client(MissionCommand,self.ns+'/command');self.fixture=self.node.create_client(SyntheticEvent,self.ns+'/synthetic_event');self.control=self.node.create_client(FakeControl,self.ns+'/control');self.lease_client=self.node.create_client(ExecutionLease,self.ns+'/lease')
+   self.lease_client=self.node.create_client(ExecutionLease,self.ns+'/lease')
    self.scan_graph();self.state=None;self.report=None;self.outputs=[];self.states=[];self.source_on=True;self.odom_on=True;self.candidate_on=True;self.pause=False;self.offset=0;self.fixed_stamp=None;self.extra_u=None;self.bad_candidate_time=None;self.bad_clock_time=None;self.candidate_frame='base_footprint';self.held=Twist();self.x=0.;self.yaw=0.;self.clock_ns=10000000000;self.last_source=time.monotonic();self.started=self.last_source;self.nonce=0;self.lease_id='';self.identity=None;self.grant_request=None;self.grant=None
    qos=QoSProfile(depth=10,reliability=ReliabilityPolicy.RELIABLE,durability=DurabilityPolicy.VOLATILE)
    self.clock_pub=self.node.create_publisher(Clock,'/clock',10);self.candidate_pub=self.node.create_publisher(TwistStamped,self.ns+'/candidate',qos);self.odom_pub=self.node.create_publisher(Odometry,self.ns+'/odom',10)
@@ -102,15 +104,17 @@ def main():
     r,q=self.renew();assert r.code=='RENEWED',r;self.spin(.05)
   def nonzero(self):return any(abs(m.linear.x)>.01 for t,m in self.outputs)
   def zero_after(self,when):return [m for t,m in self.outputs if t>=when]
-  def actual_mission(self,tag='mission',epoch=None):
-   # Reuse P1-02's response-qualified restart barrier, not a graph-ready bit.
-   old=self.config;self.config={**old,'use_sim_time':True,'execution_mode':'gate','execution_run_id':self.name,'execution_namespace':self.ns,'accept_ms':1500,'execute_ms':15000}
-   try:prior.Case.start_mission(self,tag,epoch)
-   finally:self.config=old
-  def begin_actual(self,cancel_delay=200):
-   self.start_server();self.ctrl('cancel_delay',cancel_delay);self.actual_mission();assert self.cmd('submit').code=='ACCEPTED';self.accepted();self.wait(lambda:abs(self.held.linear.x)>.01)
-   assert self.query().state=='NAVIGATING' and self.send_count()==1
   def record_fault(self,name):self.records.append({'fault':name,'time_monotonic':time.monotonic()});return time.monotonic()
+ class ActualCase(DeliveryCase):
+  def __init__(self,root,label):
+   super().__init__(root,prefix,{'queue_capacity':0},cancel_delay=4000 if label in ('E09','E12') else 200)
+  def candidate_velocity(self):
+   # Hold the request constant so the sink exposes Gate cutoff independently of pose.
+   return .1
+  def begin_actual(self):
+   self.wait_idle_stop()
+   self.submit();self.accepted();self.wait(lambda:abs(self.held.linear.x)>.01)
+   assert self.query().state=='NAVIGATING' and self.send_count()==1
  def stopped(c):
   return c.report and c.state and c.report.verdict=="STOPPED" and c.report.generation==c.state.generation and c.report.lease_id==c.state.lease_id and c.report.clock_epoch==c.state.clock_epoch and c.report.to_ros_ns<=c.state.ros_ns and c.state.ros_ns-c.report.to_ros_ns<200000000
  def E01(c):
@@ -194,7 +198,7 @@ def main():
   os.killpg(c.mission.pid,signal.SIGCONT);c.record_fault('actual_Mission_SIGCONT_no_auto_rearm');c.wait(lambda:c.query().state in ['FAILED','CANCELED'],8);assert not c.state.allowed
   root=c.root;c.close();c.__init__(root/'crash','E04crash');c.begin_actual();c.injected_exit(c.mission);t=c.record_fault('actual_Mission_SIGKILL')
   c.wait(lambda:c.state.state=='STOPPING' and c.held.linear.x==0,1);assert time.monotonic()-t<.6 and c.send_count()==1
-  c.actual_mission('mission-restarted',c.name+'_restart');assert c.query().state=='PAUSED';assert c.cmd('submit',id='other').code=='BUSY';c.spin(.2);assert c.send_count()==1 and not c.state.allowed
+  c.start_delivery_node(c.name+'_restart','mission-restarted');assert c.query().state=='PAUSED';c.assert_slot_occupied('INPUT_UNQUALIFIED');c.spin(.2);assert c.send_count()==1 and not c.state.allowed
   c.close();c.__init__(root/'database_busy','E04db');c.begin_actual();lock=sqlite3.connect(c.db,timeout=0);until=time.monotonic()+1;acquired=False
   while time.monotonic()<until:
    try:lock.execute('BEGIN IMMEDIATE');acquired=True;break
@@ -211,22 +215,28 @@ def main():
   finally:lock.rollback();lock.close()
   c.spin(.3);assert not c.state.allowed and c.send_count()==1
  def E09(c):
-  c.begin_actual(4000);c.odom_on=False;assert c.cmd('cancel').code=='CANCEL_PENDING';c.wait(lambda:c.state.state=='STOPPING');c.spin(3.1)
-  fake=c.node.create_publisher(StopReport,c.ns+'/stop_report',10);m=StopReport();m.identity=c.state.identity;m.clock_epoch=c.state.clock_epoch;m.lease_id=c.state.lease_id;m.generation=c.state.generation;m.synthetic=True;m.verdict='STOPPED';m.reason='TEST_FORGERY';m.evidence_ref='not_an_observer_window';m.to_ros_ns=c.state.ros_ns;m.from_ros_ns=m.to_ros_ns-3000000000;m.samples=31;m.max_gap_ns=100000000
-  c.record_fault('non_observer_stop_report_same_wire_topic');fake.publish(m);c.spin(.15);assert c.query().state=='PAUSED' and c.cmd('submit',id='other').code=='BUSY';assert c.fixture_event('stop').code=='FIXTURE_STOP_PROHIBITED'
+  c.begin_actual();c.odom_on=False
+  assert c.cmd('cancel').code=='CANCEL_PENDING'
+  c.wait(lambda:c.state.state=='STOPPING' and c.event_count(18)==1)
+  assert c.report.verdict!='STOPPED'
+  fake=c.node.create_publisher(StopReport,c.ns+'/stop_report',10)
+  c.wait(lambda:fake.get_subscription_count()>=2)
+  m=StopReport();m.identity=c.state.identity;m.clock_epoch=c.state.clock_epoch;m.lease_id=c.state.lease_id;m.generation=c.state.generation;m.synthetic=True;m.verdict='STOPPED';m.reason='TEST_FORGERY';m.evidence_ref='not_an_observer_window';m.to_ros_ns=c.state.ros_ns;m.from_ros_ns=m.to_ros_ns-3000000000;m.samples=31;m.max_gap_ns=100000000
+  c.record_fault('non_observer_stop_report_same_wire_topic');fake.publish(m);c.spin(.15);assert c.query().state=='PAUSED';c.assert_slot_occupied('INPUT_UNQUALIFIED');assert c.ns+'/synthetic_event' not in dict(c.node.get_service_names_and_types())
   c.node.destroy_publisher(fake);c.odom_on=True;c.wait(lambda:c.query().state=='CANCELED',8)
  def E12(c):
-  c.begin_actual(4000);assert c.cmd('cancel').code=='CANCEL_PENDING';c.wait(lambda:c.event_count(contains='CANCEL_RESPONSE')>0);assert c.query().state=='PAUSED' and c.cmd('submit',id='other').code=='BUSY'
-  c.wait(lambda:stopped(c),5);assert c.event_count(18)==0 and c.cmd('submit',id='other').code=='BUSY';c.wait(lambda:c.query().state=='CANCELED',5)
-  root=c.root;c.close();c.__init__(root/'terminal_without_D','E12terminal');c.begin_actual();c.odom_on=False;assert c.ctrl('success').success;c.wait(lambda:c.event_count(2)>0);assert c.cmd('cancel').code=='CANCEL_PENDING';c.spin(3.3);assert c.query().state=='PAUSED' and c.cmd('submit',id='other').code=='BUSY';c.record_fault('Goal_terminal_and_final_zero_but_D_missing')
+  c.begin_actual();assert c.cmd('cancel').code=='CANCEL_PENDING';c.wait(lambda:c.event_count(contains='CANCEL_RESPONSE')>0);assert c.query().state=='PAUSED';c.assert_slot_occupied()
+  c.wait(lambda:stopped(c),5);assert c.event_count(18)==0;c.assert_slot_occupied();c.wait(lambda:c.query().state=='CANCELED',5)
+  root=c.root;c.close();c.__init__(root/'terminal_without_D','E12');c.begin_actual();c.odom_on=False;assert c.ctrl('success').success;c.wait(lambda:c.event_count(2)>0);assert c.cmd('cancel').code=='CANCEL_PENDING';c.spin(3.3);assert c.query().state=='PAUSED';c.assert_slot_occupied('INPUT_UNQUALIFIED');c.record_fault('Goal_terminal_and_final_zero_but_D_missing')
   c.odom_on=True;c.wait(lambda:c.query().state=='CANCELED',8)
  tests={k:v for k,v in locals().items() if k.startswith('E') and callable(v)}
  results=[]
  try:
   for caseid in (args.cases.split(',') if args.cases else suite['cases']):
    c=None;error=None
-   try:c=Case.__new__(Case);c.__init__(out/caseid,caseid);tests[caseid](c)
-   except Exception as e:error=repr(e)
+   factory=ActualCase if caseid in ('E04','E09','E12') else Case
+   try:c=factory.__new__(factory);c.__init__(out/caseid,caseid);tests[caseid](c)
+   except Exception as e:error=repr(e);(out/(caseid+"-failure.txt")).write_text(traceback.format_exc())
    finally:
     if c:
      try:c.close()

@@ -7,7 +7,7 @@
 
 ## 先建立整体认识
 
-配送请求通过 DeliveryCommand 服务进入 MissionNode，回调只把请求交给 Runtime 邮箱。Runtime 的唯一 owner 线程调用 Store，在 BEGIN IMMEDIATE 事务中登记订单、更新原 Mission FSM 并写 effect。事务提交后才 dispatch。NavigationAdapter 负责真实 Action；ExecutionPort 负责真实 Gate 租约，两者都把回调重新投递给 owner。
+Mission Node 固定使用 Delivery + Gate。配送请求通过 DeliveryCommand 服务进入 MissionNode，回调只把请求交给 Runtime 邮箱。Runtime 的唯一 owner 线程调用 Store，在 BEGIN IMMEDIATE 事务中登记订单、更新原 Mission FSM 并写 effect。事务提交后才 dispatch。NavigationAdapter 负责真实 Action；ExecutionPort 负责真实 Gate 租约，两者都把回调重新投递给 owner。
 
 运行关系：
 

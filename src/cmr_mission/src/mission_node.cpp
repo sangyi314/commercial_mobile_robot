@@ -6,19 +6,16 @@
 #include "cmr_mission/mission_runtime.hpp"
 #include "cmr_mission/action_correlation.hpp"
 #include <cmr_interfaces/srv/mission_command.hpp>
-#include <cmr_interfaces/srv/synthetic_event.hpp>
 #include <csignal>
 #include <chrono>
 #include <atomic>
 #include <iostream>
 #include <thread>
-#include <set>
 #include <map>
 
 namespace cmr::mission {
 using DeliveryApi = cmr_interfaces::srv::DeliveryCommand;
 using Api = cmr_interfaces::srv::MissionCommand;
-using Fixture = cmr_interfaces::srv::SyntheticEvent;
 using Clock = std::chrono::steady_clock;
 static std::atomic<bool> interrupted{false};
 
@@ -29,7 +26,6 @@ static void signal_handler(int) {
 class MissionNode : public rclcpp::Node {
   Clock::time_point start = Clock::now();
   std::string epoch;
-  bool delivery_mode = true;
   bool test_mode = false;
   std::unique_ptr<StationCatalog> catalog;
   std::unique_ptr<DeliveryMonitor> monitor;
@@ -52,16 +48,13 @@ class MissionNode : public rclcpp::Node {
   std::unique_ptr<Runtime> runtime;
   std::unique_ptr<NavigationAdapter> adapter;
   std::unique_ptr<ExecutionPort> execution;
-  bool gate_mode = false;
   std::string execution_run_id;
   std::string execution_namespace;
   std::optional<std::future<Decision>> health;
   Clock::time_point health_at{};
   std::atomic<bool> health_fault{false};
-  std::map<std::string, std::uint64_t> stop_generations;
   rclcpp::node_interfaces::OnSetParametersCallbackHandle::SharedPtr frozen_parameters;
   rclcpp::Service<Api>::SharedPtr api;
-  rclcpp::Service<Fixture>::SharedPtr fixture;
   rclcpp::TimerBase::SharedPtr timer;
 
   struct PendingApi {
@@ -69,19 +62,12 @@ class MissionNode : public rclcpp::Node {
     std::future<Api::Response> future;
   };
 
-  struct PendingFixture {
-    std::shared_ptr<rmw_request_id_t> header;
-    std::future<Fixture::Response> future;
-  };
-
   std::vector<PendingApi> requests;
-  std::vector<PendingFixture> fixtures;
   std::vector<std::future<Decision>> events;
   std::atomic<bool> closing{false};
   bool shutdown_queued = false;
   std::size_t mailbox = 16;
   std::uint64_t seq = 0;
-  std::int64_t last_ros_clock = -1;
   std::int64_t last_health_log = -1000;
 
 public:
@@ -122,8 +108,7 @@ public:
   }
 
   bool delivery_eligible(const Json &snapshot) const {
-    if (closing || health_fault || !monitor || !catalog || (execution && execution->faulted())
-        || (adapter && adapter->faulted())) {
+    if (closing || health_fault || execution->faulted() || adapter->faulted()) {
       return false;
     }
     auto h = monitor->snapshot();
@@ -181,15 +166,15 @@ public:
       return apply(Kind::Prepare, "prepare");
     }
     if (!closing && !healthy && r.ever_sent && r.state != State::Paused && r.pending.empty()) {
-      const auto h = monitor ? monitor->snapshot() : nullptr;
+      const auto h = monitor->snapshot();
       std::cerr << "DELIVERY_HEALTH_REJECTION "
                 << Json{{"mission", r.request.mission_id},
                         {"snapshot_age_ms", h ? now_ms() - h->now_ms : -1},
                         {"monitor_reason", h ? h->reason : "ABSENT"},
                         {"health_fault", health_fault.load()},
-                        {"execution_fault", execution && execution->faulted()},
-                        {"adapter_fault", adapter && adapter->faulted()},
-                        {"catalog_current", catalog && catalog->resources_current()}}
+                        {"execution_fault", execution->faulted()},
+                        {"adapter_fault", adapter->faulted()},
+                        {"catalog_current", catalog->resources_current()}}
                        .dump()
                 << std::endl;
       return apply(Kind::Fatal, "input_health_failed");
@@ -397,7 +382,7 @@ private:
     e.now = now_ms();
     if (auto current = s.get_record_from_id(e.mission_id)) {
       e = scope_callback(std::move(e), *current);
-      if (gate_mode && e.uuid.empty()) {
+      if (e.uuid.empty()) {
         e.uuid = current->uuid;
       }
     }
@@ -416,31 +401,12 @@ private:
 
     // Persist the decision before dispatching effects and advancing the workflow.
     auto d = s.apply(e);
-    if (gate_mode && d.changed && e.kind == Kind::Stop) {
-      stop_generations[e.attempt] = e.source_generation;
-      if (delivery_mode) {
-        delivery_windows[e.attempt].stop = e;
-      }
-    }
-    if (gate_mode && d.changed && e.kind == Kind::ExecutionClock) {
-      stop_generations.erase(e.attempt);
+    if (d.changed && e.kind == Kind::Stop) {
+      delivery_windows[e.attempt].stop = e;
     }
 
     s.dispatch();
-    if (delivery_mode) {
-      delivery_drive(s);
-    } else if (gate_mode) {
-      auto r = s.get_active_record();
-      if (r && r->state == State::Paused && !r->pending.empty() && r->goal_terminal && r->revoked
-          && r->stopped && e.now < r->stop_until && stop_generations.count(r->attempt)
-          && execution->evidence_current(*r, stop_generations[r->attempt])) {
-        auto resolve =
-            ev(*r, Kind::Resolve, "execution-resolve-" + epoch + "-" + std::to_string(r->version));
-        resolve.detail = "verified A+D and Goal terminal";
-        s.apply(resolve);
-        s.dispatch();
-      }
-    }
+    delivery_drive(s);
     return d;
   }
 
@@ -464,64 +430,14 @@ private:
                    response.code = "CLOSED";
                    return response;
                  }
-                 if (delivery_mode && q->operation != "query") {
+                 if (q->operation != "query") {
                    response.code = "DELIVERY_API_REQUIRED";
                    return response;
                  }
-                 if (q->operation == "submit") {
-                   if (!s.get_record_from_id(q->mission_id)
-                       && (q->delivery_station != "a" || q->return_station != "b"
-                           || q->map_version != "map" || q->station_version != "stations")) {
-                     response.code = "INVALID_STATION_VERSION";
-                     return response;
-                   }
-                   MissionRequest request{q->schema_version,    q->mission_id,  q->delivery_station,
-                                          q->return_station,    q->map_version, q->station_version,
-                                          q->created_at_unix_ms};
-                   const auto decision = s.submit_legacy(request);
-                   static const char *codes[] = {
-                       "INVALID", "INVALID_CONTEXT", "EXISTING", "CONFLICT", "BUSY", "ACCEPTED"};
-                   response.code = codes[static_cast<int>(decision)];
-                   if (decision == Admission::CreateIntent) {
-                     if (gate_mode) {
-                       stop_generations.clear();
-                     }
-                     auto r = *s.get_record_from_id(q->mission_id);
-                     auto e = ev(r, Kind::Prepare, "prepare-" + epoch + "-" + q->mission_id);
-                     s.apply(e);
-                     s.dispatch();
-                   }
-                 } else if (q->operation == "query") {
-                   response.code = "FOUND";
-                 } else if (q->operation == "cancel" || q->operation == "handover") {
-                   if (!valid_identifier(q->command_id)) {
-                     response.code = "INVALID_COMMAND_ID";
-                     return response;
-                   }
-                   auto record = s.get_record_from_id(q->mission_id);
-                   if (!record) {
-                     response.code = "NOT_FOUND";
-                     return response;
-                   }
-                   auto e = ev(*record, q->operation == "cancel" ? Kind::Cancel : Kind::Handover,
-                               "api-" + q->command_id);
-                   e.expected_version = q->expected_state_version;
-                   e.detail = "API " + q->operation
-                              + " expected=" + std::to_string(q->expected_state_version);
-                   auto d = s.apply(e);
-                   response.code = d.reason == "COMMAND_CONFLICT" ? "COMMAND_CONFLICT"
-                                   : terminal(d.next.state)       ? "ALREADY_TERMINAL"
-                                   : (d.changed || d.reason == "DUPLICATE")
-                                       ? (q->operation == "cancel" ? "CANCEL_PENDING" : "CONFIRMED")
-                                       : "REJECTED";
-                   s.dispatch();
-                 } else {
-                   response.code = "INVALID_OPERATION";
-                   return response;
-                 }
                  if (auto record = s.get_record_from_id(q->mission_id)) {
+                   response.code = "FOUND";
                    fill(response, *record);
-                 } else if (q->operation == "query") {
+                 } else {
                    response.code = "NOT_FOUND";
                  }
                } catch (const std::exception &e) {
@@ -539,112 +455,11 @@ private:
     });
   }
 
-  void start_fixture_api() {
-    fixture = create_service<Fixture>("synthetic_event", [this](std::shared_ptr<rmw_request_id_t> h,
-                                                                Fixture::Request::SharedPtr q) {
-      if (closing || fixtures.size() >= 32) {
-        Fixture::Response r;
-        r.code = "OVERLOADED";
-        fixture->send_response(*h, r);
-        return;
-      }
-      try {
-        fixtures.push_back({h, runtime->call([this, q](Store &s) {
-                              Fixture::Response response;
-                              try {
-                                if (delivery_mode) {
-                                  response.code = "FIXTURE_PROHIBITED";
-                                  return response;
-                                }
-                                if (!q->synthetic) {
-                                  response.code = "SYNTHETIC_REQUIRED";
-                                  return response;
-                                }
-                                if (q->kind == "owner_pause") {
-                                  if (q->valid_for_ms <= 0 || q->valid_for_ms > 1000) {
-                                    response.code = "INVALID";
-                                    return response;
-                                  }
-                                  std::cout << "OWNER_PAUSE_BEGIN " << q->valid_for_ms << std::endl;
-                                  std::this_thread::sleep_for(
-                                      std::chrono::milliseconds(q->valid_for_ms));
-                                  std::cout << "OWNER_PAUSE_END" << std::endl;
-                                  response.code = "APPLIED";
-                                  return response;
-                                }
-                                if (gate_mode) {
-                                  response.code = "FIXTURE_STOP_PROHIBITED";
-                                  return response;
-                                }
-                                auto record = s.get_record_from_id(q->mission_id);
-                                if (!record) {
-                                  response.code = "NOT_FOUND";
-                                  return response;
-                                }
-                                Kind kind;
-                                if (q->kind == "stop") {
-                                  kind = Kind::Stop;
-                                } else if (q->kind == "arrival") {
-                                  kind = Kind::Arrival;
-                                } else if (q->kind == "resolve") {
-                                  kind = Kind::Resolve;
-                                } else if (q->kind == "revoke") {
-                                  kind = Kind::RevokeAck;
-                                } else if (q->kind == "fatal") {
-                                  kind = Kind::Fatal;
-                                } else {
-                                  response.code = "INVALID";
-                                  return response;
-                                }
-                                auto e = ev(*record, kind, q->event_id);
-                                e.epoch = q->epoch;
-                                e.operation = q->operation_id;
-                                e.attempt = q->attempt_id;
-                                e.uuid = q->goal_uuid;
-                                e.gate_epoch = q->gate_epoch;
-                                e.clock_epoch = q->clock_epoch;
-                                e.synthetic = true;
-                                e.observed_from = e.now - 1;
-                                e.observed_to = e.now;
-                                e.valid_until = e.now + q->valid_for_ms;
-                                e.detail = "synthetic=true fixture";
-                                if (e.epoch != record->epoch) {
-                                  response.code = "IDENTITY";
-                                  return response;
-                                }
-                                if (e.operation != record->operation || e.attempt != record->attempt
-                                    || e.uuid != record->uuid) {
-                                  response.code = "OPERATION";
-                                  return response;
-                                }
-                                auto d = s.apply(e);
-                                response.code = d.changed ? "APPLIED" : d.reason;
-                                response.state = state_name(d.next.state);
-                                response.detail = d.reason;
-                                s.dispatch();
-                              } catch (const std::exception &error) {
-                                response.code = "STORAGE_ERROR";
-                                response.detail = error.what();
-                              }
-                              return response;
-                            })});
-      } catch (const std::exception &e) {
-        Fixture::Response r;
-        r.code = "OVERLOADED";
-        r.detail = e.what();
-        fixture->send_response(*h, r);
-      }
-    });
-  }
-
 public:
   void initialize() {
     // Declare and validate the frozen configuration before constructing runtime owners.
     test_mode = declare_parameter("test_mode", false);
     const auto station_catalog = declare_parameter<std::string>("station_catalog", "");
-    const auto workflow =
-    declare_parameter<std::string>("workflow_mode", "delivery");
-    delivery_mode = workflow == "delivery";
     const auto queue_capacity = declare_parameter("queue_capacity", 4);
     const auto task_ms = declare_parameter("task_ms", 240000);
     const auto handover_ms = declare_parameter("handover_ms", 120000);
@@ -652,18 +467,12 @@ public:
     const auto db = declare_parameter<std::string>("database", "");
     epoch = declare_parameter<std::string>("process_epoch", "");
     mailbox = static_cast<std::size_t>(declare_parameter("mailbox_capacity", 16));
-    const auto execution_mode = declare_parameter<std::string>("execution_mode", "gate");
-    gate_mode = execution_mode == "gate";
     execution_run_id = declare_parameter<std::string>("execution_run_id", "");
     execution_namespace = declare_parameter<std::string>("execution_namespace", get_namespace());
-    if (execution_mode != "fixture" && execution_mode != "gate") {
-      throw std::runtime_error("invalid execution mode");
-    }
-    if (gate_mode && (!valid_identifier(execution_run_id) || execution_namespace != get_namespace())) {
+    if (!valid_identifier(execution_run_id) || execution_namespace != get_namespace()) {
       throw std::runtime_error("execution run/namespace mismatch");
     }
     AdapterConfig config;
-    config.synthetic_revoke = !gate_mode;
     config.action = action;
     config.epoch = epoch;
     config.readiness_ms = declare_parameter("readiness_ms", 1500);
@@ -671,43 +480,23 @@ public:
     config.execute_ms = declare_parameter("execute_ms", 10000);
     config.cancel_ms = declare_parameter("cancel_ms", 1000);
     config.collect_ms = declare_parameter("collect_ms", 3000);
-    const std::set<std::string> allowed = {
-        "workflow_mode",  "station_catalog",  "queue_capacity",     "task_ms",
-        "handover_ms",    "test_mode",        "action_name",        "database",
-        "process_epoch",  "mailbox_capacity", "readiness_ms",       "accept_ms",
-        "execute_ms",     "cancel_ms",        "collect_ms",         "use_sim_time",
-        "execution_mode", "execution_run_id", "execution_namespace"};
-    for (const auto &value : get_node_parameters_interface()->get_parameter_overrides()) {
-      if (!allowed.count(value.first)) {
-        throw std::runtime_error("unknown parameter: " + value.first);
-      }
-    }
     const char *domain = getenv("ROS_DOMAIN_ID");
-    if (!test_mode && !delivery_mode) {
-      throw std::runtime_error(
-          "PRODUCTION_REFUSED: physical station/navigation policy not enabled; synthetic fixture prohibited");
-    }
     if (db.empty() || !valid_identifier(epoch) || mailbox == 0 || mailbox > 256) {
       throw std::runtime_error("invalid owner configuration");
     }
-    if (delivery_mode) {
-      if (!gate_mode || !domain || std::string(domain) != (test_mode ? "72" : "71")
-          || (test_mode ? action.rfind("/cmr_test/", 0) != 0 : action != "/navigate_to_pose")
-          || station_catalog.empty() || queue_capacity < 0 || queue_capacity > 64
-          || get_parameter("use_sim_time").as_bool()) {
-        throw std::runtime_error("invalid explicit delivery domain/catalog/clock configuration");
-      }
-      catalog = std::make_unique<StationCatalog>(station_catalog);
-      monitor = std::make_unique<DeliveryMonitor>(
-          shared_from_this(), *catalog,
-          DeliveryMonitorConfig{execution_run_id, epoch, execution_namespace,
-                                test_mode ? execution_namespace : std::string(""), action, test_mode});
-      config.simulation = !test_mode;
-      config.goal_payload_required = true;
-      config.source_now_ns = [this] { return monitor->source_time(); };
-    } else if (!domain || std::string(domain) != "72" || action.rfind("/cmr_test/", 0) != 0) {
-      throw std::runtime_error("invalid isolated test configuration");
+    if (!domain || std::string(domain) != (test_mode ? "72" : "71")
+        || (test_mode ? action.rfind("/cmr_test/", 0) != 0 : action != "/navigate_to_pose")
+        || station_catalog.empty() || queue_capacity < 0 || queue_capacity > 64
+        || get_parameter("use_sim_time").as_bool()) {
+      throw std::runtime_error("invalid explicit delivery domain/catalog/clock configuration");
     }
+    catalog = std::make_unique<StationCatalog>(station_catalog);
+    monitor = std::make_unique<DeliveryMonitor>(
+        shared_from_this(), *catalog,
+        DeliveryMonitorConfig{execution_run_id, epoch, execution_namespace,
+                              test_mode ? execution_namespace : std::string(""), action, test_mode});
+    config.simulation = !test_mode;
+    config.source_now_ns = [this] { return monitor->source_time(); };
 
     // ROS callbacks enqueue owner work; service replies are collected later by poll().
     auto sink = [this](Event e) {
@@ -715,9 +504,8 @@ public:
         return false;
       }
       try {
-        const auto received = now_ms();
         events.push_back(
-            runtime->call([this, e, received](Store &s) mutable { return apply_callback(s, e); }));
+            runtime->call([this, e](Store &s) mutable { return apply_callback(s, e); }));
         return true;
       } catch (const std::exception &error) {
         std::cerr << "EVENT_MAILBOX " << error.what() << std::endl;
@@ -725,65 +513,45 @@ public:
       }
     };
     adapter = std::make_unique<NavigationAdapter>(shared_from_this(), config, sink);
-    if (gate_mode) {
-      execution = std::make_unique<ExecutionPort>(
-          shared_from_this(),
-          ExecutionConfig{execution_run_id, epoch, execution_namespace, test_mode}, *adapter, sink);
-    }
+    execution = std::make_unique<ExecutionPort>(
+        shared_from_this(), ExecutionConfig{execution_run_id, epoch, execution_namespace, test_mode},
+        *adapter, sink);
     StoreOptions store_options;
-    if (delivery_mode) {
-      store_options.delivery = true;
-      store_options.queue_capacity = static_cast<std::size_t>(queue_capacity);
-      store_options.task_ms = task_ms;
-      store_options.handover_ms = handover_ms;
-      store_options.now = [this] { return now_ms(); };
-      store_options.eligible = [this](const Json &snapshot) { return delivery_eligible(snapshot); };
-    }
-    runtime = std::make_unique<Runtime>(db, epoch, mailbox,
-                                        gate_mode ? static_cast<Port *>(execution.get())
-                                                  : static_cast<Port *>(adapter.get()),
-                                        Store::Hook{}, store_options);
-    if (delivery_mode) {
-      start_delivery_api();
-    }
+    store_options.delivery = true;
+    store_options.queue_capacity = static_cast<std::size_t>(queue_capacity);
+    store_options.task_ms = task_ms;
+    store_options.handover_ms = handover_ms;
+    store_options.now = [this] { return now_ms(); };
+    store_options.eligible = [this](const Json &snapshot) { return delivery_eligible(snapshot); };
+    runtime = std::make_unique<Runtime>(db, epoch, mailbox, execution.get(), Store::Hook{},
+                                        store_options);
+    start_delivery_api();
     start_command_api();
-    start_fixture_api();
     timer = create_wall_timer(std::chrono::milliseconds(5), [this] { poll(); });
-    if (delivery_mode) {
-      frozen_parameters =
-          add_on_set_parameters_callback([](const std::vector<rclcpp::Parameter> &values) {
-            rcl_interfaces::msg::SetParametersResult r;
-            r.successful = values.empty();
-            r.reason = "delivery configuration frozen; use transactional business API";
-            return r;
-          });
-    }
+    frozen_parameters =
+        add_on_set_parameters_callback([](const std::vector<rclcpp::Parameter> &values) {
+          rcl_interfaces::msg::SetParametersResult r;
+          r.successful = values.empty();
+          r.reason = "delivery configuration frozen; use transactional business API";
+          return r;
+        });
     std::cout << "MISSION_READY epoch=" << epoch << " synthetic=" << test_mode
-              << " delivery=" << delivery_mode << std::endl;
+              << " delivery=1" << std::endl;
   }
 
   void poll() {
-    if (monitor && adapter) {
-      monitor->tick(now_ms(), adapter->ready());
-      if (now_ms() - last_health_log >= 1000) {
-        last_health_log = now_ms();
-        auto h = monitor->snapshot();
-        if (h) {
-          std::cout << "DELIVERY_HEALTH "
-                    << Json{{"qualified", h->healthy},
-                            {"clock_epoch", h->clock_epoch},
-                            {"source_ns", h->source_now_ns},
-                            {"reason", h->reason}}
-                           .dump()
-                    << std::endl;
-        }
-      }
-    }
-    if (get_clock()->ros_time_is_active()) {
-      const auto stamp = get_clock()->now().nanoseconds();
-      if (stamp != last_ros_clock) {
-        last_ros_clock = stamp;
-        std::cout << "ROS_CLOCK_NS " << stamp << std::endl;
+    monitor->tick(now_ms(), adapter->ready());
+    if (now_ms() - last_health_log >= 1000) {
+      last_health_log = now_ms();
+      auto h = monitor->snapshot();
+      if (h) {
+        std::cout << "DELIVERY_HEALTH "
+                  << Json{{"qualified", h->healthy},
+                          {"clock_epoch", h->clock_epoch},
+                          {"source_ns", h->source_now_ns},
+                          {"reason", h->reason}}
+                         .dump()
+                  << std::endl;
       }
     }
 
@@ -791,10 +559,8 @@ public:
     if (closing) {
       queue_shutdown();
     }
-    if (execution) {
-      execution->tick();
-    }
-    if (gate_mode && !closing && !health_fault && !execution->faulted()) {
+    execution->tick();
+    if (!closing && !health_fault && !execution->faulted()) {
       if (health && health->wait_for(std::chrono::seconds(0)) == std::future_status::ready) {
         try {
           health->get();
@@ -807,9 +573,7 @@ public:
       if (!health && Clock::now() - health_at >= std::chrono::milliseconds(80)) {
         try {
           health = runtime->call([this](Store &s) {
-            if (delivery_mode) {
-              delivery_drive(s);
-            }
+            delivery_drive(s);
             auto r = s.get_active_record();
             if (!r) {
               return Decision{};
@@ -856,15 +620,6 @@ public:
         ++it;
       }
     }
-    for (auto it = fixtures.begin(); it != fixtures.end();) {
-      if (it->future.wait_for(std::chrono::seconds(0)) == std::future_status::ready) {
-        auto r = it->future.get();
-        fixture->send_response(*it->header, r);
-        it = fixtures.erase(it);
-      } else {
-        ++it;
-      }
-    }
     for (auto it = events.begin(); it != events.end();) {
       if (it->wait_for(std::chrono::seconds(0)) == std::future_status::ready) {
         try {
@@ -905,17 +660,13 @@ public:
 
   void begin_shutdown() {
     closing = true;
-    if (execution) {
-      execution->begin_shutdown();
-    }
+    execution->begin_shutdown();
     adapter->begin_shutdown();
     queue_shutdown();
   }
 
   void finish() {
-    if (execution) {
-      execution->stop();
-    }
+    execution->stop();
     adapter->finalize_shutdown();
     runtime->close();
     poll();

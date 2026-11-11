@@ -15,7 +15,7 @@
     },
     {
       "id": "A03",
-      "description": "unavailable readiness",
+      "description": "unavailable Action Server admission",
       "layer": "ROS+owner+SQLite"
     },
     {
@@ -55,7 +55,7 @@
     },
     {
       "id": "A11",
-      "description": "identity reorder unit injection",
+      "description": "Action correlation and read-only MissionCommand",
       "layer": "adapter-unit+ROS"
     },
     {
@@ -70,7 +70,7 @@
     },
     {
       "id": "A14",
-      "description": "ROS clock pause rollback",
+      "description": "explicit source clock pause and rollback",
       "layer": "ROS+owner+SQLite"
     },
     {
@@ -95,12 +95,12 @@
     },
     {
       "id": "A19",
-      "description": "isolation config output refusal",
+      "description": "Action graph isolation and output refusal",
       "layer": "ROS+owner+SQLite"
     },
     {
       "id": "A20",
-      "description": "production fixture refusal",
+      "description": "startup configuration and ROS parameter declarations",
       "layer": "ROS+owner+SQLite"
     }
   ]

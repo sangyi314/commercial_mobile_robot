@@ -8,14 +8,12 @@ namespace cmr::mission {
 struct AdapterConfig {
   std::string action;
   std::string epoch;
-  bool synthetic_revoke{true};
   int readiness_ms{1500};
   int accept_ms{1500};
   int execute_ms{10000};
   int cancel_ms{1000};
   int collect_ms{3000};
   bool simulation{false};
-  bool goal_payload_required{false};
   std::function<std::int64_t()> source_now_ns;
 };
 

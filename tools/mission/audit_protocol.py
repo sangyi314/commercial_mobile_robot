@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: MIT
 """Read-only independent evidence audit; writes a NEW report supplied by the user."""
 import argparse,json,re,sqlite3
+from contextlib import closing
 from pathlib import Path
 
 def audit(root):
@@ -14,7 +15,7 @@ def audit(root):
   send_calls=re.findall(r'^SEND_CALL (.+)$',mission,re.M)
   assert len(send_calls)==len(requests),(case,'external request count',send_calls,requests)
   assert len(requests)==len(set(requests)),(case,'duplicate external UUID')
-  with sqlite3.connect('file:'+str((case/'mission.db').resolve())+'?mode=ro',uri=True) as db:
+  with closing(sqlite3.connect('file:'+str((case/'mission.db').resolve())+'?mode=ro',uri=True)) as db:
    accepted=[identity.split(' detail=')[0].rsplit('/',1)[1] for (identity,) in db.execute("SELECT identity FROM events WHERE kind='1' AND identity LIKE '%ACTION_ACCEPTED%'")]
    intents=db.execute('SELECT count(*) FROM operations WHERE kind=0').fetchone()[0]
    active=db.execute('SELECT count(*) FROM missions WHERE terminal=0').fetchone()[0]
@@ -34,7 +35,14 @@ def audit(root):
    inputs=[json.loads(line) for line in (case/'replay-input.jsonl').read_text().splitlines()]
    mapping={x['request']['command_id']:x for x in inputs}
    received=[]
-   for seq,op,command,mission_id in re.findall(r'BUSINESS_RX seq=(\d+) operation=(\w+) command=(\w*) mission=(\w+)',mission):
+   for line in mission.splitlines():
+    if line.startswith('DELIVERY_RX '):
+     receipt=json.loads(line.removeprefix('DELIVERY_RX '))
+     seq,op,command,mission_id=(receipt[k] for k in ('receive_seq','operation','command_id','mission_id'))
+    else:
+     match=re.fullmatch(r'BUSINESS_RX seq=(\d+) operation=(\w+) command=(\w*) mission=(\w+)',line)
+     if not match:continue
+     seq,op,command,mission_id=match.groups()
     if command in mapping:received.append({'receive_seq':int(seq),'operation':op,'mission_id':mission_id,'input':mapping[command]})
    assert len(received)==len(inputs) and len({x['input']['request']['command_id'] for x in received})==len(inputs)
    row['business_inputs']=len(inputs);row['receive_order']=received

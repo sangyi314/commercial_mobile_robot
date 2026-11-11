@@ -147,6 +147,29 @@ int main(int argc, char **argv) {
       port.stop();
       adapter.finalize_shutdown();
     }
+    // Delivery refuses admission without a ready server. Exercise the adapter's separate
+    // readiness deadline for a server that is unavailable after authorization.
+    {
+      AdapterConfig config;
+      config.epoch = "owner";
+      config.action = ns + "/unavailable_action";
+      config.readiness_ms = 20;
+      std::vector<Event> events;
+      NavigationAdapter adapter(node, config, [&](Event event) {
+        events.push_back(std::move(event));
+        return true;
+      });
+      adapter.execute({"authorized", "m", "m.out", "m.out.0", "", EffectKind::Send});
+      adapter.tick();
+      std::this_thread::sleep_for(std::chrono::milliseconds(30));
+      adapter.tick();
+      adapter.tick();
+      check(events.size() == 1 && events.front().kind == Kind::Rejected
+                && events.front().uuid.empty()
+                && events.front().detail == "NOT_SENT READINESS_TIMEOUT",
+            "unavailable server must time out without a native Goal");
+      adapter.finalize_shutdown();
+    }
     node.reset();
     rclcpp::shutdown();
     std::cout

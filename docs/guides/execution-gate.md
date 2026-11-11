@@ -87,6 +87,8 @@ python3 -B tools/mission/run_execution_tests.py --suite experiments/mission/exec
 ROS_DOMAIN_ID=72 ROS_LOCALHOST_ONLY=1 RMW_IMPLEMENTATION=rmw_fastrtps_cpp python3 -B tools/mission/run_execution_tests.py --suite experiments/mission/execution-sink-v1.yaml --install-prefix "$CMR_VERIFY/install" --output-dir "$CMR_VERIFY/sink"
 ```
 
+E04、E09、E12 使用与配送矩阵共用的 Mission Node、站点目录和合成输入。它们检查真实 ExecutionPort 的租约、恢复占槽及停止证据。其余 E 用例直接验证隔离 Gate/Observer。
+
 Gazebo 需要授权及无现存仿真的前置检查。prepare_gate_trials.py --help 给派生输入入口；tools/run_trial.py --help 与 --check 是只读计划入口。按照生成 plan.json 的 scenario/profile/method/run_id 逐回合执行，失败停止排查，保留旧 run_id。不要手工发布 final/drive 或同时启动另一 Goal 客户端。
 
 离线停止重算（不启动ROS、不播放bag）：
@@ -99,7 +101,7 @@ python3 -B tools/mission/analyze_stop.py --observations <本轮runtime/observati
 
 ## 显式时钟与真实格式反例
 
-Gate、Observer 和测试 relay 不启用 Node 的隐式 use_sim_time；Gate/Observer 明确拒绝启用并冻结参数。它们消费独立 Clock 数据，用自己的 steady/wall 控制时间，Nav2/Mission/Bridge 则仍按角色使用仿真时间。这避免了 rclcpp TimeSource 的隐藏时钟线程和负时间构造异常，不能把 Node 系统时钟当作仿真来源时间。
+Gate、Observer 和测试 relay 不启用 Node 的隐式 use_sim_time；Gate/Observer 明确拒绝启用并冻结参数。它们消费独立 Clock 数据，用自己的 steady/wall 控制时间，Nav2 与 Bridge 按各自角色使用仿真时间，Mission 从显式 Clock 话题取证。这避免了 rclcpp TimeSource 的隐藏时钟线程和负时间构造异常，不能把 Node 系统时钟当作仿真来源时间。
 
 新增真实 ROS wire 反例覆盖 NaN、Inf、非法差速分量、超限、错误 frame、负/缺失 stamp、nanosec>=1e9、负 Clock、运行后 Clock 回零。注入在已授权且刚续租时发生，120ms内检查零输出和 Gate/Observer 仍存活，不能靠300ms租约自然过期冒充格式检查。原始非有限输入在 JSON 证据里用 nonfinite 标记保留。
 
