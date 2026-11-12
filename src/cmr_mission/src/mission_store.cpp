@@ -670,7 +670,7 @@ std::optional<Registration> Store::get_registration_from_id(const std::string &m
 
 DeliveryReply Store::submit_delivery(const MissionRequest &request, const Json &snapshot) {
   p->delivery_check();
-  if (validate(request) != Validation::Valid) {
+  if (validate_MissionRequest(request) != Validation::Valid) {
     return {"INVALID", {}, {}, false};
   }
   try {

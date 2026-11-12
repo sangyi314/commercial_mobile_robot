@@ -1,10 +1,12 @@
 # SPDX-License-Identifier: MIT
 """Independent raw-observation oracle. Does not call the C++ StopWindow."""
 import math
+from tools.p2.stop_observations import live_rows_since
 def yaw(q):
  if len(q)!=4 or not all(isinstance(x,(int,float)) and math.isfinite(x) for x in q) or abs(sum(x*x for x in q)-1)>.001:raise ValueError('invalid quaternion')
  return math.atan2(2*(q[3]*q[2]+q[0]*q[1]),1-2*(q[1]**2+q[2]**2))
 def evaluate(rows,after,now=None):
+ rows=live_rows_since(rows,after)
  result={'checks':{'A':False,'B':False,'D':False},'C':'CONSUMER_ACK_UNKNOWN','synthetic':False,'reason':'INSUFFICIENT_EVIDENCE'}
  states=[r for r in rows if r['kind']=='gate_state' and r['receive_monotonic_s']>=after]
  if not states:return result

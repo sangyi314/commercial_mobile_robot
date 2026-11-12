@@ -33,7 +33,7 @@ public:
     return fingerprint;
   }
 
-  bool resources_current() const;
+  bool resource_hashes_match() const;
   Json freeze(const MissionRequest &) const;
 };
 

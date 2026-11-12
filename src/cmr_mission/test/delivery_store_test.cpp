@@ -400,7 +400,7 @@ void catalog_cases(Fixture &f) {
     ck(rejected, "malformed catalog must fail closed");
   }
   std::ofstream(f.root / "map.yaml") << "controlled map hash mismatch";
-  ck(!good.resources_current(), "loaded map resource cannot silently change");
+  ck(!good.resource_hashes_match(), "loaded map resource cannot silently change");
 }
 
 void long_identity(Fixture &f) {

@@ -21,22 +21,22 @@ MissionRequest request() {
 void run(const std::string &name) {
   auto a = request();
   if (name == "validation") {
-    check(validate(a) == Validation::Valid, "valid request");
+    check(validate_MissionRequest(a) == Validation::Valid, "valid request");
     a.schema_version = 0;
-    check(validate(a) == Validation::Schema, "unsupported version");
+    check(validate_MissionRequest(a) == Validation::Schema, "unsupported version");
     a = request();
     a.created_at_unix_ms = 0;
-    check(validate(a) == Validation::CreatedAt, "zero timestamp");
+    check(validate_MissionRequest(a) == Validation::CreatedAt, "zero timestamp");
     a.created_at_unix_ms = -1;
-    check(validate(a) == Validation::CreatedAt, "negative timestamp");
+    check(validate_MissionRequest(a) == Validation::CreatedAt, "negative timestamp");
     a.created_at_unix_ms = std::numeric_limits<std::int64_t>::max();
-    check(validate(a) == Validation::Valid, "audit time not deadline arithmetic");
+    check(validate_MissionRequest(a) == Validation::Valid, "audit time not deadline arithmetic");
     for (auto field : {&MissionRequest::mission_id, &MissionRequest::delivery_station,
                        &MissionRequest::return_station, &MissionRequest::map_version,
                        &MissionRequest::station_version}) {
       a = request();
       a.*field = "";
-      check(validate(a) == Validation::Identifier, "each required field checked");
+      check(validate_MissionRequest(a) == Validation::Identifier, "each required field checked");
     }
   } else if (name == "identity") {
     check(valid_identifier(std::string(64, 'a')), "64 byte boundary");

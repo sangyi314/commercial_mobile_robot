@@ -113,7 +113,7 @@ public:
     }
     auto h = monitor->snapshot();
     return h && h->healthy && now_ms() - h->now_ms < 100
-           && snapshot.at("catalog_sha256") == catalog->sha256() && catalog->resources_current();
+           && snapshot.at("catalog_sha256") == catalog->sha256() && catalog->resource_hashes_match();
   }
 
   bool delivery_evidence(const Record &r) const {
@@ -174,7 +174,7 @@ public:
                         {"health_fault", health_fault.load()},
                         {"execution_fault", execution->faulted()},
                         {"adapter_fault", adapter->faulted()},
-                        {"catalog_current", catalog->resources_current()}}
+                        {"catalog_current", catalog->resource_hashes_match()}}
                        .dump()
                 << std::endl;
       return apply(Kind::Fatal, "input_health_failed");
@@ -480,7 +480,14 @@ public:
     config.execute_ms = declare_parameter("execute_ms", 10000);
     config.cancel_ms = declare_parameter("cancel_ms", 1000);
     config.collect_ms = declare_parameter("collect_ms", 3000);
+    config.simulation = !test_mode;
     const char *domain = getenv("ROS_DOMAIN_ID");
+    for (const auto &[name, value] :
+     get_node_parameters_interface()->get_parameter_overrides()) {
+    if (!has_parameter(name)) {
+        throw std::runtime_error("unknown parameter: " + name);
+      }
+    }
     if (db.empty() || !valid_identifier(epoch) || mailbox == 0 || mailbox > 256) {
       throw std::runtime_error("invalid owner configuration");
     }
@@ -495,7 +502,6 @@ public:
         shared_from_this(), *catalog,
         DeliveryMonitorConfig{execution_run_id, epoch, execution_namespace,
                               test_mode ? execution_namespace : std::string(""), action, test_mode});
-    config.simulation = !test_mode;
     config.source_now_ns = [this] { return monitor->source_time(); };
 
     // ROS callbacks enqueue owner work; service replies are collected later by poll().

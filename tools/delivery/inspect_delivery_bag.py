@@ -9,6 +9,7 @@ import argparse,json,math,re
 from pathlib import Path
 from tools.delivery.records import audit_database
 from tools.execution.stop_analysis import yaw
+from tools.p2.stop_observations import LiveBodyObservations, indexed_stop_enabled
 from tools.runner.runner_core import write_json
 def stamp_ns(value):return round(value*1000000000)
 def angular(a,b):return abs(math.atan2(math.sin(a-b),math.cos(a-b)))
@@ -49,8 +50,12 @@ def stop_window(rows,report):
   result.update(valid=A and B and D,A=A,B=B,D=D,samples=len(od),max_v=v,max_w=w,drift_m=drift,yaw_drift_rad=rotation,odom_lines=[od[0]['line'],od[-1]['line']])
  except (KeyError,ValueError,TypeError):pass
  return result
+_live_bodies=LiveBodyObservations(stamp_ns)
+
 def body_window(rows,report):
- d=report['data'];lo=d['from_ros_ns'];hi=d['to_ros_ns'];samples=[r for r in rows if r['kind']=='body_odom']
+ d=report['data'];lo=d['from_ros_ns'];hi=d['to_ros_ns']
+ if indexed_stop_enabled(rows):rows=_live_bodies.covering(rows,lo,hi)
+ samples=[r for r in rows if r['kind']=='body_odom']
  left=[i for i,r in enumerate(samples) if stamp_ns(r['data']['stamp_s'])<=lo];right=[i for i,r in enumerate(samples) if stamp_ns(r['data']['stamp_s'])>=hi]
  result={'valid':False,'source':'private worldPose odometry; pose differences and reported twist both checked'}
  if not left or not right:return result
@@ -67,6 +72,7 @@ def body_window(rows,report):
  return result
 
 def body_receipt_crosscheck(observations,lo,hi):
+ if indexed_stop_enabled(observations):observations=_live_bodies.covering(observations,lo,hi)
  body=[r for r in observations if r['kind']=='body_odom'];left=[i for i,r in enumerate(body) if stamp_ns(r['data']['stamp_s'])<=lo];right=[i for i,r in enumerate(body) if stamp_ns(r['data']['stamp_s'])>=hi]
  result={'valid':False,'scope':'independent worker body-feedback steady receipt gaps; separate from source-time motion'}
  if left and right:

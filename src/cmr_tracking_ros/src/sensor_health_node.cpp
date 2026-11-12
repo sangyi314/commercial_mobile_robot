@@ -327,6 +327,14 @@ private:
       last_clock_ = time;
       if (authority_ok(last_advance_)) {
         filter_clock_pub_->publish(msg);
+        // A clock advance can release an already queued measurement. Do the
+        // same bounded admission here in case the wall timer is delayed.
+        for (const auto type : {odom, imu, scan}) {
+          const auto & pending = inputs_[type].pending;
+          if (!pending.empty() && pending.front().stamp <= time) {
+            process(type, last_advance_);
+          }
+        }
       }
     }
   }

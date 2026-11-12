@@ -441,7 +441,7 @@ Record decode(const std::string &text) {
     }
   }
   if (!i || (format != 1 && format != 2 && format != 3) || s < 0 || s > 8 || p < 0 || p > 4
-      || validate(r.request) != Validation::Valid) {
+      || validate_MissionRequest(r.request) != Validation::Valid) {
     throw std::runtime_error("corrupt record");
   }
   i >> std::ws;

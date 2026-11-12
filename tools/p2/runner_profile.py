@@ -80,6 +80,7 @@ def apply(profile, profile_path, spec_path, identity):
                                                    "odometry/filtered", "filter_output_internal")]
     if hold:
         profile["budgets"]["work"] += 2 * hold
+    profile["environment"]["CMR_P2_INDEX_STOP_OBSERVATIONS"] = "1"
     profile["p2_v1"] = spec
     return profile
 
@@ -184,6 +185,9 @@ def configure_motion(run, profile, catalog, nav_config):
     # independent endpoint error. Leave margin below the 0.10 rad test gate.
     yaw_tolerance = 0.035 if maneuver in ("rotate_left", "rotate_right") else 0.06
     checker.update(xy_goal_tolerance=0.05, yaw_goal_tolerance=yaw_tolerance)
+    if maneuver in ("rotate_left", "rotate_right"):
+        checker.update(plugin="nav2_controller::StoppedGoalChecker",
+                       trans_stopped_velocity=0.01, rot_stopped_velocity=0.10)
     atomic_write_new(run / "artifacts/p2-maneuver.json",
                      json.dumps({"maneuver": maneuver, "target": target, "start": home}).encode())
 

@@ -7,6 +7,7 @@ import time
 
 import rclpy
 from rcl_interfaces.srv import GetParameters, ListParameters
+from rclpy.node import NodeNameNonExistentError
 from rclpy.parameter import parameter_value_to_python
 
 EXPECTED = {
@@ -19,18 +20,35 @@ EXPECTED = {
 }
 
 
+def read_subscriptions(node, namespace, required, allowed, deadline):
+    subscriptions = {}
+    while True:
+        try:
+            subscriptions = dict(node.get_subscriber_names_and_types_by_node(
+                "ekf_filter_node", namespace))
+        except NodeNameNonExistentError:
+            subscriptions = {}
+        remaining = deadline - time.monotonic()
+        if required <= subscriptions.keys() or subscriptions.keys() - allowed or remaining <= 0:
+            return subscriptions
+        rclpy.spin_once(node, timeout_sec=min(0.05, remaining))
+
+
 def capture(namespace, mode):
     target = namespace + "/ekf_filter_node"
     expected = {**EXPECTED, "publish_tf": mode == "replacement"}
     rclpy.init(args=[])
     node = rclpy.create_node("p201_parameter_capture")
+    deadline = time.monotonic() + 8.0
     try:
         def query(kind, endpoint, request):
             client = node.create_client(kind, target + "/" + endpoint)
-            if not client.wait_for_service(timeout_sec=3.0):
+            if not client.wait_for_service(
+                    timeout_sec=max(0.0, min(3.0, deadline - time.monotonic()))):
                 raise RuntimeError("parameter service not discoverable: " + endpoint)
             future = client.call_async(request)
-            rclpy.spin_until_future_complete(node, future, timeout_sec=2.0)
+            rclpy.spin_until_future_complete(
+                node, future, timeout_sec=max(0.0, min(2.0, deadline - time.monotonic())))
             if not future.done() or future.result() is None:
                 raise RuntimeError("parameter request failed: " + endpoint)
             return future.result()
@@ -46,10 +64,12 @@ def capture(namespace, mode):
         params = {name: parameter_value_to_python(value) for name, value in zip(requested, replies)}
         bad = {name: dict(expected=want, actual=params.get(name)) for name, want in expected.items()
                if params.get(name) != want}
-        subs = dict(node.get_subscriber_names_and_types_by_node("ekf_filter_node", namespace))
-        allowed = {namespace + "/" + s for s in ("filter_clock", "wheel_odom", "imu_validated", "set_pose")}
-        allowed |= {"/parameter_events", "/tf_static", "/tf"}
-        if not {namespace + "/" + s for s in ("filter_clock", "wheel_odom", "imu_validated")} <= subs.keys():
+        required = {namespace + "/" + s for s in ("filter_clock", "wheel_odom", "imu_validated")}
+        allowed = required | {namespace + "/set_pose", "/parameter_events", "/tf_static", "/tf"}
+        # Service discovery can complete before the node has a topic graph entry.
+        subs = read_subscriptions(node, namespace, required, allowed,
+                                  min(deadline, time.monotonic() + 2.0))
+        if not required <= subs.keys():
             bad["subscriptions"] = "expected private sensor and clock subscriptions missing"
         if subs.keys() - allowed:
             bad["subscriptions"] = sorted(subs.keys() - allowed)

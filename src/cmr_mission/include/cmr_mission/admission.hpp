@@ -41,7 +41,7 @@ inline bool valid_identifier(const std::string &value) {
   return true;
 }
 
-inline Validation validate(const MissionRequest &r) {
+inline Validation validate_MissionRequest(const MissionRequest &r) {
   if (r.schema_version != 1) {
     return Validation::Schema;
   }
@@ -64,11 +64,11 @@ inline bool same_business_content(const MissionRequest &a, const MissionRequest 
 }
 
 inline Admission decide_admission(const MissionRequest &request, const AdmissionContext &context) {
-  if (validate(request) != Validation::Valid) {
+  if (validate_MissionRequest(request) != Validation::Valid) {
     return Admission::Invalid;
   }
   if (context.existing) {
-    if (validate(*context.existing) != Validation::Valid
+    if (validate_MissionRequest(*context.existing) != Validation::Valid
         || context.existing->mission_id != request.mission_id) {
       return Admission::InvalidContext;
     }

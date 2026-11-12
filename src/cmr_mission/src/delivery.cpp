@@ -14,7 +14,7 @@ namespace cmr::mission {
 namespace {
 std::string read(const std::string &path) {
   std::ifstream f(path, std::ios::binary);
-  if (!f) {
+  if (!f || !std::filesystem::is_regular_file(path)) {
     throw std::runtime_error("resource unavailable: " + path);
   }
   return {std::istreambuf_iterator<char>(f), {}};
@@ -24,7 +24,7 @@ double angle(double x) {
   return std::atan2(std::sin(x), std::cos(x));
 }
 
-void fields(const Json &j, std::initializer_list<const char *> expected) {
+void validate_exact_fields(const Json &j, std::initializer_list<const char *> expected) {
   if (!j.is_object() || j.size() != expected.size()) {
     throw std::runtime_error("unexpected fields");
   }
@@ -118,12 +118,12 @@ std::string bytes_sha256(const std::string &data) {
 }
 
 Pose2 checked_pose(const Json &j) {
-  fields(j, {"frame", "position", "orientation"});
+  validate_exact_fields(j, {"frame", "position", "orientation"});
   if (j.at("frame") != "map") {
     throw std::runtime_error("station frame");
   }
-  fields(j.at("position"), {"x", "y", "z"});
-  fields(j.at("orientation"), {"x", "y", "z", "w"});
+  validate_exact_fields(j.at("position"), {"x", "y", "z"});
+  validate_exact_fields(j.at("orientation"), {"x", "y", "z", "w"});
   auto p = j.at("position");
   auto q = j.at("orientation");
   double x = p.at("x");
@@ -144,21 +144,21 @@ Pose2 checked_pose(const Json &j) {
 
 StationCatalog::StationCatalog(const std::string &path)
     : value(strict_json(read(path))), fingerprint(file_sha256(path)) {
-  fields(value,
+  validate_exact_fields(value,
          {"schema_version", "map_version", "station_version", "map", "bt", "bounds", "stations"});
   if (value.at("schema_version") != 1 || !valid_identifier(value.at("map_version"))
       || !valid_identifier(value.at("station_version"))) {
     throw std::runtime_error("catalog version");
   }
   const auto &m = value.at("map");
-  fields(m, {"yaml_path", "yaml_sha256", "image_path", "image_sha256", "metadata"});
-  fields(value.at("bt"), {"path", "sha256"});
+  validate_exact_fields(m, {"yaml_path", "yaml_sha256", "image_path", "image_sha256", "metadata"});
+  validate_exact_fields(value.at("bt"), {"path", "sha256"});
   if (!hash(m.at("yaml_sha256")) || !hash(m.at("image_sha256"))
       || !hash(value.at("bt").at("sha256"))) {
     throw std::runtime_error("catalog hash");
   }
   const auto &md = m.at("metadata");
-  fields(md,
+  validate_exact_fields(md,
          {"width", "height", "resolution", "origin_x", "origin_y", "origin_yaw", "grid_sha256"});
   if (!md.at("width").is_number_unsigned() && !md.at("width").is_number_integer()) {
     throw std::runtime_error("map width");
@@ -177,7 +177,7 @@ StationCatalog::StationCatalog(const std::string &path)
     throw std::runtime_error("map resolution");
   }
   const auto &b = value.at("bounds");
-  fields(b, {"min_x", "max_x", "min_y", "max_y"});
+  validate_exact_fields(b, {"min_x", "max_x", "min_y", "max_y"});
   for (auto v : b) {
     finite(v.get<double>());
   }
@@ -191,7 +191,7 @@ StationCatalog::StationCatalog(const std::string &path)
   }
   std::set<std::string> ids;
   for (const auto &s : value.at("stations")) {
-    fields(s, {"station_id", "map_version", "station_version", "pose"});
+    validate_exact_fields(s, {"station_id", "map_version", "station_version", "pose"});
     if (!valid_identifier(s.at("station_id")) || !ids.insert(s.at("station_id")).second
         || s.at("map_version") != value.at("map_version")
         || s.at("station_version") != value.at("station_version")) {
@@ -203,12 +203,12 @@ StationCatalog::StationCatalog(const std::string &path)
       throw std::runtime_error("station outside reviewed bounds");
     }
   }
-  if (!resources_current()) {
+  if (!resource_hashes_match()) {
     throw std::runtime_error("catalog resource mismatch");
   }
 }
 
-bool StationCatalog::resources_current() const {
+bool StationCatalog::resource_hashes_match() const {
   try {
     const auto &m = value.at("map");
     const auto &b = value.at("bt");
@@ -221,7 +221,7 @@ bool StationCatalog::resources_current() const {
 }
 
 Json StationCatalog::freeze(const MissionRequest &r) const {
-  if (validate(r) != Validation::Valid || r.map_version != value.at("map_version")
+  if (validate_MissionRequest(r) != Validation::Valid || r.map_version != value.at("map_version")
       || r.station_version != value.at("station_version")) {
     throw std::runtime_error("INVALID_STATION_VERSION");
   }
