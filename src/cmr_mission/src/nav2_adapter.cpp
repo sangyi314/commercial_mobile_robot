@@ -289,15 +289,11 @@ void NavigationAdapter::tick() {
       }
       if (p->client->action_server_is_ready()) {
         std::size_t providers = 0;
-        for (const auto &full : node->get_node_names()) {
-          const auto slash = full.rfind('/');
-          if (slash == std::string::npos) {
-            continue;
-          }
-          const auto node_name = full.substr(slash + 1);
-          const auto node_ns = slash == 0 ? std::string("/") : full.substr(0, slash);
-          const auto services = node->get_service_names_and_types_by_node(node_name, node_ns);
-          if (services.count(p->config.action + "/_action/send_goal")) {
+        const auto send_goal_service = p->config.action + "/_action/send_goal";
+        auto graph = node->get_node_graph_interface();
+        for (const auto &[name, ns] : graph->get_node_names_and_namespaces()) {
+          const auto services = graph->get_service_names_and_types_by_node(name, ns);
+          if (services.count(send_goal_service)) {
             ++providers;
           }
         }

@@ -475,11 +475,11 @@ public:
     AdapterConfig config;
     config.action = action;
     config.epoch = epoch;
-    config.readiness_ms = declare_parameter("readiness_ms", 1500);
-    config.accept_ms = declare_parameter("accept_ms", 1500);
-    config.execute_ms = declare_parameter("execute_ms", 10000);
-    config.cancel_ms = declare_parameter("cancel_ms", 1000);
-    config.collect_ms = declare_parameter("collect_ms", 3000);
+    config.readiness_ms = declare_parameter("readiness_ms", config.readiness_ms);
+    config.accept_ms = declare_parameter("accept_ms", config.accept_ms);
+    config.execute_ms = declare_parameter("execute_ms", config.execute_ms);
+    config.cancel_ms = declare_parameter("cancel_ms", config.cancel_ms);
+    config.collect_ms = declare_parameter("collect_ms", config.collect_ms);
     config.use_standard_nav2_endpoint = !test_mode;
     const char *domain = getenv("ROS_DOMAIN_ID");
     for (const auto &[name, value] :

@@ -70,8 +70,6 @@ struct ExecutionPort::Impl : std::enable_shared_from_this<Impl> {
   std::uint64_t serial{0};
   std::uint64_t token{0};
   std::uint64_t event_seq{0};
-  std::optional<Status> latest;
-  Clock::time_point latest_at{};
 
   struct Authority {
     Status state;
@@ -273,9 +271,7 @@ struct ExecutionPort::Impl : std::enable_shared_from_this<Impl> {
         || !x::publisher_matches(*owner, config.ns + "/state", "execution_gate", config.ns, info)) {
       return;
     }
-    latest = s;
-    latest_at = Clock::now();
-    std::atomic_store(&authority, std::make_shared<const Authority>(Authority{s, latest_at}));
+    std::atomic_store(&authority, std::make_shared<const Authority>(Authority{s, Clock::now()}));
     for (auto &pair : contexts) {
       auto c = pair.second;
       if (x::from(s.identity) != c->who || (!c->lease.empty() && s.lease_id != c->lease)) {
@@ -323,15 +319,16 @@ struct ExecutionPort::Impl : std::enable_shared_from_this<Impl> {
 
     // Match authority/identity, then source time and freshness, before forwarding Stop.
     const auto &r = deferred_report->report;
+    const auto gate = std::atomic_load(&authority);
     for (auto &pair : contexts) {
       auto c = pair.second;
       if ((!config.synthetic_observations && r.reason != "WINDOW_PROVEN_BODY_POSE") || !c->revoked
           || r.verdict != "STOPPED" || r.synthetic != config.synthetic_observations
           || x::from(r.identity) != c->who || r.lease_id != c->lease || r.clock_epoch != c->clock
           || r.generation != c->generation || r.from_ros_ns < c->revoke_ros
-          || r.to_ros_ns <= c->last_report_end || !latest
-          || now - latest_at >= std::chrono::milliseconds(100) || latest->ros_ns < r.to_ros_ns
-          || latest->ros_ns - r.to_ros_ns >= 200000000
+          || r.to_ros_ns <= c->last_report_end || !gate
+          || now - gate->received >= std::chrono::milliseconds(100) || gate->state.ros_ns < r.to_ros_ns
+          || gate->state.ros_ns - r.to_ros_ns >= 200000000
           || now - c->last_stop < std::chrono::milliseconds(50)) {
         continue;
       }
@@ -525,9 +522,7 @@ void ExecutionPort::tick() {
       c->cancelled = true;
       p->navigation->execute(e);
       c->stage = "REVOKE";
-      if (!c->nav_sent) {
-        p->not_sent(c);
-      }
+      p->not_sent(c);
     } else if (e.kind == EffectKind::CancelExact) {
       p->navigation->execute(e);
     }
@@ -545,9 +540,10 @@ void ExecutionPort::tick() {
         p->fail(c, "SEND_LEASE_STALE");
         p->not_sent(c);
         c->authorized.reset();
-      } else if (p->latest && p->latest->allowed && p->latest->lease_id == c->lease
-                 && x::from(p->latest->identity) == c->who
-                 && now - p->latest_at < std::chrono::milliseconds(100)) {
+      } else if (const auto gate = std::atomic_load(&p->authority);
+                 gate && gate->state.allowed && gate->state.lease_id == c->lease
+                 && x::from(gate->state.identity) == c->who
+                 && now - gate->received < std::chrono::milliseconds(100)) {
         auto send = *c->authorized;
         send.kind = EffectKind::Send;
         p->navigation->execute(send);

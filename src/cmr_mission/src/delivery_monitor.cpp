@@ -9,6 +9,7 @@
 #include <nav_msgs/msg/occupancy_grid.hpp>
 #include <geometry_msgs/msg/pose_with_covariance_stamped.hpp>
 #include <rosgraph_msgs/msg/clock.hpp>
+#include <algorithm>
 #include <atomic>
 #include <cmath>
 
@@ -64,18 +65,13 @@ struct DeliveryMonitor::Impl {
       return false;
     }
     auto graph = owner->get_node_graph_interface();
-    for (const auto &full_node_name : graph->get_node_names()) {
-      auto pos = full_node_name.rfind('/');
-      if (pos == std::string::npos) {
-        continue;
-      }
-      const auto name = full_node_name.substr(pos + 1);
-      const auto ns = pos ? full_node_name.substr(0, pos) : "/";
+    const auto send_goal_service = config.action + "/_action/send_goal";
+    for (const auto &[name, ns] : graph->get_node_names_and_namespaces()) {
       if (name == "waypoint_follower" || name == "docking_server") {
         return false;
       }
       auto service_clients = graph->get_client_names_and_types_by_node(name, ns);
-      if (service_clients.count(config.action + "/_action/send_goal")
+      if (service_clients.count(send_goal_service)
           && !(name == "mission_node" && ns == config.ns)
           && !(name == "bt_navigator" && ns == "/" && !config.synthetic)) {
         return false;
@@ -107,11 +103,9 @@ DeliveryMonitor::DeliveryMonitor(rclcpp::Node::SharedPtr node, const StationCata
         if (!p->is_expected_publisher(p->topic("scan"), "execution_bridge", i) || s->ranges.empty()) {
           return;
         }
-        bool good = false;
-        for (float v : s->ranges) {
-          good = good || (std::isfinite(v) && v >= s->range_min && v <= s->range_max);
-        }
-        if (good) {
+        if (std::any_of(s->ranges.begin(), s->ranges.end(), [&](float v) {
+              return std::isfinite(v) && v >= s->range_min && v <= s->range_max;
+            })) {
           p->scan_at_ms = p->now_ms;
         }
       });
@@ -232,7 +226,6 @@ void DeliveryMonitor::tick(std::int64_t now, bool ready) {
   }
 
   // Input health is provisional until the matching source-clock TF check below.
-  h->reason = "INPUT_OR_GRAPH_UNQUALIFIED";
   h->healthy = ready && p->graph_valid && p->map_valid && p->localization_valid && !p->clock_fault
                && now - p->scan_at_ms < 500 && now - p->odom_at_ms < 200 && now - p->clock_progress_ms < 300
                && p->state && now - p->gate_at_ms < 100
@@ -272,7 +265,6 @@ void DeliveryMonitor::tick(std::int64_t now, bool ready) {
     h->healthy = h->healthy && h->pose.tf_valid && !p->pose_fault;
   } catch (...) {
     h->healthy = false;
-    h->reason = "TF_UNAVAILABLE";
   }
   if (h->healthy) {
     h->reason = "HEALTHY";
