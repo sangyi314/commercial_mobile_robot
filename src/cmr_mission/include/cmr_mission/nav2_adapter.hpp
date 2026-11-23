@@ -13,7 +13,7 @@ struct AdapterConfig {
   int execute_ms{10000};
   int cancel_ms{1000};
   int collect_ms{3000};
-  bool simulation{false};
+  bool use_standard_nav2_endpoint{false};
   std::function<std::int64_t()> source_now_ns;
 };
 

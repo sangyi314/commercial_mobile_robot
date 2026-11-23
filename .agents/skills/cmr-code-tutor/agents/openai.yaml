@@ -1,0 +1,3 @@
+interface:
+  display_name: "CMR 源码导师"
+  short_description: "结合 CMR 真实源码讲解 C++17、ROS 2 和项目调用链"

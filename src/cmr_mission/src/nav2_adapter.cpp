@@ -151,7 +151,7 @@ struct NavigationAdapter::Impl : std::enable_shared_from_this<NavigationAdapter:
 NavigationAdapter::NavigationAdapter(rclcpp::Node::SharedPtr node, AdapterConfig config,
                                      EventSink sink)
     : p(std::make_shared<Impl>()) {
-  if ((config.simulation ? (config.action != "/navigate_to_pose" || !getenv("ROS_DOMAIN_ID")
+  if ((config.use_standard_nav2_endpoint ? (config.action != "/navigate_to_pose" || !getenv("ROS_DOMAIN_ID")
                             || std::string(getenv("ROS_DOMAIN_ID")) != "71")
                          : config.action.rfind("/cmr_test/", 0) != 0)
       || config.epoch.empty() || config.readiness_ms <= 0 || config.accept_ms <= 0

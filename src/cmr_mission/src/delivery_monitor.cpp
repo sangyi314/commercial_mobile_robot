@@ -28,17 +28,17 @@ struct DeliveryMonitor::Impl {
   rclcpp::Subscription<geometry_msgs::msg::PoseWithCovarianceStamped>::SharedPtr amcl;
   rclcpp::Subscription<rosgraph_msgs::msg::Clock>::SharedPtr clock;
   rclcpp::Subscription<GateState>::SharedPtr gate;
-  std::int64_t now{};
-  std::int64_t scan_at{-1000000};
-  std::int64_t odom_at{-1000000};
-  std::int64_t clock_progress{-1000000};
+  std::int64_t now_ms{};
+  std::int64_t scan_at_ms{-1000000};
+  std::int64_t odom_at_ms{-1000000};
+  std::int64_t clock_progress_ms{-1000000};
   std::int64_t source_ns{};
-  std::int64_t gate_at{-1000000};
-  std::int64_t graph_at{-1000000};
-  bool map_good{false};
-  bool localization_good{false};
+  std::int64_t gate_at_ms{-1000000};
+  std::int64_t graph_at_ms{-1000000};
+  bool map_valid{false};
+  bool localization_valid{false};
   bool clock_fault{false};
-  bool graph_good{false};
+  bool graph_valid{false};
   std::optional<PoseObservation> previous_pose;
   bool pose_fault{false};
   std::optional<GateState> state;
@@ -48,34 +48,34 @@ struct DeliveryMonitor::Impl {
     return config.topic_prefix + "/" + s;
   }
 
-  bool sender(const std::string &topic, const std::string &physical,
+  bool is_expected_publisher(const std::string &topic, const std::string &expected_node_name,
               const rclcpp::MessageInfo &info) const {
     auto owner = node.lock();
     return owner
            && x::publisher_matches(
-               *owner, topic, config.synthetic ? "execution_sink" : physical,
-               config.synthetic ? config.ns : (physical == "execution_bridge" ? config.ns : "/"),
+               *owner, topic, config.synthetic ? "execution_sink" : expected_node_name,
+               config.synthetic ? config.ns : (expected_node_name == "execution_bridge" ? config.ns : "/"),
                info);
   }
 
-  bool graph() {
+  bool check_graph_valid() {
     auto owner = node.lock();
     if (!owner) {
       return false;
     }
-    auto clients = owner->get_node_graph_interface();
-    for (const auto &full : owner->get_node_names()) {
-      auto pos = full.rfind('/');
+    auto graph = owner->get_node_graph_interface();
+    for (const auto &full_node_name : graph->get_node_names()) {
+      auto pos = full_node_name.rfind('/');
       if (pos == std::string::npos) {
         continue;
       }
-      const auto name = full.substr(pos + 1);
-      const auto ns = pos ? full.substr(0, pos) : "/";
+      const auto name = full_node_name.substr(pos + 1);
+      const auto ns = pos ? full_node_name.substr(0, pos) : "/";
       if (name == "waypoint_follower" || name == "docking_server") {
         return false;
       }
-      auto services = clients->get_client_names_and_types_by_node(name, ns);
-      if (services.count(config.action + "/_action/send_goal")
+      auto service_clients = graph->get_client_names_and_types_by_node(name, ns);
+      if (service_clients.count(config.action + "/_action/send_goal")
           && !(name == "mission_node" && ns == config.ns)
           && !(name == "bt_navigator" && ns == "/" && !config.synthetic)) {
         return false;
@@ -83,13 +83,11 @@ struct DeliveryMonitor::Impl {
     }
     if (!config.synthetic) {
       if (!owner->get_publishers_info_by_topic("/cmd_vel").empty()
-          || !owner->get_subscriptions_info_by_topic("/cmd_vel").empty()) {
-        return false;
-      }
-      auto pubs = owner->get_publishers_info_by_topic(config.ns + "/disabled_goal_pose");
-      if (!pubs.empty()) {
-        return false;
-      }
+    || !owner->get_subscriptions_info_by_topic("/cmd_vel").empty()
+    || !owner->get_publishers_info_by_topic(
+        config.ns + "/disabled_goal_pose").empty()) {
+    return false;
+    }
     }
     return true;
   }
@@ -106,7 +104,7 @@ DeliveryMonitor::DeliveryMonitor(rclcpp::Node::SharedPtr node, const StationCata
   p->scan = node->create_subscription<sensor_msgs::msg::LaserScan>(
       p->topic("scan"), rclcpp::SensorDataQoS(),
       [this](sensor_msgs::msg::LaserScan::ConstSharedPtr s, const rclcpp::MessageInfo &i) {
-        if (!p->sender(p->topic("scan"), "execution_bridge", i) || s->ranges.empty()) {
+        if (!p->is_expected_publisher(p->topic("scan"), "execution_bridge", i) || s->ranges.empty()) {
           return;
         }
         bool good = false;
@@ -114,13 +112,13 @@ DeliveryMonitor::DeliveryMonitor(rclcpp::Node::SharedPtr node, const StationCata
           good = good || (std::isfinite(v) && v >= s->range_min && v <= s->range_max);
         }
         if (good) {
-          p->scan_at = p->now;
+          p->scan_at_ms = p->now_ms;
         }
       });
   p->odom = node->create_subscription<nav_msgs::msg::Odometry>(
       p->topic("odom"), rclcpp::SensorDataQoS(),
       [this](nav_msgs::msg::Odometry::ConstSharedPtr s, const rclcpp::MessageInfo &i) {
-        if (!p->sender(p->topic("odom"), "execution_bridge", i) || s->header.frame_id != "odom"
+        if (!p->is_expected_publisher(p->topic("odom"), "execution_bridge", i) || s->header.frame_id != "odom"
             || (s->child_frame_id != "base_footprint" && s->child_frame_id != "base_link")) {
           return;
         }
@@ -133,19 +131,19 @@ DeliveryMonitor::DeliveryMonitor(rclcpp::Node::SharedPtr node, const StationCata
           good = good && std::isfinite(n);
         }
         if (good) {
-          p->odom_at = p->now;
+          p->odom_at_ms = p->now_ms;
         }
       });
   auto durable = rclcpp::QoS(1).reliable().transient_local();
   p->map = node->create_subscription<nav_msgs::msg::OccupancyGrid>(
       p->topic("map"), durable,
       [this](nav_msgs::msg::OccupancyGrid::ConstSharedPtr s, const rclcpp::MessageInfo &i) {
-        if (!p->sender(p->topic("map"), "map_server", i)) {
+        if (!p->is_expected_publisher(p->topic("map"), "map_server", i)) {
           return;
         }
         try {
           const auto &m = p->catalog->description().at("map").at("metadata");
-          p->map_good =
+          p->map_valid =
               s->header.frame_id == "map" && s->info.width == m.at("width").get<unsigned>()
               && s->info.height == m.at("height").get<unsigned>()
               && std::abs(s->info.resolution - m.at("resolution").get<double>()) < 1e-7
@@ -162,14 +160,14 @@ DeliveryMonitor::DeliveryMonitor(rclcpp::Node::SharedPtr node, const StationCata
                           - std::cos(m.at("origin_yaw").get<double>() / 2))
                      < 1e-7;
         } catch (...) {
-          p->map_good = false;
+          p->map_valid = false;
         }
       });
   p->amcl = node->create_subscription<geometry_msgs::msg::PoseWithCovarianceStamped>(
       p->topic("amcl_pose"), durable,
       [this](geometry_msgs::msg::PoseWithCovarianceStamped::ConstSharedPtr s,
              const rclcpp::MessageInfo &i) {
-        if (!p->sender(p->topic("amcl_pose"), "amcl", i)) {
+        if (!p->is_expected_publisher(p->topic("amcl_pose"), "amcl", i)) {
           return;
         }
         auto q = s->pose.pose.orientation;
@@ -180,12 +178,12 @@ DeliveryMonitor::DeliveryMonitor(rclcpp::Node::SharedPtr node, const StationCata
           good = good && std::isfinite(s->pose.covariance[n]) && s->pose.covariance[n] >= 0
                  && s->pose.covariance[n] <= .5;
         }
-        p->localization_good = good;
+        p->localization_valid = good;
       });
   p->clock = node->create_subscription<rosgraph_msgs::msg::Clock>(
       p->topic("clock"), rclcpp::QoS(1).reliable(),
       [this](rosgraph_msgs::msg::Clock::ConstSharedPtr s, const rclcpp::MessageInfo &i) {
-        if (!p->sender(p->topic("clock"), "execution_bridge", i)) {
+        if (!p->is_expected_publisher(p->topic("clock"), "execution_bridge", i)) {
           return;
         }
         auto t = x::checked_stamp(s->clock);
@@ -199,7 +197,7 @@ DeliveryMonitor::DeliveryMonitor(rclcpp::Node::SharedPtr node, const StationCata
           p->clock_fault = true;
         }
         if (t != p->source_ns) {
-          p->clock_progress = p->now;
+          p->clock_progress_ms = p->now_ms;
         }
         p->source_ns = t;
       });
@@ -213,31 +211,31 @@ DeliveryMonitor::DeliveryMonitor(rclcpp::Node::SharedPtr node, const StationCata
           return;
         }
         p->state = *s;
-        p->gate_at = p->now;
+        p->gate_at_ms = p->now_ms;
       });
 }
 
 DeliveryMonitor::~DeliveryMonitor() = default;
 
 void DeliveryMonitor::tick(std::int64_t now, bool ready) {
-  p->now = now;
+  p->now_ms = now;
   auto h = std::make_shared<DeliveryHealth>();
   h->now_ms = now;
   h->source_now_ns = p->source_ns;
-  if (now - p->graph_at >= 100) {
+  if (now - p->graph_at_ms >= 100) {
     try {
-      p->graph_good = p->graph();
+      p->graph_valid = p->check_graph_valid();
     } catch (...) {
-      p->graph_good = false;
+      p->graph_valid = false;
     }
-    p->graph_at = now;
+    p->graph_at_ms = now;
   }
 
   // Input health is provisional until the matching source-clock TF check below.
   h->reason = "INPUT_OR_GRAPH_UNQUALIFIED";
-  h->healthy = ready && p->graph_good && p->map_good && p->localization_good && !p->clock_fault
-               && now - p->scan_at < 500 && now - p->odom_at < 200 && now - p->clock_progress < 300
-               && p->state && now - p->gate_at < 100
+  h->healthy = ready && p->graph_valid && p->map_valid && p->localization_valid && !p->clock_fault
+               && now - p->scan_at_ms < 500 && now - p->odom_at_ms < 200 && now - p->clock_progress_ms < 300
+               && p->state && now - p->gate_at_ms < 100
                && (p->state->identity.owner_epoch == p->config.epoch
                    || (p->state->identity.mission_id.empty() && p->state->state == "DISARMED"
                        && !p->state->allowed));
@@ -254,7 +252,7 @@ void DeliveryMonitor::tick(std::int64_t now, bool ready) {
     h->pose.source_ns = source;
     h->pose.received_ms = now;
     h->pose.clock_epoch = h->clock_epoch;
-    h->pose.localization_valid = p->localization_good;
+    h->pose.localization_valid = p->localization_valid;
     h->pose.tf_valid = source > 0 && source <= p->source_ns && p->source_ns - source < 200000000
                        && std::isfinite(norm) && std::abs(norm - 1) < 1e-3;
     if (h->pose.tf_valid) {
@@ -280,16 +278,16 @@ void DeliveryMonitor::tick(std::int64_t now, bool ready) {
     h->reason = "HEALTHY";
   } else {
     h->reason = Json{{"action_ready", ready},
-                     {"graph", p->graph_good},
-                     {"map", p->map_good},
-                     {"localization", p->localization_good},
+                     {"graph", p->graph_valid},
+                     {"map", p->map_valid},
+                     {"localization", p->localization_valid},
                      {"clock_fault", p->clock_fault},
                      {"pose_fault", p->pose_fault},
                      {"tf_valid", h->pose.tf_valid},
-                     {"scan_age_ms", now - p->scan_at},
-                     {"odom_age_ms", now - p->odom_at},
-                     {"clock_progress_age_ms", now - p->clock_progress},
-                     {"gate_age_ms", now - p->gate_at}}
+                     {"scan_age_ms", now - p->scan_at_ms},
+                     {"odom_age_ms", now - p->odom_at_ms},
+                     {"clock_progress_age_ms", now - p->clock_progress_ms},
+                     {"gate_age_ms", now - p->gate_at_ms}}
                     .dump();
   }
   std::atomic_store(&p->current, std::shared_ptr<const DeliveryHealth>(h));

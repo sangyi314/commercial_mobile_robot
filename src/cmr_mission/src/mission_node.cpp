@@ -480,7 +480,7 @@ public:
     config.execute_ms = declare_parameter("execute_ms", 10000);
     config.cancel_ms = declare_parameter("cancel_ms", 1000);
     config.collect_ms = declare_parameter("collect_ms", 3000);
-    config.simulation = !test_mode;
+    config.use_standard_nav2_endpoint = !test_mode;
     const char *domain = getenv("ROS_DOMAIN_ID");
     for (const auto &[name, value] :
      get_node_parameters_interface()->get_parameter_overrides()) {
