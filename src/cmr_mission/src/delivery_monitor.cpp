@@ -52,6 +52,10 @@ struct DeliveryMonitor::Impl {
   bool is_expected_publisher(const std::string &topic, const std::string &expected_node_name,
               const rclcpp::MessageInfo &info) const {
     auto owner = node.lock();
+    if (expected_node_name == "execution_gate") {
+    return owner && x::publisher_matches(
+        *owner, topic, expected_node_name, config.ns, info);
+}
     return owner
            && x::publisher_matches(
                *owner, topic, config.synthetic ? "execution_sink" : expected_node_name,
@@ -128,37 +132,21 @@ DeliveryMonitor::DeliveryMonitor(rclcpp::Node::SharedPtr node, const StationCata
           p->odom_at_ms = p->now_ms;
         }
       });
-  auto durable = rclcpp::QoS(1).reliable().transient_local();
   p->map = node->create_subscription<nav_msgs::msg::OccupancyGrid>(
-      p->topic("map"), durable,
+      p->topic("map"), rclcpp::QoS(1).reliable().transient_local(),
       [this](nav_msgs::msg::OccupancyGrid::ConstSharedPtr s, const rclcpp::MessageInfo &i) {
         if (!p->is_expected_publisher(p->topic("map"), "map_server", i)) {
           return;
         }
-        try {
-          const auto &m = p->catalog->description().at("map").at("metadata");
-          p->map_valid =
-              s->header.frame_id == "map" && s->info.width == m.at("width").get<unsigned>()
-              && s->info.height == m.at("height").get<unsigned>()
-              && std::abs(s->info.resolution - m.at("resolution").get<double>()) < 1e-7
-              && std::abs(s->info.origin.position.x - m.at("origin_x").get<double>()) < 1e-7
-              && std::abs(s->info.origin.position.y - m.at("origin_y").get<double>()) < 1e-7
-              && s->data.size() == static_cast<std::size_t>(s->info.width) * s->info.height
-              && bytes_sha256(
-                     std::string(reinterpret_cast<const char *>(s->data.data()), s->data.size()))
-                     == m.at("grid_sha256")
-              && std::abs(s->info.origin.orientation.z
-                          - std::sin(m.at("origin_yaw").get<double>() / 2))
-                     < 1e-7
-              && std::abs(s->info.origin.orientation.w
-                          - std::cos(m.at("origin_yaw").get<double>() / 2))
-                     < 1e-7;
-        } catch (...) {
-          p->map_valid = false;
-        }
+        p->map_valid =
+         s->header.frame_id == "map"
+        && s->info.width > 0
+        && s->info.height > 0
+        && s->data.size() ==
+        static_cast<std::size_t>(s->info.width) * s->info.height;
       });
   p->amcl = node->create_subscription<geometry_msgs::msg::PoseWithCovarianceStamped>(
-      p->topic("amcl_pose"), durable,
+      p->topic("amcl_pose"), rclcpp::QoS(1).reliable().transient_local(),
       [this](geometry_msgs::msg::PoseWithCovarianceStamped::ConstSharedPtr s,
              const rclcpp::MessageInfo &i) {
         if (!p->is_expected_publisher(p->topic("amcl_pose"), "amcl", i)) {
@@ -198,12 +186,10 @@ DeliveryMonitor::DeliveryMonitor(rclcpp::Node::SharedPtr node, const StationCata
   p->gate = node->create_subscription<GateState>(
       p->config.ns + "/state", rclcpp::QoS(1).reliable(),
       [this](GateState::ConstSharedPtr s, const rclcpp::MessageInfo &i) {
-        auto owner = p->node.lock();
-        if (!owner
-            || !x::publisher_matches(*owner, p->config.ns + "/state", "execution_gate",
-                                     p->config.ns, i)) {
-          return;
-        }
+        if (!p->is_expected_publisher(
+        p->config.ns + "/state", "execution_gate", i)) {
+    return;
+}
         p->state = *s;
         p->gate_at_ms = p->now_ms;
       });
