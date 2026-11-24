@@ -54,7 +54,7 @@ Decision reduce(const Record &old, const Event &e) {
     d.reason = "ALREADY_TERMINAL";
     return d;
   }
-  if (e.kind != Kind::Restart && e.now < old.last_now) {
+  if (e.kind != Kind::Restart && e.now_ms < old.last_now) {
     d.reason = "TIME_ROLLBACK";
     return d;
   }
@@ -87,7 +87,7 @@ Decision reduce(const Record &old, const Event &e) {
 
   // A terminal Goal and revocation alone do not establish a fresh stop window.
   auto clean = [&] {
-    return n.goal_terminal && n.revoked && n.stopped && (!n.ever_sent || e.now < n.stop_until);
+    return n.goal_terminal && n.revoked && n.stopped && (!n.ever_sent || e.now_ms < n.stop_until);
   };
   // Correlate navigation/execution callbacks before considering any state transition.
   const bool nav = is_navigation_event(e.kind);
@@ -106,7 +106,7 @@ Decision reduce(const Record &old, const Event &e) {
     }
     if (!((e.kind == Kind::Prepare && old.state == State::Accepted)
           || (e.kind == Kind::Retry && old.state == State::Recovering))
-        || !clean() || old.phase == Phase::SendPending || e.now >= old.deadline) {
+        || !clean() || old.phase == Phase::SendPending || e.now_ms >= old.deadline) {
       return d;
     }
     n.operation = old.request.mission_id + (n.returning ? ".return" : ".out");
@@ -177,7 +177,7 @@ Decision reduce(const Record &old, const Event &e) {
     break;
 
   case Kind::Tick:
-    if (e.now < (old.delivery_managed && old.state == State::WaitHandover && !old.handed_over
+    if (e.now_ms < (old.delivery_managed && old.state == State::WaitHandover && !old.handed_over
                      ? std::min(old.deadline, old.handover_until)
                      : old.deadline)
         || !old.pending.empty()) {
@@ -207,11 +207,11 @@ Decision reduce(const Record &old, const Event &e) {
     // Offline fixtures and verified ExecutionPort reports retain distinct evidence rules.
     const bool offline = old.gate_epoch == "synthetic-gate" && old.clock_epoch == "synthetic-clock";
     const bool verified = verified_stop_evidence(e);
-    if ((offline ? (!e.synthetic || e.observed_from >= e.observed_to || e.observed_to > e.now
+    if ((offline ? (!e.synthetic || e.observed_from >= e.observed_to || e.observed_to > e.now_ms
                     || e.observed_from < old.last_now)
                  : !verified)
         || e.gate_epoch != old.gate_epoch || e.clock_epoch != old.clock_epoch
-        || e.valid_until <= e.now) {
+        || e.valid_until <= e.now_ms) {
       d.reason = "STOP_EVIDENCE";
       return d;
     }
@@ -270,7 +270,7 @@ Decision reduce(const Record &old, const Event &e) {
     if (old.delivery_managed
         && (!old.goal_succeeded || !e.arrival_verified || !e.source_fresh
             || e.gate_epoch != old.gate_epoch || e.clock_epoch != old.clock_epoch
-            || e.source_from_ns < old.terminal_ros_ns || e.valid_until <= e.now)) {
+            || e.source_from_ns < old.terminal_ros_ns || e.valid_until <= e.now_ms)) {
       d.reason = "ARRIVAL_EVIDENCE";
       return d;
     }
@@ -288,14 +288,14 @@ Decision reduce(const Record &old, const Event &e) {
       n.state = old.pending == "CANCELED" ? State::Canceled : State::Failed;
       n.phase = Phase::None;
     } else if ((old.state == State::Navigating || old.state == State::Returning) && old.arrived
-               && (!old.delivery_managed || (old.goal_succeeded && e.now < old.arrival_until))) {
+               && (!old.delivery_managed || (old.goal_succeeded && e.now_ms < old.arrival_until))) {
       n.state = n.returning ? State::Completed : State::WaitHandover;
       n.phase = Phase::None;
       if (old.delivery_managed && !n.returning) {
         n.handover_version = old.version + 1;
         n.handover_id =
             old.request.mission_id.substr(0, 32) + ".h." + std::to_string(n.handover_version);
-        n.handover_until = std::min(old.deadline, e.now + old.handover_budget);
+        n.handover_until = std::min(old.deadline, e.now_ms + old.handover_budget);
       }
     } else {
       return d;
@@ -309,9 +309,9 @@ Decision reduce(const Record &old, const Event &e) {
     if (old.delivery_managed && old.restart_suspended) {
       return d;
     }
-    if (old.state != State::WaitHandover || old.handed_over || e.expected_version != old.version
-        || e.now >= old.deadline || !clean()
-        || (old.delivery_managed && (e.now >= old.handover_until || e.now >= old.arrival_until))) {
+    if (old.state != State::WaitHandover || old.handed_over || e.expected_record_version != old.version
+        || e.now_ms >= old.deadline || !clean()
+        || (old.delivery_managed && (e.now_ms >= old.handover_until || e.now_ms >= old.arrival_until))) {
       return d;
     }
     if (old.delivery_managed) {
@@ -343,7 +343,7 @@ Decision reduce(const Record &old, const Event &e) {
   case Kind::Recover:
     if (old.state != State::Paused || old.pending != "FAILED" || old.retries >= 1
         || (old.delivery_managed && (!old.retry_eligible || old.restart_suspended)) || !clean()
-        || e.now >= old.deadline) {
+        || e.now_ms >= old.deadline) {
       return d;
     }
     n.state = State::Recovering;
@@ -374,7 +374,7 @@ Decision reduce(const Record &old, const Event &e) {
   n.version++;
   n.seq++;
   if (e.kind != Kind::Restart) {
-    n.last_now = e.now;
+    n.last_now = e.now_ms;
   }
   d.changed = true;
   d.reason = "APPLIED";

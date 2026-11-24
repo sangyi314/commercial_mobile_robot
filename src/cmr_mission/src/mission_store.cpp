@@ -265,7 +265,7 @@ struct Store::Impl {
     e.id = "activate";
     e.mission_id = n.request.mission_id;
     e.epoch = epoch;
-    e.now = now();
+    e.now_ms = now();
     audit(n, e, {n, {}, true, "ACTIVATED"});
     queue_event(n.request.mission_id, "ACTIVATED", "owner transaction; no Goal yet");
   }
@@ -849,7 +849,7 @@ DeliveryReply Store::cancel_delivery(const std::string &mission_id, const std::s
       e.attempt = r.attempt;
       e.uuid = r.uuid;
       e.kind = Kind::Cancel;
-      e.now = p->now();
+      e.now_ms = p->now();
       e.detail = "delivery API cancel";
       auto d = reduce(r, e);
       p->audit(r, e, d);
@@ -918,8 +918,8 @@ DeliveryReply Store::confirm_handover(const std::string &mission_id, const std::
           e.attempt = r.attempt;
           e.uuid = r.uuid;
           e.kind = Kind::Handover;
-          e.expected_version = r.version;
-          e.now = p->now();
+          e.expected_record_version = r.version;
+          e.now_ms = p->now();
           e.detail = source;
           auto d = reduce(r, e);
           reply.result_code = d.changed ? "CONFIRMED" : "REJECTED";

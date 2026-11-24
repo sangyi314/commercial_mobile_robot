@@ -26,11 +26,11 @@ Event event(const Record &r, Kind k) {
   e.attempt = r.attempt;
   e.uuid = r.uuid;
   e.kind = k;
-  e.now = r.last_now + 2;
-  e.expected_version = r.version;
-  e.observed_from = e.now - 1;
-  e.observed_to = e.now;
-  e.valid_until = e.now + 10000;
+  e.now_ms = r.last_now + 2;
+  e.expected_record_version = r.version;
+  e.observed_from = e.now_ms - 1;
+  e.observed_to = e.now_ms;
+  e.valid_until = e.now_ms + 10000;
   return e;
 }
 
@@ -100,11 +100,11 @@ int main() {
     ck(r.state == State::Canceled, "success before cancel but not completed");
     r = initial();
     auto t = event(r, Kind::Tick);
-    t.now = r.deadline - 1;
+    t.now_ms = r.deadline - 1;
     ck(!reduce(r, t).changed, "before deadline");
-    t.now = r.deadline;
+    t.now_ms = r.deadline;
     ck(reduce(r, t).changed, "equal deadline expires");
-    t.now++;
+    t.now_ms++;
     ck(reduce(r, t).changed, "after deadline");
     r = initial();
     apply(r, Kind::Prepare);
@@ -128,7 +128,7 @@ int main() {
     apply(r, Kind::Succeeded);
     apply(r, Kind::RevokeAck);
     auto expired = event(r, Kind::Stop);
-    expired.valid_until = expired.now;
+    expired.valid_until = expired.now_ms;
     ck(!reduce(r, expired).changed, "expired stop");
     expired = event(r, Kind::Stop);
     expired.observed_from = expired.observed_to;
@@ -137,7 +137,7 @@ int main() {
     apply(r, Kind::Arrival);
     apply(r, Kind::Resolve);
     wrong = event(r, Kind::Handover);
-    wrong.expected_version++;
+    wrong.expected_record_version++;
     ck(!reduce(r, wrong).changed, "handover state version");
     apply(r, Kind::Handover);
     ck(!reduce(r, event(r, Kind::Handover)).changed, "duplicate handover");
@@ -156,7 +156,7 @@ int main() {
     apply(r, Kind::Prepare);
     leg(r);
     t = event(r, Kind::Tick);
-    t.now = r.deadline;
+    t.now_ms = r.deadline;
     auto timed = reduce(r, t);
     ck(timed.changed && timed.next.state == State::Paused && timed.next.pending == "FAILED",
        "handover timeout");

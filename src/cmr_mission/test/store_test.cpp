@@ -69,7 +69,7 @@ int main(int argc, char **argv) {
       e.kind = Kind::Prepare;
       e.mission_id = "m";
       e.epoch = "e";
-      e.now = 1;
+      e.now_ms = 1;
       ck(s.apply(e).changed, "prepare");
       s.dispatch();
       s.dispatch();
@@ -96,7 +96,7 @@ int main(int argc, char **argv) {
       e.mission_id = "m";
       e.epoch = "e";
       e.kind = Kind::Prepare;
-      e.now = 1;
+      e.now_ms = 1;
       s.apply(e);
       auto m = *s.get_record_from_id("m");
       e.id = "a";
@@ -104,7 +104,7 @@ int main(int argc, char **argv) {
       e.attempt = m.attempt;
       e.uuid = "u";
       e.kind = Kind::Accepted;
-      e.now = 2;
+      e.now_ms = 2;
       s.apply(e);
       s.dispatch();
       ck(receiver.sends == 0, "accepted goal suppresses stale send intent");

@@ -173,11 +173,11 @@ void random_run(const std::string &root, unsigned seed, const std::string &repla
       e.operation = r->operation;
       e.attempt = r->attempt;
       e.uuid = r->uuid;
-      e.expected_version = r->version;
-      e.now = r->last_now + 2;
-      e.observed_from = e.now - 1;
-      e.observed_to = e.now;
-      e.valid_until = e.now + 10000;
+      e.expected_record_version = r->version;
+      e.now_ms = r->last_now + 2;
+      e.observed_from = e.now_ms - 1;
+      e.observed_to = e.now_ms;
+      e.valid_until = e.now_ms + 10000;
       static const Kind kinds[] = {Kind::Prepare,  Kind::Accepted, Kind::Succeeded, Kind::Aborted,
                                    Kind::Rejected, Kind::Cancel,   Kind::CancelAck, Kind::RevokeAck,
                                    Kind::Stop,     Kind::Arrival,  Kind::Handover,  Kind::Tick,
@@ -194,7 +194,7 @@ void random_run(const std::string &root, unsigned seed, const std::string &repla
         e.epoch = "old-owner";
       }
       if (e.kind == Kind::Tick) {
-        e.now = r->deadline;
+        e.now_ms = r->deadline;
       }
       if (op == 25) {
         e.kind = Kind::Succeeded;

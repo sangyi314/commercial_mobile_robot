@@ -63,7 +63,7 @@ class MissionNode : public rclcpp::Node {
   };
 
   std::vector<PendingApi> requests;
-  std::vector<std::future<Decision>> events;
+  std::vector<std::future<Decision>> pending_event_results;
   std::atomic<bool> closing{false};
   bool shutdown_queued = false;
   std::size_t mailbox = 16;
@@ -93,7 +93,7 @@ public:
     e.operation = r.operation;
     e.attempt = r.attempt;
     e.uuid = r.uuid;
-    e.now = now_ms();
+    e.now_ms = now_ms();
     return e;
   }
 
@@ -379,7 +379,7 @@ private:
   // Runs inside Runtime's owner task, never in the ROS callback thread.
   Decision apply_callback(Store &s, Event &e) {
     // Correlate identity and consume the original receipt-relative evidence lifetime.
-    e.now = now_ms();
+    e.now_ms = now_ms();
     if (auto current = s.get_record_from_id(e.mission_id)) {
       e = scope_callback(std::move(e), *current);
       if (e.uuid.empty()) {
@@ -391,7 +391,7 @@ private:
                                Clock::now().time_since_epoch()
                                - std::chrono::nanoseconds(e.source_received_steady_ns))
                                .count();
-      e.valid_until = e.now + 200 - elapsed;
+      e.valid_until = e.now_ms + 200 - elapsed;
       auto record = s.get_record_from_id(e.mission_id);
       if (e.source_received_steady_ns <= 0 || elapsed < 0 || elapsed >= 200 || !record
           || !execution->evidence_current(*record, e.source_generation)) {
@@ -504,13 +504,12 @@ public:
                               test_mode ? execution_namespace : std::string(""), action, test_mode});
     config.source_now_ns = [this] { return monitor->source_time(); };
 
-    // ROS callbacks enqueue owner work; service replies are collected later by poll().
     auto sink = [this](Event e) {
-      if (events.size() >= 32) {
+      if (pending_event_results.size() >= 32) {
         return false;
       }
       try {
-        events.push_back(
+        pending_event_results.push_back(
             runtime->call([this, e](Store &s) mutable { return apply_callback(s, e); }));
         return true;
       } catch (const std::exception &error) {
@@ -626,7 +625,7 @@ public:
         ++it;
       }
     }
-    for (auto it = events.begin(); it != events.end();) {
+    for (auto it = pending_event_results.begin(); it != pending_event_results.end();) {
       if (it->wait_for(std::chrono::seconds(0)) == std::future_status::ready) {
         try {
           auto d = it->get();
@@ -635,7 +634,7 @@ public:
         } catch (const std::exception &e) {
           std::cerr << "OWNER_EVENT_ERROR " << e.what() << std::endl;
         }
-        it = events.erase(it);
+        it = pending_event_results.erase(it);
       } else {
         ++it;
       }
@@ -647,7 +646,7 @@ public:
       return;
     }
     try {
-      events.push_back(runtime->call([this](Store &s) {
+      pending_event_results.push_back(runtime->call([this](Store &s) {
         auto r = s.get_active_record();
         if (!r) {
           return Decision{};
@@ -676,7 +675,7 @@ public:
     adapter->finalize_shutdown();
     runtime->close();
     poll();
-    std::cout << "MISSION_CLOSED requests=" << requests.size() << " events=" << events.size()
+    std::cout << "MISSION_CLOSED requests=" << requests.size() << " events=" << pending_event_results.size()
               << std::endl;
   }
 };

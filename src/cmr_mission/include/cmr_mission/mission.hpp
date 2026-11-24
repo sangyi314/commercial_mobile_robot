@@ -132,10 +132,10 @@ struct Event {
   std::string uuid;
   std::string detail;
   Kind kind{Kind::Feedback};
-  std::int64_t now{0};
+  std::int64_t now_ms{0};
 
   // Business command version and synthetic-fixture marker.
-  std::uint64_t expected_version{0};
+  std::uint64_t expected_record_version{0};
   bool synthetic{true};
 
   // Evidence identity and owner-clock validity.

@@ -21,7 +21,7 @@ Event ev(const Record &r, Kind k, int n) {
   e.attempt = r.attempt;
   e.uuid = r.uuid;
   e.kind = k;
-  e.now = n;
+  e.now_ms = n;
   e.gate_epoch = r.gate_epoch;
   e.clock_epoch = r.clock_epoch;
   return e;

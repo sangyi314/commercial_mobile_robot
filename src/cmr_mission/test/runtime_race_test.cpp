@@ -23,10 +23,10 @@ Event ev(Record r, Kind k, std::string id) {
   e.operation = r.operation;
   e.attempt = r.attempt;
   e.uuid = r.uuid;
-  e.now = r.last_now + 2;
-  e.observed_from = e.now - 1;
-  e.observed_to = e.now;
-  e.valid_until = e.now + 1000;
+  e.now_ms = r.last_now + 2;
+  e.observed_from = e.now_ms - 1;
+  e.observed_to = e.now_ms;
+  e.valid_until = e.now_ms + 1000;
   if (k == Kind::Accepted) {
     e.uuid = "uuid";
   }

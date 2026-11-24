@@ -86,13 +86,13 @@ struct Fixture {
     Event e;
     e.kind = kind;
     e.id = "test-" + std::to_string(++time);
-    e.now = time;
+    e.now_ms = time;
     e.mission_id = r.request.mission_id;
     e.epoch = r.epoch;
     e.operation = r.operation;
     e.attempt = r.attempt;
     e.uuid = r.uuid;
-    e.expected_version = r.version;
+    e.expected_record_version = r.version;
     e.gate_epoch = r.gate_epoch;
     e.clock_epoch = r.clock_epoch;
     e.observed_from = time - 1;
@@ -574,7 +574,7 @@ void handover_seeds(const fs::path &root) {
       } else if (op == 2) {
         e.kind = Kind::Tick;
       } else if (op == 3) {
-        e.expected_version = r.version + 1;
+        e.expected_record_version = r.version + 1;
       } else if (op == 4) {
         e.epoch = "stale_owner";
       } else if (op == 5) {
@@ -596,8 +596,8 @@ void handover_seeds(const fs::path &root) {
       }
       ck(!cancellation_won || !r.handed_over, "cancel winner prevents later handover");
       if (e.kind == Kind::Handover && d.changed) {
-        ck(e.now < before.deadline && e.now < before.handover_until && e.now < before.stop_until
-               && e.now < before.arrival_until,
+        ck(e.now_ms < before.deadline && e.now_ms < before.handover_until && e.now_ms < before.stop_until
+               && e.now_ms < before.arrival_until,
            "no expired handover");
       }
       if (op == 4) {
@@ -605,7 +605,7 @@ void handover_seeds(const fs::path &root) {
       }
       trace
           << Json{{"seed", seed},       {"receive_order", n},   {"episode", n / 10},
-                  {"operation", op},    {"now", e.now},         {"before", encode(before)},
+                  {"operation", op},    {"now", e.now_ms},         {"before", encode(before)},
                   {"after", encode(r)}, {"decision", d.reason}, {"return_intents", return_intents},
                   {"synthetic", true}}
                  .dump()
