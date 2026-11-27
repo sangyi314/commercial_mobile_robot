@@ -227,12 +227,12 @@ void NavigationAdapter::tick() {
     std::lock_guard<std::mutex> lock(p->mutex);
     commands.swap(p->commands);
   }
-  for (const auto &e : commands) {
-    if (!p->effects.insert(e.id).second) {
+  for (const auto &effect : commands) {
+    if (!p->effects.insert(effect.id).second) {
       continue;
     }
-    auto found = p->goals.find(e.attempt);
-    if (e.kind == EffectKind::Send) {
+    auto found = p->goals.find(effect.attempt);
+    if (effect.kind == EffectKind::Send) {
       if (p->fault) {
         continue;
       }
@@ -252,17 +252,15 @@ void NavigationAdapter::tick() {
         }
       }
       auto g = std::make_shared<Impl::Goal>();
-      g->effect = e;
-      g->correlation = std::make_unique<ActionCorrelation>(p->config.epoch, e);
-      p->goals[e.attempt] = g;
+      g->effect = effect;
+      g->correlation = std::make_unique<ActionCorrelation>(p->config.epoch, effect);
+      p->goals[effect.attempt] = g;
     } else if (found != p->goals.end()) {
       auto g = found->second;
-      if (e.kind == EffectKind::Revoke) {
-        if (!g->terminal) {
+      if (effect.kind == EffectKind::Revoke && !g->terminal) {
           p->cancel(g);
-        }
-      } else if (e.kind == EffectKind::CancelExact) {
-        if (!e.uuid.empty() && !g->uuid.empty() && e.uuid != g->uuid) {
+      } else if (effect.kind == EffectKind::CancelGoal) {
+        if (!effect.uuid.empty() && !g->uuid.empty() && effect.uuid != g->uuid) {
           p->fault = true;
           continue;
         }

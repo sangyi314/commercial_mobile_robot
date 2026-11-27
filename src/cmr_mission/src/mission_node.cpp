@@ -380,8 +380,9 @@ private:
   Decision apply_callback(Store &s, Event &e) {
     // Correlate identity and consume the original receipt-relative evidence lifetime.
     e.now_ms = now_ms();
-    if (auto current = s.get_record_from_id(e.mission_id)) {
-      e = scope_callback(std::move(e), *current);
+    auto current = s.get_record_from_id(e.mission_id);
+    if (current) {
+      e = downgrade_stale_fatal( e , *current);
       if (e.uuid.empty()) {
         e.uuid = current->uuid;
       }
@@ -392,15 +393,12 @@ private:
                                - std::chrono::nanoseconds(e.source_received_steady_ns))
                                .count();
       e.valid_until = e.now_ms + 200 - elapsed;
-      auto record = s.get_record_from_id(e.mission_id);
-      if (e.source_received_steady_ns <= 0 || elapsed < 0 || elapsed >= 200 || !record
-          || !execution->evidence_current(*record, e.source_generation)) {
+      if (e.source_received_steady_ns <= 0 || elapsed < 0 || elapsed >= 200 || !current
+          || !execution->evidence_current(*current, e.source_generation)) {
         e.source_fresh = false;
       }
     }
-
-    // Persist the decision before dispatching effects and advancing the workflow.
-    auto d = s.apply(e);
+   auto d = s.apply(e);
     if (d.changed && e.kind == Kind::Stop) {
       delivery_windows[e.attempt].stop = e;
     }
@@ -472,15 +470,15 @@ public:
     if (!valid_identifier(execution_run_id) || execution_namespace != get_namespace()) {
       throw std::runtime_error("execution run/namespace mismatch");
     }
-    AdapterConfig config;
-    config.action = action;
-    config.epoch = epoch;
-    config.readiness_ms = declare_parameter("readiness_ms", config.readiness_ms);
-    config.accept_ms = declare_parameter("accept_ms", config.accept_ms);
-    config.execute_ms = declare_parameter("execute_ms", config.execute_ms);
-    config.cancel_ms = declare_parameter("cancel_ms", config.cancel_ms);
-    config.collect_ms = declare_parameter("collect_ms", config.collect_ms);
-    config.use_standard_nav2_endpoint = !test_mode;
+    AdapterConfig adapter_config;
+    adapter_config.action = action;
+    adapter_config.epoch = epoch;
+    adapter_config.readiness_ms = declare_parameter("readiness_ms", adapter_config.readiness_ms);
+    adapter_config.accept_ms = declare_parameter("accept_ms", adapter_config.accept_ms);
+    adapter_config.execute_ms = declare_parameter("execute_ms", adapter_config.execute_ms);
+    adapter_config.cancel_ms = declare_parameter("cancel_ms", adapter_config.cancel_ms);
+    adapter_config.collect_ms = declare_parameter("collect_ms", adapter_config.collect_ms);
+    adapter_config.use_standard_nav2_endpoint = !test_mode;
     const char *domain = getenv("ROS_DOMAIN_ID");
     for (const auto &[name, value] :
      get_node_parameters_interface()->get_parameter_overrides()) {
@@ -502,7 +500,7 @@ public:
         shared_from_this(), *catalog,
         DeliveryMonitorConfig{execution_run_id, epoch, execution_namespace,
                               test_mode ? execution_namespace : std::string(""), action, test_mode});
-    config.source_now_ns = [this] { return monitor->source_time(); };
+    adapter_config.source_now_ns = [this] { return monitor->source_time_ns(); };
 
     auto sink = [this](Event e) {
       if (pending_event_results.size() >= 32) {
@@ -517,7 +515,7 @@ public:
         return false;
       }
     };
-    adapter = std::make_unique<NavigationAdapter>(shared_from_this(), config, sink);
+    adapter = std::make_unique<NavigationAdapter>(shared_from_this(), adapter_config, sink);
     execution = std::make_unique<ExecutionPort>(
         shared_from_this(), ExecutionConfig{execution_run_id, epoch, execution_namespace, test_mode},
         *adapter, sink);

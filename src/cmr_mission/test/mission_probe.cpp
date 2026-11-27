@@ -53,7 +53,7 @@ int main(int argc, char **argv) {
           || (window == "send-after" && stage == "dispatch" && point == "dispatch-after-port")
           || (window == "accept-after" && stage == "accept" && point == "event-after-commit")
           || (window == "cancel-after" && stage == "cancel-dispatch"
-              && sink.last == EffectKind::CancelExact && point == "dispatch-after-port")
+              && sink.last == EffectKind::CancelGoal && point == "dispatch-after-port")
           || (window == "terminal-before" && point == "terminal-before-commit")
           || (window == "terminal-after" && point == "terminal-after-commit");
       if (mode == "crash" && hit) {

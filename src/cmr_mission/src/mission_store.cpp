@@ -320,7 +320,7 @@ struct Store::Impl {
                        EffectKind::Revoke});
         if (!r.uuid.empty()) {
           port->execute({"emergency-cancel", r.request.mission_id, r.operation, r.attempt, r.uuid,
-                         EffectKind::CancelExact});
+                         EffectKind::CancelGoal});
         }
       }
       std::cerr << "STORAGE_FAULT: no new send; emergency actions are NOT persisted\n";

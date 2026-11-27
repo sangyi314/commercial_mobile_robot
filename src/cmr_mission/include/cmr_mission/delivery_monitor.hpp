@@ -23,7 +23,7 @@ struct DeliveryMonitorConfig {
   bool synthetic{false};
 };
 
-class DeliveryMonitor {
+class DeliveryMonitor final{
   struct Impl;
   std::unique_ptr<Impl> p;
 
@@ -32,6 +32,6 @@ public:
   ~DeliveryMonitor();
   void tick(std::int64_t now_ms, bool action_ready);
   std::shared_ptr<const DeliveryHealth> snapshot() const;
-  std::int64_t source_time() const;
+  std::int64_t source_time_ns() const;
 };
 } // namespace cmr::mission

@@ -76,7 +76,8 @@ public:
     }
   }
 
-  template <class F> auto call(F f) -> std::future<decltype(f(std::declval<Store &>()))> {
+  template <class F> 
+  auto call(F f) -> std::future<decltype(f(std::declval<Store &>()))> {
     using R = decltype(f(std::declval<Store &>()));
     auto task = std::make_shared<std::packaged_task<R(Store &)>>(std::move(f));
     auto result = task->get_future();

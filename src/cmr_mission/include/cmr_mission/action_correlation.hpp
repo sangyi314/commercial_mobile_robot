@@ -4,7 +4,7 @@
 #include <deque>
 
 namespace cmr::mission {
-inline Event scope_callback(Event e, const Record &current) {
+inline Event downgrade_stale_fatal(Event& e, const Record &current) {
   if (e.kind == Kind::Fatal && (e.operation != current.operation || e.attempt != current.attempt)) {
     e.detail = "STALE_OPERATION_DIAGNOSTIC " + e.detail;
     e.kind = Kind::Feedback;
@@ -33,8 +33,8 @@ public:
   std::size_t discarded{0};
   std::size_t conflicts{0};
 
-  ActionCorrelation(std::string owner, const Effect &e)
-      : epoch(std::move(owner)), mission(e.mission), operation(e.operation), attempt(e.attempt) {
+  ActionCorrelation(std::string epoch, const Effect &effect)
+      : epoch(std::move(epoch)), mission(effect.mission), operation(effect.operation), attempt(effect.attempt) {
   }
 
   std::vector<Event> push(Event e) {

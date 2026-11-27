@@ -408,7 +408,7 @@ bool ExecutionPort::evidence_current(const Record &r, std::uint64_t generation) 
 void ExecutionPort::execute(const Effect &e) {
   std::lock_guard<std::mutex> l(p->mutex);
   if (!p->alive || p->commands.size() >= 32
-      || (p->fault && e.kind != EffectKind::Revoke && e.kind != EffectKind::CancelExact)) {
+      || (p->fault && e.kind != EffectKind::Revoke && e.kind != EffectKind::CancelGoal)) {
     p->fault = true;
     throw std::runtime_error("execution port closed/overloaded/faulted");
   }
@@ -523,7 +523,7 @@ void ExecutionPort::tick() {
       p->navigation->execute(e);
       c->stage = "REVOKE";
       p->not_sent(c);
-    } else if (e.kind == EffectKind::CancelExact) {
+    } else if (e.kind == EffectKind::CancelGoal) {
       p->navigation->execute(e);
     }
   }

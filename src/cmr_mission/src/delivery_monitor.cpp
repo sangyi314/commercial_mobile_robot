@@ -275,7 +275,7 @@ std::shared_ptr<const DeliveryHealth> DeliveryMonitor::snapshot() const {
   return std::atomic_load(&p->current);
 }
 
-std::int64_t DeliveryMonitor::source_time() const {
+std::int64_t DeliveryMonitor::source_time_ns() const {
   return p->source_ns;
 }
 } // namespace cmr::mission

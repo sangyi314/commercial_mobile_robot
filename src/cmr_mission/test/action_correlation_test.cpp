@@ -28,7 +28,7 @@ int main() {
     diagnostic.operation = "out";
     diagnostic.attempt = "out0";
     diagnostic.kind = Kind::Fatal;
-    auto scoped = scope_callback(diagnostic, current);
+    auto scoped = downgrade_stale_fatal(diagnostic, current);
     ck(scoped.kind == Kind::Feedback);
     ck(!reduce(current, scoped).changed);
     Effect effect{"effect", "m", "out", "out0", "", EffectKind::Send};

@@ -18,7 +18,7 @@ struct Pose2 {
 
 Pose2 checked_pose(const Json &);
 
-class StationCatalog {
+class StationCatalog final{
   Json value;
   std::string fingerprint;
 

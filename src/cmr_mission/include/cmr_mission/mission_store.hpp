@@ -35,7 +35,7 @@ struct DeliveryReply {
   bool duplicate{false};
 };
 
-class Store {
+class Store final{
   struct Impl;
   std::unique_ptr<Impl> p;
 

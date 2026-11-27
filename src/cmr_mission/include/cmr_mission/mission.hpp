@@ -46,7 +46,7 @@ enum class Kind {
 };
 enum class EffectKind {
   Send,
-  CancelExact,
+  CancelGoal,
   Revoke,
   SendAuthorized,
   RenewLease,

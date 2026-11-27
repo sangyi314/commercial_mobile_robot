@@ -80,7 +80,7 @@ Decision reduce(const Record &old, const Event &e) {
     }
     effect(EffectKind::Revoke);
     if (!n.goal_terminal && !n.uuid.empty()) {
-      effect(EffectKind::CancelExact);
+      effect(EffectKind::CancelGoal);
     }
     n.phase = n.goal_terminal ? Phase::StopPending : Phase::Uncertain;
   };
@@ -137,7 +137,7 @@ Decision reduce(const Record &old, const Event &e) {
     }
     n.uuid = e.uuid;
     if (old.state == State::Paused) {
-      effect(EffectKind::CancelExact);
+      effect(EffectKind::CancelGoal);
       n.phase = Phase::Uncertain;
     } else {
       n.state = n.returning ? State::Returning : State::Navigating;
